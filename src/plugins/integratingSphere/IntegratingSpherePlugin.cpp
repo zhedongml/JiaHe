@@ -3,7 +3,7 @@
 #include "PrjCommon/recipewrapperregistry.h"
 #include "integratingsphereWrapper.h"
 #include "integratingspherecontroller.h"
-#include "ReticleWidget2D.h"
+#include "ReticleWidget.h"
 #include "behaviortree_cpp_v3/bt_factory.h"
 #include "Integratingsphere4Recipe.h"
 #include "Reticle4Recipe.h"
@@ -24,8 +24,7 @@ IntegratingSpherePlugin::~IntegratingSpherePlugin()
 bool IntegratingSpherePlugin::initialize(const QStringList &arguments, QString *errorMessage)
 {
     IntegratingSphereController *widget = new IntegratingSphereController("Integrating Sphere");
-    //ReticleWidget *widgetReticle = new ReticleWidget("Reticle");
-    ReticleWidget2D* widgetReticle = new ReticleWidget2D("Motion2D Reticle");
+    ReticleWidget *widgetReticle = new ReticleWidget("Reticle");
     IntegratingSphere::IntegratingSphere4Recipe::getInstance();
     Reticle::Reticle4Recipe::getInstance();
     IntegratingsphereWrapper *wrapper = new IntegratingsphereWrapper(this);

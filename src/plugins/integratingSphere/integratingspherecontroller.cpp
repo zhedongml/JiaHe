@@ -25,6 +25,7 @@ IntegratingSphereController::IntegratingSphereController(QString toolboxName, QW
 
 	ui.label_status->setWordWrap(true);
     connect(isTcpModel, SIGNAL(connectStatus(bool, QString)), this, SLOT(connectStatus(bool, QString)));
+	connect(isTcpModel, SIGNAL(shutterStatus(bool, QString)), this, SLOT(updateShutterStatus(bool, QString)));
 
 	init();
 }
@@ -124,7 +125,7 @@ void IntegratingSphereController::on_btn_currentSet_clicked()
     map["R"] = ui.doubleSpinBox_currentR->value();
     map["G"] = ui.doubleSpinBox_currentG->value();
     map["B"] = ui.doubleSpinBox_currentB->value();
-    Result ret = isTcpModel->setCurrentOutput(map);
+    Result ret = isTcpModel->setCurrentOutput(map,false);
     if (!ret.success)
     {
         QMessageBox::critical(this, "Error", QString::fromStdString(ret.errorMsg), QMessageBox::Ok,
@@ -135,6 +136,71 @@ void IntegratingSphereController::on_btn_currentSet_clicked()
 void IntegratingSphereController::on_btn_refresh_clicked()
 {
 	refreshData(0, 0, 0);
+}
+
+void IntegratingSphereController::on_shutterR_clicked()
+{
+	Result res = isTcpModel->setShutterTurn("R", ui.shutterR->isChecked());
+	if (!res.success)
+	{
+		QMessageBox::critical(
+			this,
+			tr("Lamp Error"),
+			QString::fromStdString(res.errorMsg)
+		);
+	}
+}
+
+void IntegratingSphereController::on_shutterG_clicked()
+{
+	Result res = isTcpModel->setShutterTurn("G", ui.shutterG->isChecked());
+	if (!res.success)
+	{
+		QMessageBox::critical(
+			this,
+			tr("Lamp Error"),
+			QString::fromStdString(res.errorMsg)
+		);
+	}
+}
+
+void IntegratingSphereController::on_shutterB_clicked()
+{
+	Result res = isTcpModel->setShutterTurn("B", ui.shutterB->isChecked());
+	if (!res.success)
+	{
+		QMessageBox::critical(
+			this,
+			tr("Lamp Error"),
+			QString::fromStdString(res.errorMsg)
+		);
+	}
+}
+
+void IntegratingSphereController::on_enable_clicked()
+{
+	Result res = isTcpModel->setDeviceEnable(true);
+	if (!res.success)
+	{
+		QMessageBox::critical(
+			this,
+			tr("Enable Error"),
+			QString::fromStdString(res.errorMsg)
+		);
+	}
+}
+
+void IntegratingSphereController::on_unenable_clicked()
+{
+	Result res = isTcpModel->setDeviceEnable(false);
+	if (!res.success)
+	{
+		QMessageBox::critical(
+			this,
+			tr("Enable Error"),
+			QString::fromStdString(res.errorMsg)
+		);
+	}
 }
 
 void IntegratingSphereController::GetColorCurrentToUI()
@@ -196,6 +262,28 @@ void IntegratingSphereController::connectStatus(bool status, QString msg)
     }
 }
 
+void IntegratingSphereController::updateShutterStatus(bool isOn, QString color)
+{
+	if (color == "R")
+	{
+		ui.shutterR->setChecked(isOn);
+	}
+	else if (color == "G")
+	{
+		ui.shutterG->setChecked(isOn);
+	}
+	else if (color == "B")
+	{
+		ui.shutterB->setChecked(isOn);
+	}
+	else if (color == "W")
+	{
+		ui.shutterR->setChecked(isOn);
+		ui.shutterG->setChecked(isOn);
+		ui.shutterB->setChecked(isOn);
+	}
+}
+
 void IntegratingSphereController::init()
 {
 	ui.groupBox_luminanceControl->hide();
@@ -235,22 +323,19 @@ void IntegratingSphereController::refreshData(float currentR, float currentG, fl
 	currentR > 0.000001 ? count++ : count;
 	currentG > 0.000001 ? count++ : count;
 	currentB > 0.000001 ? count++ : count;
-	Color color=W;
 
 	if (count == 0) {
 		ui.label_luminance->setText("0");
 	}
-	else if (count > 1) {
-		ui.label_luminance->setText("---");
-	}
+	//else if (count > 1) {
+	//	ui.label_luminance->setText("---");
+	//}
 	else {
-		if (currentR > 0.000001) color = Color::R;
-		if (currentG > 0.000001) color = Color::G;
-		if (currentB > 0.000001) color = Color::B;
 		float lumIS;
-		Result ret = IntegratingSphereTCPModel::getInstance()->getLuminance(lumIS,color);
+		Result ret = IntegratingSphereTCPModel::getInstance()->getLuminance(lumIS);
 		if (!ret.success) {
-			LoggingWrapper::instance()->error("Interface displays incorrect labsphere luminance, " + QString::fromStdString(ret.errorMsg));
+			ui.label_luminance->setText("---");
+			// LoggingWrapper::instance()->error("Interface displays incorrect labsphere luminance, " + QString::fromStdString(ret.errorMsg));
 			return;
 		}
 		ui.label_luminance->setText(QString::number(lumIS, 'f', 3));

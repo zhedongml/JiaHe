@@ -11,6 +11,7 @@ DUTMotionWidget::DUTMotionWidget(QString toolBoxName, QWidget *parent) : IToolBo
 {
     ui.setupUi(this);
     init();
+    ui.groupBox_5->hide();
 }
 
 DUTMotionWidget::~DUTMotionWidget()

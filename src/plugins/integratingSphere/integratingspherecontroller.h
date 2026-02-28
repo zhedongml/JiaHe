@@ -21,11 +21,17 @@ private slots:
 	void on_comboBox_colorSelect_activated(const QString &text);
     void on_btn_currentSet_clicked();
 	void on_btn_refresh_clicked();
+	void on_shutterR_clicked();
+	void on_shutterG_clicked();
+	void on_shutterB_clicked();
+	void on_enable_clicked();
+	void on_unenable_clicked();
 
 	void GetColorCurrentToUI();
 
 	void threadFinishedConnect();
     void connectStatus(bool status, QString msg);
+	void updateShutterStatus(bool isOn, QString color);
     void refreshData(float currentR, float currentG, float currentB);
 
 private:

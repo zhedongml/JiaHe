@@ -28,6 +28,7 @@ typedef lsapi_HandleT lsapi_SpectrumHandleT;                ///< A handle to a S
 typedef lsapi_HandleT lsapi_ScalarTransientHandleT;         ///< A handle to a Scalar Transient [scan].
 
 #define lsapi_TEXTBUF_SIZE                  1024            ///< Size of various text buffers used in the API
+#define lsapi_LAMPBUF_SIZE                  4096            ///< Size of buffer used to import lamp files. (used in lsapi Labview wrapper)
 #define lsapi_INVALID_HANDLE_VALUE             0            ///< Value for an invalid API handle
 
 typedef enum    ///< Defines the values returned by the Labsphere API
@@ -190,7 +191,7 @@ typedef enum
     lsapi_ApiCall_Scan_Control,                     ///< When combined with one of the ::lsapi_scan_CtlFcnT values, this controls a scan. Used with ::lsapi_ApiCall_Scan_ControlHdr
     
     // Calibration
-    lsapi_ApiCall_Calibration,                      ///< When combined with one of the ::lsapi_calibration_FunctionT values, this manages calibrations. Used with ::lsapi_ApiCall_Api_CalibrationHdr
+    lsapi_ApiCall_Calibration,                      ///< When combined with one of the ::lsapi_calibration_FunctionT values, this manages calibrations. Used with ::lsapi_ApiCall_Calibration_FunctionHdr
  
     // Spectrum Analysis
     lsapi_ApiCall_Spectrum,                         ///< When combined with one of the ::lsapi_Spectrum_FunctionT values, this manages Spectrum objects. Used with ::lsapi_ApiCall_Spectrum_FunctionHdr
@@ -293,6 +294,8 @@ typedef unsigned long lsapi_device_powermeter_FeatureFlagsT;                    
 typedef unsigned long lsapi_device_multimeter_FeatureFlagsT;                    ///< A bitmask of features supported by a Multimeter.
 //Photometry Module
 typedef unsigned long lsapi_device_photometrymodule_FeatureFlagsT;              ///< A bitmask of features supported by a Photometry Module.
+//Detector
+typedef unsigned long lsapi_device_detector_FeatureFlagsT;						///< A bitmask of features supported by a Detector.
 
 //===========================================================================================
 //===========================================================================================
@@ -301,12 +304,10 @@ typedef unsigned long lsapi_device_photometrymodule_FeatureFlagsT;              
 
 #define lsapi_device_MAX_STRINGLENGTH            128        ///< Maximum string length used in the Device API's various structures.
 
-typedef unsigned __int64 lsapi_device_TypeT;
+typedef unsigned __int64 lsapi_device_TypeT;                ///< indicates what specific type/model a particular device is.
 
 const lsapi_device_TypeT lsapi_device_Type_None                = 0;           ///< Value to indicate the absence of any particular device type
 
-// Note that these defs are only coincidentally grouped by device type and mfr.
-// Nothing should be inferred from the position of a device's bit in the mask.
 const lsapi_device_TypeT lsapi_device_Type_CDS600              = 0x0000000000000001;    ///< A CDS600 Spectrometer
 const lsapi_device_TypeT lsapi_device_Type_CDS610              = 0x0000000000000002;    ///< A CDS610 Spectrometer
 const lsapi_device_TypeT lsapi_device_Type_CDS1100             = 0x0000000000000004;    ///< A CDS1100 Spectrometer
@@ -317,13 +318,22 @@ const lsapi_device_TypeT lsapi_device_Type_CDS3020             = 0x0000000000000
 const lsapi_device_TypeT lsapi_device_Type_CDS3030             = 0x0000000000000080;    ///< A CDS3030 Spectrometer
 const lsapi_device_TypeT lsapi_device_Type_SMS500              = 0x0000000000000100;    ///< An SMS500 Spectrometer
 const lsapi_device_TypeT lsapi_device_Type_SMS510              = 0x0000000000000200;    ///< An SMS510 Spectrometer
+const lsapi_device_TypeT lsapi_device_Type_ILT960UVLS          = 0x0000000000000201;    ///< An ILT960 low straylight UV Spectrometer
+const lsapi_device_TypeT lsapi_device_Type_ILT960UV            = 0x0000000000000202;    ///< An ILT960 UV Spectrometer
+const lsapi_device_TypeT lsapi_device_Type_ILT960VIS           = 0x0000000000000203;    ///< An ILT960 UV-VIS Spectrometer
+const lsapi_device_TypeT lsapi_device_Type_ILT960BB            = 0x0000000000000204;    ///< An ILT960 broadband Spectrometer
+const lsapi_device_TypeT lsapi_device_Type_ILT960NIR           = 0x0000000000000205;    ///< An ILT960 NIR Spectrometer
 const lsapi_device_TypeT lsapi_device_Type_Keithley2400        = 0x0000000000000400;    ///< A Keithley 2400 Power Supply
+const lsapi_device_TypeT lsapi_device_Type_Keithley2401        = 0x0000000000000401;    ///< A Keithley 2401 Power Supply
 const lsapi_device_TypeT lsapi_device_Type_Keithley2410        = 0x0000000000000800;    ///< A Keithley 2410 Power Supply
 const lsapi_device_TypeT lsapi_device_Type_Keithley2420        = 0x0000000000001000;    ///< A Keithley 2420 Power Supply
 const lsapi_device_TypeT lsapi_device_Type_Keithley2425        = 0x0000000000002000;    ///< A Keithley 2425 Power Supply
 const lsapi_device_TypeT lsapi_device_Type_Keithley2440        = 0x0000000000004000;    ///< A Keithley 2440 Power Supply
 const lsapi_device_TypeT lsapi_device_Type_Keithley6485        = 0x0000000000004001;    ///< A Keithley 6485 Picoammeter, used to read a detector
 const lsapi_device_TypeT lsapi_device_Type_Keithley6514        = 0x0000000000004002;    ///< A Keithley 6514 Electrometer, used to read a detector
+const lsapi_device_TypeT lsapi_device_Type_Keithley2460        = 0x0000000000004003;    ///< A Keithley 2460 Power Supply
+const lsapi_device_TypeT lsapi_device_Type_Keithley2461        = 0x0000000000004004;    ///< A Keithley 2461 Power Supply
+const lsapi_device_TypeT lsapi_device_Type_Keithley2602        = 0x0000000000004005;    ///< A Keithley 2602B 2-channel Power Supply
 const lsapi_device_TypeT lsapi_device_Type_AgilentE3632A       = 0x0000000000008000;    ///< An Agilent E3632A Power Supply
 const lsapi_device_TypeT lsapi_device_Type_AgilentE3633A       = 0x0000000000010000;    ///< An Agilent E3633A Power Supply
 const lsapi_device_TypeT lsapi_device_Type_AgilentE3634A       = 0x0000000000020000;    ///< An Agilent E3634A Power Supply
@@ -334,6 +344,9 @@ const lsapi_device_TypeT lsapi_device_Type_Arroyo585           = 0x0000000000080
 const lsapi_device_TypeT lsapi_device_Type_Arroyo5300          = 0x0000000000080002;    ///< An Arroyo 5300 Thermo-electric cooler
 const lsapi_device_TypeT lsapi_device_Type_Arroyo485           = 0x0000000000080003;    ///< An Arroyo 485 LaserPak power supply
 const lsapi_device_TypeT lsapi_device_Type_LairdTEC            = 0x0000000000080004;    ///< A Laird Thermo-electric cooler
+const lsapi_device_TypeT lsapi_device_Type_Arroyo586           = 0x0000000000080005;    ///< An Arroyo 586 TECPak
+const lsapi_device_TypeT lsapi_device_Type_Arroyo5240          = 0x0000000000080006;    ///< An Arroyo 5240 Thermo-electric cooler
+const lsapi_device_TypeT lsapi_device_Type_MeerstetterTEC      = 0x0000000000080007;    ///< A Meerstetter Thermo-electric cooler
 const lsapi_device_TypeT lsapi_device_Type_ArroyoRC1           = 0x0000000000100000;    ///< An Arroyo RC-1 Relay Controller
 const lsapi_device_TypeT lsapi_device_Type_Chroma61603         = 0x0000000000200000;    ///< A Chroma61603 AC Power Supply
 const lsapi_device_TypeT lsapi_device_Type_Chroma61604         = 0x0000000000200001;    ///< A Chroma61604 AC Power Supply
@@ -344,7 +357,9 @@ const lsapi_device_TypeT lsapi_device_Type_MaynuoM8811         = 0x0000000002000
 const lsapi_device_TypeT lsapi_device_Type_TDKLambda_GEN40_19  = 0x0000000004000000;    ///< A TDK-Lambda GEN40-19 DC Power Supply
 const lsapi_device_TypeT lsapi_device_Type_TDKLambda_GEN150_10 = 0x0000000008000000;    ///< A TDK-Lambda GEN150-10 DC Power Supply
 const lsapi_device_TypeT lsapi_device_Type_TDKLambda_ZSeries   = 0x0000000008000001;    ///< A TDK-Lambda Z Series DC Power Supply
+const lsapi_device_TypeT lsapi_device_Type_TDKLambda_GenPlus   = 0x0000000008000002;    ///< A TDK-Lambda GeneSys+ Series DC Power Supply
 const lsapi_device_TypeT lsapi_device_Type_Keithley2000        = 0x0000000010000000;    ///< A Keithley 2000 MultiMeter
+const lsapi_device_TypeT lsapi_device_Type_KeithleyDMM6500     = 0x0000000010000001;    ///< A Keithley DMM6500 Digital MultiMeter
 const lsapi_device_TypeT lsapi_device_Type_Quadtech31015       = 0x0000000020000000;    ///< A Quadtech 31015 AC power supply, which is identical to a Chroma61603
 const lsapi_device_TypeT lsapi_device_Type_ParwaAPS6000        = 0x0000000040000000;    ///< A Parwa APS6000 AC power supply, 
 const lsapi_device_TypeT lsapi_device_Type_Keithley2430        = 0x0000000080000000;    ///< A Keithley 2430 Power Supply
@@ -363,8 +378,12 @@ const lsapi_device_TypeT lsapi_device_Type_YokogawaWT310       = 0x0000020000000
 const lsapi_device_TypeT lsapi_device_Type_YokogawaWT3000      = 0x0000020000000001;    ///< A Yokogawa WT3000 AC Power Meter
 const lsapi_device_TypeT lsapi_device_Type_Agilent6811B        = 0x0000040000000000;    ///< An Agilent 6811B AC Power Supply
 const lsapi_device_TypeT lsapi_device_Type_Agilent6812B        = 0x0000080000000000;    ///< An Agilent 6812B AC Power Supply
+const lsapi_device_TypeT lsapi_device_Type_BKP9801             = 0x0000080000000001;    ///< A BK Precision 9801 AC Power Supply
 const lsapi_device_TypeT lsapi_device_Type_CAS140              = 0x0000100000000000;    ///< An InstrumentSystems CAS140B/CT-PCI spectrometer
 const lsapi_device_TypeT lsapi_device_Type_SMS500ULS           = 0x0000200000000000;    ///< An SMS500ULS Spectrometer
+const lsapi_device_TypeT lsapi_device_Type_CDS800              = 0x0000200000000001;    ///< A CDS-800 Spectrometer
+const lsapi_device_TypeT lsapi_device_Type_AvaSpecMini         = 0x0000200000000002;    ///< An AvaSpec-Mini Spectrometer from Avantes
+const lsapi_device_TypeT lsapi_device_Type_AvaSpecEvo          = 0x0000200000000003;    ///< An AvaSpec-EVO Spectrometer from Avantes
 const lsapi_device_TypeT lsapi_device_Type_Chroma61601         = 0x0000400000000000;    ///< A Chroma61601 AC Power Supply
 const lsapi_device_TypeT lsapi_device_Type_LabsphereAS82       = 0x0000800000000000;    ///< A Labsphere AS-82 Module
 const lsapi_device_TypeT lsapi_device_Type_Chroma61605         = 0x0001000000000000;    ///< A Chroma61605 AC Power Supply
@@ -373,8 +392,11 @@ const lsapi_device_TypeT lsapi_device_Type_CDS2400             = 0x0002000000000
 const lsapi_device_TypeT lsapi_device_Type_QEProGeneric        = 0x0002000000000002;    ///< A QEProGeneric Spectrometer
 const lsapi_device_TypeT lsapi_device_Type_NIRQuest512         = 0x0002000000000003;    ///< An OceanOptics NIRQuest512 Spectrometer (512 pixels)
 const lsapi_device_TypeT lsapi_device_Type_FlameNIR128         = 0x0002000000000004;    ///< An Ocean Insight FlameNIR Spectrometer (128 pixels)
+const lsapi_device_TypeT lsapi_device_Type_CDS2600UV           = 0x0002000000000005;    ///< A CDS2600-UV Spectrometer
+const lsapi_device_TypeT lsapi_device_Type_NIRQuest512_22      = 0x0002000000000006;    ///< An OceanOptics NIRQuest512-2.2 Spectrometer (512 pixels)
 const lsapi_device_TypeT lsapi_device_Type_GentecIntegraSiLo   = 0x0004000000000000;    ///< A Gentec Integra low level silicon detector
 const lsapi_device_TypeT lsapi_device_Type_GentecIntegraSiHi   = 0x0008000000000000;    ///< A Gentec Integra high level silicon detector
+const lsapi_device_TypeT lsapi_device_Type_GentecIntegraSiUV   = 0x0008000000000001;    ///< A Gentec Integra UV silicon detector
 const lsapi_device_TypeT lsapi_device_Type_TDKLambda_GEN100_7_5= 0x0010000000000000;    ///< A TDK-Lambda GEN100-7.5 DC Power Supply
 const lsapi_device_TypeT lsapi_device_Type_TDKLambda_GEN30_25  = 0x0010000000000001;    ///< A TDK-Lambda GEN30-25 DC Power Supply
 const lsapi_device_TypeT lsapi_device_Type_TDKLambda_GEN150_5  = 0x0010000000000002;    ///< A TDK-Lambda GEN150-5 DC Power Supply
@@ -398,10 +420,14 @@ const lsapi_device_TypeT lsapi_device_Type_CSZ_CP              = 0x0800000000000
 const lsapi_device_TypeT lsapi_device_Type_LabsphereATS        = 0x0800000000000002;    ///< An LED driver board, used in CCS units
 const lsapi_device_TypeT lsapi_device_Type_LabsphereHFS        = 0x0800000000000003;    ///< An automated filter slide used in HELIOS
 const lsapi_device_TypeT lsapi_device_Type_LabsphereLPS        = 0x0800000000000004;    ///< Labsphere Power Supply
+const lsapi_device_TypeT lsapi_device_Type_NumatoRelay_Lamp    = 0x0800000000000005;    ///< A Lamp connected to a Numato relay module
+const lsapi_device_TypeT lsapi_device_Type_VektrexSSM          = 0x0800000000000006;    ///< Vektrex SpikeSafe MiniPower Supply
+const lsapi_device_TypeT lsapi_device_Type_LabsphereMultiLPS   = 0x0800000000000007;    ///< Labsphere multi-channel Power Supply, typically for Blue Sun systems
 
 
 //============================================================
 // Commands for lsapi_ApiCall_Device_ControlDevice
+/*! Indicates the general catagory a particular device falls into, and thus how it is used  */
 typedef enum
 {
     lsapi_device_DeviceClass_Generic            = 0,    // Special value, analog of OLD 'lsapi_CmdClass_Device'. NOTE: To Catalog all Devices, use "CatalogDeviceClass" with 'ClassToFind = lsapi_device_DeviceClass_Generic' 
@@ -492,16 +518,21 @@ typedef enum
 
 //===========================================================================================
 // Device Cataloging option flags
-#define lsapi_device_CatalogOption_Supported                ((lsapi_device_CatalogOptionsT)0x00000001)    ///< Specify this flag (bitwise OR) to have Device catalogs return a list of Supported devices.
-#define lsapi_device_CatalogOption_Connectable              ((lsapi_device_CatalogOptionsT)0x00000002)    ///< Specify this flag (bitwise OR) to have Device catalogs return a list of Connectable devices.
+#define lsapi_device_CatalogOption_Supported                ((lsapi_device_CatalogOptionsT)0x00000001)  ///< Specify this flag (bitwise OR) to have Device catalogs return a list of Supported devices.
+#define lsapi_device_CatalogOption_Connectable              ((lsapi_device_CatalogOptionsT)0x00000002)  ///< Specify this flag (bitwise OR) to have Device catalogs return a list of Connectable devices.
 
 /** \def lsapi_device_CatalogOption_ForceRefresh
-Specify this flag (bitwise OR) to force a the Device catalog refresh. \n
+Specify this flag (bitwise OR) to force the Device catalog to refresh. \n
 Because cataloging devices can be slow (depending upon their connection methods), the API caches its internal master list of connected devices. \n
 This is suitable for most cataloging operations, but there are times (for example when a new USB device has been attached) when you explicity want to refresh the master list. \n
 Specifying this flag will cause the the master list to be completely refreshed (and you incur the delay inherent in such a refresh).
 */
 #define lsapi_device_CatalogOption_ForceRefresh             ((lsapi_device_CatalogOptionsT)0x00000004)
+/** \def lsapi_device_CatalogOption_ClearComPortCache
+Specify this flag (bitwise OR) to clear the api's cache file of what device was last seen on each serial port number. \n
+Keeping this cache causes cataloging to complete much faster as the api doesn't need to check each port for several different device types. \n
+This flag is mostly only used during development to test how cataloging will behave the first time a customer uses it.
+*/
 #define lsapi_device_CatalogOption_ClearComPortCache        ((lsapi_device_CatalogOptionsT)0x00000008)
 
 //===========================================================================================
@@ -585,6 +616,10 @@ typedef enum
 #define lsapi_device_powersupply_FeatureFlag_ACDC                      ((lsapi_device_powersupply_FeatureFlagsT)0x00000080)    ///< Power Supply supports switching between AC and DC modes
 #define lsapi_device_powersupply_FeatureFlag_Inhibit                   ((lsapi_device_powersupply_FeatureFlagsT)0x00000100)    ///< Power Supply supports setting an inhibit line
 #define lsapi_device_powersupply_FeatureFlag_RampRate                  ((lsapi_device_powersupply_FeatureFlagsT)0x00000200)    ///< Power Supply supports setting the ramp rate for voltage and current
+#define lsapi_device_powersupply_FeatureFlag_ReverseBias               ((lsapi_device_powersupply_FeatureFlagsT)0x00000400)    ///< Power Supply supports setting negative values for voltage and current
+#define lsapi_device_powersupply_FeatureFlag_Pulsing                   ((lsapi_device_powersupply_FeatureFlagsT)0x00000800)    ///< Power Supply supports pulsing
+#define lsapi_device_powersupply_FeatureFlag_MultiChannel              ((lsapi_device_powersupply_FeatureFlagsT)0x00001000)    ///< Power Supply has multiple output channels
+#define lsapi_device_powersupply_FeatureFlag_SourceModes               ((lsapi_device_powersupply_FeatureFlagsT)0x00002000)    ///< Power Supply has separate source modes for voltage and current
 
 /*! Values that you can get/set to/from a Power Supply. \n Passed as the Item member of ::lsapi_device_Control_PowerSupply_Item in a ::lsapi_ApiCall_Device_ControlDevice call. */
 typedef enum
@@ -607,6 +642,11 @@ typedef enum
     lsapi_device_powersupply_Item_VoltageRampRate,             ///< Set the rate at which the voltage ramps up when the output is turned on. \n Only valid for power supplies with lsapi_device_powersupply_FeatureFlag_RampRate
     lsapi_device_powersupply_Item_CurrentRampRate,             ///< Set the rate at which the current ramps up when the output is turned on. \n Only valid for power supplies with lsapi_device_powersupply_FeatureFlag_RampRate
     lsapi_device_powersupply_Item_IsLocked,                    ///< Read Only.  True if the powersupply is locked, and will not allow settings to be changed other than turning output on/off
+    lsapi_device_powersupply_Item_StartPulsing,                ///< Set the power supply to ouput a continuous train of pulses. \n Only valid for power supplies with lsapi_device_powersupply_FeatureFlag_Pulsing
+    lsapi_device_powersupply_Item_PulseTriggerMeasure,         ///< Perform a Soak/Trigger/Measure sequence, but with pulsed output \n Pass a pointer to a lsapi_device_powersupply_Item_PulseTriggerMeasure_Value as 'Value'
+    lsapi_device_powersupply_Item_OutputChannel,               ///< Get/Set the current output channel of a multichannel powersupply.  All commands will operate on that channel until OutputChannel is changed again. \n Only valid for power supplies with lsapi_device_powersupply_FeatureFlag_MultiChannel
+    lsapi_device_powersupply_Item_ChannelMaxVolts,             ///< Get the maximum volts for the current output channel of a multichannel power supply.
+    lsapi_device_powersupply_Item_ChannelMaxAmps               ///< Get the maximum amps for the current output channel of a multichannel power supply.
 
 } lsapi_device_powersupply_ItemT;
 
@@ -638,7 +678,7 @@ typedef enum
 // Temperature Controller stuff
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-// No lsapi_tempcontroller_FeatureFlag_* currently defined
+#define lsapi_device_tempcontroller_FeatureFlag_OutputPower		((lsapi_device_tempcontroller_FeatureFlagsT)0x00000001)    ///< Temperature Controller can read output voltage and current. \n Used in the Attributes.TempController member of ::lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params. \n Retrieved via ::lsapi_device_Control_Generic_GetDeviceInfo
 
 /*! Values that you can get/set to/from a Temperature Controller. \n Passed as the Item member of ::lsapi_device_Control_TempController_Item in a ::lsapi_ApiCall_Device_ControlDevice call. */
 typedef enum
@@ -647,6 +687,9 @@ typedef enum
     lsapi_device_tempcontroller_Item_OutputEnabled,    ///< Enable/disable the temperature controller's output.
     lsapi_device_tempcontroller_Item_SetpointTemp,     ///< Get/Set the temperature controller's setpoint temperature.
     lsapi_device_tempcontroller_Item_MeasuredTemp,     ///< Read the temperature controller's measured temperature.
+	lsapi_device_tempcontroller_Item_OutputVoltage,    ///< Read the temperature controller's output voltage.
+	lsapi_device_tempcontroller_Item_OutputCurrent,    ///< Read the temperature controller's output current.
+	lsapi_device_tempcontroller_Item_Channel,          ///< Get/Set the temperature controller's channel.  All subsequent commands will be directed to that channel.
 } lsapi_device_tempcontroller_ItemT;
 
 
@@ -716,7 +759,7 @@ const lsapi_device_powermeter_GetACDataFlagsT lsapi_device_powermeter_GetACData_
 const lsapi_device_powermeter_GetACDataFlagsT lsapi_device_powermeter_GetACData_Frequency   = 0x00000008;       ///< Request PowerMeter to return Frequency via ::lsapi_device_powermeter_Item_GetACData. \n Used in the RequestedFields member of ::lsapi_device_powermeter_Item_GetACData_Value.
 const lsapi_device_powermeter_GetACDataFlagsT lsapi_device_powermeter_GetACData_Powerfactor = 0x00000010;       ///< Request PowerMeter to return Powerfactor via ::lsapi_device_powermeter_Item_GetACData. \n Used in the RequestedFields member of ::lsapi_device_powermeter_Item_GetACData_Value.
 const lsapi_device_powermeter_GetACDataFlagsT lsapi_device_powermeter_GetACData_THD			= 0x00000020;       ///< Request PowerMeter to return THD via ::lsapi_device_powermeter_Item_GetACData. \n Used in the RequestedFields member of ::lsapi_device_powermeter_Item_GetACData_Value.
-const lsapi_device_powermeter_GetACDataFlagsT lsapi_device_powermeter_GetACData_All         = (lsapi_device_powermeter_GetACData_Voltage | lsapi_device_powermeter_GetACData_Current | lsapi_device_powermeter_GetACData_Power | lsapi_device_powermeter_GetACData_Frequency | lsapi_device_powermeter_GetACData_Powerfactor | lsapi_device_powermeter_GetACData_THD);
+const lsapi_device_powermeter_GetACDataFlagsT lsapi_device_powermeter_GetACData_All         = (lsapi_device_powermeter_GetACData_Voltage | lsapi_device_powermeter_GetACData_Current | lsapi_device_powermeter_GetACData_Power | lsapi_device_powermeter_GetACData_Frequency | lsapi_device_powermeter_GetACData_Powerfactor | lsapi_device_powermeter_GetACData_THD);///< Request PowerMeter to return all available data via ::lsapi_device_powermeter_Item_GetACData. \n Used in the RequestedFields member of ::lsapi_device_powermeter_Item_GetACData_Value.
 
 typedef struct lsapi_device_powermeter_Item_GetACData_Value  ///< Struct to be passed as the "Value" param to ::lsapi_device_powermeter_Item_GetACData
 {
@@ -738,6 +781,9 @@ typedef struct lsapi_device_powermeter_Item_GetACData_Value  ///< Struct to be p
 
 #define lsapi_device_multimeter_FeatureFlag_RearTerminals           ((lsapi_device_multimeter_FeatureFlagsT)0x00000001)    ///< Multimeter has front/rear terminals. \n Used in the Attributes.Multimeter member of ::lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params. \n Retrieved via ::lsapi_device_Control_Generic_GetDeviceInfo
 #define lsapi_device_multimeter_FeatureFlag_RangeVDC                ((lsapi_device_multimeter_FeatureFlagsT)0x00000002)    ///< Multimeter has multiple voltage ranges. \n Used in the Attributes.Multimeter member of ::lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params. \n Retrieved via ::lsapi_device_Control_Generic_GetDeviceInfo
+#define lsapi_device_multimeter_FeatureFlag_Current                 ((lsapi_device_multimeter_FeatureFlagsT)0x00000004)    ///< Multimeter can measure DC current. \n Used in the Attributes.Multimeter member of ::lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params. \n Retrieved via ::lsapi_device_Control_Generic_GetDeviceInfo
+#define lsapi_device_multimeter_FeatureFlag_RangeIDC                ((lsapi_device_multimeter_FeatureFlagsT)0x00000008)    ///< Multimeter has multiple current ranges. \n Used in the Attributes.Multimeter member of ::lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params. \n Retrieved via ::lsapi_device_Control_Generic_GetDeviceInfo
+#define lsapi_device_multimeter_FeatureFlag_Trigger                 ((lsapi_device_multimeter_FeatureFlagsT)0x00000010)    ///< Multimeter can accept an external trigger. \n Used in the Attributes.Multimeter member of ::lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params. \n Retrieved via ::lsapi_device_Control_Generic_GetDeviceInfo
 
 /*! Values that you can get from a Multimeter. \n Passed as the Item member of ::lsapi_device_Control_MultiMeter_Item in a ::lsapi_ApiCall_Device_ControlDevice call. */
 typedef enum
@@ -747,6 +793,14 @@ typedef enum
     lsapi_device_multimeter_Item_ManualRangeVDC,                ///< Get/Set the multimeter's DC voltage range. \n Set to the voltage you expect to measure, then Get the multimeter's resulting range.
     lsapi_device_multimeter_Item_UseAutoRangeVDC,               ///< Get/Set whether the multimeter should auto-range for DC voltage measurements.
     lsapi_device_multimeter_Item_UseRearTerminals,              ///< Get/Set the multimeter's usage of front or rear terminals. \n Only valid for multimeters that have multiple terminal sets.
+    lsapi_device_multimeter_Item_CurrentDC,                     ///< Read the multimeter's measured DC current, in Amps
+    lsapi_device_multimeter_Item_ManualRangeIDC,                ///< Get/Set the multimeter's DC current range. \n Set to the current you expect to measure, then Get the multimeter's resulting range.
+    lsapi_device_multimeter_Item_UseAutoRangeIDC,               ///< Get/Set whether the multimeter should auto-range for DC current measurements.
+    lsapi_device_multimeter_Item_PrepTrigVDC,                   ///< Prepare the multimeter for a triggered DC voltage reading, with an optional ms delay after receiving trigger.  Obtain reading with lsapi_device_multimeter_Item_VoltageDC once completed.
+    lsapi_device_multimeter_Item_PrepTrigIDC,                   ///< Prepare the multimeter for a triggered DC current reading, with an optional ms delay after receiving trigger.  Obtain reading with lsapi_device_multimeter_Item_CurrentDC once completed.
+    lsapi_device_multimeter_Item_AbortTrig,                     ///< Abort a triggered reading.
+    lsapi_device_multimeter_Item_Averaging,                     ///< Get/Set the number of readings to use in a repeating average.  Set 1 to turn averaging off.
+    lsapi_device_multimeter_Item_MeasAperture,                  ///< Get/Set the measurement aperture for the device in ms.  Higher values reduce noise but increase measurement time.
 } lsapi_device_multimeter_ItemT;
 
 //===========================================================================================
@@ -756,6 +810,7 @@ typedef enum
 #define lsapi_device_tempmonitor_FeatureFlag_FCompliant           ((lsapi_device_multimeter_FeatureFlagsT)0x00000001)    ///< Temperature Monitor reads F¡ãvalues. \n Used in the Attributes.Multimeter member of ::lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params. \n Retrieved via ::lsapi_device_Control_Generic_GetDeviceInfo
 #define lsapi_device_tempmonitor_FeatureFlag_CCompliant           ((lsapi_device_multimeter_FeatureFlagsT)0x00000002)    ///< Temperature Monitor reads C¡ãvalues. \n Used in the Attributes.Multimeter member of ::lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params. \n Retrieved via ::lsapi_device_Control_Generic_GetDeviceInfo
 
+/*! Values that you can get from a TemperatureMonitor. \n Passed as the Item member of ::lsapi_device_Control_TempMonitor_Item in a ::lsapi_ApiCall_Device_ControlDevice call. */
 typedef enum
 {
     lsapi_device_tempmonitor_Item_Unknown = 0,                   ///< Illegal/uninitialized value
@@ -763,6 +818,7 @@ typedef enum
     lsapi_device_tempmonitor_Item_ChannelType,                   ///< Set channel type
 } lsapi_device_tempmonitor_ItemT;
 
+/*! Indicates the type of sensor connected to a TemperatureMonitor's channel. */
 typedef enum
 {
     lsapi_device_tempmonitor_ChannelType_Unknown = 0,
@@ -783,6 +839,7 @@ typedef enum
 
 #define lsapi_device_photometrymodule_FeatureFlag_LampSupply           ((lsapi_device_photometrymodule_FeatureFlagsT)0x00000001)    ///< Photometry Module has an internal lamp power supply. \n Used in the Attributes.PhotometryModule member of ::lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params. \n Retrieved via ::lsapi_device_Control_Generic_GetDeviceInfo
 
+/*! Values that you can get from a Photometry Module. \n Passed as the Item member of ::lsapi_device_Control_PhotometryModule_Item in a ::lsapi_ApiCall_Device_ControlDevice call. */
 typedef enum
 {
     lsapi_device_photometrymodule_Item_Unknown = 0,                 ///< Illegal/uninitialized value
@@ -795,7 +852,7 @@ typedef enum
     lsapi_device_photometrymodule_Item_LampPower,                   ///< Turn the Lamp Power (internal LPS) off (Value: 0=off, non-zero=on)
 } lsapi_device_photometrymodule_ItemT;
 
-typedef enum
+typedef enum                                                        ///< Value identifying a port on a photometry module
 {
     lsapi_device_photometrymodule_port_Unknown = 0,                 ///< Illegal/uninitialized value
     lsapi_device_photometrymodule_port_src_LampPower,               ///< The Lamp Power source (internal LPS) port
@@ -806,7 +863,7 @@ typedef enum
     lsapi_device_photometrymodule_port_load_4pi,                    ///< The 4 pi Cal/DUT lamp (post) load port
 } lsapi_device_photometrymodule_PortT;
 
-typedef enum
+typedef enum                                                        ///< Value identifying an LED on a photometry module
 {
     lsapi_device_photometrymodule_indicator_Unknown = 0,            ///< Illegal/uninitialized value
     lsapi_device_photometrymodule_indicator_OutputOn,               ///< The blue "Output" LED
@@ -819,9 +876,10 @@ typedef enum
 } lsapi_device_photometrymodule_IndicatorT;
 
 //==============================================================
-// ATC-82 stuff
+// LM-82 stuff
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+/*! Values that you can get from an LM-82 Controller. \n Passed as the Item member of ::lsapi_device_Control_LM82Controller_Item in a ::lsapi_ApiCall_Device_ControlDevice call. */
 typedef enum
 {
     lsapi_device_LM82_Item_Unknown = 0,                             ///< Illegal/uninitialized value
@@ -831,7 +889,7 @@ typedef enum
     lsapi_device_LM82_Item_TargetSensor,                            ///< Set the target sensor for temperature control to one of the lsapi_device_lm82controller_SensorT values
 } lsapi_device_lm82controller_ItemT;
 
-typedef enum
+typedef enum                                                        ///< Value identifying operating states of an LM82 Controller
 {
     lsapi_device_lm82_state_unknown = 0,                            ///< Illegal/uninitialized value
     lsapi_device_lm82_state_standby,                                ///< Device is in shutdown (display & TEC off)
@@ -839,7 +897,7 @@ typedef enum
     lsapi_device_lm82_state_active,                                 ///< Device is active (display & TEC on)
 } lsapi_device_lm82controller_StateT;
 
-typedef enum
+typedef enum                                                        ///< Value used to identify a particular sensor of an LM82 Controller
 {
     lsapi_device_lm82_sensor_unknown = 0,                           ///< Illegal/uninitialized value
     lsapi_device_lm82_sensor_td,                                    ///< Td
@@ -852,18 +910,23 @@ typedef enum
 // Detector stuff
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#define lsapi_device_detector_FeatureFlag_VoltageMode				((lsapi_device_detector_FeatureFlagsT)0x00000001)    ///< Detector can switch between current and voltage readings. \n Used in the Attributes.Detector member of ::lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params. \n Retrieved via ::lsapi_device_Control_Generic_GetDeviceInfo
+
+/*! Values that you can get from a Detector. \n Passed as the Item member of ::lsapi_device_Control_Detector_Item in a ::lsapi_ApiCall_Device_ControlDevice call. */
 typedef enum
 {
     lsapi_device_Detector_Item_Unknown = 0,                         ///< Illegal/uninitialized value
     lsapi_device_Detector_Item_Read,                                ///< Retrieve the detector's (averaged) reading. Get-only
     lsapi_device_Detector_Item_AveragingPeriod,                     ///< Get/Set the averaging period (seconds). Note: Set "0" to clear samples, and Read only most-recent sample (without averaging).
     lsapi_device_Detector_Item_ZeroDarkInput,                       ///< Get: Value of 1 returned if detector is "zeroed", 0 if not. Set: "zero" the detector with darkened input; Value returns estimated time (sec). \n RE Set: monitor DeviceState Busy/Idle for completion (via ::lsapi_device_Control_Generic_GetDeviceInfo).
+	lsapi_device_Detector_Item_VoltageMode,							///< Get/Set whether the detector is reading voltage instead of current. 0=current, 1=voltage. \n Only valid for detectors with lsapi_device_detector_FeatureFlag_VoltageMode.
 } lsapi_device_detector_ItemT;
 
 //==============================================================
 // VariableAttenuator stuff
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+/*! Values that you can get from a Variable Attenuator. \n Passed as the Item member of ::lsapi_device_Control_VA_Item in a ::lsapi_ApiCall_Device_ControlDevice call. */
 typedef enum
 {
     lsapi_device_VA_Item_Unknown = 0,      ///< Illegal/uninitialized value
@@ -878,6 +941,7 @@ typedef enum
 // FilterWheel stuff
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+/*! Values that you can get from a FilterWheel. \n Passed as the Item member of ::lsapi_device_Control_FW_Item in a ::lsapi_ApiCall_Device_ControlDevice call. */
 typedef enum
 {
     lsapi_device_FW_Item_Unknown = 0,      ///< Illegal/uninitialized value
@@ -971,21 +1035,20 @@ typedef struct lsapi_device_SpectrometerAttributes    ///< Spectrometer-specific
         double Min;         ///< Minimum integration time, in milliseconds
         double Max;         ///< Maximum integration time, in milliseconds
         double Increment;   ///< Integration time increment, in milliseconds
-    } IntegrationMs;
-    //ESB 10/3/2016 TODO: Rename 'lsapi_device_SpectrometerAttributes::Wavelengths::Start' => "..::First", and explain distinction between first wavelength and low end of implicit range (which will be slightly lower)
-    //ESB 10/3/2016 TODO: Rename 'lsapi_device_SpectrometerAttributes::Wavelengths::End' => "..::Last", and explain distinction between last wavelength and high end of implicit range (which will be slightly higher)
+    } IntegrationMs;        ///< Integration time Attributes
+    
     struct
     {
         int Start;          ///< The first (lowest) wavelength measured by the spectrometer.
         int End;            ///< The last (highest) wavelength measured by the spectrometer.
-    } Wavelengths;
+    } Wavelengths;          ///< Wavelength Attributes
     struct
     {
         size_t Count;                                                       ///< # of valid entries in 'Supported'
         lsapi_device_spectrometer_FilterT Supported[LSAPI_MAX_FILTERS];     ///< List of filters supported by this spectrometer.
         lsapi_device_spectrometer_FilterT Default;                          ///< The default filter for the spectrometer. May be Auto.
         lsapi_device_spectrometer_FilterT DefaultNonAuto;                   ///< The default filter for the spectrometer when Auto is NOT allowed.
-    } Filter;
+    } Filter;   ///< Filter Attributes
 } lsapi_device_SpectrometerAttributes;
 
 typedef struct lsapi_device_PowerSupplyAttributes    ///< PowerSupply-specific attributes. Used by ::lsapi_device_DeviceAttributes.
@@ -997,7 +1060,8 @@ typedef struct lsapi_device_PowerSupplyAttributes    ///< PowerSupply-specific a
     {
         double Min;         ///< The minimum AC Frequency (Hertz) supported by this power supply. Only applicable for AC power supplies that support settable frequencies.
         double Max;         ///< The maximum AC Frequency (Hertz) supported by this power supply. Only applicable for AC power supplies that support settable frequencies.
-    } ACFrequency;
+    } ACFrequency;          ///< AC Frequency Attributes
+    int NumChannels;        ///< The number of output channels of this power supply.  Only applicable for power supplies with lsapi_device_powersupply_FeatureFlag_MultiChannel.
 } lsapi_device_PowerSupplyAttributes;
 
 typedef struct lsapi_device_TempControllerAttributes    ///< TempController-specific attributes. Used by ::lsapi_device_DeviceAttributes.
@@ -1005,6 +1069,7 @@ typedef struct lsapi_device_TempControllerAttributes    ///< TempController-spec
     lsapi_device_tempcontroller_FeatureFlagsT FeatureFlags;    ///< Features supported by this temperature controller
     double MinSetpoint;     ///< Minimum setpoint supported by this temperature controller.
     double MaxSetpoint;     ///< Maximum setpoint supported by this temperature controller.
+    int NumChannels;        ///< Number of channels supported by this temperature controller.
 } lsapi_device_TempControllerAttributes;
 
 typedef struct lsapi_device_RelayControllerAttributes    ///< RelayController-specific attributes. Used by ::lsapi_device_DeviceAttributes.
@@ -1034,6 +1099,16 @@ typedef struct lsapi_device_TransientDetectorAttributes     ///< TransientDetect
     lsapi_scan_TriggerModeT TriggerModesSupported;          ///< Set of TriggerModes supported by this TransientDetector, bitwise OR'd together
 } lsapi_device_TransientDetectorAttributes;
 
+typedef struct lsapi_device_PhotometryModuleAttributes      ///< PhotometryModule-specific attributes.  Used by ::lsapi_device_DeviceAttributes.
+{
+	lsapi_device_photometrymodule_FeatureFlagsT FeatureFlags; ///< Features supported by this PhotometryModule
+} lsapi_device_PhotometryModuleAttributes;
+
+typedef struct lsapi_device_DetectorAttributes				///< Detector-specific attributes.  Used by ::lsapi_device_DeviceAttributes.
+{
+	lsapi_device_detector_FeatureFlagsT FeatureFlags; ///< Features supported by this Detector
+} lsapi_device_DetectorAttributes;
+
 typedef struct lsapi_device_LED_DriverAttributes            ///< LED_Driver-specific attributes.  Used by ::lsapi_device_DeviceAttributes.
 {
     double MaxLEDAmps;                                      ///< normal maximum current setting in amps
@@ -1042,11 +1117,6 @@ typedef struct lsapi_device_LED_DriverAttributes            ///< LED_Driver-spec
     bool calLampModeSupported;                              ///< true if board can be set to Cal Lamp Mode, which allows channel 1 to be set to a higher current.
     bool triggerModeSupported;                              ///< true if board can be set to accept an external trigger
 } lsapi_device_LED_DriverAttributes;
-
-typedef struct lsapi_device_PhotometryModuleAttributes
-{
-    lsapi_device_photometrymodule_FeatureFlagsT FeatureFlags;
-} lsapi_device_PhotometryModuleAttributes;
 
 typedef struct lsapi_device_DeviceAttributes    ///< Attributes for a selected device. \n This is a general struct intended to support all device types, so the caller must know which set of fields (Spectrometer, PowerSupply, TempController) are valid.
 {
@@ -1061,6 +1131,7 @@ typedef struct lsapi_device_DeviceAttributes    ///< Attributes for a selected d
     lsapi_device_LED_DriverAttributes LED_Driver;                   ///< This member is populated when the device is an LED Driver
     lsapi_device_TransientDetectorAttributes TransientDetector;     ///< This member is populated when the device is a TransientDetector.
     lsapi_device_PhotometryModuleAttributes PhotometryModule;       ///< This member is populated when the device is a PhotometryModule.
+	lsapi_device_DetectorAttributes Detector;						///< This member is populated when the device is a Detector.
 } lsapi_device_DeviceAttributes;
 
 typedef struct lsapi_ScanData               ///< Data read out of a scan (lsapi_scan_CtlFcn_GetData) or for reconstituting (lsapi_scan_CtlFcn_Reconstitute) a scan
@@ -1102,13 +1173,13 @@ typedef struct lsapi_spectrometer_ScanEventData    ///< Event-data sent by a sca
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-#define LSAPI_MAX_CATALOG_DEVICES        100     ///< The size of the arrays in ::lsapi_ApiCall_Device_CatalogDevices_Params.
+#define LSAPI_MAX_CATALOG_DEVICES        1000     ///< The size of the arrays in ::lsapi_ApiCall_Device_CatalogDevices_Params.
 
 typedef struct lsapi_ApiCall_Device_CatalogDevices_Params    ///< Pass to ::lsapi_ApiCall() with ApiCallHdr.ApiCall = ::lsapi_ApiCall_Device_CatalogDevices 
 {
     lsapi_ApiCallHdr ApiCallHdr;                                                ///< Init ApiCallHdr.ApiCall and ApiCallHdr.hdr.StructSize before calling ::lsapi_ApiCall()
     lsapi_device_CatalogOptionsT Options;                                       ///< In: Bitmask of ::lsapi_device_CatalogOptionsT flags
-    lsapi_device_TypeT DevicesToFind[LSAPI_MAX_CATALOG_DEVICES];                ///< In: Array of devices to be found
+    lsapi_device_TypeT DevicesToFind[LSAPI_MAX_CATALOG_DEVICES];                ///< In: Array of devices to be found (0 terminated)
     lsapi_device_DeviceInfo SupportedDeviceTypes[LSAPI_MAX_CATALOG_DEVICES];    ///< Out: An array of Supported device types. Check SupportedDeviceCount to determine how many valid entries this array contains.
     size_t SupportedDeviceCount;                                                ///< Out: The number of valid entries in SupportedDeviceTypes[]
     lsapi_device_DeviceInfo ConnectableDevices[LSAPI_MAX_CATALOG_DEVICES];      ///< Out: An array of Connectable device types. Check ConnectableDeviceCount to determine how many valid entries this array contains.
@@ -1154,7 +1225,7 @@ typedef struct lsapi_ApiCall_Device_UtilitiesHdr    ///< Pass to ::lsapi_ApiCall
 //-------------------------------
 // Structs based on lsapi_ApiCall_Device_ControlDeviceHdr
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params ///< Please see the \link dox_w32_dvc_fcns_ctrl_generic_GetDeviceInfo GetDeviceInfo\endlink for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_GetDeviceInfo_Params ///< Please see \link dox_w32_dvc_fcns_ctrl_generic_GetDeviceInfo GetDeviceInfo\endlink for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_DeviceInfo DvcInfo;                            ///< Out: The type of device & serial number associated with 'hDevice'
@@ -1173,7 +1244,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_GetDeviceState_Params ///< Ret
     wchar_t Details[lsapi_device_MAX_STRINGLENGTH];             ///< Out: Error details if DeviceState==lsapi_device_DeviceState_Error, else state details (if any)
 } lsapi_ApiCall_Device_ControlDevice_GetDeviceState_Params;
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_SetDeviceInfo_Params ///< Please see the \link dox_w32_dvc_fcns_ctrl_generic_SetDeviceInfo SetDeviceInfo\endlink for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_SetDeviceInfo_Params ///< Please see \link dox_w32_dvc_fcns_ctrl_generic_SetDeviceInfo SetDeviceInfo\endlink for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;       ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
 
@@ -1201,7 +1272,7 @@ typedef struct lsapi_device_ScanParams    ///< Defines parameters for a requeste
     unsigned long NumberOfScansToAverage;                   ///< 0 will be treated as 1, i.e. no multi-scan averaging
 } lsapi_device_ScanParams;
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_StartScan_Params ///< Please see the \link dox_w32_dvc_fcns_ctrl_sm_StartScan Start a Scan\endlink for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_StartScan_Params ///< Please see \link dox_w32_dvc_fcns_ctrl_sm_StartScan Start a Scan\endlink for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;           ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_ScanParams Params;                         ///< In: Scan parameters
@@ -1209,7 +1280,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_StartScan_Params 
     double EstimatedDurationMs;                             ///< Out: Estimated duration before scan completes, in milliseconds; 0 if unknown.
 } lsapi_ApiCall_Device_ControlDevice_Spectrometer_StartScan_Params;
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_AutoExposureSaturationLimits_Params ///< Please see the \link dox_w32_dvc_fcns_ctrl_sm_AutoExposureSaturationLimits AutoExposure Saturation Limits\endlink for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_AutoExposureSaturationLimits_Params ///< Please see \link dox_w32_dvc_fcns_ctrl_sm_AutoExposureSaturationLimits AutoExposure Saturation Limits\endlink for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;           ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     struct  
@@ -1225,7 +1296,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_AutoExposureSatur
     } Get; ///< Out, always populated
 } lsapi_ApiCall_Device_ControlDevice_Spectrometer_AutoExposureSaturationLimits_Params;           
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_TEC_Params  ///< Please see the \link dox_w32_dvc_fcns_ctrl_sm_TEC Spectrometer TEC\endlink for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_TEC_Params  ///< Please see \link dox_w32_dvc_fcns_ctrl_sm_TEC Spectrometer TEC\endlink for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     struct
@@ -1236,7 +1307,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_TEC_Params  ///< 
     double CurrentTemp;                                         ///< Out: Current measured TEC temperature. Always returned.
 } lsapi_ApiCall_Device_ControlDevice_Spectrometer_TEC_Params;
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_BaselineOffset_Params  ///< Please see the \link dox_w32_dvc_fcns_ctrl_sm_BaselineOffset Spectrometer Baseline Offset\endlink for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_BaselineOffset_Params  ///< Please see \link dox_w32_dvc_fcns_ctrl_sm_BaselineOffset Spectrometer Baseline Offset\endlink for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     bool Clear;                                                 ///< In: Setting this to <b>true</b> will clear any available data
@@ -1244,7 +1315,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_BaselineOffset_Pa
     size_t DurationMs;                                          ///< Out: Duration for performing a baseline offset scan, in milliseconds
 } lsapi_ApiCall_Device_ControlDevice_Spectrometer_BaselineOffset_Params;
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_ShutterMode_Params///< Please see the \link dox_w32_dvc_fcns_ctrl_sm_ShutterMode Spectrometer Shutter Mode\endlink for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_ShutterMode_Params///< Please see \link dox_w32_dvc_fcns_ctrl_sm_ShutterMode Spectrometer Shutter Mode\endlink for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_spectrometer_ShutterModeT RequestedMode;       ///< In: The requested shutter mode
@@ -1254,7 +1325,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_Spectrometer_ShutterMode_Param
 //*************************************************************************
 // ** POWER SUPPLY **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_PowerSupply_Item_Params ///< Please see the \ref dox_w32_dvc_ControlPwrSupp for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_PowerSupply_Item_Params ///< Please see \ref dox_w32_dvc_ControlPwrSupp for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;   ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_powersupply_ItemT Item;            ///< The item to get or set; see the ::lsapi_device_powersupply_ItemT enum for options.
@@ -1278,11 +1349,48 @@ typedef struct lsapi_device_powersupply_Item_SoakTriggerMeasure_Value  ///< Stru
     } Measured;     ///< Measured values, taken after trigger
 } lsapi_device_powersupply_Item_SoakTriggerMeasure_Value;
 
+typedef struct lsapi_device_powersupply_Item_StartPulsing_Value     ///< Struct to be passed as the "Value" param to ::lsapi_device_powersupply_Item_StartPulsing
+{
+    lsapi_StructHdr hdr;                ///< hdr.StructSize must == sizeof(lsapi_device_powersupply_Item_StartPulsing_Value)
+    bool SourceVolts;                   ///< true to source voltage, false to source current
+    double BiasLevel;                   ///< the output level between pulses. (typically 0)  Value is in Volts if SourceVolts is true, Amps if false.
+    double PulseLevel;                  ///< the output level of each pulse.  Value is in Volts if SourceVolts is true, Amps if false.
+    double PulseWidthMs;                ///< the amount of time, in milliseconds, to output PulseLevel for each pulse
+    double DutyCycle;                   ///< the ratio of on-time (when output is at PulseLevel) over off-time (when output is at BiasLevel)
+    double BiasCompliance;              ///< the compliance level between pulses.  Value is in Amps if SourceVolts is true, Volts if false.
+    double PulseCompliance;             ///< the compliance level of each pulse.  Value is in Amps if SourceVolts is true, Volts if false.
+    int LoadComp;                       ///< the load/cable compensation factor to use, if supported by the supply
+    int RiseTimeComp;                   ///< the rise time compensation factor to use, if supported by the supply
+} lsapi_device_powersupply_Item_StartPulsing_Value;
+
+typedef struct lsapi_device_powersupply_Item_PulseTriggerMeasure_Value  ///< Struct to be passed as the "Value" param to ::lsapi_device_powersupply_Item_PulseTriggerMeasure
+{
+    lsapi_StructHdr hdr;                ///< hdr.StructSize must == sizeof(lsapi_device_powersupply_Item_PulseTriggerMeasure_Value)
+    struct
+    {
+        bool SourceVolts;               ///< In: true to source voltage, false to source current
+        double BiasLevel;               ///< In: the output level between pulses. (typically 0)  Value is in Volts if SourceVolts is true, Amps if false.
+        double PulseLevel;              ///< In: the output level of each pulse.  Value is in Volts if SourceVolts is true, Amps if false.
+        double PulseWidthMs;            ///< In: the amount of time, in milliseconds, to output PulseLevel for each pulse
+        double DutyCycle;               ///< In: the ratio of on-time (when output is at PulseLevel) over off-time (when output is at BiasLevel)
+        double BiasCompliance;          ///< In: the compliance level between pulses.  Value is in Amps if SourceVolts is true, Volts if false.
+        double PulseCompliance;         ///< In: the compliance level of each pulse.  Value is in Amps if SourceVolts is true, Volts if false.
+        int LoadComp;                   ///< In: the load/cable compensation factor to use, if supported by the supply
+        int RiseTimeComp;               ///< In: the rise time compensation factor to use, if supported by the supply
+        double Ms;                      ///< In: The number of milliseconds to soak before triggering.
+    } Soak;         ///< Soak values
+    struct
+    {
+        double Volts;                   ///< Out: Measured voltage (V)
+        double Amps;                    ///< Out: Measured current (A)
+    } Measured;     ///< Measured values, taken after trigger
+} lsapi_device_powersupply_Item_PulseTriggerMeasure_Value;
+
 
 //*************************************************************************
 // ** TEC **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_TempController_Item_Params ///< Please see the \ref dox_w32_dvc_ControlTempController Temperature for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_TempController_Item_Params ///< Please see \ref dox_w32_dvc_ControlTempController for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_tempcontroller_ItemT Item;                     ///< The item to get or set; see the ::lsapi_device_tempcontroller_ItemT enum for options.
@@ -1293,7 +1401,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_TempController_Item_Params ///
 //*************************************************************************
 // ** RelayController **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_RelayController_Item_Params ///< Please see the \ref dox_w32_dvc_ControlRelayController RelayController for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_RelayController_Item_Params ///< Please see \ref dox_w32_dvc_ControlRelayController for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_relaycontroller_ItemT Item;                    ///< The item to get or set; see the ::lsapi_device_relaycontroller_ItemT enum for options.
@@ -1305,7 +1413,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_RelayController_Item_Params //
 //*************************************************************************
 // ** PowerMeter **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_PowerMeter_Item_Params ///< Please see the \ref dox_w32_dvc_ControlPowerMeter PowerMeter for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_PowerMeter_Item_Params ///< Please see \ref dox_w32_dvc_ControlPowerMeter for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_powermeter_ItemT Item;                         ///< The item to get; see the ::lsapi_device_powermeter_ItemT enum for options.
@@ -1316,7 +1424,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_PowerMeter_Item_Params ///< Pl
 //*************************************************************************
 // ** Multimeter **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_MultiMeter_Item_Params ///< Please see the \ref dox_w32_dvc_ControlMultimeter Multimeter for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_MultiMeter_Item_Params ///< Please see \ref dox_w32_dvc_ControlMultiMeter for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_multimeter_ItemT Item;                         ///< The item to get; see the ::lsapi_device_multimeter_ItemT enum for options.
@@ -1327,7 +1435,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_MultiMeter_Item_Params ///< Pl
 //*************************************************************************
 // ** Temperature Monitor **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_TempMonitor_Item_Params ///< Please see the \ref dox_w32_dvc_TempMonitor TempMonitor for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_TempMonitor_Item_Params ///< Please see \ref dox_w32_dvc_TemperatureMonitor for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_tempmonitor_ItemT Item;                        ///< The item to get; see the ::lsapi_device_tempmonitor_ItemT enum for options.
@@ -1340,7 +1448,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_TempMonitor_Item_Params ///< P
 //*************************************************************************
 // ** Photometry Module **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_PhotometryModule_Item_Params ///< Please see the \ref dox_w32_dvc_PhotometryModule PhotometryModule for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_PhotometryModule_Item_Params ///< Please see \ref dox_w32_dvc_PhotometryModule for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_photometrymodule_ItemT Item;                   ///< The item to get; see the ::lsapi_device_photometrymodule_ItemT enum for options.
@@ -1350,9 +1458,9 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_PhotometryModule_Item_Params /
 
 
 //*************************************************************************
-// ** ATC-82 **
+// ** LM-82 **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_LM82Controller_Item_Params ///< Please see the \ref dox_w32_dvc_ATC82 ATC82 for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_LM82Controller_Item_Params ///< Please see \ref dox_w32_dvc_LM82 for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_lm82controller_ItemT Item;                     ///< The item to get or set; see the ::lsapi_device_lm82controller_ItemT enum for options.
@@ -1371,7 +1479,7 @@ typedef struct lsapi_device_lm82Controller_Item_MeasureTemperature_Value  ///< S
 //*************************************************************************
 // ** Detector **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_Detector_Item_Params ///< Please see the \ref dox_w32_dvc_ControlDetector Detector for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_Detector_Item_Params ///< Please see \ref dox_w32_dvc_Detector for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_detector_ItemT Item;                           ///< The item to get; see the ::lsapi_device_detector_ItemT enum for options.
@@ -1382,7 +1490,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_Detector_Item_Params ///< Plea
 //*************************************************************************
 // ** VariableAttenuator **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_VA_Item_Params ///< Please see the \ref dox_w32_dvc_ControlVariableAttenuator VariableAttenuator for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_VA_Item_Params ///< Please see \ref dox_w32_dvc_VA for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_VA_ItemT Item;                                 ///< The item to get or set; see the ::lsapi_device_VA_ItemT enum for options.
@@ -1395,7 +1503,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_VA_Item_Params ///< Please see
 //*************************************************************************
 // ** PlasmaLamp **
 
-typedef enum
+typedef enum                                                    ///< Value for possible commands to a plasma lamp.  Used in ::lsapi_ApiCall_Device_ControlDevice_PlasmaLamp_Cmd_Params
 {
     lsapi_device_PlasmaLamp_Cmd_Unknown = 0,                    ///< Illegal/uninitialized value
     lsapi_device_PlasmaLamp_Cmd_Energize,                       ///< Energize maps to "Start"
@@ -1404,13 +1512,13 @@ typedef enum
     lsapi_device_PlasmaLamp_Cmd_DeEnergize,                     ///< DeEnergize maps to "Stop"
 } lsapi_device_PlasmaLamp_CmdT;                                 ///< Command enum, used by ::lsapi_ApiCall_Device_ControlDevice_PlasmaLamp_Cmd_Params
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_PlasmaLamp_Cmd_Params
+typedef struct lsapi_ApiCall_Device_ControlDevice_PlasmaLamp_Cmd_Params ///< Please see PlasmaLamp \ref dox_w32_dvc_plasma_command for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_PlasmaLamp_CmdT Command;                       ///< In: Command enum; see the ::lsapi_device_PlasmaLamp_CmdT enum for command list.
 } lsapi_ApiCall_Device_ControlDevice_PlasmaLamp_Cmd_Params;
 
-typedef enum
+typedef enum                                                    ///< Value for possible operating states of a plasma lamp.  Returned by ::lsapi_ApiCall_Device_ControlDevice_PlasmaLamp_Status_Params
 {
     lsapi_device_PlasmaLamp_State_Erred = 0,                    ///< Plasma lamp experienced an error, such as comm failure or programming error
     lsapi_device_PlasmaLamp_State_Idle,                         ///< Plasma lamp is Idle, i.e. de-energized
@@ -1420,7 +1528,7 @@ typedef enum
     lsapi_device_PlasmaLamp_State_DeEnergizing,                 ///< Plasma lamp is DeEnergizing, i.e. safely stopping output
 } lsapi_device_PlasmaLamp_StateT;                               ///< State enum, used by ::lsapi_ApiCall_Device_ControlDevice_PlasmaLamp_Status_Params
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_PlasmaLamp_Status_Params
+typedef struct lsapi_ApiCall_Device_ControlDevice_PlasmaLamp_Status_Params ///< Please see PlasmaLamp \ref dox_w32_dvc_plasma_status for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;             ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_PlasmaLamp_StateT State;                     ///< Out: State enum; see enum ::lsapi_device_PlasmaLamp_StateT for list of states.
@@ -1436,7 +1544,7 @@ typedef struct lsapi_PlasmaLamp_TransitionData       ///< Event-data sent by a P
 //*************************************************************************
 // ** FilterWheel **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_FW_Item_Params ///< Please see the \ref dox_w32_dvc_ControlFilterWheel FilterWheel for usage
+typedef struct lsapi_ApiCall_Device_ControlDevice_FW_Item_Params ///< Please see \ref dox_w32_dvc_fw for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     lsapi_device_FW_ItemT Item;                                 ///< The item to get or set; see the ::lsapi_device_FW_ItemT enum for options.
@@ -1449,7 +1557,7 @@ typedef struct lsapi_ApiCall_Device_ControlDevice_FW_Item_Params ///< Please see
 //*************************************************************************
 // ** Lamp **
 
-typedef struct lsapi_ApiCall_Device_ControlDevice_Lamp_Status_Params
+typedef struct lsapi_ApiCall_Device_ControlDevice_Lamp_Status_Params ///< Please see Lamp \ref dox_w32_dvc_lamp_status for usage
 {
     lsapi_ApiCall_Device_ControlDeviceHdr CtlHdr;               ///< See \ref dox_w32_dvc_ControlDeviceHdr_prep for details on preparation of this member.
     bool State;                                                 ///< Out: true = on, false = off
@@ -1540,7 +1648,7 @@ typedef struct lsapi_ApiCall_Device_Utilities_InstallVirtualDevice_Params ///< P
     lsapi_device_VirtualDeviceInfo Info;                        ///< In: Attributes for the virtual device.
 } lsapi_ApiCall_Device_Utilities_InstallVirtualDevice_Params;
 
-typedef struct lsapi_ApiCall_Device_Utilities_GetBaselineOffsetInfo_Params ///< Please see the \link dox_w32_dvc_fcns_getbaselineoffsetinfo Utility\endlink for usage
+typedef struct lsapi_ApiCall_Device_Utilities_GetBaselineOffsetInfo_Params ///< Please see the \link dox_w32_dvc_fcns_getboc Utility\endlink for usage
 {
     lsapi_ApiCall_Device_UtilitiesHdr UtilsHdr;                 ///< See UtilsHdr Preparation above for details on preparation of this member.
     lsapi_device_DeviceInfo DvcInfo;                            ///< In: The type of device & serial number for which to retrieve BOC info
@@ -1549,13 +1657,13 @@ typedef struct lsapi_ApiCall_Device_Utilities_GetBaselineOffsetInfo_Params ///< 
     size_t DurationMs;                                          ///< Out: Duration for performing a baseline offset scan, in milliseconds
 } lsapi_ApiCall_Device_Utilities_GetBaselineOffsetInfo_Params;
 
-typedef struct lsapi_ApiCall_Device_Utilities_SetStrayLightFactor_Params ///< Please see the \link dox_w32_dvc_fcns_setstraylightfactor Utility\endlink for usage
+typedef struct lsapi_ApiCall_Device_Utilities_SetStrayLightFactor_Params ///< Please see the \link dox_w32_dvc_fcns_setslfactor Utility\endlink for usage
 {
     lsapi_ApiCall_Device_UtilitiesHdr UtilsHdr;                 ///< See UtilsHdr Preparation above for details on preparation of this member.
     lsapi_StrayLightFactorData data;                            ///< The stray light factor, and the device which the factor pertains to. Note that data.timestamp will be set by the API; any passed-in value is ignored.
 } lsapi_ApiCall_Device_Utilities_SetStrayLightFactor_Params;
 
-typedef struct lsapi_ApiCall_Device_Utilities_GetStrayLightFactors_Params
+typedef struct lsapi_ApiCall_Device_Utilities_GetStrayLightFactors_Params ///< Please see the \link dox_w32_dvc_fcns_getslfactors Utility\endlink for usage
 {
     lsapi_ApiCall_Device_UtilitiesHdr UtilsHdr;                 ///< See UtilsHdr Preparation above for details on preparation of this member.
     lsapi_StrayLightFactorData* pData;                          ///< Array of structures data. Must be pre-allocated by caller.
@@ -1580,8 +1688,8 @@ typedef enum
     lsapi_scan_CtlFcn_Reconstitute             =  7,  ///< Create a scan handle from raw data. Used with ::lsapi_ApiCall_Scan_Reconstitute_Params
     lsapi_scan_CtlFcn_Interpolate              =  8,  ///< Interpolate an existing Scan object to a new one with different wavelengths, e.g. at regular 1nm intervals. Used with ::lsapi_ApiCall_Scan_Interpolate_Params
     lsapi_scan_CtlFcn_ProcessEx                =  9,  ///< Variant of lsapi_scan_CtlFcn_Process to control details of corrections, for API developers. \n Used with ::lsapi_ApiCall_Scan_ProcessEx_Params
-    lsapi_scan_CtlFcn_SaveToFile               = 10,  ///< Save scan to a text file. \n Used with ::lsapi_ApiCall_Scan_SaveToFile_Params
-    lsapi_scan_CtlFcn_LoadFromFile             = 11,  ///< Load scan from a text file. \n Used with ::lsapi_ApiCall_Scan_LoadFromFile_Params
+    lsapi_scan_CtlFcn_SaveToFile               = 10,  ///< Save scan to a text file in spdx format per TM-27-20. \n Used with ::lsapi_ApiCall_Scan_SaveToFile_Params
+    lsapi_scan_CtlFcn_LoadFromFile             = 11,  ///< Load scan from a text file in spdx format per TM-27-20. \n Used with ::lsapi_ApiCall_Scan_LoadFromFile_Params
 } lsapi_scan_CtlFcnT;
 
 /*! Indicates the result of an Autoexposure. \n Retrieved via ::lsapi_scan_CtlFcn_GetAutoExposureInfo */
@@ -1601,9 +1709,7 @@ typedef unsigned long lsapi_scan_ProcessingOptionsT;        ///< A bitmask of pr
 #define lsapi_scan_ProcessingOption_None                                ((lsapi_scan_ProcessingOptionsT)0)                 ///< Request "no processing" in a call to ::lsapi_scan_CtlFcn_Process
 #define lsapi_scan_ProcessingOption_StrayLightCorrection                ((lsapi_scan_ProcessingOptionsT)0x00000001)        ///< Request that Stray Light Correction be performed in a call to ::lsapi_scan_CtlFcn_Process
 #define lsapi_scan_ProcessingOption_NonLinearityCorrection              ((lsapi_scan_ProcessingOptionsT)0x00000002)        ///< Request that Non Linearity Correction be performed in a call to ::lsapi_scan_CtlFcn_Process
-#define lsapi_scan_ProcessingOption_BoxcarAveraging                     ((lsapi_scan_ProcessingOptionsT)0x00000004)        ///< Request that Boxcar Averaging be performed in a call to ::lsapi_scan_CtlFcn_Process
 #define lsapi_scan_ProcessingOption_Interpolation                       ((lsapi_scan_ProcessingOptionsT)0x00000008)        ///< Request that Interpolation be performed in a call to ::lsapi_scan_CtlFcn_Process
-#define lsapi_scan_ProcessingOption_BoxcarBeforeInterpolation           ((lsapi_scan_ProcessingOptionsT)0x00000010)        ///< Request that Boxcar Averaging be performed before Interpolation in a call to ::lsapi_scan_CtlFcn_Process. \n Only takes effect when both ::lsapi_scan_ProcessingOption_BoxcarAveraging <i>and</i/> ::lsapi_scan_ProcessingOption_Interpolation are requested.
 #define lsapi_scan_ProcessingOption_ConstrainWavelengthsToDeviceLimits  ((lsapi_scan_ProcessingOptionsT)0x00000020)        ///< Request that Wavelengths be constrained to within published Device limits in a call to ::lsapi_scan_CtlFcn_Process
 
 /*! Pass to ::lsapi_ApiCall() with ApiCallHdr.ApiCall = ::lsapi_ApiCall_Scan_Control. \n
@@ -1616,9 +1722,9 @@ typedef struct lsapi_ApiCall_Scan_ControlHdr
     lsapi_HandleT hScan;                        ///< In: Handle of scan to operate upon. May be either a ::lsapi_SpectrometerScanHandleT or an ::lsapi_ProcessedScanHandleT
 } lsapi_ApiCall_Scan_ControlHdr;
 
-typedef struct lsapi_ApiCall_Scan_GetInfo_Params    ///< Please see the \link dox_w32_scan_fcn_GetScanInfo GetScanInfo\endlink for usage
+typedef struct lsapi_ApiCall_Scan_GetInfo_Params    ///< Please see \link dox_w32_scan_fcns_GetScanInfo GetScanInfo\endlink for usage
 {
-    lsapi_ApiCall_Scan_ControlHdr CtlHdr;                   ///< See \ref dox_w32_Scan_ControlHdr_prep for details on preparation of this member.
+    lsapi_ApiCall_Scan_ControlHdr CtlHdr;                   ///< In: extension of lsapi_ApiCallHdr that includes a scan function and handle
     lsapi_scan_StateT ScanState;                            ///< Out: Current state of hScan
     bool ScanIsIncomplete;                                  ///< Out: <b>true</b> if the scan has not finished; <b>false</b> if ScanState is one of lsapi_scan_State_Succeeded | lsapi_scan_State_Aborted | lsapi_scan_State_Error
     size_t ElementCount;                                    ///< Out: # of elements
@@ -1627,22 +1733,21 @@ typedef struct lsapi_ApiCall_Scan_GetInfo_Params    ///< Please see the \link do
     lsapi_DeviceHandleT hSpectrometer;                      ///< Out: Handle of the spectrometer taking the scan
 } lsapi_ApiCall_Scan_GetInfo_Params;
 
-typedef struct lsapi_ApiCall_Scan_GetAutoExposureInfo_Params ///< Please see the \link dox_w32_scan_fcn_GetAutoExposureInfo GetAutoExposureInfo\endlink for usage
+typedef struct lsapi_ApiCall_Scan_GetAutoExposureInfo_Params ///< Please see \link dox_w32_scan_fcns_GetAutoExposureInfo GetAutoExposureInfo\endlink for usage
 {
-    lsapi_ApiCall_Scan_ControlHdr CtlHdr;                       ///< See \ref dox_w32_Scan_ControlHdr_prep for details on preparation of this member.
+    lsapi_ApiCall_Scan_ControlHdr CtlHdr;                       ///< In: extension of lsapi_ApiCallHdr that includes a scan function and handle
     double Saturation;                                          ///< Out: 0.0 <= x <= 1.0 (1.0 being fully saturated)
     double IntegrationMs;                                       ///< Out: Integration time used to obtain above saturation
     lsapi_device_spectrometer_FilterT Filter;                   ///< Out: Filter value (meaning of value varies by spectrometer)
     lsapi_scan_AutoexposureResultT AexResult;                   ///< Out: The result of scan
 } lsapi_ApiCall_Scan_GetAutoExposureInfo_Params;
 
-typedef struct lsapi_ApiCall_Scan_Process_Params     ///< Please see the \link dox_w32_scan_fcn_Process Process\endlink for usage
+typedef struct lsapi_ApiCall_Scan_Process_Params     ///< Please see \link dox_w32_scan_fcns_Process Process\endlink for usage
 {
-    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< See \ref dox_w32_Scan_ControlHdr_prep for details on preparation of this member.
+    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< In: extension of lsapi_ApiCallHdr that includes a scan function and handle
     struct
     {
         lsapi_scan_ProcessingOptionsT Options;          ///< In: Mask of lsapi_scan_ProcessingOption_* flags
-        unsigned long BoxcarRadius;                     ///< In: Span is (2n)+1; valid data set size is reduced by 2n; ignored unless PerformBoxcarAveraging flag is set
         lsapi_SpectrometerScanHandleT hDarkScan;        ///< In: The (optional) dark scan to use for dark correction
     } Requested;        ///< Requested processing options. You fill these in before calling the API.
     struct
@@ -1655,29 +1760,29 @@ typedef struct lsapi_ApiCall_Scan_Process_Params     ///< Please see the \link d
     int ProcessedScanStartOffset;                       ///< Out: Offset of the output ProcessedScan elements w.r.t. the input SpecScan(s) elements; not applicable when lsapi_scan_ProcessingOption_Interpolation is applied.
 } lsapi_ApiCall_Scan_Process_Params;
 
-typedef struct lsapi_ApiCall_Scan_GetData_Params        ///< Please see the \link dox_w32_scan_fcn_GetProcessedData GetProcessedData\endlink for usage
+typedef struct lsapi_ApiCall_Scan_GetData_Params        ///< Please see \link dox_w32_scan_fcns_GetScanData GetScanData\endlink for usage
 {
-    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< See \ref dox_w32_Scan_ControlHdr_prep for details on preparation of this member.
+    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< In: extension of lsapi_ApiCallHdr that includes a scan function and handle
     lsapi_ScanData ScanData;                            ///< Out: Data for the scan (though ScanData.pData and ScanData.ElementCount must be init'ed by the caller)
     double Saturation;                                  ///< Out: 0.0 <= x <= 1.0 (1.0 being fully saturated)
 } lsapi_ApiCall_Scan_GetData_Params;
 
-typedef struct lsapi_ApiCall_Scan_GetUncalibratedSpectrum_Params     ///< Please see the \link dox_w32_scan_fcn_GetUncalibratedSpectrum GetUncalibratedSpectrum\endlink for usage
+typedef struct lsapi_ApiCall_Scan_GetUncalibratedSpectrum_Params     ///< Please see \link dox_w32_scan_fcns_GetUncalibratedSpectrum GetUncalibratedSpectrum\endlink for usage
 {
-    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< See \ref dox_w32_Scan_ControlHdr_prep for details on preparation of this member.
+    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< In: extension of lsapi_ApiCallHdr that includes a scan function and handle
     lsapi_SpectrumHandleT hUncalibratedSpectrum;        ///< Out: Handle to the uncalibrated spectrum
 } lsapi_ApiCall_Scan_GetUncalibratedSpectrum_Params;
 
-typedef struct lsapi_ApiCall_Scan_Reconstitute_Params   ///< Please see the \link dox_w32_scan_fcn_Reconstitute Reconstitute\endlink for usage
+typedef struct lsapi_ApiCall_Scan_Reconstitute_Params   ///< Please see \link dox_w32_scan_fcns_Reconstitute Reconstitute\endlink for usage
 {
-    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< See \ref dox_w32_Scan_ControlHdr_prep for details on preparation of this member.
+    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< In: extension of lsapi_ApiCallHdr that includes a scan function and handle
     lsapi_ScanData ScanData;                            ///< In: Data for the scan
     lsapi_ReconstitutedScanHandleT hReconstitutedScan;  ///< Out: The reconstituted scan handle.
 } lsapi_ApiCall_Scan_Reconstitute_Params;
 
-typedef struct lsapi_ApiCall_Scan_Interpolate_Params    ///< Please see the \link dox_w32_scan_fcn_Interpolate Interpolate\endlink for usage
+typedef struct lsapi_ApiCall_Scan_Interpolate_Params    ///< Please see \link dox_w32_scan_fcns_Interpolate Interpolate\endlink for usage
 {
-    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< See \ref dox_w32_Scan_ControlHdr_prep for details on preparation of this member.
+    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< In: extension of lsapi_ApiCallHdr that includes a scan function and handle
     lsapi_HandleT hReferenceScan;                       ///< In:  Scan object with wavelength set for interpolated Scan, or 0 with non-zero RegularInterval_nm
     unsigned long RegularInterval_nm;                   ///< In:  Regular Interval for wavelength set of interpolated Scan, or 0 with a valid hReferenceScan
     lsapi_ProcessedScanHandleT hInterpolatedScan;       ///< Out: Handle to the new ProcessedScan object, with data interpolated to specified wavelength set
@@ -1685,11 +1790,10 @@ typedef struct lsapi_ApiCall_Scan_Interpolate_Params    ///< Please see the \lin
 
 typedef struct lsapi_ApiCall_Scan_ProcessEx_Params      ///< Used by lsapi_scan_CtlFcn_Process to control details of corrections, for API developers.
 {
-    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< See \ref dox_w32_Scan_ControlHdr_prep for details on preparation of this member.
+    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< In: extension of lsapi_ApiCallHdr that includes a scan function and handle
     struct
     {
         lsapi_scan_ProcessingOptionsT Options;          ///< In: Mask of lsapi_scan_ProcessExingOption_* flags
-        unsigned long BoxcarRadius;                     ///< In: Span is (2n)+1; valid data set size is reduced by 2n; ignored unless PerformBoxcarAveraging flag is set
         double StrayLightFactor;                        ///< In: [NEW] The Stray Light Factor requested.
         lsapi_SpectrometerScanHandleT hDarkScan;        ///< In: The (optional) dark scan to use for dark correction
     } Requested;        ///< Requested processing options. You fill these in before calling the API.
@@ -1705,7 +1809,7 @@ typedef struct lsapi_ApiCall_Scan_ProcessEx_Params      ///< Used by lsapi_scan_
 
 typedef struct lsapi_ApiCall_Scan_SaveToFile_Params      ///< Set CtlHdr.CtlFcn = ::lsapi_scan_CtlFcn_SaveToFile
 {
-    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< See \ref dox_w32_Scan_ControlHdr_prep for details on preparation of this member.
+    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< In: extension of lsapi_ApiCallHdr that includes a scan function and handle
     wchar_t FilePath[lsapi_TEXTBUF_SIZE];               ///< In: Fully-qualified path for the file to save
     wchar_t Description[lsapi_TEXTBUF_SIZE];            ///< In: Client-provided Description for scan
     lsapi_DeviceHandleT hSpectrometer;                  ///< In: If non-zero, output for ProcessedScan will include Spectrometer info. (API internal SpecScan object references its Spectrometer, but ProcessedScan object does not.)
@@ -1714,7 +1818,7 @@ typedef struct lsapi_ApiCall_Scan_SaveToFile_Params      ///< Set CtlHdr.CtlFcn 
 
 typedef struct lsapi_ApiCall_Scan_LoadFromFile_Params   ///< Set CtlHdr.CtlFcn = ::lsapi_scan_CtlFcn_LoadFromFile
 {
-    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< See \ref dox_w32_Scan_ControlHdr_prep for details on preparation of this member.
+    lsapi_ApiCall_Scan_ControlHdr CtlHdr;               ///< In: extension of lsapi_ApiCallHdr that includes a scan function and handle
     wchar_t FilePath[lsapi_TEXTBUF_SIZE];               ///< In: Fully-qualified path to the file to load
     wchar_t Description[lsapi_TEXTBUF_SIZE];            ///< Out: Client-provided Description for scan
     lsapi_HandleT hScanLoaded;                          ///< Out: The handle of the newly loaded scan object, either ProcessedScan or ReconstitutedScan
@@ -1828,7 +1932,7 @@ typedef struct lsapi_ApiCall_ScalarTransient_GetFlickerPstLM_Params   ///< Used 
 #define lsapi_math_CIE_NUM_TCS_CQS          15              ///< The number of Test Color Samples for CQS structs.
 #define lsapi_math_NUM_IES_TM30_HueBins     16              ///< IES TM-30-18 number of bins in {a',b'} plane
 
-typedef enum
+typedef enum                                                  ///< Value indicating the type of data represented by a spectrum
 {
     lsapi_spectrum_Quantity_Unknown                 =  0,     ///< Spectrum quantity not specified
     lsapi_spectrum_Quantity_Flux                    =  1,     ///< Spectrum represents Spectral Flux
@@ -1839,7 +1943,7 @@ typedef enum
     lsapi_spectrum_Quantity_Exitance                =  6,     ///< Spectrum represents Spectral Exitance  
 } lsapi_spectrum_QuantityT;
 
-typedef struct lsapi_SpectrumData_wc        ///< Support struct for Spectrum object data, including WaveCount array at spectrometer "pixel space" wavelengths. Replacement for lsapi_SpectrumData_nm.
+typedef struct lsapi_SpectrumData_wc                ///< Support struct for Spectrum object data, including WaveCount array at spectrometer "pixel space" wavelengths. Replacement for lsapi_SpectrumData_nm.
 {
     lsapi_WaveCount* pWaveCounts;                   ///< Array of count-for-wavelength data. Must be pre-allocated by caller.
     size_t ElementCount;                            ///< # of WaveCount structs in 'pWaveCounts'.
@@ -2069,13 +2173,13 @@ typedef struct lsapi_ApiCall_Api_Utilities_SetDatabasePath_Params ///< Set Utils
 
 // *** License
 
-typedef struct lsapi_LicenseItem
+typedef struct lsapi_LicenseItem                    ///< Licensing is no longer part of lsapi
 {
     wchar_t Key[lsapi_TEXTBUF_SIZE];                ///< The name of the license item.
     wchar_t Value[lsapi_TEXTBUF_SIZE];              ///< The value for the license item. Format depends upon 'Key' (i.e. may be a string, or a string representation of a number, etc).
 } lsapi_LicenseItem;
 
-typedef struct lsapi_LicensePermission
+typedef struct lsapi_LicensePermission              ///< Licensing is no longer part of lsapi
 {
     lsapi_LicensePermissionT Permission;            ///< The permission.
     wchar_t Value[lsapi_TEXTBUF_SIZE];              ///< The value for the license item. Format depends upon 'Key' (i.e. may be a string, or a string representation of a number, etc).
@@ -2222,40 +2326,41 @@ typedef struct lsapi_ApiCall_Spectrum_Function_LoadFromFile_Params   ///< Use Sp
 } lsapi_ApiCall_Spectrum_Function_LoadFromFile_Params;
 
 
-    typedef struct lsapi_spectrum_RadiometryInRange
-    {
-        double  FullRangeWavelengthLower;                       ///< Lower wavelength (nm) of the Spectrum's full range for integrated Flux. Note: value is slightly less than the Spectrum's first wavelength, because of first interval's implicit width.
-        double  FullRangeWavelengthUpper;                       ///< Upper wavelength (nm) of the Spectrum's full range for integrated Flux. Note: value is slightly greater than the Spectrum's last wavelength, because of last interval's implicit width.
-        double  RangeWavelengthLower;                           ///< Lower wavelength (nm) of the specified range: higher value of TargetRangeLowWavelength or FullRangeWavelengthLower
-        double  RangeWavelengthUpper;                           ///< Upper wavelength (nm) of the specified range: lower value of TargetRangeHighWavelength or FullRangeWavelengthUpper
-        double  RadiantFlux;                                    ///< Radiant Flux (Watts) over the specified range.
-        double  PhotonFlux;                                     ///< Photon Flux (micromoles per sec) over the specified range.
-        lsapi_math_RadiometricPeak PeakSpectralFlux;            ///< Wavelength, center, width, and centroid of the peak spectral flux (W/nm) in the specified range.
-    } lsapi_spectrum_RadiometryInRange;
+typedef struct lsapi_spectrum_RadiometryInRange             ///< struct for calculated Radiometry values returned by \ref dox_w32_analysis_fcns_GetRadiometry
+{
+	double FullRangeWavelengthLower;						///< Lower wavelength (nm) of the Spectrum's full range for integrated Flux. Note: value is slightly less than the Spectrum's first wavelength, because of first interval's implicit width.
+	double FullRangeWavelengthUpper;						///< Upper wavelength (nm) of the Spectrum's full range for integrated Flux. Note: value is slightly greater than the Spectrum's last wavelength, because of last interval's implicit width.
+	double RangeWavelengthLower;							///< Lower wavelength (nm) of the specified range: higher value of TargetRangeLowWavelength or FullRangeWavelengthLower
+	double RangeWavelengthUpper;							///< Upper wavelength (nm) of the specified range: lower value of TargetRangeHighWavelength or FullRangeWavelengthUpper
+	double RadiantFlux;										///< Radiant Flux (Watts) over the specified range.
+	double PhotonFlux;										///< Photon Flux (micromoles per sec) over the specified range.
+	double LuminousFlux;									///< Luminous Flux (lumens) over the specified range.
+	lsapi_math_RadiometricPeak PeakSpectralFlux;			///< Wavelength, center, width, and centroid of the peak spectral flux (W/nm) in the specified range.
+} lsapi_spectrum_RadiometryInRange;
 
 typedef struct lsapi_ApiCall_Spectrum_Function_GetRadiometry_Params    ///< Pass to ::lsapi_ApiCall() with ApiCallHdr.ApiCall = ::lsapi_ApiCall_Spectrum and SpectrumHdr.SpectrumFcn = ::lsapi_Spectrum_Function_GetRadiometry
 {
-    lsapi_ApiCall_Spectrum_FunctionHdr SpectrumHdr;             ///< See ..Spectrum_FunctionHdr Preparation above for details on preparation of this member.
-    lsapi_SpectrumHandleT hSpectrum;                            ///< In: Spectrum object handle
-    double  TargetRangeWavelengthLower;                         ///< In: Lower wavelength of user-specified range. SPECIAL CASE: Use special value 0 to specify the lower wavelength of the Spectrum's full range i.e. FullRangeWavelengthLower.
-    double  TargetRangeWavelengthUpper;                         ///< In: Upper wavelength of the spectral range.  SPECIAL CASE: Use special value 0 to specify the upper wavelength of the Spectrum's full range i.e. FullRangeWavelengthUpper.
-    lsapi_spectrum_RadiometryInRange RadiometryInRange;         ///< Out: Radiant flux and peak data
+    lsapi_ApiCall_Spectrum_FunctionHdr SpectrumHdr;         ///< See ..Spectrum_FunctionHdr Preparation above for details on preparation of this member.
+    lsapi_SpectrumHandleT hSpectrum;                        ///< In: Spectrum object handle
+    double  TargetRangeWavelengthLower;                     ///< In: Lower wavelength of user-specified range. SPECIAL CASE: Use special value 0 to specify the lower wavelength of the Spectrum's full range i.e. FullRangeWavelengthLower.
+    double  TargetRangeWavelengthUpper;                     ///< In: Upper wavelength of the spectral range.  SPECIAL CASE: Use special value 0 to specify the upper wavelength of the Spectrum's full range i.e. FullRangeWavelengthUpper.
+    lsapi_spectrum_RadiometryInRange RadiometryInRange;     ///< Out: Radiant flux and peak data
 } lsapi_ApiCall_Spectrum_Function_GetRadiometry_Params;
 
 
-    typedef struct lsapi_spectrum_Colorimetry
-    {
-        double TotalLuminousFlux;                               ///< Total Luminous Flux (lumens) over the DUT's spectral range.
-        double ScotopicFlux;                                    ///< Scotopic Flux (scotopic lumens), based on the CIE scotopic visibility function (for low light conditions)
-        lsapi_math_CIE1931xyY CIE1931xyY;                       ///< DUT coords {x,y,Y} in CIE 1931 color space.
-        lsapi_math_CIE1964xy10deg CIE1964xy10deg;               ///< DUT coords {x, y} in CIE 1964 10 degree observer space.
-        lsapi_math_CIE1960UCS CIE1960UCS;                       ///< DUT coords {u,v} in CIE 1960 UCS color space.
-        lsapi_math_CIE1976UCS CIE1976UCS;                       ///< DUT coords {u',v'} in CIE 1976 UCS color space.
-        lsapi_math_CIE1960Blackbody CIE1960Blackbody;           ///< DUT's CCT (Correlated Color Temperature) and DC compare it to the nearest Blackbody radiator in CIE 1960 {u,v} color space.
-        lsapi_math_CIE1931SpectralLocus SpectralLocus;          ///< DUT's Dominant Wavelength and other data relating to the Spectral Locus in CIE 1931 {x,y} color space.
-        lsapi_math_SSL2015_FixedBins SSL2015_FixedBins;         ///< DUT proximity to Fixed NominalCCT Bins, from SSL2015 reference ANSI_C78.377-2015.
-        lsapi_math_SSL2015_FlexibleBins SSL2015_FlexibleBins;   ///< DUT proximity to the Flexible NominalCCT Bins corresponding to user's TargetCCT, from SSL2015 reference ANSI_C78.377-2015.
-    } lsapi_spectrum_Colorimetry;
+typedef struct lsapi_spectrum_Colorimetry                   ///< struct for calculated Colorimetry values returned by \ref dox_w32_analysis_fcns_GetColorimetry
+{
+    double TotalLuminousFlux;                               ///< Total Luminous Flux (lumens) over the DUT's spectral range.
+    double ScotopicFlux;                                    ///< Scotopic Flux (scotopic lumens), based on the CIE scotopic visibility function (for low light conditions)
+    lsapi_math_CIE1931xyY CIE1931xyY;                       ///< DUT coords {x,y,Y} in CIE 1931 color space.
+    lsapi_math_CIE1964xy10deg CIE1964xy10deg;               ///< DUT coords {x, y} in CIE 1964 10 degree observer space.
+    lsapi_math_CIE1960UCS CIE1960UCS;                       ///< DUT coords {u,v} in CIE 1960 UCS color space.
+    lsapi_math_CIE1976UCS CIE1976UCS;                       ///< DUT coords {u',v'} in CIE 1976 UCS color space.
+    lsapi_math_CIE1960Blackbody CIE1960Blackbody;           ///< DUT's CCT (Correlated Color Temperature) and DC compare it to the nearest Blackbody radiator in CIE 1960 {u,v} color space.
+    lsapi_math_CIE1931SpectralLocus SpectralLocus;          ///< DUT's Dominant Wavelength and other data relating to the Spectral Locus in CIE 1931 {x,y} color space.
+    lsapi_math_SSL2015_FixedBins SSL2015_FixedBins;         ///< DUT proximity to Fixed NominalCCT Bins, from SSL2015 reference ANSI_C78.377-2015.
+    lsapi_math_SSL2015_FlexibleBins SSL2015_FlexibleBins;   ///< DUT proximity to the Flexible NominalCCT Bins corresponding to user's TargetCCT, from SSL2015 reference ANSI_C78.377-2015.
+} lsapi_spectrum_Colorimetry;
 
 typedef struct lsapi_ApiCall_Spectrum_Function_GetColorimetry_Params    ///< Pass to ::lsapi_ApiCall() with ApiCallHdr.ApiCall = ::lsapi_ApiCall_Spectrum and SpectrumHdr.SpectrumFcn = ::lsapi_Spectrum_Function_GetColorimetry
 {

@@ -1,16 +1,26 @@
 #include "IsTcp.h"
 #include <QtEndian>
 #include <QMutex>
+#include <QDebug>
 
 IsTcp::IsTcp(void)
 {
     m_socket = INVALID_SOCKET;
     m_isConnected = false;
+
+    // Initialize Winsock
+    WSADATA wsaData;
+    int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
+    if (iResult != NO_ERROR)
+    {
+        qCritical() << QString("Labsphere WSAStartup failed with error: %1").arg(iResult);
+    }
 }
 
 IsTcp::~IsTcp(void)
 {
     close();
+    WSACleanup();
 }
 
 void IsTcp::setIpPort(const string &ip, int port)
@@ -41,20 +51,12 @@ Result IsTcp::start(const string &ip, int port, bool forced)
         close();
     }
 
-    // Initialize Winsock
-    WSADATA wsaData;
-    int iResult = WSAStartup(MAKEWORD(2, 2), &wsaData);
-    if (iResult != NO_ERROR)
-    {
-        m_callback->NotifyMotionStateChanged(MLMotionState::kMLStatusConnected, MLMotionState::kMLStatusDisConnected);
-        return Result(false, QString("WSAStartup failed with error: %1").arg(iResult).toStdString());
-    }
+    int iResult;
 
     // Create a SOCKET for connecting to server
     m_socket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (m_socket == INVALID_SOCKET)
     {
-        WSACleanup();
         m_callback->NotifyMotionStateChanged(MLMotionState::kMLStatusConnected, MLMotionState::kMLStatusDisConnected);
         return Result(false, QString("Socket failed with error: %1").arg(WSAGetLastError()).toStdString());
     }
@@ -87,7 +89,6 @@ Result IsTcp::close()
     int iResult = closesocket(m_socket);
     if (iResult == SOCKET_ERROR)
     {
-        WSACleanup();
         m_socket = INVALID_SOCKET;
         if (pre){
             m_callback->NotifyMotionStateChanged(MLMotionState::kMLStatusConnected, MLMotionState::kMLStatusDisConnected);
@@ -95,7 +96,6 @@ Result IsTcp::close()
         return Result(false, QString("Close failed with error: %1").arg(WSAGetLastError()).toStdString());
     }
 
-    WSACleanup();
     m_socket = INVALID_SOCKET;
     if (pre)
     {

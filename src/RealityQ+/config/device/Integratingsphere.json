@@ -1,44 +1,64 @@
 {
  "HostIP":"127.0.0.1", 
  "Port":3434, 
- "SpectraExe":"D:/Program Files (x86)/Labsphere/HELIOSense/HELIOSense.exe",
- "RedCalibrationFactor":3.056e9, 
- "GreenCalibrationFactor":3.078e9, 
- "BlueCalibrationFactor":2.358e9,
+ "SpectraExe":"C:/Program Files (x86)/Labsphere/HELIOSense/HELIOSense.exe",
+ "RedCalibrationFactor":3.919e9, 
+ "GreenCalibrationFactor":9.472e9, 
+ "BlueCalibrationFactor":1.929e9,
+ "UseShutter":true,
  "DeviceIndex":{
 	 "R":0,
+	 "G":2,
+	 "B":1
+ },
+ "ShutterIndex":{
+	 "R":2,
 	 "G":1,
-	 "B":2
+	 "B":0
+ },  
+ "Voltage":{
+	 "R":300,
+	 "G":300,
+	 "B":300
+ }, 
+ "VoltageCompliance":{
+	 "R":115,
+	 "G":-1,
+	 "B":-1
  }, 
  "WhiteRatio":{
+	 "R":0.3,
 	 "R":0.3,
 	 "G":0.65,
 	 "B":0.05
  },
  "Solutions":[
 	{
-	"name":"Red_0.895A_630nm", 
+	"name":"Red_1.176A_622nm", 
 	"index":1,
 	"luminance":0,
-	"luminanceMax":1086000,
+	"luminanceMax":900000,
 	"colorFocus": "R",
-	"currentOutput":"0.895"
+	"currentOutput":"1.176",
+	"steadyCurrent":"1.056"
  	}, 
 	{
- 	"name":"Green_0.427A_530nm", 
+ 	"name":"Green_0.8A_521nm", 
  	"index":2,
 	"luminance":0,
-	"luminanceMax":883900,
+	"luminanceMax":679000,
 	"colorFocus": "G",
-	"currentOutput":"0.427"
+	"currentOutput":"0.8",
+	"steadyCurrent":"0.696"
  	},  
  	{
-	"name":"Blue_1.239A_465nm", 
+	"name":"Blue_1.5A_468nm", 
 	"index":3,
 	"luminance":0,
-	"luminanceMax":600600,
+	"luminanceMax":430000,
 	"colorFocus": "B",
-	"currentOutput":"1.239"
+	"currentOutput":"1.5",
+	"steadyCurrent":"1.22"
  	}, 
 	{
  	"name":"White", 
@@ -46,8 +66,22 @@
 	"luminance":0,
 	"luminanceMax":1088000,
 	"colorFocus": "W",
-	"currentOutput":"0.895,0.427,1.239"
+	"currentOutput":"1.176,0.8,1.5",
+	"steadyCurrent":"1.056,0.696,1.22"
 	}
  ], 
- "Scale":1
+ "Scale":1,
+ "TestInfoR":"IntergratingSphere: Color=Red, current=1.056A, PeakWavelength=623nm;",
+ "TestInfoG":"IntergratingSphere: Color=Green, current=0.696A, PeakWavelength=519nm;",
+ "TestInfoB":"IntergratingSphere: Color=Blue, current=1.22A, PeakWavelength=469nm",
+ "CurrentSetting":{
+	 "ResultJudge": true,
+	 "WaitMilliseconds":2000
+ },
+ "SteadyCurrentCoefficient":{
+	 "useCoefficient":false,
+	 "R":0.898,
+	 "G":0.87,
+     "B":0.813
+ }
 }
