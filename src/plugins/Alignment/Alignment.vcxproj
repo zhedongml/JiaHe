@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8A5D165B-6FFE-49F2-AF92-E6078A66A9BF}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtInstall>msvc2019_64</QtInstall>
+    <QtModules>core;gui;multimedia;widgets;concurrent;multimediawidgets</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>msvc2019_64</QtInstall>
+    <QtModules>core;gui;multimedia;widgets;concurrent;multimediawidgets</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\plugins\MLAlgorithm;$(SolutionDir)src;$(SolutionDir)src\plugins;.;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\vimba;$(SolutionDir)src\extlib\vimba\VimbaImageTransform\Include;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)SDK\extlib\json4moderncpp;$(SolutionDir)src\plugins\PrjCommon;$(SolutionDir)src\plugins\Alignment\QDetachTabWidget;$(SolutionDir)src\extlib\CDock\include;$(SolutionDir)src\plugins\coreplugin\service;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\extlib\serial;$(SolutionDir)src\plugins\PrjCommon\service;$(SolutionDir)src\plugins\MLMindVisionCamera;$(SolutionDir)src\extlib\MindVision;$(SolutionDir)src\extlib\recipeLib\include\Recipe2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\armadillo\lib_win64;$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\lib;$(SolutionDir)\src\plugins\cameraDetector\bin\x64\Release;$(SolutionDir)src\extlib\vimba\VimbaCPP\Lib\Win64;$(SolutionDir)src\extlib\vimba\VimbaImageTransform\Lib\Win64;$(SolutionDir)src\extlib\logplus\lib\x64\bin.Release_Unicode;$(SolutionDir)src\extlib\galil\gclib\lib_\dynamic\x64;$(SolutionDir)src\extlib\CDock\lib;$(SolutionDir)src\extlib\recipeLib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world451.lib;log4cplusU.lib;VimbaCPP.lib;VimbaImageTransform.lib;qtadvanceddocking.lib;libopenblas.lib;behaviortree_cpp_v3.lib;ObjectManager.lib;Recipe2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\registerRecipe\"
+xcopy /y "$(SolutionDir)src\extlib\recipeLib\$(Configuration)\ObjectManager.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\plugins\MLAlgorithm;$(SolutionDir)\src;$(SolutionDir)src\plugins;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\vimba;$(SolutionDir)src\extlib\vimba\VimbaImageTransform\Include;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\PrjCommon;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\plugins\Alignment\QDetachTabWidget;$(SolutionDir)src\extlib\CDock\include;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;$(SolutionDir)src\extlib\serial;$(SolutionDir)src\plugins\PrjCommon\service;$(SolutionDir)src\plugins\MLMindVisionCamera;$(SolutionDir)src\extlib\MindVision;$(SolutionDir)src\extlib\recipeLib\include\Recipe2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>opencv_world451d.lib;log4cplusUD.lib;VimbaCPP.lib;VimbaImageTransform.lib;qtadvanceddockingd.lib;libopenblas.lib;behaviortree_cpp_v3.lib;ObjectManager.lib;Recipe2.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\armadillo\lib_win64;$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\lib;$(SolutionDir)\src\plugins\cameraDetector\bin\x64\Debug;$(SolutionDir)src\extlib\vimba\VimbaCPP\Lib\Win64;$(SolutionDir)src\extlib\vimba\VimbaImageTransform\Lib\Win64;$(SolutionDir)src\extlib\logplus\lib\x64\bin.Debug_Unicode;$(SolutionDir)src\extlib\galil\gclib\lib_\dynamic\x64;$(SolutionDir)src\extlib\CDock\lib;$(SolutionDir)src\extlib\recipeLib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\registerRecipe\"
+xcopy /y "$(SolutionDir)src\extlib\recipeLib\$(Configuration)\ObjectManager.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>ALIGNMENT_LIB;BT_PLUGIN_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>ALIGNMENT_LIB;BT_PLUGIN_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Alignment2D.cpp" />
+    <ClCompile Include="Alignment3D.cpp" />
+    <ClCompile Include="AlignPlugin.cpp" />
+    <ClCompile Include="AlignUtils.cpp" />
+    <ClCompile Include="AlignWidget.cpp" />
+    <ClCompile Include="AnalyzeRecipe.cpp" />
+    <ClCompile Include="AutoExposureWidget.cpp" />
+    <ClCompile Include="AxesTransfer2D.cpp" />
+    <ClCompile Include="CalibrateControlWidget.cpp" />
+    <ClCompile Include="calibratewidget.cpp" />
+    <ClCompile Include="AlignWrapper.cpp" />
+    <ClCompile Include="CameraModel.cpp" />
+    <ClCompile Include="CameraViewer.cpp" />
+    <ClCompile Include="CaptureFiducialImage.cpp" />
+    <ClCompile Include="CdsWidget.cpp" />
+    <ClCompile Include="DeviceControlWidget.cpp" />
+    <ClCompile Include="DeviceControlWidget2D.cpp" />
+    <ClCompile Include="DistanceCheck.cpp" />
+    <ClCompile Include="DistanceManage.cpp" />
+    <ClCompile Include="DistanceSensorWidget.cpp" />
+    <ClCompile Include="dutConfig.cpp" />
+    <ClCompile Include="DutConfigAction.cpp" />
+    <ClCompile Include="DutEyeboxWidget.cpp" />
+    <ClCompile Include="DUTAA4Recipe.cpp" />
+    <ClCompile Include="FiducialCalibrateWidget.cpp" />
+    <ClCompile Include="FiducialConfigWidget.cpp" />
+    <ClCompile Include="fiducialpoint.cpp" />
+    <ClCompile Include="FileCsv.cpp" />
+    <ClCompile Include="ImageManage.cpp" />
+    <ClCompile Include="LimitMove.cpp" />
+    <ClCompile Include="MLImageTransformHelper.cpp" />
+    <ClCompile Include="MotionProcess.cpp" />
+    <ClCompile Include="MoveWidget.cpp" />
+    <ClCompile Include="MoveWidget2D.cpp" />
+    <ClCompile Include="dutTypeConfig.cpp" />
+    <ClCompile Include="PImotion4Recipe.cpp" />
+    <ClCompile Include="processConfig.cpp" />
+    <ClCompile Include="SelectFiducialWidget.cpp" />
+    <ClCompile Include="slbConfig.cpp" />
+    <ClCompile Include="WaitPause.cpp" />
+    <ClCompile Include="webcamera\CamereAction.cpp" />
+    <ClCompile Include="webcamera\qtcamera.cpp" />
+    <QtMoc Include="webcamera\qtcamera.h" />
+    <QtMoc Include="webcamera\CamereAction.h" />
+    <QtMoc Include="DutEyeboxWidget.h" />
+    <QtMoc Include="DutConfigAction.h" />
+    <QtMoc Include="CdsWidget.h" />
+    <QtMoc Include="Alignment2D.h" />
+    <QtMoc Include="DeviceControlWidget2D.h" />
+    <ClInclude Include="AxesTransfer2D.h" />
+    <ClInclude Include="DistanceCheck.h" />
+    <QtMoc Include="DUTAA4Recipe.h" />
+    <ClInclude Include="dutConfig.h" />
+    <ClInclude Include="FileCsv.h" />
+    <QtMoc Include="MoveWidget2D.h" />
+    <QtMoc Include="MotionProcess.h" />
+    <ClInclude Include="dutTypeConfig.h" />
+    <QtMoc Include="LimitMove.h" />
+    <QtMoc Include="PImotion4Recipe.h" />
+    <ClInclude Include="processConfig.h" />
+    <QtMoc Include="SelectFiducialWidget.h" />
+    <ClInclude Include="slbConfig.h" />
+    <ClInclude Include="WaitPause.h" />
+    <QtMoc Include="Alignment3D.h" />
+    <ClInclude Include="alignment_global.h" />
+    <QtMoc Include="MoveWidget.h" />
+    <QtMoc Include="fiducialpoint.h" />
+    <QtMoc Include="CameraModel.h" />
+    <QtMoc Include="CameraViewer.h" />
+    <QtMoc Include="calibratewidget.h" />
+    <ClInclude Include="AnalyzeRecipe.h" />
+    <QtMoc Include="AutoExposureWidget.h" />
+    <QtMoc Include="CalibrateControlWidget.h" />
+    <ClInclude Include="CustomSpinboxDelegate.h" />
+    <ClInclude Include="CaptureFiducialImage.h" />
+    <QtMoc Include="DistanceSensorWidget.h" />
+    <QtMoc Include="FiducialConfigWidget.h" />
+    <QtMoc Include="FiducialCalibrateWidget.h" />
+    <QtMoc Include="DeviceControlWidget.h" />
+    <ClInclude Include="MLImageTransformHelper.h" />
+    <ClInclude Include="toml.hpp" />
+    <QtMoc Include="AlignPlugin.h" />
+    <ClInclude Include="AlignUtils.h" />
+    <QtMoc Include="AlignWidget.h" />
+    <QtMoc Include="AlignWrapper.h" />
+    <ClInclude Include="DistanceManage.h" />
+    <ClInclude Include="ImageManage.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="AlignWidget.ui" />
+    <QtUic Include="AutoExposureWidget.ui" />
+    <QtUic Include="CalibrateControlWidget.ui" />
+    <QtUic Include="calibratewidget.ui" />
+    <QtUic Include="CdsWidget.ui" />
+    <QtUic Include="DeviceControlWidget.ui" />
+    <QtUic Include="DeviceControlWidget2D.ui" />
+    <QtUic Include="DistanceSensorWidget.ui" />
+    <QtUic Include="DutEyeboxWidget.ui" />
+    <QtUic Include="FiducialCalibrateWidget.ui" />
+    <QtUic Include="FiducialConfigWidget.ui" />
+    <QtUic Include="MoveWidget.ui" />
+    <QtUic Include="MoveWidget2D.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="Resource.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CollimatedLightTube\CollimatedLightTube.vcxproj">
+      <Project>{7727cf04-cbdf-4d86-92f7-5d4748a5928c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.vcxproj">
+      <Project>{9bce8e7a-22bc-4497-bde8-e54ac1b46d8e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageDetection\ImageDetection.vcxproj">
+      <Project>{88aa6911-48b3-408c-938e-ea1f235fbd88}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MAalignment\MAalignment.vcxproj">
+      <Project>{91daddb8-f0b5-4d8f-bb7d-0c7c6e4d4fd0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MLKeyenceLRF\MLKeyenceLRF.vcxproj">
+      <Project>{f9170fe5-d05a-465a-a6ba-e455d03fa18b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MLMindVisionCamera\MLMindVisionCamera.vcxproj">
+      <Project>{236c984d-7172-4b5f-89da-5102b3425d9d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\OrientalMotor\OrientalMotor.vcxproj">
+      <Project>{068c22b3-44b5-4c87-8643-78b81cc57835}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\piMotionActor\piMotionActor.vcxproj">
+      <Project>{dacdcc11-4fe3-4283-8309-a753879a3493}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\PLCControl\PLCControl.vcxproj">
+      <Project>{1d416d0e-1b68-4cd5-8912-23d24862513e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\pluginsystem\pluginsystem.vcxproj">
+      <Project>{15e206c7-ae3a-48dc-9996-495dc04d8893}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\PolarizerControl\PolarizerControl.vcxproj">
+      <Project>{4294ade0-2a4a-4abe-af5d-0d783342f908}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\PrjCommon\PrjCommon.vcxproj">
+      <Project>{6c74adc6-8df4-4346-b887-dfcecf036efd}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

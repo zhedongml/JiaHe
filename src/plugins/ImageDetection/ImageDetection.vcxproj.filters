@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CrossCenter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="find_centerCentroid.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="find_centerGaussian.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="find_centerGrad.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="find_centerLINES.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="find_centerMTF.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="find_centerTemplate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="find_multiCrosshair.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="line2Dup.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="lsd.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_gridDetect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_image_public.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_matchTemplate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_multiCrossHairDetection.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_rectangleDetection.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MLCherkerboardDetect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MLGhostRectangleDetect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageFilter.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="MTFRectangleDetect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\extlib\logplus\LogPlus.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_distortion_correction.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_AF.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ML_CoordinateTransformation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_rigidTrans3D.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="FiducialDetect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="CrossCenterPro.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_two_cross.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="qlog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_cross_center.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CrossCenter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="find_multiCrosshair.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="line2Dup.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="lsd.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_gridDetect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_image_public.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_matchTemplate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_multiCrossHairDetection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_rectangleDetection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MLCherkerboardDetect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MLGhostRectangleDetect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\extlib\json4moderncpp\json.hpp">
+      <Filter>源文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageFilter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="MTFRectangleDetect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_distortion_correction.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_AF.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ML_CoordinateTransformation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_rigidTrans3D.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="FiducialDetect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossCenterPro.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_two_cross.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="qlog.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_cross_center.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

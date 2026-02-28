@@ -1,0 +1,166 @@
+{
+  "Metrics": [
+      {
+      "FOVOffset": {
+		"dispaly":true,
+        "unit": "deg",
+        "color": ["G" ],
+        "imageType": 1,
+        "images": [ "$color$_cross_$eyeboxId$_Y" ],
+        "suffix": [ "X", "Y" ],
+        "logheader": "CRA_$suffix$_0$eyeboxId$Eyebox",
+		"eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+      }
+    },
+    {
+      "FOV": {
+		"dispaly":true,
+        "unit": "deg",
+        "color": [ "G" ],
+        "imageType": 1,
+        "images": [ "$color$_solid_$eyeboxId$_YY" ],
+        "suffix": [ "X", "Y" ],
+        "logheader": "FOV_$suffix$_0$eyeboxId$Eyebox",
+        "eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+      }
+    },
+	{
+      "FOVBig": {
+		"dispaly":true,
+        "unit": "deg",
+        "color": [ "G" ],
+        "imageType": 1,
+        "images": [ "$color$_solid_big_$eyeboxId$_Y" ],
+        "suffix": [ "X", "Y" ],
+        "logheader": "FOV_big_$suffix$_0$eyeboxId$Eyebox",
+        "eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+      }
+    },
+    {
+      "Rotation": {
+		"dispaly":true,
+        "unit": "deg",
+        "color": [ "G" ],
+        "imageType":1, 
+        "images": [ "$color$_cross_$eyeboxId$_Y" ],
+        "logheader": "Rotation_W/O_0.9deg_Offset_0$eyeboxId$Eyebox",
+		"eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+      }
+    },
+	    {
+      "GridDistortion": {
+        "unit": "%",
+        "color": [ "G" ],
+        "imageType":1, 
+        "images": [ "$color$_grid_$eyeboxId$_Y"],
+        "suffix": ["Max"],
+        "logheader": "Distortion%_$suffix$_0$eyeboxId$Eyebox",
+		"eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]	
+      }
+    },
+    {
+      "LuminanceUniformity": {
+		"dispaly":true,
+        "unit": "nit",
+		"color": ["R","G","B","W"],
+        "imageType": 1,
+        "images": [ "$color$_solid_$eyeboxId$_YY" ],
+        "suffix": [ "Avg", "Cov"],
+        "logheader": "IQTU_$color$_$suffix$_0$eyeboxId$Eyebox",
+		"related": [ "LuminanceMinMaxPer" ],
+        "eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+      }
+    },
+	{
+      "LuminanceRolloff": {
+		"dispaly":true,
+        "unit": "%",
+        "color": [ "R","G","B","W" ],
+        "imageType": 1,
+        "images": [ "$color$_solid_$eyeboxId$_YY" ],
+        "suffix": [ "X", "Y" ],
+        "logheader": "IQTU_Rolloff_$color$_$suffix$_0$eyeboxId$Eyebox",
+		"eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+      }
+    },
+	{
+    "SmallAngleContrast": {
+	  "dispaly":true,
+      "unit": "",
+      "color": [ "R","G","B","W" ],
+      "imageType": 1,
+      "images": [
+        "$color$_ChessBoardPos_$eyeboxId$_Y",
+        "$color$_ChessBoardNeg_$eyeboxId$_Y"
+      ],
+      "suffix": ["00", "01", "02","03","04", "05", "06", "10", "11", "12", "13", "14", "15", "16", "20","21", "22", "23", "24", "25", "26","30", "31", "32", "33", "34", "35", "36", "40", "41", "42", "43", "44", "45", "46", "50", "51", "52", "53", "54", "55", "56", "60", "61", "62", "63", "64", "65", "66" ],
+      "logheader": "ANSI_$color$_Avg_0$eyeboxId$Eyebox",
+	  "related": [ "SmallchessAvgCr"],
+	  "eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+    }
+    },
+	{
+      "MTF": {
+		"dispaly":false,
+        "unit": "",
+        "color": [ "R","G","B","W" ],
+        "images": [],
+        "suffix": [ "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14"], 
+		"logheader":"MTF_$color$Y7.5_$suffix$_0$eyeboxId$Eyebox,MTF_$color$X7.5_$suffix$_0$eyeboxId$Eyebox",
+		"eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+      }
+    },
+	{
+      "LuminanceEfficiency": {
+		"dispaly":false,
+        "unit": "%",
+		"color": ["R","G","B","W"],
+        "imageType":1, 
+        "images": [ "$color$_solid_$eyeboxId$_YY"],
+        "logheader": "Eff(Nits/Nits)_$color$_0$eyeboxId$Eyebox",
+		"eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+      }
+    },
+	{
+      "PupilSwim": {
+		"dispaly":false,
+        "unit": "",
+        "color": ["W","G"],
+        "imageType":1, 
+        "images": ["$color$_Checker0.5Deg_$eyeboxId$_Y",
+          "$color$_Checker0.5Deg_3mm_$eyeboxId$_Y"],
+        "logheader": "GlobalPupilSwim_OutlierNo_$color$_0$eyeboxId$Eyebox,GlobalPupilSwim_RMS_arcmin_$color$_0$eyeboxId$Eyebox,GlobalPupilSwim_P90_arcmin_$color$_0$eyeboxId$Eyebox,LocalPupilSwim_RMS_$color$_0$eyeboxId$Eyebox,LocalPupilSwim_P90_$color$_0$eyeboxId$Eyebox",
+		"initlogheader":"GlobalPupilSwim_OutlierNo,GlobalPupilSwim_RMS_arcmin,GlobalPupilSwim_P90_arcmin,LocalPupilSwim_RMS,LocalPupilSwim_P90",
+		"eyeboxId": ["1"]
+      }
+    },
+	{
+      "Flare": {
+		"dispaly":false,
+        "unit": "",
+        "color": [ "W" ],
+        "imageType":1, 
+        "images": ["$color$_flare_$eyeboxId$_Y"],
+        "logheader": "Flare_Left_2Deg_0$eyeboxId$Eyebox,Flare_Right_2Deg_0$eyeboxId$Eyebox,Flare_Left_4Deg_0$eyeboxId$Eyebox,Flare_Right_4Deg_0$eyeboxId$Eyebox",
+		"initlogheader":"Left Flare (Median) 2 deg,Right Flare (Median) 2 deg,Left Flare (Median) 4 deg,Right Flare (Median) 4 deg",
+		"eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+      }
+    },
+	{
+      "ColorUniformity": {
+		"dispaly":false,
+        "unit": "",
+        "color": [""],
+        "imageType":1, 
+        "images": ["r_solid_$eyeboxId$_XX","r_solid_$eyeboxId$_YY","r_solid_$eyeboxId$_ZZ",
+		"g_solid_$eyeboxId$_XX","g_solid_$eyeboxId$_YY","g_solid_$eyeboxId$_ZZ",
+		"b_solid_$eyeboxId$_XX","b_solid_$eyeboxId$_YY","b_solid_$eyeboxId$_ZZ"],
+        "logheader": "dE_00_C_Global_FFOV_median_0$eyeboxId$Eyebox,dE_00_C_Global_FFOV_p95_0$eyeboxId$Eyebox,dE_00_freqMB_FFOV_median_0$eyeboxId$Eyebox,dE_00_freqMB_FFOV_p95_0$eyeboxId$Eyebox,dE_00_freqHB_FFOV_median_0$eyeboxId$Eyebox,dE_00_freqHB_FFOV_p95_0$eyeboxId$Eyebox",
+		"initlogheader":"dE_00_C_Global_FFOV_median,dE_00_C_Global_FFOV_p[95],dE_00_freqMB_FFOV_median,dE_00_freqMB_FFOV_p[95],dE_00_freqHB_FFOV_median,dE_00_freqHB_FFOV_p[95]",
+		"eyeboxId": ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15"]
+      }
+    }
+  ]	
+}
+
+

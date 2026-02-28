@@ -1,0 +1,329 @@
+﻿{
+  "Connection": {
+    "IpAddress": "10.0.0.4",
+    "Rock": 0,
+    "Solt": 1
+  },
+  "InterLock": 0,
+  "Cells": [
+    {
+      "Index": 1,
+      "Name": "Door1",
+      "Offset": "0.0",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Open",
+      "Off": "Close",
+      "Visible": 0
+    },
+    {
+      "Index": 2,
+      "Name": "Door2",
+      "Offset": "0.1",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Open",
+      "Off": "Close",
+      "Visible": 0
+    },
+    {
+      "Index": 3,
+      "Name": "Door3",
+      "Offset": "0.2",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Open",
+      "Off": "Close",
+      "Visible": 0
+    },
+    {
+      "Index": 4,
+      "Name": "Door4",
+      "Offset": "0.3",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Open",
+      "Off": "Close",
+      "Visible": 0
+    },
+    {
+      "Index": 5,
+      "Name": "Door5",
+      "Offset": "0.4",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Open",
+      "Off": "Close",
+      "Visible": 0
+    },
+    {
+      "Index": 6,
+      "Name": "Door6",
+      "Offset": "0.5",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Open",
+      "Off": "Close",
+      "Visible": 0
+    },   
+    {
+      "Index": 7,
+      "Name": "Red",
+      "Offset": "2.0",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Open",
+      "Off": "Close",
+      "Visible": 0
+    },
+    {
+      "Index": 8,
+      "Name": "Green",
+      "Offset": "2.1",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Open",
+      "Off": "Close",
+      "Visible": 0
+    },
+    {
+      "Index": 9,
+      "Name": "Yellow",
+      "Offset": "2.2",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Open",
+      "Off": "Close",
+      "Visible": 0
+    },
+    {
+      "Index": 10,
+      "Name": "Heartbeat",
+      "Offset": "6.4",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "True",
+      "Off": "False",
+      "Visible": 1
+    },
+	{
+      "Index": 11,
+      "Name": "Lamp",
+      "Offset": "2.4",
+      "Default": 0,
+      "ReadOnly": 0,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 1
+    },
+	{
+      "Index": 12,
+      "Name": "FFU",
+      "Offset": "4.5",
+      "Default": 0,
+      "ReadOnly": 0,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 1
+    },
+	{
+      "Index": 13,
+      "Name": "EStop",
+      "Offset": "0.6",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Emergency",
+      "Off": "Normal",
+      "Visible": 1
+    },
+    {
+      "Index": 14,
+      "Name": "Safety Relay",
+      "Offset": "0.7",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Open",
+      "Off": "Close",
+      "Visible": 1
+    },
+	{
+      "Index": 15,
+      "Name": "Soft EStop",
+      "Offset": "6.1",
+      "Default": 0,
+      "ReadOnly": 0,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 1
+    },
+	{
+      "Index": 16,
+      "Name": "Door State",
+      "Offset": "6.0",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "Open",
+      "Off": "Close",
+      "Visible": 1
+    },
+	{
+      "Index": 17,
+      "Name": "InterLock",
+      "Offset": "6.2",
+      "Default": 0,
+      "ReadOnly": 0,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 1
+    },
+    {
+      "Index": 18,
+      "Name": "Testing",
+      "Offset": "6.3",
+      "Default": 0,
+      "ReadOnly": 0,
+      "BitSize": 1,
+      "On": "True",
+      "Off": "False",
+      "Visible": 1
+    },
+	{
+      "Index": 19,
+      "Name": "Coaxia Light",
+      "Offset": "3.0",
+      "Default": 0,
+      "ReadOnly": 0,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 0
+    },
+	{
+      "Index": 20,
+      "Name": "Coaxia Light2",
+      "Offset": "2.5",
+      "Default": 0,
+      "ReadOnly": 0,
+      "BitSize": 1,
+      "On": "True",
+      "Off": "False",
+      "Visible": 1
+    },
+	{
+      "Index": 21,
+      "Name": "Light Board",
+      "Offset": "2.6",
+      "Default": 0,
+      "ReadOnly": 0,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 0
+    },
+	{
+      "Index": 22,
+      "Name": "Light Board2",
+      "Offset": "3.1",
+      "Default": 0,
+      "ReadOnly": 0,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 0
+    },
+	{
+      "Index": 23,
+      "Name": "CL_3000",
+      "Offset": "2.7",
+      "Default": 0,
+      "ReadOnly": 0,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 1
+    },
+	{
+      "Index": 24,
+      "Name": "Sensor A",
+      "Offset": "1.0",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 1
+    },
+	{
+      "Index": 25,
+      "Name": "Sensor B",
+      "Offset": "1.1",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 1
+    },
+	{
+      "Index": 26,
+      "Name": "Sensor C",
+      "Offset": "1.2",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 1
+    },
+	{
+      "Index": 27,
+      "Name": "LENS_X",
+      "Offset": "1.3",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 0
+    },
+	{
+      "Index": 28,
+      "Name": "LENS_Y",
+      "Offset": "1.4",
+      "Default": 0,
+      "ReadOnly": 1,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 0
+    },
+	{
+      "Index": 29,
+      "Name": "Collimator Light",
+      "Offset": "4.6",
+      "Default": 0,
+      "ReadOnly": 0,
+      "BitSize": 1,
+      "On": "On",
+      "Off": "Off",
+      "Visible": 1
+    }
+  ]
+}

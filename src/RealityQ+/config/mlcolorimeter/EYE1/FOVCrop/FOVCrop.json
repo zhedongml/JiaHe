@@ -1,0 +1,10 @@
+{
+    "FOVCrop": {
+        "XCenter": 5632,
+        "YCenter": 4600,
+        "WidthDegree": 51,
+        "HeightDegree": 41.6,
+        "Focallength": 40,
+        "PixelSize": 0.0032
+    }
+}

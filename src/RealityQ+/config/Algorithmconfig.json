@@ -1,0 +1,54 @@
+{
+    "CRACenter": {
+        "centerX": 3185.50927734375,
+        "centerY": 3094.333984375
+    },
+    "CRAreaPercent": {
+        "crArea": 0.6
+    },
+    "Chrominance": {
+        "centerX": 3961,
+        "centerY": 3073,
+        "degree": 40,
+        "num": 4,
+        "ratio": 1
+    },
+    "DUTOffset": {
+        "offsetx": -776.49072265625,
+        "offsety": 11.333984375
+    },
+    "Luminance": {
+        "centerX": 3961,
+        "centerY": 3073,
+        "degree": 30,
+        "num": 8,
+        "ratio": 1
+    },
+    "LuminanceEfficiency": {
+        "EyeboxIds": 0,
+        "centerX": 3961,
+        "centerY": 3073,
+        "degree": 30,
+        "num": 8,
+        "ratio": 2
+    },
+    "RecipeSetLuminanceInfo": {
+        "degree": 30,
+        "num": 10,
+        "ratio": 1
+    },
+    "checkerboard": {
+        "chessAlgortithm": 3,
+        "pointsClusters": 50,
+        "singlecheckerWidth": 100,
+        "xyClassification": 150
+    },
+    "system": {
+        "FocalLength": 22.8,
+        "W_opticalcenter": [
+            3958,
+            2992
+        ],
+        "pixel_size": 0.0046
+    }
+}

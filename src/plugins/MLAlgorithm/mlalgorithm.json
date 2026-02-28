@@ -1,0 +1,13 @@
+{
+    "Name" : "MLAlgorithm",
+    "Version" : "5.0.3",
+    "CompatVersion" : "5.0.3",
+    "Vendor" : "MLO",
+    "Copyright" : "(C) MLO",
+    "License" : "mlo copy right",
+    "Description" : "ML algorithm",
+    "Url" : "https://mloptic.com/",
+    "Dependencies" : [
+        { "Name" : "Core", "Version" : "5.0.3" }
+    ]
+}

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+ <BehaviorTree ID="BehaviorTree">
+  <!-- Add nodes here -->
+  <Sequence name="Sequence">
+   <Action name="IQ_SetEyeboxList" ID="IQ_SetEyeboxList" eyeboxlist="5" key="eyebox"/>
+   <Action name="IQ_SetDutID" ID="IQ_SetDutID" id_value="SLB" id_key="dutid"/>
+   <Action name="IQ_Metrics_CreateDBTable" ID="IQ_Metrics_CreateDBTable"/>
+   <Action name="IQ_SetTestState" ID="IQ_SetTestState" is_dut="0" is_update_slb="0" size="1" size_key="size"/>
+   <Action name="IQ_Metrics_CreateResultFile" ID="IQ_Metrics_CreateResultFile" all_csvname="metrics_offline_all" csvname="metrics_offline" dut_seq="SLB_20250913T143548" root_dir="E:\pcdata\20250913_MetricsTest"/>
+   <SequenceStar name="SequenceStar">
+    <Action name="IQ_Metrics_Location_Clear" ID="IQ_Metrics_Location_Clear"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="2degCheckerDenseMTF"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="0.5degCheckerDenseMTF"/>
+    <Parallel name="Parallel">
+     <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="FOV"/>
+     <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="FOVOffset"/>
+     <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="Rotation"/>
+     <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="GridDistortion"/>
+     <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="CheckerContrast"/>
+     <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="GridDenseMTF"/>
+     <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="LuminanceRolloff"/>
+     <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="LateralColor"/>
+    </Parallel>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="ColorUniformity"/>
+    <Action name="IQ_Metrics_ExportToCSV" ID="IQ_Metrics_ExportToCSV"/>
+   </SequenceStar>
+  </Sequence>
+ </BehaviorTree>
+</root>

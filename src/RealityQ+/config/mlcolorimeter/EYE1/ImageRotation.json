@@ -1,0 +1,19 @@
+{
+	"RotationExample":[0,90,180,270],
+	"DUT_LeftEye":{
+		"FlippingX": false,
+        "FlippingY": false,
+        "Rotation": "R0"
+	},
+	"DUT_RightEye":{
+		"FlippingX": false,
+        "FlippingY": false,
+        "Rotation": "R0"
+	},
+	"SLB":{
+		"FlippingX": false,
+        "FlippingY": false,
+        "Rotation": "R0"
+	},
+	"IsRotation":false
+}

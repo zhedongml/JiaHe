@@ -1,0 +1,11 @@
+{
+	"Clear":"solid white",
+	"PositiveChecker":"+checkerboard", 
+	"NegativeChecker":"-checkerboard",
+	"Cross":"crosses",
+	"Flare":"flare",
+	"Grid":"grid",
+	"Checker0.5deg":"checkerboard0.5deg", 
+	"ClearBig":"solid white big",
+	"Dark":"solid black"
+}

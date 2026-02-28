@@ -1,0 +1,25 @@
+{
+    "AlignPositon": {
+        "X": -87.678,
+        "Y": 51.983,
+        "Z": 30.816
+    },
+    "IntergratingSphere": {
+        "Scal": 0.41,
+        "Solution": "G"
+    },
+    "ProjectorTilt": {
+        "X": 3.93,
+        "Y": -7.037
+    },
+    "Reticle": "Clear",
+    "SafePositon": {
+        "X": -87.6781,
+        "Y": 56.9224,
+        "Z": 31
+    },
+    "SafeTilt": {
+        "X": 3.93,
+        "Y": -7.037
+    }
+}

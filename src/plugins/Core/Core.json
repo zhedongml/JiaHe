@@ -1,0 +1,15 @@
+{
+    "Name" : "Core",
+    "Version" : "1.0.1",
+    "CompatVersion" : "1.0.0",
+    "Required" : true,
+    "Vendor" : "MLO",
+    "Copyright" : "ML Optical",
+    "License" : [ "Commercial Usage"
+    ],
+    "Category" : "Core",
+    "Description" : "The core plugin.",
+    "Url" : "http://www.mloptic.com",
+    "Dependencies" : [
+    ]
+}

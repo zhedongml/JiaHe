@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+ <BehaviorTree ID="BehaviorTree">
+  <!-- Add nodes here -->
+  <Sequence name="Sequence">
+   <Action name="IQ_SetEyeboxList" ID="IQ_SetEyeboxList" eyeboxlist="1,2,3,4,5,6,7,8,9" key="eyebox"/>
+   <Action name="IQ_SetDutID" ID="IQ_SetDutID" id_value="SLB" id_key="dutid"/>
+   <Action name="IQ_Metrics_CreateDBTable" ID="IQ_Metrics_CreateDBTable"/>
+   <Action name="IQ_SetTestState" ID="IQ_SetTestState" is_dut="0" is_update_slb="0" size="1" size_key="size"/>
+   <Action name="IQ_Metrics_CreateResultFile" ID="IQ_Metrics_CreateResultFile" all_csvname="metrics_offline_all" csvname="metrics_offline" dut_seq="Dut_20250911T000032" root_dir="E:\pcdata\20250911_MetricsTest"/>
+   <SequenceStar name="SequenceStar">
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="FOV"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="FOVOffset"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="2degCheckerDenseMTF"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="0.5degCheckerDenseMTF"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="Rotation"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="GridDistortion"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="CheckerContrast"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="GridDenseMTF"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="LuminanceEfficiency"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="LuminanceRolloff"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="PupilSwim"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="LateralColor"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="Flare"/>
+    <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="ColorUniformity"/>
+    <Action name="IQ_Metrics_ExportToCSV" ID="IQ_Metrics_ExportToCSV"/>
+   </SequenceStar>
+  </Sequence>
+ </BehaviorTree>
+</root>

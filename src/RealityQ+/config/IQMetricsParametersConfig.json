@@ -1,0 +1,63 @@
+{
+  "system": {
+    "pixel_size": 3.45e-3,
+    "FocalLength": 39.8999,
+    "W_opticalcenter": [ 6691, 4765 ],
+    "ROI": [ 3420, 2172, 6360, 5664 ],
+    "rotaionAngle": 0,
+    "ResizeNum": 4,
+    "DUTRotationAngle": 1.9615
+  },
+  "denseMTF": {
+    "denseMTFWidth": 330,
+    "denseMTFHeight": 110
+  },
+  "GridMTF": {
+    "gridMTFWidth": 100,
+    "gridMTFHeight": 100
+  },
+
+  "CrossMTF": {
+    "crossMTFWidth": 320,
+    "crossMTFHeight": 50,
+    "ROI_center_offset": 80,
+    "ROI_center_offset_big": 400,
+    "crossMTFWidthBig": 1630,
+    "crossMTFHeightBig": 350
+  },
+  "mtfFreq": {
+    "mtfFreq": 10.625,
+    "mtfFreq2": 21.25
+  },
+  "distortion": {
+    "distortonTheHor": 12.75,
+    "distortonTheVer": 12.75,
+    "distortonTheHorBig": 58,
+    "distortonTheVerBig": 44
+  },
+  "ghostROI": {
+    "ghostRectVec": []
+  },
+  "flare": {
+    "avg_width": 5,
+    "flareAngle": 5,
+    "xsecWidth": 3,
+    "xsecVec": [ 2, 4 ]
+  },
+  "checkerContrast": {
+    "crArea": 0.5
+  },
+  "RollOff": {
+    "RolloffAreaRatio": 0.81,
+    "RolloffLengthH": 21.25,
+    "RolloffLengthV": 16.25,
+    "RolloffWidth": 10
+  },
+  "PupilSwim": {
+    "CheckerDensity": 0.5
+  },
+  "SequentialContrast": {
+    "zoneARadius": 5,
+    "LuminaceActive": 0.81
+  }
+}

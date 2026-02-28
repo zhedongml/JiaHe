@@ -1,0 +1,17 @@
+{
+  "Name": "MqttMesCommunicate",
+  "Version": "1.0.0",
+  "CompatVersion": "1.0.0",
+  "DisabledByDefault": false,
+  "Vendor": "The ML optic ",
+  "Copyright": "Ml optic",
+  "License": [],
+  "Description": "MQTT Message Communication plugin.",
+  "Url": "http://www.mloptic.com",
+  "Dependencies": [
+    {
+      "Name": "Core",
+      "Version": "1.0.0"
+    }
+  ]
+}

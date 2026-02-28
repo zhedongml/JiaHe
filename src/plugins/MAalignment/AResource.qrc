@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>image/down.png</file>
+        <file>image/left.png</file>
+        <file>image/right.png</file>
+        <file>image/up.png</file>
+        <file>image/alig.png</file>
+        <file>image/double-left.png</file>
+        <file>image/double-right.png</file>
+        <file>image/DutInput-4-9.tif</file>
+        <file>image/input_left.png</file>
+        <file>image/input_right.png</file>
+        <file>image/direction.png</file>
+    </qresource>
+</RCC>

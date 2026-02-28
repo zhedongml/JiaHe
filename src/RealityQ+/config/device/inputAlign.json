@@ -1,0 +1,13 @@
+{
+	"CameraDUT": {
+		"PixelSize": 1.85,
+		"SerialNumber": "04K0H",
+		"Type": "vimba",
+		"magnification": 0.2
+	},
+	"Reticle": "Clear",
+	"IntergratingSphere": {
+		"Solution": "D65 10k",
+		"Scal": 1
+	}
+}

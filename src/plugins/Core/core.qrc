@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>images/rightsidebaricon.png</file>
+        <file>images/rightsidebaricon@2x.png</file>
+        <file>images/arrowdown.png</file>
+        <file>images/arrowdown@2x.png</file>
+        <file>images/arrowup.png</file>
+        <file>images/arrowup@2x.png</file>
+        <file>images/clean_pane_small.png</file>
+        <file>images/clean_pane_small@2x.png</file>
+        <file>images/close.png</file>
+        <file>images/extension.png</file>
+        <file>images/inputfield.png</file>
+        <file>images/inputfield_disabled.png</file>
+        <file>images/Stop.ico</file>
+        <file>images/mlico.ico</file>
+    </qresource>
+</RCC>

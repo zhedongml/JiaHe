@@ -1,0 +1,46 @@
+{
+	"MVCameraPostion": {
+		"posX": 0,
+		"posY": 0,
+		"posZ": 0
+	},
+	"MeasureCameraPostion": {
+		"posX": -41.5,
+		"posY": -0.37,
+		"posZ": 60
+	},
+	"LensInfinitelyCloseDutMotionZ":82.5446,
+	"motion3DAndDutCoordinateRelate": {
+		"motion3DX": "dutX",
+		"motion3DY": "dutY"
+	},
+	"motion3DAndMVRelate": {
+		"motion3DX": "-MvX",
+		"motion3DY": "-MvY"
+	},
+	"mvFocus": 66,
+	"MoveOut": {
+        "Enable": false,
+        "Offset": {
+            "X": 0,
+            "Y": 0
+        }
+    },
+	"MvAlignProjectorCoord": {
+		"X": -47.978,
+		"Y": 16.783
+	},
+	"MvRelativeDutInputGrating": {
+		"CalculateMvFidsByInputFlag": true,
+		"LeftEye":{
+			"X": -70.04,
+			"Y": 73.537,
+			"Z": 56.503
+		},
+		"RightEye":{
+			"X": -70.04,
+			"Y": 73.537,
+			"Z": 56.503
+		}
+    }
+}

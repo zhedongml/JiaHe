@@ -1,0 +1,19 @@
+{
+	"DUTMotion3D":{
+		"LeftEye":{
+			"X": -104,
+			"Y": 3,
+			"Z": 115.0
+		},
+		"RightEye":{
+			"X": -104,
+			"Y": 3,
+			"Z": 115.0
+		}
+	},
+	"PixelPerDegreeFactor":{
+		"LeftEye":1000.0,
+		"RightEye":1000.0
+	},
+	"RealTimeUpdate":false
+}

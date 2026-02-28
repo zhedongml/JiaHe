@@ -1,0 +1,53 @@
+{
+ "HostIP":"127.0.0.1", 
+ "Port":3434, 
+ "SpectraExe":"D:/Program Files (x86)/Labsphere/HELIOSense/HELIOSense.exe",
+ "RedCalibrationFactor":3.056e9, 
+ "GreenCalibrationFactor":3.078e9, 
+ "BlueCalibrationFactor":2.358e9,
+ "DeviceIndex":{
+	 "R":0,
+	 "G":1,
+	 "B":2
+ }, 
+ "WhiteRatio":{
+	 "R":0.3,
+	 "G":0.65,
+	 "B":0.05
+ },
+ "Solutions":[
+	{
+	"name":"Red_0.895A_630nm", 
+	"index":1,
+	"luminance":0,
+	"luminanceMax":1086000,
+	"colorFocus": "R",
+	"currentOutput":"0.895"
+ 	}, 
+	{
+ 	"name":"Green_0.427A_530nm", 
+ 	"index":2,
+	"luminance":0,
+	"luminanceMax":883900,
+	"colorFocus": "G",
+	"currentOutput":"0.427"
+ 	},  
+ 	{
+	"name":"Blue_1.239A_465nm", 
+	"index":3,
+	"luminance":0,
+	"luminanceMax":600600,
+	"colorFocus": "B",
+	"currentOutput":"1.239"
+ 	}, 
+	{
+ 	"name":"White", 
+ 	"index":4,
+	"luminance":0,
+	"luminanceMax":1088000,
+	"colorFocus": "W",
+	"currentOutput":"0.895,0.427,1.239"
+	}
+ ], 
+ "Scale":1
+}

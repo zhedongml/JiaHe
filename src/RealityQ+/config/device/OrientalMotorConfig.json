@@ -1,0 +1,88 @@
+{
+	"OrientalMotorMap": [
+		{
+			"Key": "X",
+			"Type": "OrientalMotor",
+			"Name": "Tilt",
+			"Protocol": "modbus/serial",
+			"MotorType": "Oriental/AZ",
+			"Port": "COM10",
+			"Station": 1,
+			"SerialInfo": {
+				"BaudRate": 115200,
+				"ByteSize": 8,
+				"Parity": "Even",
+				"StopBit": "OneStop",
+				"FlowControl": "None"
+			},
+			"IOCommand": {
+				"Enable": false,
+				"Start": 5,
+				"ZHome": 6,
+				"Stop": 7,
+				"AlarmRst": 8
+			},
+			"Init_Index": 0,
+			"Move_Index": 1,
+			"PulsePerCycle":507042,
+			"Min": -6,
+			"Max": 6
+		},
+		{
+			"Key": "Y",
+			"Type": "OrientalMotor",
+			"Name": "Cant",
+			"Protocol": "modbus/serial",
+			"MotorType": "Oriental/AZ",
+			"Port": "COM10",
+			"Station": 2,
+			"SerialInfo": {
+				"BaudRate": 115200,
+				"ByteSize": 8,
+				"Parity": "Even",
+				"StopBit": "OneStop",
+				"FlowControl": "None"
+			},
+			"IOCommand": {
+				"Enable": false,
+				"Start": 5,
+				"ZHome": 6,
+				"Stop": 7,
+				"AlarmRst": 8
+			},
+			"Init_Index": 0,
+			"Move_Index": 1,
+			"PulsePerCycle": 360000,
+			"Min": -6,
+			"Max": 6
+		},
+		{
+			"Key": "Z",
+			"Type": "OrientalMotor",
+			"Name": "Rotation",
+			"Protocol": "modbus/serial",
+			"MotorType": "Oriental/AZ",
+			"Port": "COM10",
+			"Station": 3,
+			"SerialInfo": {
+				"BaudRate": 115200,
+				"ByteSize": 8,
+				"Parity": "Even",
+				"StopBit": "OneStop",
+				"FlowControl": "None"
+			},
+			"IOCommand": {
+				"Enable": false,
+				"Start": 5,
+				"ZHome": 6,
+				"Stop": 7,
+				"AlarmRst": 8
+			},
+			"Init_Index": 0,
+			"Move_Index": 1,
+			"PulsePerCycle": 180000,
+			"Min": -15,
+			"Max": 15
+		}
+	]
+}

@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+ <BehaviorTree ID="BehaviorTree">
+  <!-- Add nodes here -->
+  <Sequence name="Sequence">
+   <!-- System Init -->
+   <Action name="System_Date" ID="System_Date" date_key="cur_data"/>
+   <Action name="System_DateTime" ID="System_DateTime" date_time_key="cur_datatime"/>
+   <Action name="System_InputTips" ID="System_InputTips" tip="Please input operator initials !" text_key="{name}"/>
+   <!-- <Action name="System_Tips" ID="System_Tips" tip="Please confirm if the loading has been completed ?"/> -->
+   <!-- Devices Connect-->
+   <Parallel name="Parallel">
+    <Action name="AA_Connect_MVCamera" ID="AA_Connect_MVCamera"/>
+    <Action name="AA_Connect_Collimator" ID="AA_Connect_Collimator"/>
+    <Action name="AA_Connect_MeasureCameraMotionModule" ID="AA_Connect_MeasureCameraMotionModule"/>
+    <Action name="AA_Connect_ProjectorMotionModule" ID="AA_Connect_ProjectorMotionModule"/>
+    <Action name="AA_Connect_Keyence" ID="AA_Connect_Keyence"/>
+    <Action name="Decoder_Connect" ID="Decoder_Connect"/>
+    <Action name="AA_Connect_DutMotionModule" ID="AA_Connect_DutMotionModule"/>
+   </Parallel>
+   <Action name="Colorimeter_Connect_All_Async" ID="Colorimeter_Connect_All_Async"/>
+   <!-- Alignment Init (eyerelief:0-21.3mm,1-13.3mm,2-5.3mm) -->
+   <!-- <Action name="IQ_SetDutID" ID="IQ_SetDutID" id_key="dutid" id_value="Dut"/> -->
+   <Action name="System_InputTips" ID="System_InputTips" tip="Please input the serial number of dut!" text_key="dutid"/>
+   <Action name="AA_Dut_GetDutType" ID="AA_Dut_GetDutType" size_key="size" eyetype_key="eyetype" cust_type="1"/>
+   <Action name="AA_SetMotionMoveSpeed" ID="AA_SetMotionMoveSpeed" projector_dxdy="" dut_x="20" dut_y="20" dut_z="10" imaging_x="20" imaging_y="20" imaging_z="10" imaging_dxdy="" reticle_x="" reticle_y=""/>
+   <IfThenElse name="IfThenElse">
+    <Action name="System_CompareStr" ID="System_CompareStr" origin_str="{size}" target_str="Small"/>
+    <Action name="SetBlackboard" ID="SetBlackboard" output_key="focus" value="28.701"/>
+    <Action name="SetBlackboard" ID="SetBlackboard" output_key="focus" value="28.459"/>
+   </IfThenElse>
+   <IfThenElse name="IfThenElse">
+    <Action name="System_CompareStr" ID="System_CompareStr" origin_str="{size}" target_str="Small"/>
+    <Action name="SetBlackboard" ID="SetBlackboard" output_key="fiducial_expo_time" value="4"/>
+    <Action name="SetBlackboard" ID="SetBlackboard" output_key="fiducial_expo_time" value="1"/>
+   </IfThenElse>
+   <!-- Dut Alignment Module  & CalibrationData Load -->
+   <Parallel name="Parallel">
+    <Action name="IS_Connect" ID="IS_Connect"/>
+    <Action name="Reticle_2D_Connect" ID="Reticle_2D_Connect"/>
+    <Action name="AA_Connect_Polarizer" ID="AA_Connect_Polarizer"/>
+    <Action name="Colorimeter_LoadCalibrationData" ID="Colorimeter_LoadCalibrationData" aperture="3" binning="1" colorfilter_list="X,Y,Z,Clear" ndfliter_list="ND0" lightsource_list="R,G,B,W" is_load_dark="1" is_load_colorshift="1" is_load_ffc="1" is_load_distortion="1" is_load_exposure="1" is_load_fliprotation="1" is_load_luminance="1" is_load_fourcolor="0"/>
+    <!--AA Process-->
+    <Sequence name="Sequence">
+     <Action name="AA_Dut_LoadDUT" ID="AA_Dut_LoadDUT"/>
+	 <!-- <IfThenElse name="IfThenElse"> -->
+     <!-- <Action name="System_CompareStr" ID="System_CompareStr" origin_str="{size}" target_str="Small"/> -->
+     <!-- <Action name="Decoder_SN" ID="Decoder_SN" key="dutid"/> -->
+     <!-- <Action name="System_InputTips" ID="System_InputTips" tip="Please input the serial number of dut!" text_key="dutid"/> -->
+     <!-- </IfThenElse> -->
+     <Action name="AA_Dut_AdjustLevel" ID="AA_Dut_AdjustLevel"/>
+     <Action name="AA_Dut_Ranging" ID="AA_Dut_Ranging"/>
+     <Action name="AA_Dut_FindFiducial" ID="AA_Dut_FindFiducial" is_auto="1" is_save="1" is_auto_exposure="0" exposure_time="{fiducial_expo_time}" root_dir="E:/SAT_GRR/{cur_data}_MetricsTest/" dut_seq="{dutid}_{name}_{cur_datatime}"/>
+     <Action name="AA_Dut_Align_EntrancePupil" ID="AA_Dut_Align_EntrancePupil"/>
+    </Sequence>
+    <!--Result File Create-->
+    <Sequence name="Sequence">
+     <Action name="IQ_SetEyeboxList" ID="IQ_SetEyeboxList" eyeboxlist="5" key="eyeboxids"/>
+     <Action name="IQ_Metrics_CreateDBTable" ID="IQ_Metrics_CreateDBTable"/>
+    </Sequence>
+    <!--Colorimeter Setting-->
+    <Sequence name="Sequence">
+     <Action name="Colorimeter_Camera_StopGrabbing" ID="Colorimeter_Camera_StopGrabbing"/>
+     <Action name="Colorimeter_Motion_SetFocus" ID="Colorimeter_Motion_SetFocus" focus="{focus}"/>
+     <Action name="Colorimeter_Camera_SetBinningSelector" ID="Colorimeter_Camera_SetBinningSelector" binning_selector="1"/>
+     <Action name="Colorimeter_Camera_SetBinningMode" ID="Colorimeter_Camera_SetBinningMode" binning_mode="Average"/>
+    </Sequence>
+   </Parallel>
+   <Action name="IQ_Metrics_CreateResultFile" ID="IQ_Metrics_CreateResultFile" all_csvname="metrics_{eyeboxids}_all" csvname="{dutid}_metrics_{eyeboxids}" dut_seq="{dutid}_{name}_{cur_datatime}" root_dir="E:\SAT_GRR\{cur_data}_MetricsTest"/>
+   <!-- IQ Init -->
+   <Action name="Polarizer_MoveAbs" ID="Polarizer_MoveAbs" position="170.625"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_R" value="0.96"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_G" value="0.96"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_B" value="0.96"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_W" value="0.96,0.96,0.96"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_off" value="0,0,0"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="nd_select" value="ND0"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="xyzc_select" value="Clear"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="exposure_init_time" value=""/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="binning" value="4"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="is_auto_exposure" value="0"/>
+   <Action name="IQ_UpdateFlipRotation" ID="IQ_UpdateFlipRotation"/>
+   <!-- IQ Metrics Module -->
+   <For name="For" traverse_params="{eyeboxids}">
+    <Sequence name="Sequence">
+     <Action name="System_GetForNodeValue1" ID="System_GetForNodeValue1" value_key="cur_eb"/>
+     <Action name="AA_Dut_Align_EyeBox" ID="AA_Dut_Align_EyeBox" eyebox_id="{cur_eb}"/>
+     <For name="For" traverse_params="R,G,B;{ISphere_scale_R},{ISphere_scale_G},{ISphere_scale_B}">
+      <Sequence name="Sequence">
+       <Action name="System_GetForNodeValue2" ID="System_GetForNodeValue2" value_key1="color" value_key2="isphere_scale"/>
+       <Action name="IS_SetSolution" ID="IS_SetSolution" isphere_scale="{isphere_scale}" light_source="{color}"/>
+       <!-- Clear Pattern (R&G&B) -->
+       <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="{size}" reticle_name="Clear"/>
+       <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="X" light_source="{color}" image_type="solid" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+       <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="Y" light_source="{color}" image_type="solid" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+       <IfThenElse name="IfThenElse">
+        <Action name="System_CompareStr" ID="System_CompareStr" origin_str="{color}" target_str="R"/>
+        <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="Z" light_source="{color}" image_type="solid" is_set_et="1" is_auto_et="0" exposure_time="100" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+        <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="Z" light_source="{color}" image_type="solid" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+       </IfThenElse>
+       <!-- Cross Pattern (R&G&B) -->
+       <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="{size}" reticle_name="Cross"/>
+       <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="1" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="{color}" image_type="crosshair" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+       <!-- PositiveChecker Pattern (R&G&B) -->
+       <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="{size}" reticle_name="PositiveChecker"/>
+       <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="{color}" image_type="checkerPositive" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+       <!-- NegativeChecker Pattern (R&G&B) -->
+       <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="{size}" reticle_name="NegativeChecker"/>
+       <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="{color}" image_type="checkerNegative" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+       <!--Ghost Pattern (G) -->
+       <BlackboardCheckString name="BlackboardCheckString" return_on_mismatch="SUCCESS" value_A="{color}" value_B="G">
+        <Sequence name="Sequence">
+         <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="{size}" reticle_name="Ghost"/>
+         <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="{color}" image_type="ghost" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+         <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="{color}" image_type="ghost_high" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+        </Sequence>
+       </BlackboardCheckString>
+       <!-- Grid Pattern (R&G&B) -->
+       <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="{size}" reticle_name="Grid"/>
+       <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="1" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="{color}" image_type="grid" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+       <!-- Checker0.5deg Pattern (R&G&B) -->
+       <BlackboardCheckString name="BlackboardCheckString" return_on_mismatch="SUCCESS" value_A="{cur_eb}" value_B="5">
+        <Sequence name="Sequence">
+         <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="{size}" reticle_name="Checker0.5deg"/>
+         <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="{color}" image_type="checker0.5Deg" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+         <Action name="AA_Move_PupilDecenter" ID="AA_Move_PupilDecenter" relative_x="3" relative_y="0" relative_z="0"/>
+         <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="{color}" image_type="checker0.5Deg_offsetPos" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+         <Action name="AA_Move_PupilDecenter" ID="AA_Move_PupilDecenter" relative_x="-6" relative_y="0" relative_z="0"/>
+         <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="{color}" image_type="checker0.5Deg_offsetNeg" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+         <Action name="AA_Move_PupilDecenter" ID="AA_Move_PupilDecenter" relative_x="3" relative_y="0" relative_z="0"/>
+        </Sequence>
+       </BlackboardCheckString>
+      </Sequence>
+     </For>
+     <!-- Flare Pattern (W) -->
+     <Action name="IS_SetSolution" ID="IS_SetSolution" isphere_scale="{ISphere_scale_W}" light_source="W"/>
+     <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="{size}" reticle_name="Flare"/>
+     <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="W" image_type="flare" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+     <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="W" image_type="flare_high" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+    </Sequence>
+   </For>
+   <Parallel name="Parallel">
+    <Action name="IS_SetSolution" ID="IS_SetSolution" isphere_scale="{ISphere_off}" light_source="W"/>
+    <Sequence name="Sequence">
+     <Action name="Colorimeter_WaitForCaptureEnd" ID="Colorimeter_WaitForCaptureEnd" timeout="20"/>
+     <!-- <Action name="IQ_UpdateFixExposureTimeConfig" ID="IQ_UpdateFixExposureTimeConfig"/> -->
+     <SequenceStar name="SequenceStar">
+      <Action name="IQ_Metrics_Location_Clear" ID="IQ_Metrics_Location_Clear"/>
+      <Parallel name="Parallel">
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="FOV"/>
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="FOVOffset"/>
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="Rotation"/>
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="GridDistortion"/>
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="CheckerContrast"/>
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="GridDenseMTF"/>
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="LuminanceEfficiency"/>
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="LuminanceRolloff"/>
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="LateralColor"/>
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="Flare"/>
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="PupilSwim"/>
+       <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="ColorUniformity"/>
+      </Parallel>
+      <Action name="IQ_Metrics_ExportToCSV" ID="IQ_Metrics_ExportToCSV"/>
+     </SequenceStar>
+    </Sequence>
+    <Action name="AA_Dut_LoadDUT" ID="AA_Dut_LoadDUT"/>
+   </Parallel>
+  </Sequence>
+ </BehaviorTree>
+</root>

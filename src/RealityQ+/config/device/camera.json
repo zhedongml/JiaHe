@@ -1,0 +1,11 @@
+{
+"MVCamera": {
+    "withModule": {
+        "PixelSize": 3.482,
+        "SerialNumber": "0CJ9K",
+        "Type": "vimba",
+        "magnification": 0.5,
+		"resolution":[2464, 2056]
+    }
+  }
+}

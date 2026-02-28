@@ -1,0 +1,12 @@
+{
+	"CameraMap": [
+		{
+			"Enable":true,
+			"Key": "VieCamera1",
+			"Type": "matroxv2",
+			"Name": "Vieworks",
+			"ConnectAddress": "0",
+			"ColourCamera": false
+		}
+	]
+}

@@ -1,0 +1,18 @@
+{
+	"FocusMax": 27.43,
+	"FocusMin": 24.25,
+	"InfinityPosition": 25.81,
+	"FocalLength": 39.91,
+	"FocalPlanesObjectSpace": -1.116,
+	"RoughStep": 0.4,
+	"IsUseFineAdjust": true,
+	"FineStep": 0.04,
+	"ROIs": [
+		{
+			"X": 4000,
+			"Y": 3000,
+			"Width": 200,
+			"Height": 200
+		}
+	]
+}

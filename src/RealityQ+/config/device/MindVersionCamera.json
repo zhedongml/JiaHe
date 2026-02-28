@@ -1,0 +1,17 @@
+{
+	"MindVisionConnectionInfo":{
+		"Name": "AngleCam",
+        "SN": "0",
+		"Type":"MindVision"
+	},
+    "CollimatorParallelAdjustment": {
+    "focalLength": 150.0,
+    "pixelSize": 0.0052,
+    "AngleRange": 30,
+    "AdjustTimes": 5,
+    "BaseCenter": {
+		"X": 640.5,
+		"Y": 513.8
+	}
+  }
+}

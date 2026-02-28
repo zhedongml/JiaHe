@@ -1,0 +1,123 @@
+
+#pragma once
+
+#include "pluginsystem_global.h"
+
+#include <QString>
+#include <QHash>
+#include <QVector>
+#include <qjsonobject.h>
+
+QT_BEGIN_NAMESPACE
+class QRegularExpression;
+QT_END_NAMESPACE
+
+namespace ExtensionSystem {
+
+namespace Internal {
+
+class OptionsParser;
+class PluginSpecPrivate;
+class PluginManagerPrivate;
+
+} // Internal
+
+class IPlugin;
+class PluginView;
+
+struct PLUGINSYSTEM_EXPORT PluginDependency
+{
+    enum Type {
+        Required,
+        Optional,
+        Test
+    };
+
+    PluginDependency() : type(Required) {}
+
+    QString name;
+    QString version;
+    Type type;
+    bool operator==(const PluginDependency &other) const;
+    QString toString() const;
+};
+
+uint qHash(const ExtensionSystem::PluginDependency &value);
+
+struct PLUGINSYSTEM_EXPORT PluginArgumentDescription
+{
+    QString name;
+    QString parameter;
+    QString description;
+};
+
+class PLUGINSYSTEM_EXPORT PluginSpec
+{
+public:
+    enum State { Invalid, Read, Resolved, Loaded, Initialized, Running, Stopped, Deleted};
+
+    ~PluginSpec();
+
+    // information from the xml file, valid after 'Read' state is reached
+    QString name() const;
+    QString version() const;
+    QString compatVersion() const;
+    QString vendor() const;
+    QString copyright() const;
+    QString license() const;
+    QString description() const;
+    QString url() const;
+    QString category() const;
+    QString revision() const;
+    QRegularExpression platformSpecification() const;
+    bool isAvailableForHostPlatform() const;
+    bool isRequired() const;
+    bool isExperimental() const;
+    bool isEnabledByDefault() const;
+    bool isEnabledBySettings() const;
+    bool isEffectivelyEnabled() const;
+    bool isEnabledIndirectly() const;
+    bool isForceEnabled() const;
+    bool isForceDisabled() const;
+    QVector<PluginDependency> dependencies() const;
+    QJsonObject metaData() const;
+
+    using PluginArgumentDescriptions = QVector<PluginArgumentDescription>;
+    PluginArgumentDescriptions argumentDescriptions() const;
+
+    // other information, valid after 'Read' state is reached
+    QString location() const;
+    QString filePath() const;
+
+    QStringList arguments() const;
+    void setArguments(const QStringList &arguments);
+    void addArgument(const QString &argument);
+
+    bool provides(const QString &pluginName, const QString &version) const;
+
+    // dependency specs, valid after 'Resolved' state is reached
+    QHash<PluginDependency, PluginSpec *> dependencySpecs() const;
+    bool requiresAny(const QSet<PluginSpec *> &plugins) const;
+
+    // linked plugin instance, valid after 'Loaded' state is reached
+    IPlugin *plugin() const;
+
+    // state
+    State state() const;
+    bool hasError() const;
+    QString errorString() const;
+
+    void setEnabledBySettings(bool value);
+
+    static PluginSpec *read(const QString &filePath);
+
+private:
+    PluginSpec();
+    Internal::PluginSpecPrivate *d;
+    friend class PluginView;
+    friend class Internal::OptionsParser;
+    friend class Internal::PluginManagerPrivate;
+    friend class Internal::PluginSpecPrivate;
+};
+
+} // namespace ExtensionSystem

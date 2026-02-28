@@ -1,0 +1,447 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 9">
+<link rel=File-List href="./LKIF2_SetFilter.files/filelist.xml">
+<link rel=Edit-Time-Data href="./LKIF2_SetFilter.files/editdata.mso">
+<link rel=OLE-Object-Data href="./LKIF2_SetFilter.files/oledata.mso">
+<title>LKIF2_SetFilter</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:LastAuthor>Author</o:LastAuthor>
+  <o:LastSaved>2009-02-24T11:38:32Z</o:LastSaved>
+  <o:Version>9.8961</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.98in .79in .98in .79in;
+	mso-header-margin:.51in;
+	mso-footer-margin:.51in;}
+.font0
+	{color:windowtext;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;}
+tr
+	{mso-height-source:auto;
+	mso-ruby-visibility:none;}
+col
+	{mso-width-source:auto;
+	mso-ruby-visibility:none;}
+br
+	{mso-data-placement:same-cell;}
+.style0
+	{mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	color:windowtext;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:Normal;
+	mso-style-id:0;}
+td
+	{mso-style-parent:style0;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+.xl24
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid black;
+	border-left:none;}
+.xl25
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl26
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl27
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;}
+.xl28
+	{mso-style-parent:style0;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:128;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;}
+.xl29
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl30
+	{mso-style-parent:style0;
+	text-align:right;
+	white-space:normal;}
+.xl31
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl32
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl33
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl34
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl35
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl36
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl37
+	{mso-style-parent:style0;
+	text-align:left;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;
+	padding-left:18px;
+	mso-char-indent-count:1;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>LKIF2_SetFilter</x:Name>
+    <x:WorksheetOptions>
+     <x:DefaultRowHeight>285</x:DefaultRowHeight>
+     <x:Selected/>
+     <x:DoNotDisplayGridlines/>
+     <x:Panes>
+      <x:Pane>
+       <x:Number>3</x:Number>
+       <x:ActiveRow>29</x:ActiveRow>
+       <x:ActiveCol>3</x:ActiveCol>
+      </x:Pane>
+     </x:Panes>
+     <x:ProtectContents>False</x:ProtectContents>
+     <x:ProtectObjects>False</x:ProtectObjects>
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+    </x:WorksheetOptions>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+  <x:WindowHeight>13845</x:WindowHeight>
+  <x:WindowWidth>11715</x:WindowWidth>
+  <x:WindowTopX>120</x:WindowTopX>
+  <x:WindowTopY>90</x:WindowTopY>
+  <x:ProtectStructure>False</x:ProtectStructure>
+  <x:ProtectWindows>False</x:ProtectWindows>
+ </x:ExcelWorkbook>
+</xml><![endif]-->
+</head>
+
+<body link=black vlink=purple>
+
+<table x:str border=0 cellpadding=0 cellspacing=0 width=753 style='border-collapse:
+ collapse;table-layout:fixed;width:565pt'>
+ <col width=109 style='mso-width-source:userset;mso-width-alt:3488;width:82pt'>
+ <col width=137 style='mso-width-source:userset;mso-width-alt:4384;width:103pt'>
+ <col width=507 style='mso-width-source:userset;mso-width-alt:16224;width:380pt'>
+ <tr height=18 style='mso-height-source:userset;height:13.5pt'>
+  <td colspan=3 height=18 class=xl30 width=753 style='height:13.5pt;width:565pt'>Set
+  filter mode (LKIF2_SetFilter)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 colspan=3 style='height:14.25pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl24 style='height:14.25pt'> </td>
+  <td class=xl24> </td>
+  <td class=xl24> </td>
+ </tr>
+ <tr height=38 style='height:28.5pt;mso-xlrowspan:2'>
+  <td height=38 colspan=3 style='height:28.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 colspan=3 style='height:15.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl31 width=753 style='border-right:2.0pt double gray;
+  height:15.75pt;width:565pt'>RC WINAPI LKIF2_SetFilter(IN int OutNo,IN
+  LKIF_FILTERMODE FilterMode,IN LKIF_FILTERPARA FilterPara);</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl31 width=753 style='border-right:2.0pt double gray;
+  height:15.75pt;width:565pt'> </td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td height=21 class=xl25 width=109 style='height:15.75pt;width:82pt'>Description</td>
+  <td colspan=2 class=xl31 width=644 style='border-right:2.0pt double gray;
+  border-left:none;width:483pt'>Set the filter mode and filter parameter.</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl31 width=753 style='border-right:2.0pt double gray;
+  height:15.75pt;width:565pt'> </td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td rowspan=34 height=671 class=xl35 width=109 style='border-bottom:2.0pt double gray;
+  height:503.25pt;border-top:none;width:82pt'>Parameter</td>
+  <td class=xl26 width=137 style='width:103pt' x:str="OutNo ">OutNo<span
+  style="mso-spacerun: yes">&nbsp;</span></td>
+  <td class=xl26 width=507 style='width:380pt'>Specify the OUT No. The value
+  range is 0 to ((the No. of used OUT)-1).</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td rowspan=7 height=135 class=xl35 width=137 style='border-bottom:2.0pt double gray;
+  height:101.25pt;border-top:none;width:103pt' x:str="FilterMode ">FilterMode<span
+  style="mso-spacerun: yes">&nbsp;</span></td>
+  <td class=xl27 width=507 style='width:380pt'>Specify the filter mode.</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl27 width=507 style='height:14.25pt;width:380pt'> </td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl27 width=507 style='height:14.25pt;width:380pt'>typedef
+  enum {</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=507 style='height:14.25pt;width:380pt'>  LKIF_FILTERMODE_MOVING_AVERAGE, // Moving average</font></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=507 style='height:14.25pt;width:380pt'>  LKIF_FILTERMODE_LOWPASS, // Low-pass filter</font></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=507 style='height:14.25pt;width:380pt'>  LKIF_FILTERMODE_HIGHPASS, // High-pass filter</font></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl29 width=507 style='height:15.0pt;width:380pt'>}
+  LKIF_FILTERMODE;</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td rowspan=26 height=515 class=xl35 width=137 style='border-bottom:2.0pt double gray;
+  height:386.25pt;border-top:none;width:103pt'>FilterPara</td>
+  <td class=xl27 width=507 style='width:380pt'>Specify the filter parameter.</td>
+ </tr>
+ <tr height=38 style='height:28.5pt'>
+  <td height=38 class=xl27 width=507 style='height:28.5pt;width:380pt'>(The
+  number of averaging for moving average, or the cutoff frequency for LPF/HPF.)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl27 width=507 style='height:14.25pt;width:380pt'> </td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl27 width=507 style='height:14.25pt;width:380pt'>typedef
+  enum {</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_AVE_1
+  = 0, // 1 time of averaging</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_AVE_4,
+  //</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_AVE_16,
+  //</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_AVE_64,
+  //</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_AVE_256,
+  //</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_AVE_1024,
+  //</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_AVE_4096,
+  //</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_AVE_16384,
+  //</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_AVE_65536,
+  //</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_AVE_262144,
+  // 262144 times of averaging</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'> </td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_COFF_3000
+  = 0, // 3000 Hz</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_COFF_1000,
+  // 1000 Hz</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_COFF_300,
+  // 300 Hz</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_COFF_100,
+  // 100 Hz</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_COFF_30,
+  // 30 Hz</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_COFF_10,
+  // 10 Hz</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_COFF_3,
+  // 3 Hz</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_COFF_1,
+  // 1 Hz</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_COFF_0_3,
+  // 0.3 Hz</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl37 width=507 style='height:14.25pt;width:380pt'>LKIF_FILTERPARA_COFF_0_1,
+  // 0.1 Hz</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl29 width=507 style='height:15.0pt;width:380pt'>}
+  LKIF_FILTERPARA;</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl31 width=753 style='border-right:2.0pt double gray;
+  height:15.75pt;width:565pt'> </td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td height=21 class=xl25 width=109 style='height:15.75pt;width:82pt'>Return
+  value</td>
+  <td class=xl29 width=137 style='width:103pt'>RC</td>
+  <td class=xl29 width=507 style='width:380pt'>Refer to &quot;Return code
+  list&quot;.</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 colspan=3 style='height:15.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=38 style='height:28.5pt;mso-xlrowspan:2'>
+  <td height=38 colspan=3 style='height:28.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl24 style='height:14.25pt'> </td>
+  <td class=xl24> </td>
+  <td class=xl24> </td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=109 style='width:82pt'></td>
+  <td width=137 style='width:103pt'></td>
+  <td width=507 style='width:380pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

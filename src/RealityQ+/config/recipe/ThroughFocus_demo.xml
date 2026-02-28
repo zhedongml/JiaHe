@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+ <BehaviorTree ID="BehaviorTree">
+  <!-- Add nodes here -->
+  <Sequence name="Sequence">
+   <Action name="System_Date" ID="System_Date" date_key="cur_data"/>
+   <Action name="System_DateTime" ID="System_DateTime" date_time_key="cur_datatime"/>
+   <!-- <Action name="System_InputTips" ID="System_InputTips" tip="Please enter rx settings information" param="sphere,cylinder,axis" is_lable_visual="1" text_key="rx_key"/> -->
+   <!-- <Action name="System_ParseStr3" ID="System_ParseStr3" str="{rx_key}" value_key1="sphere" value_key2="cylider" value_key3="axis"/> -->
+   <!--Parallel connection to through focus-->
+   <Parallel name="Parallel">
+    <Action name="Colorimeter_Connect_All_Async" ID="Colorimeter_Connect_All_Async"/>
+    <Action name="Reticle_2D_Connect" ID="Reticle_2D_Connect"/>
+    <!-- <Action name="IS_Connect" ID="IS_Connect"/> -->
+   </Parallel>
+   <!--Init setting-->
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_G" value="0.96"/>
+   <!--Through-focus process-->
+   <!-- <Action name="Colorimeter_Motion_SetRX" ID="Colorimeter_Motion_SetRX" sphere="{sphere}" cylinder_filter="{cylider}" cylinder_axis="{axis}"/> -->
+   <!-- <Action name="IS_SetSolution" ID="IS_SetSolution" isphere_scale="{ISphere_scale_G}" light_source="G"/> -->
+   <Action name="Colorimeter_Motion_SetFocus" ID="Colorimeter_Motion_SetFocus" focus="25.81"/>
+   <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="Large" reticle_name="Grid"/>
+   <Action name="Colorimeter_Camera_StopGrabbing" ID="Colorimeter_Camera_StopGrabbing"/>
+   <Action name="Colorimeter_Camera_SetBinning" ID="Colorimeter_Camera_SetBinning" binning="1"/>
+   <Action name="Colorimeter_Filter_NDSwitch" ID="Colorimeter_Filter_NDSwitch" nd_filter="ND3"/>
+   <Action name="Colorimeter_Filter_ColorSwitch" ID="Colorimeter_Filter_ColorSwitch" color_filter="Clear"/>
+   <Action name="Colorimeter_Camera_SetExposureByFix" ID="Colorimeter_Camera_SetExposureByFix" exposure_time="199"/>
+   <!-- <Action name="Colorimeter_Camera_SetExposureByAuto" ID="Colorimeter_Camera_SetExposureByAuto" init_time="1000"/> -->
+   <Action name="Colorimeter_Motion_AutoFocus_Diopter" ID="Colorimeter_Motion_AutoFocus_Diopter" file_name="E:/through_focus" direction="" diopter="0" scan_range="2" rough_step_num="20" is_use_fine="0" fine_step_num="" is_chess_mode="0" is_lpmm_unit="1" freq="10.625" is_save_images="0"/>
+  </Sequence>
+ </BehaviorTree>
+</root>

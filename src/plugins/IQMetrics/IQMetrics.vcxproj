@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{3db96304-4c8d-4a01-a32f-2e8693636587}</ProjectGuid>
+    <RootNamespace>IQMetrics</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(OPENCV_DIR)\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OPENCV_DIR)\x64\vc15\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(OPENCV_DIR)\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(OPENCV_DIR)\x64\vc15\lib;$(LibraryPath)</LibraryPath>
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;IQMETRICS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;IQMETRICS_EXPORTS;_WINDOWS;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>IQMETRICS_EXPORTS;_WINDOWS;_USRDLL;ALGORITHM_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\plugins\mtfpipeline;$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\plugins\ImageDetection;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src;$(SolutionDir)src\plugins;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\libs\3rdparty\yaml-cpp\include;$(SolutionDir)src\extlib\fp16\include;$(SolutionDir)src\extlib\color-util\include;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\CameraViewer;$(SolutionDir)src\extlib\python3.8\include;$(SolutionDir)src\extlib\python3.8\pybind11;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\armadillo\lib_win64;$(SolutionDir)src\extlib\logplus\lib\x64\bin.Debug_Unicode;$(SolutionDir)src\extlib\libcbdetect\lib\x64\Debug;$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\Debug;$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world451d.lib;log4cplusUD.lib;cbdetect.lib;libdmtx.lib;libopenblas.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins"
+xcopy /Y "$(SolutionDir)src\extlib\armadillo\lib_win64\libopenblas.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>IQMETRICS_EXPORTS;_WINDOWS;_USRDLL;ALGORITHM_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\plugins\mtfpipeline;$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\plugins\ImageDetection;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src;$(SolutionDir)src\plugins;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\libs\3rdparty\yaml-cpp\include;$(SolutionDir)src\extlib\fp16\include;$(SolutionDir)src\extlib\color-util\include;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\CameraViewer;$(SolutionDir)src\extlib\python3.8\include;$(SolutionDir)src\extlib\python3.8\pybind11;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OpenMPSupport>true</OpenMPSupport>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableUAC>false</EnableUAC>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\armadillo\lib_win64;$(SolutionDir)src\extlib\logplus\lib\x64\bin.Release_Unicode;$(SolutionDir)src\extlib\libcbdetect\lib\x64\Release;$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\Release;$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world451.lib;log4cplusU.lib;cbdetect.lib;libdmtx.lib;libopenblas.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins"
+xcopy /Y "$(SolutionDir)src\extlib\armadillo\lib_win64\libopenblas.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h" />
+    <ClInclude Include="IQMetricUtl.h" />
+    <ClInclude Include="MLContrastRatio.h" />
+    <ClInclude Include="MLSolidDetection.h" />
+    <ClInclude Include="ML_CrossMTF.h" />
+    <ClInclude Include="ML_CTF.h" />
+    <ClInclude Include="ML_denseMTF.h" />
+    <ClInclude Include="ML_Distortion.h" />
+    <ClInclude Include="ML_gridPatternDetection.h" />
+    <ClInclude Include="ML_LateralColor.h" />
+    <ClInclude Include="ML_LuminanceRolloff.h" />
+    <ClInclude Include="ML_NineCrossDetection.h" />
+    <ClInclude Include="ML_SequentialContrast.h" />
+    <ClInclude Include="ML_ColorUniformity.h" />
+    <ClInclude Include="ml_CRA.h" />
+    <ClInclude Include="ML_Efficiency.h" />
+    <ClInclude Include="ML_Flare.h" />
+    <ClInclude Include="ML_FOV.h" />
+    <ClInclude Include="ML_FOVOffset.h" />
+    <ClInclude Include="ML_Ghost.h" />
+    <ClInclude Include="ML_Luminance.h" />
+    <ClInclude Include="ML_PupilSwim.h" />
+    <ClInclude Include="ML_Rotation.h" />
+    <ClInclude Include="ML_StrayLight.h" />
+    <ClInclude Include="pch.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="IQMetricUtl.cpp" />
+    <ClCompile Include="MLContrastRatio.cpp" />
+    <ClCompile Include="MLSolidDetection.cpp" />
+    <ClCompile Include="ML_CrossMTF.cpp" />
+    <ClCompile Include="ML_CTF.cpp" />
+    <ClCompile Include="ML_denseMTF.cpp" />
+    <ClCompile Include="ML_Distortion.cpp" />
+    <ClCompile Include="ML_gridPatternDetection.cpp" />
+    <ClCompile Include="ML_LateralColor.cpp" />
+    <ClCompile Include="ML_LuminanceRolloff.cpp" />
+    <ClCompile Include="ML_NineCrossDetection.cpp" />
+    <ClCompile Include="ML_SequentialContrast.cpp" />
+    <ClCompile Include="ML_ColorUniformity.cpp" />
+    <ClCompile Include="ml_CRA.cpp" />
+    <ClCompile Include="ML_Efficiency.cpp" />
+    <ClCompile Include="ML_Flare.cpp" />
+    <ClCompile Include="ML_FOV.cpp" />
+    <ClCompile Include="ML_FOVOffset.cpp" />
+    <ClCompile Include="ML_Ghost.cpp" />
+    <ClCompile Include="ML_Luminance.cpp" />
+    <ClCompile Include="ML_PupilSwim.cpp" />
+    <ClCompile Include="ML_Rotation.cpp" />
+    <ClCompile Include="ML_StrayLight.cpp" />
+    <ClCompile Include="pch.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ImageDetection\ImageDetection.vcxproj">
+      <Project>{88aa6911-48b3-408c-938e-ea1f235fbd88}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\mtfpipeline\mtfpipeline.vcxproj">
+      <Project>{23d65b72-be67-46b6-b8c1-a7799b2a63ee}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

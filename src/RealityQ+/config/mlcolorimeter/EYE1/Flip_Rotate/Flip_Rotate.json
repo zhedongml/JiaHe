@@ -1,0 +1,13 @@
+{
+    "Flip_Rotate": {
+        "RotationExample": [
+            "R0",
+            "R90",
+            "R180",
+            "R270"
+        ],
+        "FlippingX": false,
+        "FlippingY": false,
+        "Rotation": "R0"
+    }
+}

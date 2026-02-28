@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>HistoryData.png</file>
+        <file>image/double-left.png</file>
+        <file>image/double-right.png</file>
+        <file>image/files.png</file>
+        <file>image/mlico.ico</file>
+    </qresource>
+</RCC>

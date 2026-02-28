@@ -1,0 +1,170 @@
+{
+  "Metrics": [
+    {
+      "FOVOffset": {
+        "dispaly": true,
+        "unit": "deg",
+        "color": [ "R", "G", "B" ],
+        "imageType": 1,
+        "images": [ "$color$_crosshair_$eyeboxId$_Clear" ],
+        "suffix": [ "X", "Y" ],
+        "logheader": "CRA_$color$_$suffix$_0$eyeboxId$Eyebox(deg)",
+        "eyeboxId": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+      }
+    },
+    {
+      "FOV": {
+        "dispaly": true,
+        "unit": "deg",
+        "color": [ "R", "G", "B" ],
+        "imageType": 1,
+        "images": [ "$color$_solid_$eyeboxId$_Y" ],
+        "suffix": [ "X", "Y" ],
+        "logheader": "FOV_$color$_$suffix$_0$eyeboxId$Eyebox(deg)",
+        "eyeboxId": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+      }
+    },
+    {
+      "Rotation": {
+        "dispaly": true,
+        "unit": "deg",
+        "color": [ "R", "G", "B" ],
+        "imageType": 1,
+        "images": [ "$color$_crosshair_$eyeboxId$_Clear" ],
+        "logheader": "Rotation_W/O_0.9deg_Offset_$color$_0$eyeboxId$Eyebox(deg)",
+        "eyeboxId": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+      }
+    },
+    {
+      "GridDistortion": {
+        "unit": "%",
+        "color": [ "R", "G", "B" ],
+        "imageType": 1,
+        "images": [ "$color$_grid_$eyeboxId$_Clear" ],
+        "suffix": [ "Mean" ],
+        "logheader": "Distortion%_$color$_$suffix$_0$eyeboxId$Eyebox",
+        "eyeboxId": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+      }
+    },
+    {
+      "CheckerContrast": {
+        "dispaly": true,
+        "unit": "",
+        "color": [ "R", "G", "B" ],
+        "imageType": 1,
+        "images": [
+          "$color$_CheckerPositive_$eyeboxId$_Clear",
+          "$color$_CheckerNegative_$eyeboxId$_Clear"
+        ],
+        "suffix": [ "meanCR", "minCR" ],
+        "logheader": "CheckerContrast_$color$_$suffix$_0$eyeboxId$Eyebox",
+        "eyeboxId": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+      }
+    },
+    {
+      "GridDenseMTF": {
+        "dispaly": false,
+        "unit": "",
+        "color": [ "R", "G", "B" ],
+        "images": [ "$color$_grid_$eyeboxId$_Clear" ],
+        "suffix": [ "HorAvg_10.625", "VerAvg_10.625", "HorMin_10.625", "VerMin_10.625", "HorAvg_21.25", "VerAvg_21.25", "HorMin_21.25", "VerMin_21.25" ],
+        "logheader": "GridDenseMTF_$color$_Y_$suffix$_0$eyeboxId$Eyebox",
+        "eyeboxId": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+      }
+    },
+    {
+      "LuminanceEfficiency": {
+        "dispaly": false,
+        "unit": "%",
+        "color": [ "R", "G", "B" ],
+        "suffix": [ "Avg" ],
+        "imageType": 1,
+        "images": [ "$color$_solid_$eyeboxId$_Y" ],
+        "logheader": "Eff(Nits/Nits)_$color$_$suffix$_0$eyeboxId$Eyebox(%)",
+        "eyeboxId": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+      }
+    },
+    {
+      "LuminanceRolloff": {
+        "dispaly": false,
+        "unit": "",
+        "color": [ "R", "G", "B" ],
+        "suffix": [ "Luminance", "LuminanceUniformity", "P5", "P50", "P95" ],
+        "imageType": 1,
+        "images": [ "$color$_solid_$eyeboxId$_Y" ],
+        "logheader": "Luminance(Nits)_$color$_$suffix$_0$eyeboxId$Eyebox",
+        "eyeboxId": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+      }
+    },
+    {
+      "PupilSwim": {
+        "dispaly": false,
+        "unit": "",
+        "color": [ "R", "G", "B" ],
+        "imageType": 1,
+        "images": [
+          "$color$_Checker0.5Deg_$eyeboxId$_Clear",
+          "$color$_Checker0.5Deg_offsetPos_$eyeboxId$_Clear",
+          "$color$_Checker0.5Deg_offsetNeg_$eyeboxId$_Clear"
+        ],
+        "suffix": [ "LocalPupilSwim_RMS", "LocalPupilSwim_P90", "GlobalPupilSwim_RMS", "GlobalPupilSwim_P90" ],
+        "logheader": "$suffix$_$color$_0$eyeboxId$Eyebox(Arcmin)",
+        "initlogheader": "GlobalPupilSwim_OutlierNo,GlobalPupilSwim_RMS_arcmin,GlobalPupilSwim_P90_arcmin,LocalPupilSwim_RMS,LocalPupilSwim_P90",
+        "eyeboxId": [ "5" ]
+      }
+    },
+    {
+      "LateralColor": {
+        "dispaly": false,
+        "unit": "",
+        "color": [ "R" ],
+        "imageType": 1,
+        "images": [
+          "R_crosshair_$eyeboxId$_Clear",
+          "G_crosshair_$eyeboxId$_Clear",
+          "B_crosshair_$eyeboxId$_Clear"
+        ],
+        "suffix": [ "Max", "Mean", "RG_X_mean", "RG_Y_mean", "GB_X_mean", "GB_Y_mean", "RB_X_mean", "RB_Y_mean" ],
+        "logheader": "LateralColor_$suffix$_0$eyeboxId$Eyebox(Arcmin)",
+        "eyeboxId": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+      }
+    },
+    {
+      "Flare": {
+        "dispaly": false,
+        "unit": "",
+        "color": [ "G" ],
+        "imageType": 1,
+        "images": [ "$color$_flare_$eyeboxId$_Clear", "$color$_flare_high_$eyeboxId$_Clear" ],
+        "suffix": [ "LeftGlow_2deg", "LeftMedian_2deg", "RightGlow_2deg", "RightMedian_2deg", "LeftGlow_4deg", "LeftMedian_4deg", "RightGlow_4deg", "RightMedian_4deg" ],
+        "logheader": "Flare_$suffix$_$color$_0$eyeboxId$Eyebox(%)",
+        "initlogheader": "Left Flare (Median) 2 deg,Right Flare (Median) 2 deg,Left Flare (Median) 4 deg,Right Flare (Median) 4 deg",
+        "eyeboxId": [ "5" ]
+      }
+    },
+    {
+      "ColorUniformity": {
+        "dispaly": false,
+        "unit": "",
+        "color": [ "R" ],
+        "imageType": 1,
+        "images": [
+          "R_solid_$eyeboxId$_X",
+          "R_solid_$eyeboxId$_Y",
+          "R_solid_$eyeboxId$_Z",
+          "G_solid_$eyeboxId$_X",
+          "G_solid_$eyeboxId$_Y",
+          "G_solid_$eyeboxId$_Z",
+          "B_solid_$eyeboxId$_X",
+          "B_solid_$eyeboxId$_Y",
+          "B_solid_$eyeboxId$_Z"
+        ],
+        "logheader": "dE_00_C_Global_FFOV_median_0$eyeboxId$Eyebox,dE_00_C_Global_FFOV_p95_0$eyeboxId$Eyebox,dE_00_freqMB_FFOV_median_0$eyeboxId$Eyebox,dE_00_freqMB_FFOV_p95_0$eyeboxId$Eyebox,dE_00_freqHB_FFOV_median_0$eyeboxId$Eyebox,dE_00_freqHB_FFOV_p95_0$eyeboxId$Eyebox",
+        "initlogheader": "dE_00_C_Global_FFOV_median,dE_00_C_Global_FFOV_p[95],dE_00_freqMB_FFOV_median,dE_00_freqMB_FFOV_p[95],dE_00_freqHB_FFOV_median,dE_00_freqHB_FFOV_p[95]",
+        "eyeboxId": [ "1", "2", "3", "4", "5", "6", "7", "8", "9" ]
+      }
+    }
+  ]	
+}
+
+

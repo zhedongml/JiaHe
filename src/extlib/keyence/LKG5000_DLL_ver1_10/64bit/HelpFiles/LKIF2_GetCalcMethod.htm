@@ -1,0 +1,429 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 9">
+<link rel=File-List href="./LKIF2_GetCalcMethod.files/filelist.xml">
+<link rel=Edit-Time-Data href="./LKIF2_GetCalcMethod.files/editdata.mso">
+<link rel=OLE-Object-Data href="./LKIF2_GetCalcMethod.files/oledata.mso">
+<title>LKIF2_GetCalcMethod</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:LastAuthor>Author</o:LastAuthor>
+  <o:LastSaved>2009-02-24T11:29:23Z</o:LastSaved>
+  <o:Version>9.8961</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.98in .79in .98in .79in;
+	mso-header-margin:.51in;
+	mso-footer-margin:.51in;}
+tr
+	{mso-height-source:auto;
+	mso-ruby-visibility:none;}
+col
+	{mso-width-source:auto;
+	mso-ruby-visibility:none;}
+br
+	{mso-data-placement:same-cell;}
+.style0
+	{mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	color:windowtext;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:Normal;
+	mso-style-id:0;}
+td
+	{mso-style-parent:style0;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+.xl24
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid black;
+	border-left:none;}
+.xl25
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl26
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl27
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl28
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;}
+.xl29
+	{mso-style-parent:style0;
+	text-align:left;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;
+	padding-left:18px;
+	mso-char-indent-count:1;}
+.xl30
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;}
+.xl31
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;}
+.xl32
+	{mso-style-parent:style0;
+	text-align:right;
+	white-space:normal;}
+.xl33
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl34
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl35
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl36
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl37
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl38
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl39
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;}
+.xl40
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:none;}
+.xl41
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;}
+.xl42
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:2.0pt double gray;}
+.xl43
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;}
+.xl44
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:none;
+	border-left:2.0pt double gray;}
+.xl45
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>LKIF2_GetCalcMethod</x:Name>
+    <x:WorksheetOptions>
+     <x:DefaultRowHeight>285</x:DefaultRowHeight>
+     <x:Selected/>
+     <x:DoNotDisplayGridlines/>
+     <x:TopRowVisible>3</x:TopRowVisible>
+     <x:Panes>
+      <x:Pane>
+       <x:Number>3</x:Number>
+       <x:ActiveRow>13</x:ActiveRow>
+       <x:ActiveCol>2</x:ActiveCol>
+      </x:Pane>
+     </x:Panes>
+     <x:ProtectContents>False</x:ProtectContents>
+     <x:ProtectObjects>False</x:ProtectObjects>
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+    </x:WorksheetOptions>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+  <x:WindowHeight>13845</x:WindowHeight>
+  <x:WindowWidth>11715</x:WindowWidth>
+  <x:WindowTopX>120</x:WindowTopX>
+  <x:WindowTopY>90</x:WindowTopY>
+  <x:ProtectStructure>False</x:ProtectStructure>
+  <x:ProtectWindows>False</x:ProtectWindows>
+ </x:ExcelWorkbook>
+</xml><![endif]-->
+</head>
+
+<body link=black vlink=purple>
+
+<table x:str border=0 cellpadding=0 cellspacing=0 width=818 style='border-collapse:
+ collapse;table-layout:fixed;width:614pt'>
+ <col width=109 style='mso-width-source:userset;mso-width-alt:3488;width:82pt'>
+ <col width=145 style='mso-width-source:userset;mso-width-alt:4640;width:109pt'>
+ <col width=564 style='mso-width-source:userset;mso-width-alt:18048;width:423pt'>
+ <tr height=18 style='mso-height-source:userset;height:13.5pt'>
+  <td colspan=3 height=18 class=xl32 width=818 style='height:13.5pt;width:614pt'>Get
+  calculation method (LKIF2_GetCalcMethod)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 colspan=3 style='height:14.25pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl24 style='height:14.25pt'> </td>
+  <td class=xl24> </td>
+  <td class=xl24> </td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 colspan=3 style='height:14.25pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 colspan=3 style='height:14.25pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 colspan=3 style='height:15.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl33 width=818 style='border-right:2.0pt double gray;
+  height:15.75pt;width:614pt'>RC WINAPI LKIF2_GetCalcMethod(IN int OutNo,OUT
+  LKIF_CALCMETHOD *CalcMethod,OUT int *Head_Out_No);</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl33 width=818 style='border-right:2.0pt double gray;
+  height:15.75pt;width:614pt'> </td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td height=21 class=xl25 width=109 style='height:15.75pt;width:82pt'>Description</td>
+  <td colspan=2 class=xl33 width=709 style='border-right:2.0pt double gray;
+  border-left:none;width:532pt'>Obtain the calculation method.</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl33 width=818 style='border-right:2.0pt double gray;
+  height:15.75pt;width:614pt'> </td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td rowspan=14 height=291 class=xl37 width=109 style='border-bottom:2.0pt double gray;
+  height:218.25pt;border-top:none;width:82pt'>Parameter</td>
+  <td class=xl26 width=145 style='width:109pt' x:str="OutNo ">OutNo<span
+  style="mso-spacerun: yes">&nbsp;</span></td>
+  <td class=xl26 width=564 style='width:423pt'>Specify the OUT No. The value
+  range is 0 to ((the No. of used OUT)-1).</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td rowspan=12 height=230 class=xl37 width=145 style='border-bottom:2.0pt double gray;
+  height:172.5pt;border-top:none;width:109pt'>CalcMethod</td>
+  <td class=xl28 width=564 style='width:423pt'>The calculation method is
+  contained.</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=564 style='height:14.25pt;width:423pt'> </td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=564 style='height:14.25pt;width:423pt'>typedef
+  enum {</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=564 style='height:14.25pt;width:423pt'>LKIF_CALCMETHOD_HEAD
+  = 0, // Head</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=564 style='height:14.25pt;width:423pt'>LKIF_CALCMETHOD_OUT,
+  // OUT</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=564 style='height:14.25pt;width:423pt'>LKIF_CALCMETHOD_ADD,
+  // ADD</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=564 style='height:14.25pt;width:423pt'>LKIF_CALCMETHOD_SUB,
+  // SUB</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=564 style='height:14.25pt;width:423pt'>LKIF_CALCMETHOD_AVE,
+  // AVE</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=564 style='height:14.25pt;width:423pt'>LKIF_CALCMETHOD_PP,
+  // P-P</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=564 style='height:14.25pt;width:423pt'>LKIF_CALCMETHOD_MAX,
+  // MAX</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=564 style='height:14.25pt;width:423pt'>LKIF_CALCMETHOD_MIN,
+  // MIN</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl27 width=564 style='height:15.0pt;width:423pt'>}
+  LKIF_CALCMETHOD;</td>
+ </tr>
+ <tr height=40 style='height:30.0pt'>
+  <td height=40 class=xl26 width=145 style='height:30.0pt;width:109pt'>Head_Out_No</td>
+  <td class=xl27 width=564 style='width:423pt'>When the calculation method is
+  HEAD or OUT, the head No. or OUT No. is contained.</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl33 width=818 style='border-right:2.0pt double gray;
+  height:15.75pt;width:614pt'> </td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td height=21 class=xl25 width=109 style='height:15.75pt;width:82pt'>Return
+  value</td>
+  <td class=xl27 width=145 style='width:109pt'>RC</td>
+  <td class=xl27 width=564 style='width:423pt'>Refer to &quot;Return code
+  list&quot;.</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl39 style='border-right:2.0pt double gray;
+  height:15.75pt'> </td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td rowspan=2 height=40 class=xl42 style='border-bottom:2.0pt double gray;
+  height:30.0pt;border-top:none'>Remark</td>
+  <td colspan=2 class=xl44 style='border-right:2.0pt double gray;border-left:
+  none'
+  x:str="When CalcMethod is other than LKIF_CALCMETHOD_HEAD or LKIF_CALCMETHOD_OUT, ">When
+  CalcMethod is other than LKIF_CALCMETHOD_HEAD or LKIF_CALCMETHOD_OUT,<span
+  style="mso-spacerun: yes">&nbsp;</span></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl30 colspan=2 style='height:15.0pt;mso-ignore:colspan;
+  border-right:2.0pt double gray'>the content of Head_Out_No will be ignored.</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 colspan=3 style='height:15.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl24 style='height:14.25pt'> </td>
+  <td class=xl24> </td>
+  <td class=xl24> </td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=109 style='width:82pt'></td>
+  <td width=145 style='width:109pt'></td>
+  <td width=564 style='width:423pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

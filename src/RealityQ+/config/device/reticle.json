@@ -1,0 +1,19 @@
+{
+ "MotionIP":"10.0.0.100:701", 
+ "base":{
+	"reticle":"Solid",
+ 	"motionpos":176.8985, 
+	"interval":16.9975
+  },
+  "reticlepos":{
+  	"Solid":0,
+	"CheckerNegative":-1,
+	"CheckerPositive":-2, 
+	"Grid":-3,
+	"Ghost":-4,
+  	"Checker0.5deg":-5, 
+	"Dot":-6,
+  	"MTF":-7
+  },
+  "maxCoordinate":200
+}

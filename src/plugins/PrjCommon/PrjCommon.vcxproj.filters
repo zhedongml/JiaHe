@@ -1,0 +1,190 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+    <Filter Include="Service">
+      <UniqueIdentifier>{16cc443e-0e29-4b30-b2e8-a000c35fab02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="TaskManage">
+      <UniqueIdentifier>{e0620e57-6f85-4a26-86e3-84a8cd460302}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="prjcommon_global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClCompile Include="PrjCommon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClInclude Include="service\config.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="service\helper.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="service\McCommon.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="service\ml.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="service\ml_motion2D.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="service\ml_motion3D.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="service\ml_rangefinder.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="service\MLFrame.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="service\MLMetadata.h">
+      <Filter>Service</Filter>
+    </ClInclude>
+    <ClInclude Include="Session.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\extlib\logplus\LogPlus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="taskManage\TaskBase.h">
+      <Filter>TaskManage</Filter>
+    </ClInclude>
+    <ClInclude Include="taskManage\ResultTask.h">
+      <Filter>TaskManage</Filter>
+    </ClInclude>
+    <ClInclude Include="taskManage\ThreadSafeQueue.h">
+      <Filter>TaskManage</Filter>
+    </ClInclude>
+    <ClInclude Include="taskManage\TaskWorker.h">
+      <Filter>TaskManage</Filter>
+    </ClInclude>
+    <ClInclude Include="taskManage\TaskManager.h">
+      <Filter>TaskManage</Filter>
+    </ClInclude>
+    <ClInclude Include="taskManage\TaskRunner.h">
+      <Filter>TaskManage</Filter>
+    </ClInclude>
+    <ClInclude Include="MLUtilCommon.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="configdatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="logindata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metricsdata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="service\config.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="service\ml_motion.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="service\ml_motion2D.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="service\ml_motion3D.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="service\MLFrame.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="service\MLMetadata.cpp">
+      <Filter>Service</Filter>
+    </ClCompile>
+    <ClCompile Include="irecipewrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="recipewrapperregistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WaitWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Session.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="qcustomplot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomPlot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RecipeAsync.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MLUtilCommon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiLineInputDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="configdatabase.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="logindata.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="metricsdata.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="PrjCommon.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="service\ml_camera.h">
+      <Filter>Service</Filter>
+    </QtMoc>
+    <QtMoc Include="service\ml_motion.h">
+      <Filter>Service</Filter>
+    </QtMoc>
+    <QtMoc Include="irecipewrapper.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="recipewrapperregistry.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="WaitWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="qcustomplot.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="CustomPlot.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="RecipeAsync.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MultiLineInputDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+</Project>

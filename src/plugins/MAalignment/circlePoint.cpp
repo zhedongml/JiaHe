@@ -1,0 +1,92 @@
+#include "circlePoint.h"
+#include <QCursor>
+#include <QGraphicsScene>
+CirclePoint::CirclePoint(QAbstractGraphicsShapeItem *parent, QPointF p, int radius)
+    : QAbstractGraphicsShapeItem(parent), m_point(p), m_radius(radius)
+{
+    this->setPos(m_point);
+    this->setFlags(QGraphicsItem::ItemIsSelectable | QGraphicsItem::ItemIsMovable | QGraphicsItem::ItemIsFocusable);
+    this->setCursor(Qt::OpenHandCursor);
+    m_pen_noSelected.setColor(QColor(255, 0, 0));
+    m_pen_noSelected.setWidth(1);
+    m_pen_isSelected.setColor(QColor(255, 0, 255));
+    m_pen_isSelected.setWidth(2);
+    this->setPen(m_pen_noSelected);
+    menu = new QMenu;
+    removeAction = new QAction("Delete Fiducial", menu);
+    connect(removeAction, SIGNAL(triggered()), this, SLOT(delSelf()));
+}
+CirclePoint::~CirclePoint()
+{
+    if (menu != nullptr)
+        delete menu;
+}
+void CirclePoint::delSelf()
+{
+    emit deleteFiducial();
+    // delete this;
+}
+void CirclePoint::SetTitle(QString str)
+{
+    title = str;
+}
+
+QRectF CirclePoint::boundingRect() const
+{
+    // return QRectF(-2, -2, 4, 4);
+    return QRectF(-m_radius, -m_radius, m_radius * 2, m_radius * 2);
+}
+
+void CirclePoint::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+{
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
+    QFont font;
+    font.setPointSize(30);
+    painter->setFont(font);
+
+    painter->setPen(this->pen());
+    painter->setBrush(this->brush());
+    // this->setPos(m_point);
+    painter->drawEllipse(-2, -2, 4, 4);
+    m_radius = 220;
+    painter->drawEllipse(-m_radius, -m_radius, m_radius * 2, m_radius * 2);
+    // QPainter(this);
+    painter->drawLine(-m_radius * 1.4, 0, m_radius * 1.4, 0);
+    painter->drawLine(0, -m_radius * 1.4, 0, m_radius * 1.4);
+
+    painter->drawText(-m_radius - 5, -m_radius - 5, QString("%1 (%2, %3)").arg(title).arg(m_point.x()).arg(m_point.y()));
+}
+
+void CirclePoint::mouseMoveEvent(QGraphicsSceneMouseEvent *event)
+{
+    if (event->buttons() == Qt::LeftButton)
+    {
+        qreal dx = event->scenePos().x() - event->lastScenePos().x();
+        qreal dy = event->scenePos().y() - event->lastScenePos().y();
+        moveBy(dx, dy);
+
+        m_point.setX(m_point.x() + dx);
+        m_point.setY(m_point.y() + dy);
+        emit postionChanged(m_point.x(), m_point.y(), id);
+
+        this->scene()->update();
+    }
+}
+
+void CirclePoint::contextMenuEvent(QGraphicsSceneContextMenuEvent *event)
+{
+}
+
+void CirclePoint::focusInEvent(QFocusEvent *event)
+{
+    Q_UNUSED(event);
+    this->setPen(m_pen_isSelected);
+}
+
+void CirclePoint::focusOutEvent(QFocusEvent *event)
+{
+    Q_UNUSED(event);
+    this->setPen(m_pen_noSelected);
+}

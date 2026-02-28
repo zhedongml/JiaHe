@@ -1,0 +1,25 @@
+{
+  "SLB_LoadImageXYZPosition": {
+    "X": 97.384,
+    "Y": 23.316,
+    "Z": 0
+  },
+  "SLB_ImagingXYZPosition": {
+    "X": -6.8653,
+    "Y": 39.8263,
+    "Z": 34.15
+  },
+  "SLB_DutXYZPosition": {
+    "X": -35.778,
+    "Y": 152.499,
+    "Z": 153.025
+  },
+  "SLB_ProjectionTiptilt": {
+    "dX": 0.1785,
+    "dY": 0.0213
+  },
+  "SLB_ImagingTiptilt": {
+    "dX": 0.095,
+    "dY": 0.095
+  }
+}

@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>calibrate.png</file>
+        <file>img/left.png</file>
+        <file>img/right.png</file>
+        <file>img/double-left.png</file>
+        <file>img/double-right.png</file>
+        <file>img/copyright-circle-fil.png</file>
+        <file>img/down-btn-fill.png</file>
+        <file>img/left-btn-fill.png</file>
+        <file>img/right-btn-fill.png</file>
+        <file>img/up-btn-fill.png</file>
+        <file>img/direction.png</file>
+    </qresource>
+</RCC>

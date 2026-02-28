@@ -1,0 +1,480 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 9">
+<link rel=File-List href="./LKIF2_GetTolerance.files/filelist.xml">
+<link rel=Edit-Time-Data href="./LKIF2_GetTolerance.files/editdata.mso">
+<link rel=OLE-Object-Data href="./LKIF2_GetTolerance.files/oledata.mso">
+<title>LKIF2_GetTolerance</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:LastAuthor>Author</o:LastAuthor>
+  <o:LastSaved>2009-02-24T10:55:07Z</o:LastSaved>
+  <o:Version>9.8961</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.98in .79in .98in .79in;
+	mso-header-margin:.51in;
+	mso-footer-margin:.51in;}
+.font7
+	{color:red;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;}
+tr
+	{mso-height-source:auto;
+	mso-ruby-visibility:none;}
+col
+	{mso-width-source:auto;
+	mso-ruby-visibility:none;}
+br
+	{mso-data-placement:same-cell;}
+.style0
+	{mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	color:windowtext;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:Normal;
+	mso-style-id:0;}
+td
+	{mso-style-parent:style0;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+.xl24
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid black;
+	border-left:none;}
+.xl25
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl26
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl27
+	{mso-style-parent:style0;
+	text-align:right;
+	white-space:normal;}
+.xl28
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl29
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl30
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl31
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl32
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl33
+	{mso-style-parent:style0;
+	color:red;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl34
+	{mso-style-parent:style0;
+	color:red;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;}
+.xl35
+	{mso-style-parent:style0;
+	color:red;
+	border-top:none;
+	border-right:none;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl36
+	{mso-style-parent:style0;
+	color:red;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;}
+.xl37
+	{mso-style-parent:style0;
+	color:red;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:128;
+	border-top:none;
+	border-right:none;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl38
+	{mso-style-parent:style0;
+	color:red;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:128;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;}
+.xl39
+	{mso-style-parent:style0;
+	color:red;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:128;
+	border-top:none;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl40
+	{mso-style-parent:style0;
+	color:red;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:128;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl41
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl42
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl43
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl44
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl45
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl46
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl47
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>LKIF2_GetTolerance</x:Name>
+    <x:WorksheetOptions>
+     <x:DefaultRowHeight>285</x:DefaultRowHeight>
+     <x:Selected/>
+     <x:DoNotDisplayGridlines/>
+     <x:Panes>
+      <x:Pane>
+       <x:Number>3</x:Number>
+       <x:ActiveRow>6</x:ActiveRow>
+       <x:RangeSelection>A7:C7</x:RangeSelection>
+      </x:Pane>
+     </x:Panes>
+     <x:ProtectContents>False</x:ProtectContents>
+     <x:ProtectObjects>False</x:ProtectObjects>
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+    </x:WorksheetOptions>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+  <x:WindowHeight>13170</x:WindowHeight>
+  <x:WindowWidth>9555</x:WindowWidth>
+  <x:WindowTopX>480</x:WindowTopX>
+  <x:WindowTopY>90</x:WindowTopY>
+  <x:ProtectStructure>False</x:ProtectStructure>
+  <x:ProtectWindows>False</x:ProtectWindows>
+ </x:ExcelWorkbook>
+</xml><![endif]-->
+</head>
+
+<body link=black vlink=purple>
+
+<table x:str border=0 cellpadding=0 cellspacing=0 width=644 style='border-collapse:
+ collapse;table-layout:fixed;width:483pt'>
+ <col width=87 style='mso-width-source:userset;mso-width-alt:2784;width:65pt'>
+ <col width=115 style='mso-width-source:userset;mso-width-alt:3680;width:86pt'>
+ <col width=442 style='mso-width-source:userset;mso-width-alt:14144;width:332pt'>
+ <tr height=19 style='height:14.25pt'>
+  <td colspan=3 height=19 class=xl27 width=644 style='height:14.25pt;
+  width:483pt'>Get tolerance (LKIF2_GetTolerance)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 colspan=3 style='height:14.25pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl24 style='height:14.25pt'> </td>
+  <td class=xl24> </td>
+  <td class=xl24> </td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 colspan=3 style='height:14.25pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 colspan=3 style='height:14.25pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 colspan=3 style='height:15.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=44 style='mso-height-source:userset;height:33.0pt'>
+  <td colspan=3 height=44 class=xl28 width=644 style='border-right:2.0pt double gray;
+  height:33.0pt;width:483pt'>RC WINAPI LKIF2_GetTolerance(IN int OutNo,OUT int
+  *UpperLimit,OUT int *LowerLimit,<br>
+  OUT int *Hysteresis);</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl28 width=644 style='border-right:2.0pt double gray;
+  height:15.75pt;width:483pt'> </td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td height=21 class=xl25 width=87 style='height:15.75pt;width:65pt'>Description</td>
+  <td colspan=2 class=xl28 width=557 style='border-right:2.0pt double gray;
+  border-left:none;width:418pt'>Obtain the tolerance setting values.</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl28 width=644 style='border-right:2.0pt double gray;
+  height:15.75pt;width:483pt'> </td>
+ </tr>
+ <tr height=40 style='height:30.0pt'>
+  <td rowspan=4 height=160 class=xl42 width=87 style='border-bottom:2.0pt double gray;
+  height:120.0pt;border-top:none;width:65pt'>Parameter</td>
+  <td class=xl41 width=115 style='width:86pt' x:str="OutNo ">OutNo<span
+  style="mso-spacerun: yes">&nbsp;</span></td>
+  <td class=xl41 width=442 style='width:332pt'>Specify the OUT No. The value
+  range is 0 to ((the No. of used OUT)-1).</td>
+ </tr>
+ <tr height=40 style='height:30.0pt'>
+  <td height=40 class=xl41 width=115 style='height:30.0pt;width:86pt'
+  x:str="UpperLimit ">UpperLimit<span style="mso-spacerun: yes">&nbsp;</span></td>
+  <td class=xl41 width=442 style='width:332pt'>The upper tolerance limit value
+  is contained. The value range is -999999 to 999999.</td>
+ </tr>
+ <tr height=40 style='height:30.0pt'>
+  <td height=40 class=xl41 width=115 style='height:30.0pt;width:86pt'
+  x:str="LowerLimit ">LowerLimit<span style="mso-spacerun: yes">&nbsp;</span></td>
+  <td class=xl41 width=442 style='width:332pt'>The lower tolerance limit value
+  is contained. The value range is -999999 to 999999.</td>
+ </tr>
+ <tr height=40 style='height:30.0pt'>
+  <td height=40 class=xl41 width=115 style='height:30.0pt;width:86pt'
+  x:str="Hysteresis ">Hysteresis<span style="mso-spacerun: yes">&nbsp;</span></td>
+  <td class=xl41 width=442 style='width:332pt'>The tolerance hysteresis value
+  is contained. The value range is 0 to 999999.</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl45 width=644 style='border-right:2.0pt double gray;
+  height:15.75pt;width:483pt'> </td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td height=21 class=xl25 width=87 style='height:15.75pt;width:65pt'>Return
+  value</td>
+  <td class=xl26 width=115 style='width:86pt'>RC</td>
+  <td class=xl26 width=442 style='width:332pt'>Refer to &quot;Return code
+  list&quot;.</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl28 width=644 style='border-right:2.0pt double gray;
+  height:15.75pt;width:483pt'> </td>
+ </tr>
+ <tr height=38 style='mso-height-source:userset;height:28.5pt'>
+  <td rowspan=9 height=214 class=xl32 width=87 style='border-bottom:2.0pt double gray;
+  height:160.5pt;border-top:none;width:65pt'>Remark</td>
+  <td colspan=2 class=xl33 width=557 style='border-right:2.0pt double gray;
+  border-left:none;width:418pt'>The value contained in the parameter depends on
+  the minimum display unit setting of the LK-G5000 Series.</td>
+ </tr>
+ <tr height=42 style='mso-height-source:userset;height:31.5pt'>
+  <td colspan=2 height=42 class=xl35 width=557 style='border-right:2.0pt double gray;
+  height:31.5pt;border-left:none;width:418pt'>Example: If the LK-G5000 Series
+  is set as follows, &quot;999999&quot; to be contained represents the
+  following values:</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td colspan=2 height=19 class=xl37 width=557 style='border-right:2.0pt double gray;
+  height:14.25pt;border-left:none;width:418pt'> <font class=font7>Minimum
+  display unit = 0.01 mm : 9999.99 mm</font></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td colspan=2 height=19 class=xl37 width=557 style='border-right:2.0pt double gray;
+  height:14.25pt;border-left:none;width:418pt'> <font class=font7>Minimum
+  display unit = 0.001 mm : 999.999 mm</font></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td colspan=2 height=19 class=xl37 width=557 style='border-right:2.0pt double gray;
+  height:14.25pt;border-left:none;width:418pt'> <font class=font7>Minimum
+  display unit = 0.0001 mm : 99.9999 mm</font></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td colspan=2 height=19 class=xl37 width=557 style='border-right:2.0pt double gray;
+  height:14.25pt;border-left:none;width:418pt'> <font class=font7>Minimum
+  display unit = 0.00001 mm : 9.99999 mm</font></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td colspan=2 height=19 class=xl37 width=557 style='border-right:2.0pt double gray;
+  height:14.25pt;border-left:none;width:418pt'> <font class=font7>Minimum
+  display unit = 0.1 um :<span style="mso-spacerun: yes">&nbsp; </span>99999.9
+  um</font></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td colspan=2 height=19 class=xl37 width=557 style='border-right:2.0pt double gray;
+  height:14.25pt;border-left:none;width:418pt'> <font class=font7>Minimum
+  display unit = 0.01 um : 9999.99 um</font></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td colspan=2 height=20 class=xl39 width=557 style='border-right:2.0pt double gray;
+  height:15.0pt;border-left:none;width:418pt'> <font class=font7>Minimum
+  display unit = 0.001 um : 999.999 um</font></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 colspan=3 style='height:15.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 colspan=3 style='height:14.25pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 colspan=3 style='height:14.25pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl24 style='height:14.25pt'> </td>
+  <td class=xl24> </td>
+  <td class=xl24> </td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=87 style='width:65pt'></td>
+  <td width=115 style='width:86pt'></td>
+  <td width=442 style='width:332pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

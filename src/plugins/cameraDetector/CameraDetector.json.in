@@ -1,0 +1,11 @@
+{
+    \"Name\" : \"CameraDetector\",
+    \"Version\" : \"5.0.3\",
+    \"CompatVersion\" : \"5.0.3\",
+    \"Vendor\" : \"MLO\",
+    \"Copyright\" : \"(C) MLO\",
+    \"License\" : \"mlo copy right\",
+    \"Description\" : \"Camera Detector \",
+    \"Url\" : \"https://mloptic.com/\",
+    $$dependencyList
+}

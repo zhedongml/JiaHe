@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LkIF2TestVC", "LkIF2TestVC.vcproj", "{771D5E52-C6E3-4FDE-B9AA-3798A936DF3A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{771D5E52-C6E3-4FDE-B9AA-3798A936DF3A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{771D5E52-C6E3-4FDE-B9AA-3798A936DF3A}.Debug|Win32.Build.0 = Debug|Win32
+		{771D5E52-C6E3-4FDE-B9AA-3798A936DF3A}.Release|Win32.ActiveCfg = Release|Win32
+		{771D5E52-C6E3-4FDE-B9AA-3798A936DF3A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

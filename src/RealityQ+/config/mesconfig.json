@@ -1,0 +1,24 @@
+{
+    "MQTT": {
+        "BrokerIP": "127.0.0.1",
+        "BrokerPort": 1883,
+        "ClientId": "ML",
+        "UserName": "",
+        "Password": "",
+        "CleanSession": true,
+        "ConnectionTimeout": 5,
+        "KeepAliveInterval": 30,
+        "AutoReconnect": true,
+        "ReconnectInterval": 5,
+        "Qos": 1,
+        "ResponseTimeOut": 8,
+        "ProtocolVersion": 4,
+        "DeviceNo": "RQ20240001",
+        "DataType": "aoi",
+        "AlarmNumber": 10,
+        "Topic": {
+            "AOI": "data.device.aoi",
+            "STATUS": "data.device.status"
+        }
+    }
+}

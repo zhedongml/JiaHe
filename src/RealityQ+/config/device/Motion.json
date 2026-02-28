@@ -1,0 +1,102 @@
+{
+    "Motion2D": {
+        "ProjectorTilt": {
+            "IP": "10.0.0.105/701/2/3/+/+",
+            "Limits": {
+				"Min":{
+					"X":-16,
+					"Y":-16
+				},
+				"Max": {
+					"X": 16,
+					"Y": 16
+				}
+            },
+            "ZeroPosition": {
+                "X": 0,
+                "Y": 0
+            },
+			"ZeroPositionTmp": {
+				"X": 0.267,
+				"Y": -0.043
+			}
+		},
+		"CameraModuleTilt": {
+            "IP": "10.0.0.102/701/3/4/+/+",
+            "Limits": {
+				"Min":{
+					"X":-9,
+					"Y":-7
+				},
+				"Max":{
+					"X":1,
+					"Y":5
+				}
+            },
+            "ZeroPosition": {
+                "X": 0,
+                "Y": 0
+            },
+			"ZeroPositionTmp": {
+                "X": 0.267,
+                "Y": -0.043
+            }
+        }
+    },
+    "Motion3D": {
+        "MeasureCameraControl": {
+            "IP": "10.0.0.102/701/1/0/2/-/-/+",
+			"Limits": {
+				"Min":{
+					"X":0,
+					"Y":0,
+					"Z":0
+				},
+				"Max":{
+					"X":0,
+					"Y":0,
+					"Z":0
+				}				
+			}	
+        },
+		"DUTControl": {
+            "IP": "10.0.0.103/701/1/0/2/+/-/+",
+            "Limits": {
+				"Min":{
+					"X":0,
+					"Y":0,
+					"Z":0
+				},
+				"Max":{
+					"X":0,
+					"Y":0,
+					"Z":0
+				}
+			}
+		},
+		"DUTModuleTilt": {
+			"Limits": {
+				"Min": {
+					"X": -360,
+					"Y": -360,
+					"Z": -360
+				},
+				"Max": {
+					"X": 360,
+					"Y": 360,
+					"Z": 360
+				}
+			}
+		}
+	},
+	"Motion1D": {
+		"ProjectorThorlabs": {
+			"IP": "COM18",
+			"Limits": {
+				"Min": 0,
+				"Max": 360
+			},
+			"Angle": 21
+		}
+	}
+}

@@ -1,0 +1,459 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office"
+xmlns:x="urn:schemas-microsoft-com:office:excel"
+xmlns="http://www.w3.org/TR/REC-html40">
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=us-ascii">
+<meta name=ProgId content=Excel.Sheet>
+<meta name=Generator content="Microsoft Excel 9">
+<link rel=File-List href="./LKIF2_DataStorageGetData.files/filelist.xml">
+<link rel=Edit-Time-Data href="./LKIF2_DataStorageGetData.files/editdata.mso">
+<link rel=OLE-Object-Data href="./LKIF2_DataStorageGetData.files/oledata.mso">
+<title>LKIF2_DataStorageGetData</title>
+<!--[if gte mso 9]><xml>
+ <o:DocumentProperties>
+  <o:LastAuthor>Author</o:LastAuthor>
+  <o:LastSaved>2009-02-25T06:50:34Z</o:LastSaved>
+  <o:Version>9.8961</o:Version>
+ </o:DocumentProperties>
+</xml><![endif]-->
+<style>
+<!--table
+	{mso-displayed-decimal-separator:"\.";
+	mso-displayed-thousand-separator:"\,";}
+@page
+	{margin:.98in .79in .98in .79in;
+	mso-header-margin:.51in;
+	mso-footer-margin:.51in;}
+tr
+	{mso-height-source:auto;
+	mso-ruby-visibility:none;}
+col
+	{mso-width-source:auto;
+	mso-ruby-visibility:none;}
+br
+	{mso-data-placement:same-cell;}
+.style0
+	{mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	white-space:nowrap;
+	mso-rotate:0;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	color:windowtext;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	border:none;
+	mso-protection:locked visible;
+	mso-style-name:Normal;
+	mso-style-id:0;}
+td
+	{mso-style-parent:style0;
+	padding-top:1px;
+	padding-right:1px;
+	padding-left:1px;
+	mso-ignore:padding;
+	color:windowtext;
+	font-size:11.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	mso-number-format:General;
+	text-align:general;
+	vertical-align:bottom;
+	border:none;
+	mso-background-source:auto;
+	mso-pattern:auto;
+	mso-protection:locked visible;
+	white-space:nowrap;
+	mso-rotate:0;}
+.xl24
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:none;
+	border-bottom:.5pt solid black;
+	border-left:none;}
+.xl25
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl26
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl27
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl28
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;}
+.xl29
+	{mso-style-parent:style0;
+	text-align:left;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;
+	padding-left:18px;
+	mso-char-indent-count:1;}
+.xl30
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl31
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;}
+.xl32
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:none;
+	border-bottom:none;
+	border-left:2.0pt double gray;}
+.xl33
+	{mso-style-parent:style0;
+	text-align:right;
+	white-space:normal;}
+.xl34
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl35
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl36
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:2.0pt double gray;
+	border-left:none;
+	white-space:normal;}
+.xl37
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:none;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl38
+	{mso-style-parent:style0;
+	vertical-align:middle;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl39
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:none;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl40
+	{mso-style-parent:style0;
+	border-top:2.0pt double gray;
+	border-right:2.0pt double gray;
+	border-bottom:none;
+	border-left:none;
+	white-space:normal;}
+.xl41
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:none;
+	border-bottom:none;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+.xl42
+	{mso-style-parent:style0;
+	border-top:none;
+	border-right:none;
+	border-bottom:2.0pt double gray;
+	border-left:2.0pt double gray;
+	white-space:normal;}
+ruby
+	{ruby-align:left;}
+rt
+	{color:windowtext;
+	font-size:6.0pt;
+	font-weight:400;
+	font-style:normal;
+	text-decoration:none;
+	font-family:"Tahoma", monospace;
+	mso-font-charset:0;
+	mso-char-type:katakana;
+	display:none;}
+-->
+</style>
+<!--[if gte mso 9]><xml>
+ <x:ExcelWorkbook>
+  <x:ExcelWorksheets>
+   <x:ExcelWorksheet>
+    <x:Name>LKIF2_DataStorageGetData</x:Name>
+    <x:WorksheetOptions>
+     <x:DefaultRowHeight>285</x:DefaultRowHeight>
+     <x:Print>
+      <x:ValidPrinterInfo/>
+      <x:PaperSizeIndex>9</x:PaperSizeIndex>
+      <x:Scale>91</x:Scale>
+      <x:HorizontalResolution>600</x:HorizontalResolution>
+      <x:VerticalResolution>600</x:VerticalResolution>
+     </x:Print>
+     <x:PageBreakZoom>60</x:PageBreakZoom>
+     <x:Selected/>
+     <x:DoNotDisplayGridlines/>
+     <x:Panes>
+      <x:Pane>
+       <x:Number>3</x:Number>
+       <x:ActiveRow>29</x:ActiveRow>
+       <x:ActiveCol>2</x:ActiveCol>
+      </x:Pane>
+     </x:Panes>
+     <x:ProtectContents>False</x:ProtectContents>
+     <x:ProtectObjects>False</x:ProtectObjects>
+     <x:ProtectScenarios>False</x:ProtectScenarios>
+    </x:WorksheetOptions>
+   </x:ExcelWorksheet>
+  </x:ExcelWorksheets>
+  <x:WindowHeight>13170</x:WindowHeight>
+  <x:WindowWidth>9555</x:WindowWidth>
+  <x:WindowTopX>480</x:WindowTopX>
+  <x:WindowTopY>90</x:WindowTopY>
+  <x:ProtectStructure>False</x:ProtectStructure>
+  <x:ProtectWindows>False</x:ProtectWindows>
+ </x:ExcelWorkbook>
+</xml><![endif]-->
+</head>
+
+<body link=black vlink=silver>
+
+<table x:str border=0 cellpadding=0 cellspacing=0 width=855 style='border-collapse:
+ collapse;table-layout:fixed;width:642pt'>
+ <col width=106 style='mso-width-source:userset;mso-width-alt:3392;width:80pt'>
+ <col width=149 style='mso-width-source:userset;mso-width-alt:4768;width:112pt'>
+ <col width=600 style='mso-width-source:userset;mso-width-alt:19200;width:450pt'>
+ <tr height=19 style='height:14.25pt'>
+  <td colspan=3 height=19 class=xl33 width=855 style='height:14.25pt;
+  width:642pt'>Data storage output (LKIF2_DataStorageGetData)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 colspan=3 style='height:14.25pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl24 style='height:14.25pt'> </td>
+  <td class=xl24> </td>
+  <td class=xl24> </td>
+ </tr>
+ <tr height=38 style='height:28.5pt;mso-xlrowspan:2'>
+  <td height=38 colspan=3 style='height:28.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 colspan=3 style='height:15.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=41 style='mso-height-source:userset;height:30.75pt'>
+  <td colspan=3 height=41 class=xl34 width=855 style='border-right:2.0pt double gray;
+  height:30.75pt;width:642pt'>RC WINAPI LKIF2_DataStorageGetData(IN int
+  OutNo,IN int NumOutBuffer,OUT LKIF_FLOATVALUE *OutBuffer,OUT int
+  *NumReceived);</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl34 width=855 style='border-right:2.0pt double gray;
+  height:15.75pt;width:642pt'> </td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td height=21 class=xl25 width=106 style='height:15.75pt;width:80pt'>Description</td>
+  <td colspan=2 class=xl34 width=749 style='border-right:2.0pt double gray;
+  border-left:none;width:562pt'>Obtain the data stored in the data storage.</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl34 width=855 style='border-right:2.0pt double gray;
+  height:15.75pt;width:642pt'> </td>
+ </tr>
+ <tr height=40 style='height:30.0pt'>
+  <td rowspan=20 height=426 class=xl38 width=106 style='border-bottom:2.0pt double gray;
+  height:319.5pt;border-top:none;width:80pt'>Parameter</td>
+  <td class=xl26 width=149 style='width:112pt' x:str="OutNo ">OutNo<span
+  style="mso-spacerun: yes">&nbsp;</span></td>
+  <td class=xl27 width=600 style='width:450pt'>Specify the OUT No. of the data
+  to be obtained. The value range is 0 to ((the No. of used OUT)-1).</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td height=21 class=xl26 width=149 style='height:15.75pt;width:112pt'
+  x:str="NumOutBuffer ">NumOutBuffer<span style="mso-spacerun:
+  yes">&nbsp;</span></td>
+  <td class=xl27 width=600 style='width:450pt'>Specify the number of the data
+  pieces to be obtained within the range of 1 to 1200000.</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td rowspan=17 height=325 class=xl38 width=149 style='border-bottom:2.0pt double gray;
+  height:243.75pt;border-top:none;width:112pt' x:str="OutBuffer ">OutBuffer<span
+  style="mso-spacerun: yes">&nbsp;</span></td>
+  <td class=xl28 width=600 style='width:450pt'>Specify the pointer to the
+  measured value structure array.</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=600 style='height:14.25pt;width:450pt'>(It is
+  user's responsibility for reserving the area.)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=600 style='height:14.25pt;width:450pt'> </td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=600 style='height:14.25pt;width:450pt'>typedef
+  enum {</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=600 style='height:14.25pt;width:450pt'>LKIF_FLOATRESULT_VALID,
+  // Valid data</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=600 style='height:14.25pt;width:450pt'>LKIF_FLOATRESULT_RANGEOVER_P,
+  // Over range at positive (+) side</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=600 style='height:14.25pt;width:450pt'>LKIF_FLOATRESULT_RANGEOVER_N,
+  // Over range at negative (-) side</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=600 style='height:14.25pt;width:450pt'>LKIF_FLOATRESULT_WAITING,
+  // Wait for comparator result</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=600 style='height:14.25pt;width:450pt'>LKIF_FLOATRESULT_ALARM,
+  // Alarm</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=600 style='height:14.25pt;width:450pt'>LKIF_FLOATRESULT_INVALID,
+  // Invalid (error, etc.)</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=600 style='height:14.25pt;width:450pt'>}
+  LKIF_FLOATRESULT;</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=600 style='height:14.25pt;width:450pt'> </td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=600 style='height:14.25pt;width:450pt'>typedef
+  struct {</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=600 style='height:14.25pt;width:450pt'>LKIF_FLOATRESULT
+  FloatResult; // Whether the result is valid or not</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl29 width=600 style='height:14.25pt;width:450pt'>float
+  Value; //measurement value during LKIF_FLOATRESULT_VALID.</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl28 width=600 style='height:14.25pt;width:450pt'>}
+  LKIF_FLOATVALUE;</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 class=xl27 width=600 style='height:15.0pt;width:450pt'> </td>
+ </tr>
+ <tr height=40 style='height:30.0pt'>
+  <td height=40 class=xl26 width=149 style='height:30.0pt;width:112pt'
+  x:str="NumReceived ">NumReceived<span style="mso-spacerun: yes">&nbsp;</span></td>
+  <td class=xl27 width=600 style='width:450pt'>Specify the pointer to the
+  variable which contains the number of data pieces actually obtained.</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl34 width=855 style='border-right:2.0pt double gray;
+  height:15.75pt;width:642pt'> </td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td height=21 class=xl30 width=106 style='height:15.75pt;width:80pt'>Return
+  value</td>
+  <td class=xl26 width=149 style='width:112pt'>RC</td>
+  <td class=xl26 width=600 style='width:450pt'>Refer to &quot;Return code
+  list&quot;.</td>
+ </tr>
+ <tr height=21 style='height:15.75pt'>
+  <td colspan=3 height=21 class=xl34 width=855 style='border-right:2.0pt double gray;
+  height:15.75pt;width:642pt'> </td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td rowspan=4 height=119 class=xl38 width=106 style='border-bottom:2.0pt double gray;
+  height:89.25pt;border-top:none;width:80pt'>Remark</td>
+  <td colspan=2 class=xl39 width=749 style='border-right:2.0pt double gray;
+  border-left:none;width:562pt'>Be careful that this function returns an error
+  while data is being stored in the data storage.</td>
+ </tr>
+ <tr height=38 style='mso-height-source:userset;height:28.5pt'>
+  <td colspan=2 height=38 class=xl41 width=749 style='border-right:2.0pt double gray;
+  height:28.5pt;border-left:none;width:562pt'>If the number of data pieces
+  stored in the LK-G5000 Series is less than the value of NumOfBuffer, all the
+  stored data will be obtained.</td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl32 colspan=2 style='height:14.25pt;mso-ignore:colspan;
+  border-right:2.0pt double gray'>(The content of excessive buffer will not be
+  updated.)</td>
+ </tr>
+ <tr height=42 style='mso-height-source:userset;height:31.5pt'>
+  <td colspan=2 height=42 class=xl42 width=749 style='border-right:2.0pt double gray;
+  height:31.5pt;border-left:none;width:562pt'>If the number of data pieces
+  stored in the LK-G5000 Series is more than the value of NumOfBuffer, the data
+  as much as the amount of NumOfBuffer will be obtained.</td>
+ </tr>
+ <tr height=20 style='height:15.0pt'>
+  <td height=20 colspan=3 style='height:15.0pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=38 style='height:28.5pt;mso-xlrowspan:2'>
+  <td height=38 colspan=3 style='height:28.5pt;mso-ignore:colspan'></td>
+ </tr>
+ <tr height=19 style='height:14.25pt'>
+  <td height=19 class=xl24 style='height:14.25pt'> </td>
+  <td class=xl24> </td>
+  <td class=xl24> </td>
+ </tr>
+ <![if supportMisalignedColumns]>
+ <tr height=0 style='display:none'>
+  <td width=106 style='width:80pt'></td>
+  <td width=149 style='width:112pt'></td>
+  <td width=600 style='width:450pt'></td>
+ </tr>
+ <![endif]>
+</table>
+
+</body>
+
+</html>

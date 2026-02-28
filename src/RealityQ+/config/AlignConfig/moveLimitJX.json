@@ -1,0 +1,109 @@
+{
+	"DutMcCollision": [
+	{
+		"McAngle":{
+			"X": 4.03,
+			"Y": 6.98
+		},
+		"CenterRelative":{
+			"X": 85,
+			"Y": -65
+		},
+		"Rectangle":{
+			"LengthX":100,
+			"WidthY":100
+		},
+		"McMaxZ":75
+	}
+	],
+	"DutProjectorCollision": [
+	{
+		"ProAngle":{
+			"X": 2.553,
+			"Y": 9.367
+		},
+		"CenterRelative":{
+			"X": 25,
+			"Y": -49
+		},
+		"Rectangle":{
+			"LengthX":20,
+			"WidthY":50
+		}
+	}
+	],	
+	"McProjectorCollision": [
+	{
+		"McAngle":{
+			"X": 4.03,
+			"Y": 6.98
+		},
+		"ProAngle":{
+			"X": 2.553,
+			"Y": 9.367
+		},
+		"CenterRelative":{
+			"X":-63,
+			"Y":19,
+			"Z":70
+		},
+		"Rectangle":{
+			"LengthY":100,
+			"WidthZ":100
+		},
+		"MinDistanceX":-63
+	}
+	],
+	"DefaultAngle":{
+		"McAngle":{
+			"X": 4.03,
+			"Y": 6.98
+		},
+		"ProAngle":{
+			"X": 2.553,
+			"Y": 9.367
+		}
+	},
+	"InitTestDutPosition": {
+		"X": 60,
+		"Y": -50
+	},
+	"InitTestMcPosition": {
+		"X": 45,
+		"Y": 25,
+		"Z": 56
+	},
+	"LoadDutPosition": {
+		"X": 145,
+		"Y": 95
+	},
+	"LoadMeasureCameraPosition": {
+		"X": 45,
+		"Y": -23,
+		"Z": 0
+	},
+	"Motion3DMoveSpeed":{
+		"InitSpeed":{
+			"X": 10,
+			"Y": 10,
+			"Z": 10
+		},
+		"AlignSpeed":{
+			"X": 5,
+			"Y": 5,
+			"Z": 5
+		}
+	},
+	"MeasureCameraMove":{
+		"Min":{
+			"X": 0,
+			"Y": 0,
+			"Z": 0
+		},
+		"Max":{
+			"X": 0,
+			"Y": 0,
+			"Z": 0
+		}		
+	}
+}

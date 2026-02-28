@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{DACDCC11-4FE3-4283-8309-A753879A3493}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtModules>core;sql;gui;widgets</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+    <QtInstall>msvc2019_64</QtInstall>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>msvc2019_64</QtInstall>
+    <QtModules>core;sql;gui;widgets</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>A$(ProjectName)</TargetName>
+    <IncludePath>$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName>A$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgConfiguration>Debug</VcpkgConfiguration>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);$(SolutionDir)src;$(SolutionDir)src\plugins;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\pi\C++\API;$(SolutionDir)src\extlib\ACSC;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\coreplugins\service;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;$(SolutionDir)src\plugins\Core;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\extlib\ELLOLib\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\logplus\lib\x64\bin.Debug_Unicode;$(SolutionDir)src\extlib\pi\C++\API;$(SolutionDir)src\extlib\ACSC;$(SolutionDir)src\extlib\ELLOLib\$(Configuration);$(SolutionDir)src\extlib\recipeLib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>log4cplusUD.lib;PI_GCS2_DLL_x64.lib;ACSCL_x64.LIB;ELLOLib.lib;ObjectManager.lib;behaviortree_cpp_v3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)src\extlib\pi\C++\API\PI_GCS2_DLL_x64.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\ACSC\ACSCL_x64.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\ACSC\WibuCm64.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\recipeLib\$(Configuration)\ObjectManager.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy "$(SolutionDir)src\extlib\ELLOLib\$(Configuration)\ELLOLib.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\" /Y
+xcopy "$(SolutionDir)src\extlib\ELLOLib\$(Configuration)\eol_test.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\" /Y
+xcopy "$(SolutionDir)src\extlib\ELLOLib\$(Configuration)\pst_test.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\" /Y
+xcopy "$(SolutionDir)src\extlib\ELLOLib\$(Configuration)\Thorlabs.Elliptec.ELLO_DLL.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\" /Y
+xcopy "$(SolutionDir)src\extlib\ELLOLib\$(Configuration)\Vision4DisplayTest.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\" /Y
+xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\registerRecipe\"
+
+
+
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>GeneratedFiles\$(ConfigurationName);$(SolutionDir)src;$(SolutionDir)src\plugins;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\pi\C++\API;$(SolutionDir)src\extlib\ACSC;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\coreplugins\service;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\plugins\Core;$(SolutionDir)src\extlib\ELLOLib\include;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\logplus\lib\x64\bin.Release_Unicode;$(SolutionDir)src\extlib\pi\C++\API;$(SolutionDir)src\extlib\ACSC;$(SolutionDir)src\extlib\ELLOLib\$(Configuration);$(SolutionDir)src\extlib\recipeLib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>log4cplusU.lib;PI_GCS2_DLL_x64.lib;ACSCL_x64.LIB;ELLOLib.lib;behaviortree_cpp_v3.lib;ObjectManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(SolutionDir)src\extlib\pi\C++\API\PI_GCS2_DLL_x64.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\ACSC\ACSCL_x64.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\ACSC\WibuCm64.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\recipeLib\$(Configuration)\ObjectManager.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy "$(SolutionDir)src\extlib\ELLOLib\$(Configuration)\ELLOLib.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\" /Y
+xcopy "$(SolutionDir)src\extlib\ELLOLib\$(Configuration)\eol_test.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\" /Y
+xcopy "$(SolutionDir)src\extlib\ELLOLib\$(Configuration)\pst_test.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\" /Y
+xcopy "$(SolutionDir)src\extlib\ELLOLib\$(Configuration)\Thorlabs.Elliptec.ELLO_DLL.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\" /Y
+xcopy "$(SolutionDir)src\extlib\ELLOLib\$(Configuration)\Vision4DisplayTest.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\" /Y
+xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\registerRecipe\"
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>PIMOTIONACTOR_LIB;_CONSOLE;UNICODE;_UNICODE;_ENABLE_EXTENDED_ALIGNED_STORAGE;WITH_TESTS;RELATIVE_PLUGIN_PATH=".plugins";RELATIVE_LIBEXEC_PATH=".";RELATIVE_DATA_PATH=".";"RELATIVE_DOC_PATH="../share/doc/qtcreator"";IDE_LIBRARY_BASENAME="lib";QT_CREATOR;QT_NO_JAVA_STYLE_ITERATORS;QT_NO_CAST_TO_ASCII;QT_RESTRICTED_CAST_FROM_ASCII;QT_DISABLE_DEPRECATED_BEFORE=0x050900;QT_USE_QSTRINGBUILDER;_CRT_SECURE_NO_WARNINGS;QT_PLUGIN;QT_TESTCASE_BUILDDIR=".";MYSHAREDLIB_LIBRARY;BT_PLUGIN_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>PIMOTIONACTOR_LIB;_CONSOLE;UNICODE;_UNICODE;_ENABLE_EXTENDED_ALIGNED_STORAGE;WITH_TESTS;RELATIVE_PLUGIN_PATH=".plugins";RELATIVE_LIBEXEC_PATH=".";RELATIVE_DATA_PATH=".";"RELATIVE_DOC_PATH="../share/doc/qtcreator"";IDE_LIBRARY_BASENAME="lib";QT_CREATOR;QT_NO_JAVA_STYLE_ITERATORS;QT_NO_CAST_TO_ASCII;QT_RESTRICTED_CAST_FROM_ASCII;QT_DISABLE_DEPRECATED_BEFORE=0x050900;QT_USE_QSTRINGBUILDER;_CRT_SECURE_NO_WARNINGS;QT_PLUGIN;QT_TESTCASE_BUILDDIR=".";MYSHAREDLIB_LIBRARY;BT_PLUGIN_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="calibrateDataBase.cpp" />
+    <ClCompile Include="calibrationconfig.cpp" />
+    <ClCompile Include="configItem.cpp" />
+    <ClCompile Include="ConfigMAInfo.cpp" />
+    <ClCompile Include="DutProjectorCalibrate.cpp" />
+    <ClCompile Include="FiducialConfig.cpp" />
+    <ClCompile Include="MLACSController1D.cpp" />
+    <ClCompile Include="MLACSController2D.cpp" />
+    <ClCompile Include="MLPIController1D.cpp" />
+    <ClCompile Include="Motion2DControlWrapper.cpp" />
+    <ClCompile Include="Motion2DModel.cpp" />
+    <ClCompile Include="MoveLimit.cpp" />
+    <ClCompile Include="MoveLimitConfig.cpp" />
+    <ClCompile Include="MoveLimitConfigJX.cpp" />
+    <ClCompile Include="MoveLimitJX.cpp" />
+    <ClCompile Include="PIController.cpp" />
+    <ClCompile Include="QtClass.cpp" />
+    <QtMoc Include="calibrateDataBase.h" />
+    <ClInclude Include="calibrationconfig.h" />
+    <ClInclude Include="configItem.h" />
+    <ClInclude Include="ConfigMAInfo.h" />
+    <ClInclude Include="DutProjectorCalibrate.h" />
+    <ClInclude Include="FiducialConfig.h" />
+    <ClInclude Include="MLACSController2D.h" />
+    <QtMoc Include="Motion2DControlWrapper.h" />
+    <QtMoc Include="Motion2DModel.h" />
+    <ClInclude Include="MoveLimit.h" />
+    <ClInclude Include="MoveLimitConfig.h" />
+    <ClInclude Include="MLACSCController3D.h" />
+    <ClInclude Include="MLACSController1D.h" />
+    <QtMoc Include="QtClass.h" />
+    <QtMoc Include="Motion3DModel.h" />
+    <QtMoc Include="motion3dcontrolwrapper.h" />
+    <QtMoc Include="Motion1DModel.h" />
+    <QtMoc Include="MLPIController1D.h" />
+    <ClInclude Include="MoveLimitConfigJX.h" />
+    <ClInclude Include="MoveLimitJX.h" />
+    <ClInclude Include="PIController.h" />
+    <ClInclude Include="pimotionactor_global.h" />
+    <QtMoc Include="pimotionactorplugin.h" />
+    <ClCompile Include="MLACSCController3D.cpp" />
+    <ClCompile Include="Motion1DModel.cpp" />
+    <ClCompile Include="motion3dcontrolwrapper.cpp" />
+    <ClCompile Include="Motion3DModel.cpp" />
+    <ClCompile Include="pimotionactorplugin.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.vcxproj">
+      <Project>{9bce8e7a-22bc-4497-bde8-e54ac1b46d8e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\PLCControl\PLCControl.vcxproj">
+      <Project>{1d416d0e-1b68-4cd5-8912-23d24862513e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\pluginsystem\pluginsystem.vcxproj">
+      <Project>{15e206c7-ae3a-48dc-9996-495dc04d8893}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\PrjCommon\PrjCommon.vcxproj">
+      <Project>{6c74adc6-8df4-4346-b887-dfcecf036efd}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

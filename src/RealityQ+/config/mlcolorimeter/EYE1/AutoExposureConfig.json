@@ -1,0 +1,51 @@
+{
+	"AutoExposure": [
+		{
+			"FixedParameters": {
+				"bit_depth": 4095,
+				"dark_level": 5.8701319694519043,
+				"dark_time": 500000,
+				"dynamic_range": 0.8,
+				"multiChannel_roi": 100
+			},
+			"InitialParameters": {
+				"InitialTime": 1000000,
+				"isAutoUpdateInitTime": false,
+				"isAutoUpdateMaxMinTime": false,
+				"rate": 100000
+			},
+			"JudgmentMechanism": {
+				"max_time": 4999950,
+				"min_time": 0.1,
+				"rangeMax": 0.95,
+				"rangeMin": 0.01,
+				"targetMax": 0.9,
+				"targetMin": 0.7
+			},
+			"IterationStepLength": {
+				"belowNormalRange": 1.5,
+				"aboveNormalRange": 2,
+				"totalIterations": 20
+			},
+			"IsUseROIs": {
+				"isUseROIs": false,
+				"isCalculateEntireROIGray": false,
+				"pixelTotalNumber": 500,
+				"isUseWeightedAverage": false,
+				"ROIS": [
+					{
+						"Name": "ROI1",
+						"weight": 1,
+						"x": 246,
+						"y": 447,
+						"width": 1314,
+						"height": 1143
+					}
+				]
+			},
+			"Index": 1,
+			"Name": "VieCamera1",
+			"SerialNumber": "MLM24259S102M"
+		}
+	]
+}

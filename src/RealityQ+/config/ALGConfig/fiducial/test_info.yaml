@@ -1,0 +1,12 @@
+%YAML:1.0
+---
+infos:
+   -
+      angle: 0.
+      scale: 1.
+   -
+      angle: 180.
+      scale: 1.
+   -
+      angle: 360.
+      scale: 1.

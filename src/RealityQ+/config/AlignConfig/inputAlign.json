@@ -1,0 +1,11 @@
+{
+	"DutProjectorDistance": {
+		"step":0.5
+	},
+	"Reticle": "Clear",
+	"IntergratingSphere": {
+		"Solution": "G",
+		"Scal": 0.05
+	},
+	"IsDisplay":false
+}

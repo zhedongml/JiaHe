@@ -1,0 +1,67 @@
+{
+  "system": {
+    "image_size": [ 13376, 9528 ],
+    "pix2deg": 0.0050,
+    "pixel_angle_arcmin": 0.2972
+  },
+  "CheckboardDistortion": {
+    "plot": true
+  },
+  "Flare": {
+    "debug_plots": false,
+    "flare_angle": 2
+  },
+  "Ghost": {
+    "use_ghost": "infield",
+    "buffer": -50,
+    "ghost_region": []
+  },
+  "StrayLight": {
+    "lightStateROI": {
+      "30degCircle": [
+        "circle",
+        [ 0, 0 ],
+        15
+      ],
+      "topRect": [
+        "rect",
+        [ 0, 13 ],
+        [ 15, 3 ]
+      ],
+      "botRect": [
+        "rect",
+        [ 0, -13 ],
+        [ 15, 3 ]
+      ],
+      "rightRect": [
+        "rect",
+        [ 13, 0 ],
+        [ 3, 15 ]
+      ],
+      "leftRect": [
+        "rect",
+        [ -13, 0 ],
+        [ 3, 15 ]
+      ],
+      "NasalGhost": [
+        "rect",
+        [ -20, 9 ],
+        [ 10, 10 ]
+      ],
+      "BottomTempleGhost": [
+        "rect",
+        [ 20, -11 ],
+        [ 10, 10 ]
+      ]
+    },
+    "darkStateROI": {
+      "30degCircle": [
+        "circle",
+        [ 0, 0 ],
+        15
+      ]
+    },
+    "plot": true,
+    "offCenter": true
+  }
+}

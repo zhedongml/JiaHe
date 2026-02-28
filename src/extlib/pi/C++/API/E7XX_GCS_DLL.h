@@ -1,0 +1,377 @@
+/////////////////////////////////////////////////////////////////////////////
+// This is a part of the PI-Software Sources
+// Copyright (C) 1995-2002 PHYSIK INSTRUMENTE GmbH
+// All rights reserved.
+//
+// This source code beints to the Dll for the C-844 system
+
+///////////////////////////////////////////////////////////////////////////// 
+// Program: E7XX-Control DLL
+//
+// Developer: JKa
+//  
+// File: E7XX_GCS_DLL.h : main header file for the C-844 DLL
+/////////////////////////////////////////////////////////////////////////////
+
+#ifndef __E7XX_GCS_DLL_H_
+#define __E7XX_GCS_DLL_H_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#ifdef WIN32
+	#undef E7XX_FUNC_DECL
+	#ifdef E7XX_DLL_EXPORTS
+		#define E7XX_FUNC_DECL __declspec(dllexport) WINAPI
+	#else
+		#define E7XX_FUNC_DECL __declspec(dllimport) WINAPI
+	#endif
+#else
+	#ifdef E7XX_DLL_EXPORTS
+		#define E7XX_FUNC_DECL __attribute__ ((visibility("default")))
+	#else
+		#define E7XX_FUNC_DECL
+	#endif
+#endif
+
+#ifndef WIN32
+#ifndef BOOL
+	typedef int BOOL;
+#endif
+
+#ifndef TRUE
+	#define TRUE 1
+#endif
+
+#ifndef FALSE
+	#define FALSE 0
+#endif
+#endif
+
+
+
+
+////////////////////////////////
+// E-7XX Bits (E7XX_BIT_XXX). //
+////////////////////////////////
+
+/* Curve Controll E7XX_BIT_WGO_XXX */
+#define E7XX_BIT_WGO_START_DEFAULT				0x00000001UL
+#define E7XX_BIT_WGO_START_EXTERN_TRIGGER		0x00000002UL
+#define E7XX_BIT_WGO_WITH_DDL_INITIALISATION	0x00000040UL
+#define E7XX_BIT_WGO_WITH_DDL					0x00000080UL
+#define E7XX_BIT_WGO_START_AT_ENDPOSITION		0x00000100UL
+#define E7XX_BIT_WGO_SINGLE_RUN_DDL_TEST		0x00000200UL
+#define E7XX_BIT_WGO_SAVE_BIT_1					0x00100000UL
+#define E7XX_BIT_WGO_SAVE_BIT_2					0x00200000UL
+#define E7XX_BIT_WGO_SAVE_BIT_3					0x00400000UL
+
+/* Wave-Trigger E7XX_BIT_TRG_XXX */
+#define	E7XX_BIT_TRG_LINE_1					0x0001UL
+#define	E7XX_BIT_TRG_LINE_2					0x0002UL
+#define	E7XX_BIT_TRG_LINE_3					0x0003UL
+#define	E7XX_BIT_TRG_LINE_4					0x0008UL
+#define	E7XX_BIT_TRG_ALL_CURVE_POINTS		0x0100UL
+
+/* Data Record Configuration E7XX_DRC_XXX */
+#define	E7XX_DRC_DEFAULT					0UL
+#define	E7XX_DRC_AXIS_TARGET_POS			1UL
+#define	E7XX_DRC_AXIS_ACTUAL_POS			2UL
+#define	E7XX_DRC_AXIS_POS_ERROR				3UL
+#define	E7XX_DRC_AXIS_DDL_DATA				4UL
+#define	E7XX_DRC_AXIS_DRIVING_VOL			5UL
+#define	E7XX_DRC_PIEZO_MODEL_VOL			6UL
+#define	E7XX_DRC_PIEZO_VOL					7UL
+#define	E7XX_DRC_SENSOR_POS					8UL
+
+
+/* P(arameter)I(nfo)F(lag)_M(emory)T(ype)_XX */
+#define E7XX_PIF_MT_RAM						0x00000001UL
+#define E7XX_PIF_MT_EPROM					0x00000002UL
+#define E7XX_PIF_MT_ALL						(E7XX_PIF_MT_RAM | E7XX_PIF_MT_EPROM)
+
+/* P(arameter)I(nfo)F(lag)_D(ata)T(ype)_XX */
+#define E7XX_PIF_DT_INT						1UL
+#define E7XX_PIF_DT_FLOAT					2UL
+#define E7XX_PIF_DT_CHAR					3UL
+
+#ifdef WIN32
+#pragma pack(push)
+#pragma pack(4)
+#endif 
+
+#define E761_DIREC_POSITION_FLAG_BIT_RES	0x00000100UL
+#define E761_DIREC_POSITION_FLAG_BIT_WGO0	0x00000200UL
+#define E761_DIREC_POSITION_FLAG_BIT_WGO1	0x00000400UL
+#define E761_DIREC_POSITION_FLAG_BIT_WGO2	0x00000800UL
+#define E761_DIREC_POSITION_FLAG_BIT_WGO3	0x00001000UL
+#define E761_DIREC_POSITION_FLAG_BIT_OVF0	0x00002000UL
+#define E761_DIREC_POSITION_FLAG_BIT_OVF1	0x00004000UL
+#define E761_DIREC_POSITION_FLAG_BIT_OVF2	0x00008000UL
+#define E761_DIREC_POSITION_FLAG_BIT_ONT0	0x00010000UL
+#define E761_DIREC_POSITION_FLAG_BIT_ONT1	0x00020000UL
+#define E761_DIREC_POSITION_FLAG_BIT_ONT2	0x00040000UL
+#define E761_DIREC_POSITION_FLAG_BIT_SEN0	0x00080000UL
+#define E761_DIREC_POSITION_FLAG_BIT_SEN1	0x00100000UL
+#define E761_DIREC_POSITION_FLAG_BIT_SEN2	0x00200000UL
+#define E761_DIREC_POSITION_FLAG_BIT_HVA0	0x00400000UL
+#define E761_DIREC_POSITION_FLAG_BIT_HVA1	0x00800000UL
+#define E761_DIREC_POSITION_FLAG_BIT_HVA2	0x01000000UL
+#define E761_DIREC_POSITION_FLAG_BIT_HVA3	0x02000000UL
+#define E761_DIREC_POSITION_FLAG_BIT_TRG	0x04000000UL
+#define E761_DIREC_POSITION_FLAG_BIT_BSY	0x08000000UL
+#define E761_DIREC_POSITION_FLAG_BIT_AXIS1	0x10000000UL
+#define E761_DIREC_POSITION_FLAG_BIT_AXIS2	0x20000000UL
+#define E761_DIREC_POSITION_FLAG_BIT_AXIS3	0x40000000UL
+#define E761_DIREC_POSITION_FLAG_BIT_ERR	0x80000000UL
+
+
+typedef struct _PI_E761_DirectTargetWrite_
+{
+	float			fTargetAxis1;
+	float			fTargetAxis2;
+	float			fTargetAxis3;
+	unsigned int	iEnableAxisFlags;
+}PI_E761_DIRECT_TARGET_WRITE, *PPI_E761_DIRECT_TARGET_WRITE;
+
+typedef struct _PI_E761_DirectPositionRead_
+{
+	float			fPositionAxis1;
+	float			fPositionAxis2;
+	float			fPositionAxis3;
+	float			fAnalogInput;
+	unsigned int	iCounter;
+	unsigned int	iFlags;
+}PI_E761_DIRECT_POSITION_READ, *PPI_E761_DIRECT_POSITION_READ;
+
+typedef struct _PI_E761_DirectWaveTableWriteDataSet_
+{
+	BOOL			bWriteValueForWaveTable1; // If TRUE the value of fValueWaveTable1 is written into the wave table 1 at position iValuePositionInWaveTables.
+	BOOL			bWriteValueForWaveTable2; // If TRUE the value of fValueWaveTable2 is written into the wave table 2 at position iValuePositionInWaveTables.
+	BOOL			bWriteValueForWaveTable3; // If TRUE the value of fValueWaveTable3 is written into the wave table 3 at position iValuePositionInWaveTables.
+	BOOL			bWriteValueForWaveTable4; // If TRUE the value of fValueWaveTable4 is written into the wave table 4 at position iValuePositionInWaveTables.
+	float			fValueWaveTable1; // Value for wave table 1 at position iValuePositionInWaveTables.
+	float			fValueWaveTable2; // Value for wave table 2 at position iValuePositionInWaveTables.
+	float			fValueWaveTable3; // Value for wave table 3 at position iValuePositionInWaveTables.
+	float			fValueWaveTable4; // Value for wave table 4 at position iValuePositionInWaveTables.
+	unsigned int	iValuePositionInWaveTables; // The position in the wave table to which the values fValueWaveTableX shall be writen.
+}PI_E761_DIRECT_WAVE_TABLE_WRITE_DATA_SET;
+
+typedef struct _PI_E761_DirectWaveTableReadDataSet_
+{
+	float			fValueWaveTable1; // Receives the value for wave table 1 at position iValuePositionInWaveTables.
+	float			fValueWaveTable2; // Receives the value for wave table 2 at position iValuePositionInWaveTables.
+	float			fValueWaveTable3; // Receives the value for wave table 3 at position iValuePositionInWaveTables.
+	float			fValueWaveTable4; // Receives the value for wave table 4 at position iValuePositionInWaveTables.
+	unsigned int	iValuePositionInWaveTables; // The position in the wave table from which the values fValueWaveTableX shall be read.
+}PI_E761_DIRECT_WAVE_TABLE_READ_DATA_SET;
+
+typedef struct _PI_E761_DirectRecordTableReadDataSet_
+{
+	float			fValueRecordTable1; // Receives the value for record table 1 at position iValuePositionInRecordTables.
+	float			fValueRecordTable2; // Receives the value for record table 2 at position iValuePositionInRecordTables.
+	float			fValueRecordTable3; // Receives the value for record table 3 at position iValuePositionInRecordTables.
+	float			fValueRecordTable4; // Receives the value for record table 4 at position iValuePositionInRecordTables.
+	unsigned int	iValuePositionInRecordTables; // The position in the record table from which the values fValueRecordTableX shall be read.
+}PI_E761_DIRECT_RECORD_TABLE_READ_DATA_SET;
+
+
+#ifdef WIN32
+#pragma pack(pop)
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+// DLL initialization and comm functions
+int	E7XX_FUNC_DECL	E7XX_InterfaceSetupDlg(const char* szRegKeyName);
+int 	E7XX_FUNC_DECL	E7XX_ConnectRS232(int iPortNumber, int iBaudRate);
+#ifndef WIN32
+int	E7XX_FUNC_DECL E7XX_ConnectRS232ByDevName(const char* szDevName, int BaudRate);
+#endif
+int	E7XX_FUNC_DECL	E7XX_ConnectNIgpib(int iBoardNumber, int iDeviceAddress);
+int	E7XX_FUNC_DECL	E7XX_ConnectPciBoard(int iBoardNumber);
+int	E7XX_FUNC_DECL	E7XX_ConnectPciBoardAndReboot(int iBoardNumber);
+BOOL	E7XX_FUNC_DECL	E7XX_ChangeNIgpibAddress(int ID, int iDeviceAddress);
+BOOL	E7XX_FUNC_DECL	E7XX_IsConnected(int ID);
+void	E7XX_FUNC_DECL	E7XX_CloseConnection(int ID);
+int	E7XX_FUNC_DECL	E7XX_GetError(int ID);
+BOOL	E7XX_FUNC_DECL	E7XX_SetErrorCheck(int ID, BOOL bErrorCheck);
+BOOL	E7XX_FUNC_DECL	E7XX_TranslateError(int iErrorNumber, char* szErrorMessage, int iBufferSize);
+int	E7XX_FUNC_DECL	E7XX_CountPciBoards(void);
+
+
+/////////////////////////////////////////////////////////////////////////////
+// general
+BOOL E7XX_FUNC_DECL E7XX_qERR(int ID, int* piError);
+BOOL E7XX_FUNC_DECL E7XX_qIDN(int ID, char* szBuffer, int iBufferSize);
+BOOL E7XX_FUNC_DECL E7XX_INI(int ID, const char* szAxes);
+BOOL E7XX_FUNC_DECL E7XX_qHLP(int ID, char* szBuffer, int iBufferSize);
+BOOL E7XX_FUNC_DECL E7XX_qHPA(int ID, char* szBuffer, int iBufferSize);
+BOOL E7XX_FUNC_DECL E7XX_CSV(int ID, double pdCommandSyntaxVersion);
+BOOL E7XX_FUNC_DECL E7XX_qCSV(int ID, double* pdCommandSyntaxVersion);
+BOOL E7XX_FUNC_DECL E7XX_qOVF(int ID, const char* szAxes, BOOL* pbValueArray);
+BOOL E7XX_FUNC_DECL E7XX_RBT(int ID);
+BOOL E7XX_FUNC_DECL E7XX_REP(int ID);
+BOOL E7XX_FUNC_DECL E7XX_qSSN(int ID,char*szSerialNumber, int iBufferSize);
+BOOL E7XX_FUNC_DECL E7XX_qVER(int ID, char* szVersion, int iBufferSize);
+BOOL E7XX_FUNC_DECL E7XX_CCT(int ID, int iCommandType);
+
+BOOL E7XX_FUNC_DECL E7XX_MOV(int ID, const char* szAxes, const double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qMOV(int ID, const char* szAxes, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_MVR(int ID, const char* szAxes, const double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qPOS(int ID, const char* szAxes, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_IsMoving(int ID, const char* szAxes, BOOL* pbValueArray);
+BOOL E7XX_FUNC_DECL E7XX_HLT(int ID, const char* szAxes);
+BOOL E7XX_FUNC_DECL E7XX_qONT(int ID, const char* szAxes, BOOL* pbValueArray);
+
+BOOL E7XX_FUNC_DECL E7XX_SVA(int ID, const char* szAxes, const double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qSVA(int ID, const char* szAxes, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_SVR(int ID, const char* szAxes, const double* pdValueArray);
+
+BOOL E7XX_FUNC_DECL E7XX_DFH(int ID, const char* szAxes);
+BOOL E7XX_FUNC_DECL E7XX_qDFH(int ID, const char* szAxes, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_GOH(int ID, const char* szAxes);
+BOOL E7XX_FUNC_DECL E7XX_DFF(int ID, const char* szAxes, const double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qDFF(int ID, const char* szAxes, double* pdValueArray);
+
+BOOL E7XX_FUNC_DECL E7XX_qCST(int ID, const char* szAxes, char* szNames, int iBufferSize);
+BOOL E7XX_FUNC_DECL E7XX_CST(int ID, const char* szAxes, const char* szNames);
+BOOL E7XX_FUNC_DECL E7XX_qVST(int ID, char* szValideStages, int iBufferSize);
+BOOL E7XX_FUNC_DECL E7XX_qTVI(int ID, char* szPossibleAxisCharacters, int iBufferSize);
+
+BOOL E7XX_FUNC_DECL E7XX_SVO(int ID, const char* szAxes, const BOOL* pbValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qSVO(int ID, const char* szAxes, BOOL* pbValueArray);
+
+BOOL E7XX_FUNC_DECL E7XX_VCO(int ID, const char* szAxes, const BOOL* pbValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qVCO(int ID, const char* szAxes, BOOL* pbValueArray);
+
+BOOL E7XX_FUNC_DECL E7XX_VEL(int ID, const char* szAxes, const double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qVEL(int ID, const char* szAxes, double* pdValueArray);
+
+BOOL E7XX_FUNC_DECL E7XX_SPA(int ID, const char* szAxes, const int* iParameterArray, const double* pdValueArray, const char* szStrings);
+BOOL E7XX_FUNC_DECL E7XX_qSPA(int ID, const char* szAxes, int* iParameterArray, double* pdValueArray, char* szStrings, int iMaxStringSize);
+BOOL E7XX_FUNC_DECL E7XX_SEP(int ID, const char* szPassword, const char* szAxes, const int* iParameterArray, const double* pdValueArray, const char* szStrings);
+BOOL E7XX_FUNC_DECL E7XX_qSEP(int ID, const char* szAxes, int* iParameterArray, double* pdValueArray, char* szStrings, int iMaxStringSize);
+BOOL E7XX_FUNC_DECL E7XX_WPA(int ID, const char* szPassword, const char* szAxes, const int* iParameterArray);
+BOOL E7XX_FUNC_DECL E7XX_RPA(int ID, const char* szAxes, const int* iParameterArray);
+BOOL E7XX_FUNC_DECL E7XX_SPA_String(int ID, const char* szAxes, const int* iParameterArray, const char* szStrings);
+BOOL E7XX_FUNC_DECL E7XX_qSPA_String(int ID, const char* szAxes, int* iParameterArray, char* szStrings, int iMaxStringSize);
+BOOL E7XX_FUNC_DECL E7XX_SEP_String(int ID, const char* szPassword, const char* szAxes, const int* iParameterArray, const char* szStrings);
+BOOL E7XX_FUNC_DECL E7XX_qSEP_String(int ID, const char* szAxes, int* iParameterArray, char* szStrings, int iMaxStringSize);
+
+BOOL E7XX_FUNC_DECL E7XX_STE(int ID, char cAxis, double dStepSize);
+BOOL E7XX_FUNC_DECL E7XX_qSTE(int ID, char cAxis, int iOffsetOfFirstPointInRecordTable, int iNumberOfValues, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_IMP(int ID, char cAxis, double dImpulseSize);
+BOOL E7XX_FUNC_DECL E7XX_IMP_PulseWidth(int ID, char cAxis, double dImpulseSize, int iPulseWidth);
+BOOL E7XX_FUNC_DECL E7XX_qIMP(int ID, char cAxis, int iOffsetOfFirstPointInRecordTable, int iNumberOfValues, double* pdValueArray);
+
+BOOL E7XX_FUNC_DECL E7XX_SAI(int ID, const char* szOldAxes, const char* szNewAxes);
+BOOL E7XX_FUNC_DECL E7XX_qSAI(int ID, char* axes, int iBufferSize);
+BOOL E7XX_FUNC_DECL E7XX_qSAI_ALL(int ID, char* axes, int iBufferSize);
+
+BOOL E7XX_FUNC_DECL E7XX_CCL(int ID, int iComandLevel, const char* szPassWord);
+BOOL E7XX_FUNC_DECL E7XX_qCCL(int ID, int* piComandLevel);
+
+BOOL E7XX_FUNC_DECL E7XX_AVG(int ID, int iAverrageTime);
+BOOL E7XX_FUNC_DECL E7XX_qAVG(int ID, int *iAverrageTime);
+
+BOOL E7XX_FUNC_DECL E7XX_DIO(int ID, const char* szChannels, const BOOL* pbValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qTIO(int ID, int* piInputNr, int* piOutputNr);
+
+/////////////////////////////////////////////////////////////////////////////
+// String commands.
+BOOL E7XX_FUNC_DECL E7XX_E7XXSendString(int ID, const char* szString);
+BOOL E7XX_FUNC_DECL E7XX_E7XXGetLineSize(int ID, int* iLineSize);
+BOOL E7XX_FUNC_DECL E7XX_E7XXReadLine(int ID, char* szString, int iBufferSize);
+BOOL E7XX_FUNC_DECL E7XX_GcsCommandset(int ID, const char* szCommand);
+BOOL E7XX_FUNC_DECL E7XX_GcsGetAnswer(int ID, char* szAnswer, int iBufferSize);
+BOOL E7XX_FUNC_DECL E7XX_GcsGetAnswerSize(int ID, int* iAnswerSize);
+
+
+/////////////////////////////////////////////////////////////////////////////
+// limits
+BOOL E7XX_FUNC_DECL E7XX_ATZ(int ID,  const char* szAxes, const double* pdLowVoltageArray, const BOOL* pfUseDefaultArray);
+BOOL E7XX_FUNC_DECL E7XX_qTMN(int ID, const char* szAxes, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qTMX(int ID, const char* szAxes, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_NLM(int ID, const char* szAxes, const double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qNLM(int ID, const char* szAxes, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_PLM(int ID, const char* szAxes, const double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qPLM(int ID, const char* szAxes, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_GetRefResult(int ID, const char* szAxes, int* piReferenceResult);
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Wave commands.
+BOOL E7XX_FUNC_DECL E7XX_WAV_SIN_P(int ID, const char* szWaveTableId, int iOffsetOfFirstPointInWaveTable, int iNumberOfPoints, int iAddAppendWave, int iCenterPointOfWave, double dAmplitudeOfWave, double dOffsetOfWave, int iSegmentLength);
+BOOL E7XX_FUNC_DECL E7XX_WAV_LIN(int ID, const char* szWaveTableId, int iOffsetOfFirstPointInWaveTable, int iNumberOfPoints, int iAddAppendWave, int iNumberOfSpeedUpDownPointsInWave, double dAmplitudeOfWave, double dOffsetOfWave, int iSegmentLength);
+BOOL E7XX_FUNC_DECL E7XX_WAV_RAMP(int ID, const char* szWaveTableId, int iOffsetOfFirstPointInWaveTable, int iNumberOfPoints, int iAddAppendWave, int iCenterPointOfWave, int iNumberOfSpeedUpDownPointsInWave, double dAmplitudeOfWave, double dOffsetOfWave, int iSegmentLength);
+BOOL E7XX_FUNC_DECL E7XX_WAV_PNT(int ID, const char* szWaveTableId, int iOffsetOfFirstPointInWaveTable, int iNumberOfPoints, int iAddAppendWave, double* pdWavePoints);
+BOOL E7XX_FUNC_DECL E7XX_qWAV(int ID, const char* szWaveTableIds, int* piParamereIdsArray, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qGWD(int ID, char cWaveTableId, int iOffsetOfFirstPointInWaveTable, int iNumberOfValues, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_WGO(int ID, const char* szWaveGeneratorIds, const int* iStartModArray);
+BOOL E7XX_FUNC_DECL E7XX_qWGO(int ID, const char* szWaveGeneratorIds, int* piValueArray);
+BOOL E7XX_FUNC_DECL E7XX_WGC(int ID, const char* szWaveGeneratorIds, const int* piNumberOfCyclesArray);
+BOOL E7XX_FUNC_DECL E7XX_qWGC(int ID, const char* szWaveGeneratorIds, int* piValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qTNR(int ID, int* iRecordCannels);
+BOOL E7XX_FUNC_DECL E7XX_DRC(int ID, const int* piRecordChannelIdsArray, const char* szRecordSourceIds, const int* piRecordOptionArray, const int* piTriggerOption);
+BOOL E7XX_FUNC_DECL E7XX_qDRC(int ID, const int* piRecordChannelIdsArray, char* szRecordSourceIds, int* piRecordOptionArray, int* piTriggerOption, int iArraySize);
+BOOL E7XX_FUNC_DECL E7XX_WGR(int ID);
+BOOL E7XX_FUNC_DECL E7XX_qDRR_SYNC(int ID, int iRecordChannelId, int iOffsetOfFirstPointInRecordTable, int iNumberOfValues, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_RTR(int ID, int iReportTableRate);
+BOOL E7XX_FUNC_DECL E7XX_qRTR(int ID, int* piReportTableRate);
+BOOL E7XX_FUNC_DECL E7XX_qTWG(int ID, int* piGenerator);
+BOOL E7XX_FUNC_DECL E7XX_WMS(int ID, const char* szWaveTablesIds, const int* iMaxWaveSize);
+BOOL E7XX_FUNC_DECL E7XX_qWMS(int ID, const char* szWaveTablesIds, int* iMaxWaveSize);
+BOOL E7XX_FUNC_DECL E7XX_DTC(int ID, int iDdlTableId);
+BOOL E7XX_FUNC_DECL E7XX_WCL(int ID, int iWaveTableId);
+BOOL E7XX_FUNC_DECL E7XX_DDL(int ID, int iDdlTableId, int iOffsetOfFirstPointInDdlTable, int iNumberOfValues, const double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qDDL(int ID, int iDdlTableId, int iOffsetOfFirstPointInDdlTable, int iNumberOfValues, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_TWS(int ID, const int* piWavePointNumberArray, const int* piTriggerLevelArray, int iNumberOfPoints);
+BOOL E7XX_FUNC_DECL E7XX_TWC(int ID);
+BOOL E7XX_FUNC_DECL E7XX_qTLT(int ID, int* piDdlTables);
+BOOL E7XX_FUNC_DECL E7XX_DPO(int ID, const char* szAxes);
+BOOL E7XX_FUNC_DECL E7XX_IsGeneratorRunning(int ID, const char* szWaveGeneratorIds, BOOL* pbValueArray);
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Piezo-Channel commands.
+BOOL E7XX_FUNC_DECL E7XX_VMA(int ID, const char* szPiezoChannels, const double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qVMA(int ID, const char* szPiezoChannels, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_VMI(int ID, const char* szPiezoChannels, const double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qVMI(int ID, const char* szPiezoChannels, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_VOL(int ID, const char* szPiezoChannels, const double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qVOL(int ID, const char* szPiezoChannels, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qTPC(int ID, int* iPiezoCannels);
+
+
+/////////////////////////////////////////////////////////////////////////////
+// Sensor-Channel commands.
+BOOL E7XX_FUNC_DECL E7XX_qTAD(int ID, const char* szSensorChannels, int* piValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qTNS(int ID, const char* szSensorChannels, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qTSP(int ID, const char* szSensorChannels, double* pdValueArray);
+BOOL E7XX_FUNC_DECL E7XX_qTSC(int ID, int* iSensorCannels);
+BOOL E7XX_FUNC_DECL E7XX_qTAV(int ID, const char* szAnalogInputChannels, int* piValarray);
+
+/////////////////////////////////////////////////////////////////////////////
+// Spezial
+BOOL	E7XX_FUNC_DECL	E7XX_GetSupportedFunctions(int ID, int* piComandLevelArray, int iMaxlen, char* szFunctionNames, int iMaxFunctioNamesLength);
+BOOL	E7XX_FUNC_DECL	E7XX_GetSupportedParameters(int ID, int* piParameterIdArray, int* piComandLevelArray, int* piMennoryLocationArray, int iMaxlen, char* szParameterName, int iMaxParameterNameSize);
+BOOL	E7XX_FUNC_DECL	E7XX_GetSupportedControllers(char* szBuffer, int iBufferSize);
+BOOL	E7XX_FUNC_DECL	E7XX_NMOV(int ID, const char* szAxes, const double* pdValueArray);
+BOOL	E7XX_FUNC_DECL	E7XX_NMVR(int ID, const char* szAxes, const double* pdValueArray);
+
+BOOL	E7XX_FUNC_DECL	E7XX_TWS_EQU_DIST(int ID, int iTriggerPointStart, int iTriggerDistance, int iTriggerPointsPerPuls, int iTriggerPointsCount, int iTriggerLevel);
+BOOL	E7XX_FUNC_DECL	E7XX_WAV_LIN_SPEED_UP(int ID, int iSpeedUpDown, double rSpeed, double* rSpeedUpDown);
+
+
+BOOL	E7XX_FUNC_DECL	E7XX_E761_SetDirectTarget(int ID, const PI_E761_DIRECT_TARGET_WRITE piDirectTargetData);
+BOOL	E7XX_FUNC_DECL	E7XX_E761_GetDirectPosition(int ID, PI_E761_DIRECT_POSITION_READ *ppiDirectPositionData);
+BOOL	E7XX_FUNC_DECL	E7XX_E761_SetDirectWaveTable(int ID, PI_E761_DIRECT_WAVE_TABLE_WRITE_DATA_SET *ppiDirectWaveTableWriteDataSets, unsigned int iNumberOfDateSets);
+BOOL	E7XX_FUNC_DECL	E7XX_E761_GetDirectWaveTable(int ID, PI_E761_DIRECT_WAVE_TABLE_READ_DATA_SET *ppiDirectWaveTableReadDataSets, unsigned int iNumberOfDateSets);
+BOOL	E7XX_FUNC_DECL	E7XX_E761_GetDirectRecordTable(int ID, PI_E761_DIRECT_RECORD_TABLE_READ_DATA_SET *ppiDirectRecordTableReadDataSets, unsigned int iNumberOfDateSets);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif //__E7XX_GCS_DLL_H_

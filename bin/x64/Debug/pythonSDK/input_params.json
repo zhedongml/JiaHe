@@ -1,0 +1,15 @@
+{"vFoV": 20,
+"hFoV": 15,
+"flip_ud": false,
+"flip_lr": false,
+"filter_params": 
+	{"freqLB": [0.03, 0.125], 
+	"freqMB": [0.1, 0.5], 
+	"freqHB": [0.4, 10]},
+"zoneA_params": [10, "circle", 0, 0],
+"zoneB_params": [25, "circle", 0, 0],
+"zoneC_params": [4, "corner", 0, 0],
+"calcFOVsize": false, 
+"chrom_metric_ppd": 5,
+"dE_00_params": {"kL": 1, "kC": 1, "kH": 1},
+"RegionDetails": {}}

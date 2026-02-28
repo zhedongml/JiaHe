@@ -1,0 +1,20 @@
+{
+	"MotionMap": [
+		{
+			"Enable": true,
+			"Key": "CameraMotion",
+			"Type": "PI",
+			"Name": "CameraMotion",
+			"ConnectAddress": "R232DaisyChain/COM7-1/Axis-1",
+			"AxisName": "X",
+			"FocalLength": 39.91,
+			"FocalPlanesObjectSpace": -1.116,
+			"SoftwareLimitMax": 45,
+			"SoftwareLimitMin": 7,
+			"HomingPosition": 25.81,
+			"InfinityPosition":25.81,
+			"IsReverse": false,
+			"Speed": 100
+		}
+	]
+}

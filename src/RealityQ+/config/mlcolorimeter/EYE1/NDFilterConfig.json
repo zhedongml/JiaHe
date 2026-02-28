@@ -1,0 +1,106 @@
+{
+	"FilterMap": [
+		{
+			"Enable": true,
+			"Key": "NDFilter",
+			"Type": "FilterWheel",
+			"Name": "ND",
+			"Protocol": "modbus/serial",
+			"MotorType": "Oriental/AZ",
+			"Port": "COM8",
+			"Station": 1,
+			"SerialInfo": {
+				"BaudRate": 115200,
+				"ByteSize": 8,
+				"Parity": "Even",
+				"StopBit": "OneStop",
+				"FlowControl": "None"
+			},
+			"PositionList": [
+				{
+					"Channel": 0,
+					"Name": "ND0",
+					"Enum": "ND0"
+				},
+				{
+					"Channel": 1,
+					"Name": "ND1",
+					"Enum": "ND1"
+				},
+				{
+					"Channel": 2,
+					"Name": "ND2",
+					"Enum": "ND2"
+				},
+				{
+					"Channel": 3,
+					"Name": "ND3",
+					"Enum": "ND3"
+				},
+				{
+					"Channel": 4,
+					"Name": "ND4",
+					"Enum": "ND4"
+				}
+			],
+			"IOCommand": {
+				"Enable": false,
+				"Start": 5,
+				"ZHome": 6,
+				"Stop": 7,
+				"AlarmRst": 8
+			}
+		},
+		{
+			"Enable": true,
+			"Key": "ColorFilter",
+			"Type": "FilterWheel",
+			"Name": "XYZ",
+			"Protocol": "modbus/serial",
+			"MotorType": "Oriental/AZ",
+			"Port": "COM8",
+			"Station": 2,
+			"SerialInfo": {
+				"BaudRate": 115200,
+				"ByteSize": 8,
+				"Parity": "Even",
+				"StopBit": "OneStop",
+				"FlowControl": "None"
+			},
+			"PositionList": [
+				{
+					"Channel": 0,
+					"Name": "X",
+					"Enum": "X"
+				},
+				{
+					"Channel": 1,
+					"Name": "Y",
+					"Enum": "Y"
+				},
+				{
+					"Channel": 2,
+					"Name": "Z",
+					"Enum": "Z"
+				},
+				{
+					"Channel": 3,
+					"Name": "Clear",
+					"Enum": "Clear"
+				},
+				{
+					"Channel": 4,
+					"Name": "YA",
+					"Enum": "YA"
+				}
+			],
+			"IOCommand": {
+				"Enable": false,
+				"Start": 5,
+				"ZHome": 6,
+				"Stop": 7,
+				"AlarmRst": 8
+			}
+		}
+	]
+}

@@ -1,0 +1,13 @@
+{
+    "Name" : "RecipeXMLEngine",
+    "Version" : "1.0.0",
+    "CompatVersion" : "1.0.0",
+    "Vendor" : "MLO",
+    "Copyright" : "(C) MLO",
+    "License" : "MLO license information",
+    "Description" : "RecipeXMLEngine",
+    "Url" : "https://mloptic.com/",
+    "Dependencies" : [
+        { "Name" : "Core", "Version" : "1.0.0" }
+    ]
+}

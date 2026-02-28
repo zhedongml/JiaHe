@@ -1,0 +1,98 @@
+{
+    "Circle": {
+        "FiducialTemplete": {
+            "0": "fiducial_templete_1.tif",
+            "1": "fiducial_templete_1.tif",
+            "2": "fiducial_templete_2.tif"
+        },
+        "FiducialTempleteDir": "./config/templateImg/fiducial/Circle/",
+        "InputNearFiducial": 0,
+        "Left": [
+            {
+                "DutSn": "01-L",
+                "DutTipTilt": {
+                    "X": 6.693,
+                    "Y": 0.107
+                },
+                "FiduciualMotionPosRelativeDut": [
+                    {
+                        "X": -44.632,
+                        "Y": 190.874,
+                        "Z": 15.355
+                    },
+                    {
+                        "X": -3.898,
+                        "Y": 178.175,
+                        "Z": 20.123
+                    },
+                    {
+                        "X": -4.23,
+                        "Y": 218.734,
+                        "Z": 20.068
+                    }
+                ],
+                "FiduciualRelativeInputDutBase": [
+                    {
+                        "X": -2.66,
+                        "Y": 5.45,
+                        "Z": 0.0
+                    },
+                    {
+                        "X": 38.56,
+                        "Y": -6.4,
+                        "Z": 0.0
+                    },
+                    {
+                        "X": 37.39,
+                        "Y": 34.08,
+                        "Z": 0.0
+                    }
+                ]
+            }
+        ],
+        "Right": [
+            {
+                "DutSn": "02-R",
+                "DutTipTilt": {
+                    "X": 6.694,
+                    "Y": -0.107
+                },
+                "FiduciualMotionPosRelativeDut": [
+                    {
+                        "X": -44.864,
+                        "Y": 198.521,
+                        "Z": 16.09
+                    },
+                    {
+                        "X": -3.879,
+                        "Y": 210.378,
+                        "Z": 20.848
+                    },
+                    {
+                        "X": -5.075,
+                        "Y": 169.844,
+                        "Z": 20.778
+                    }
+                ],
+                "FiduciualRelativeInputDutBase": [
+                    {
+                        "X": -2.66,
+                        "Y": -5.45,
+                        "Z": 0.0
+                    },
+                    {
+                        "X": 38.56,
+                        "Y": 6.4,
+                        "Z": 0.0
+                    },
+                    {
+                        "X": 37.39,
+                        "Y": -34.08,
+                        "Z": 0.0
+                    }
+                ]
+            }
+        ]
+    },
+    "FiduciualMotionEnabled": false
+}

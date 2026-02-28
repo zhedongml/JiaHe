@@ -1,0 +1,35 @@
+{
+    "EyeRelief": 15.6,
+    "EyeType": "Right",
+    "EyeboxCenterPos": {
+        "X": 16.951,
+        "Y": -14.344,
+        "Z": 0.0
+    },
+    "EyeboxOffset": "5.000",
+    "EyeboxOffsetAll": [
+        {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+        }
+    ],
+    "FiducialPos": [
+        {
+            "X": 21.439,
+            "Y": 10.25,
+            "Z": 0.0
+        },
+        {
+            "X": 16.951,
+            "Y": -14.344,
+            "Z": 0.0
+        }
+    ],
+    "InputGratingPos": {
+        "X": -33.66,
+        "Y": 9.755,
+        "Z": 0.0
+    },
+    "SN": "Model_Test"
+}

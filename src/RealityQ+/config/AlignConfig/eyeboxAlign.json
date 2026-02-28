@@ -1,0 +1,61 @@
+{
+	"KeyenceRanging": {
+		"KeyenceRangeMax": 10,
+		"KeyenceRangeMin": -10,
+		"KeyenceZeroPos": 70
+	},
+	"MVCameraPostion": {
+		"posX": 0,
+		"posY": 0,
+		"posZ": 18.9
+	},
+	"KeyencePostion": {
+		"posX": -0.18,
+		"posY": -97.142,
+		"posZ": 0
+	},
+	"MeasureCameraPostion": {
+		"posX": -0.421,
+		"posY": -48.754,
+		"posZ": 61.715
+	},
+	"motion3DAndDutCoordinateRelate": {
+		"motion3DX": "dutX",
+		"motion3DY": "dutY"
+	},
+	"mvFocus": 66,
+	"MoveOut": {
+        "Enable": true,
+        "Offset": {
+            "X": 50.0,
+            "Y": 0
+        }
+    },
+	"MvRelativeDutInputGrating": {
+		"CalculateMvFidsByInputFlag": true,
+		"LeftEye":{
+			"X": -44.612,
+			"Y": 185.033,
+			"Z": 16.185
+		},
+		"RightEye":{
+			"X": -44.312,
+			"Y": 203.775,
+			"Z": 16.185
+		}
+    },
+	"DutRotationAxisLength":{
+		"LeftEye":{
+			"X":-10,
+			"Y":223,
+			"InitAngleX":93.237,
+			"InitAngleY":6.571
+		},
+		"RightEye":{
+			"X":-10,
+			"Y":205,
+			"InitAngleX":93.237,
+			"InitAngleY":6.571
+		}
+	}
+}

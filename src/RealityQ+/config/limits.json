@@ -1,0 +1,3826 @@
+{
+    "CRA_R_X_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_X_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_X_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_X_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_X_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_X_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_X_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_X_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_X_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_Y_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_Y_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_Y_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_Y_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_Y_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_Y_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_Y_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_Y_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_R_Y_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_X_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_X_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_X_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_X_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_X_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_X_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_X_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_X_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_X_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_Y_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_Y_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_Y_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_Y_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_Y_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_Y_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_Y_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_Y_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_G_Y_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_X_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_X_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_X_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_X_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_X_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_X_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_X_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_X_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_X_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_Y_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_Y_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_Y_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_Y_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_Y_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_Y_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_Y_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_Y_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CRA_B_Y_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_X_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_X_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_X_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_X_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_X_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_X_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_X_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_X_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_X_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_Y_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_Y_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_Y_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_Y_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_Y_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_Y_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_Y_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_Y_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_R_Y_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_X_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_X_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_X_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_X_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_X_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_X_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_X_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_X_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_X_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_Y_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_Y_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_Y_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_Y_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_Y_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_Y_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_Y_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_Y_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_G_Y_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_X_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_X_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_X_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_X_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_X_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_X_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_X_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_X_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_X_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_Y_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_Y_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_Y_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_Y_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_Y_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_Y_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_Y_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_Y_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "FOV_B_Y_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_R_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_R_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_R_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_R_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_R_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_R_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_R_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_R_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_R_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_G_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_G_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_G_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_G_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_G_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_G_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_G_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_G_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_G_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_B_01Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_B_02Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_B_03Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_B_04Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_B_05Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_B_06Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_B_07Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_B_08Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Rotation_W/O_0.9deg_Offset_B_09Eyebox(deg)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_R_Mean_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_R_Mean_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_R_Mean_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_R_Mean_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_R_Mean_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_R_Mean_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_R_Mean_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_R_Mean_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_R_Mean_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_G_Mean_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_G_Mean_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_G_Mean_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_G_Mean_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_G_Mean_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_G_Mean_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_G_Mean_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_G_Mean_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_G_Mean_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_B_Mean_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_B_Mean_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_B_Mean_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_B_Mean_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_B_Mean_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_B_Mean_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_B_Mean_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_B_Mean_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Distortion%_B_Mean_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_meanCR_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_meanCR_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_meanCR_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_meanCR_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_meanCR_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_meanCR_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_meanCR_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_meanCR_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_meanCR_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_minCR_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_minCR_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_minCR_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_minCR_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_minCR_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_minCR_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_minCR_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_minCR_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_R_minCR_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_meanCR_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_meanCR_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_meanCR_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_meanCR_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_meanCR_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_meanCR_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_meanCR_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_meanCR_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_meanCR_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_minCR_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_minCR_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_minCR_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_minCR_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_minCR_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_minCR_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_minCR_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_minCR_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_G_minCR_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_meanCR_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_meanCR_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_meanCR_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_meanCR_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_meanCR_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_meanCR_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_meanCR_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_meanCR_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_meanCR_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_minCR_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_minCR_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_minCR_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_minCR_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_minCR_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_minCR_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_minCR_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_minCR_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CheckerContrast_B_minCR_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorAvg_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerAvg_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_HorMin_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_R_Y_VerMin_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorAvg_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerAvg_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_HorMin_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_G_Y_VerMin_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_6.25_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_6.25_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_6.25_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_6.25_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_6.25_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_6.25_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_6.25_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_6.25_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_6.25_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorAvg_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerAvg_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_HorMin_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_12.5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_12.5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_12.5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_12.5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_12.5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_12.5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_12.5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_12.5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GridDenseMTF_B_Y_VerMin_12.5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorAvg_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerAvg_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_HorMin_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_R_Y_VerMin_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorAvg_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerAvg_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_HorMin_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_G_Y_VerMin_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_10.625_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_10.625_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_10.625_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_10.625_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_10.625_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_10.625_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_10.625_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_10.625_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_10.625_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorAvg_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerAvg_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_HorMin_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_14.167_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_14.167_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_14.167_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_14.167_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_14.167_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_14.167_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_14.167_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_14.167_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "CrossMTF_B_Y_VerMin_14.167_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Avg_01Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Avg_02Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Avg_03Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Avg_04Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Avg_05Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Avg_06Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Avg_07Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Avg_08Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Avg_09Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Avg_01Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Avg_02Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Avg_03Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Avg_04Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Avg_05Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Avg_06Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Avg_07Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Avg_08Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Avg_09Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Avg_01Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Avg_02Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Avg_03Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Avg_04Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Avg_05Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Avg_06Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Avg_07Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Avg_08Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Avg_09Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Luminance_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Luminance_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Luminance_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Luminance_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Luminance_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Luminance_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Luminance_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Luminance_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_Luminance_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_LuminanceUniformity_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_LuminanceUniformity_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_LuminanceUniformity_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_LuminanceUniformity_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_LuminanceUniformity_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_LuminanceUniformity_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_LuminanceUniformity_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_LuminanceUniformity_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_LuminanceUniformity_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P50_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P50_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P50_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P50_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P50_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P50_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P50_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P50_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P50_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P95_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P95_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P95_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P95_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P95_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P95_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P95_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P95_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_R_P95_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Luminance_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Luminance_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Luminance_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Luminance_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Luminance_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Luminance_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Luminance_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Luminance_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_Luminance_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_LuminanceUniformity_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_LuminanceUniformity_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_LuminanceUniformity_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_LuminanceUniformity_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_LuminanceUniformity_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_LuminanceUniformity_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_LuminanceUniformity_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_LuminanceUniformity_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_LuminanceUniformity_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P50_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P50_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P50_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P50_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P50_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P50_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P50_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P50_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P50_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P95_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P95_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P95_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P95_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P95_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P95_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P95_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P95_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_G_P95_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Luminance_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Luminance_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Luminance_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Luminance_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Luminance_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Luminance_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Luminance_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Luminance_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_Luminance_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_LuminanceUniformity_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_LuminanceUniformity_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_LuminanceUniformity_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_LuminanceUniformity_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_LuminanceUniformity_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_LuminanceUniformity_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_LuminanceUniformity_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_LuminanceUniformity_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_LuminanceUniformity_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P5_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P5_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P5_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P5_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P5_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P5_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P5_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P5_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P5_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P50_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P50_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P50_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P50_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P50_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P50_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P50_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P50_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P50_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P95_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P95_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P95_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P95_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P95_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P95_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P95_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P95_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Eff(Nits/Nits)_B_P95_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LocalPupilSwim_RMS_R_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LocalPupilSwim_P90_R_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GlobalPupilSwim_RMS_R_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GlobalPupilSwim_P90_R_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LocalPupilSwim_RMS_G_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LocalPupilSwim_P90_G_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GlobalPupilSwim_RMS_G_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GlobalPupilSwim_P90_G_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LocalPupilSwim_RMS_B_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LocalPupilSwim_P90_B_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GlobalPupilSwim_RMS_B_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "GlobalPupilSwim_P90_B_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Max_01Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Max_02Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Max_03Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Max_04Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Max_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Max_06Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Max_07Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Max_08Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Max_09Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Mean_01Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Mean_02Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Mean_03Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Mean_04Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Mean_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Mean_06Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Mean_07Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Mean_08Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_Mean_09Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_X_mean_01Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_X_mean_02Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_X_mean_03Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_X_mean_04Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_X_mean_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_X_mean_06Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_X_mean_07Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_X_mean_08Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_X_mean_09Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_Y_mean_01Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_Y_mean_02Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_Y_mean_03Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_Y_mean_04Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_Y_mean_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_Y_mean_06Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_Y_mean_07Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_Y_mean_08Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RG_Y_mean_09Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_X_mean_01Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_X_mean_02Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_X_mean_03Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_X_mean_04Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_X_mean_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_X_mean_06Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_X_mean_07Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_X_mean_08Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_X_mean_09Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_Y_mean_01Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_Y_mean_02Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_Y_mean_03Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_Y_mean_04Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_Y_mean_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_Y_mean_06Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_Y_mean_07Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_Y_mean_08Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_GB_Y_mean_09Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_X_mean_01Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_X_mean_02Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_X_mean_03Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_X_mean_04Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_X_mean_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_X_mean_06Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_X_mean_07Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_X_mean_08Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_X_mean_09Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_Y_mean_01Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_Y_mean_02Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_Y_mean_03Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_Y_mean_04Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_Y_mean_05Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_Y_mean_06Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_Y_mean_07Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_Y_mean_08Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "LateralColor_RB_Y_mean_09Eyebox(Arcmin)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Flare_LeftGlow_2deg_G_05Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Flare_LeftMedian_2deg_G_05Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Flare_RightGlow_2deg_G_05Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Flare_RightMedian_2deg_G_05Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Flare_LeftGlow_4deg_G_05Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Flare_LeftMedian_4deg_G_05Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Flare_RightGlow_4deg_G_05Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "Flare_RightMedian_4deg_G_05Eyebox(%)": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_median_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_p95_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_median_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_p95_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_median_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_p95_01Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_median_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_p95_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_median_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_p95_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_median_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_p95_02Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_median_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_p95_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_median_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_p95_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_median_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_p95_03Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_median_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_p95_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_median_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_p95_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_median_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_p95_04Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_median_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_p95_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_median_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_p95_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_median_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_p95_05Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_median_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_p95_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_median_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_p95_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_median_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_p95_06Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_median_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_p95_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_median_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_p95_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_median_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_p95_07Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_median_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_p95_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_median_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_p95_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_median_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_p95_08Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_median_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_C_Global_FFOV_p95_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_median_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqMB_FFOV_p95_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_median_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    },
+    "dE_00_freqHB_FFOV_p95_09Eyebox": {
+        "uplimit": -1,
+        "lowlimit": -1
+    }
+}

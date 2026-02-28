@@ -1,0 +1,541 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>qrc;rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Translation Files">
+      <UniqueIdentifier>{639EADAA-A684-42e4-A9AD-28FC9BCB8F7C}</UniqueIdentifier>
+      <Extensions>ts</Extensions>
+    </Filter>
+    <Filter Include="IQ Metrics">
+      <UniqueIdentifier>{6ebf93b9-0d4f-4193-b4ad-303238be9c58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Form IQ Files">
+      <UniqueIdentifier>{af2a463e-e231-454c-b470-ba7edde3ebd0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>qml;cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Focus">
+      <UniqueIdentifier>{4051a74c-1f1f-46eb-a898-cec628b37487}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Recipe_Node">
+      <UniqueIdentifier>{f909518b-15fe-4860-b1bd-d2e75282dec3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Parallel">
+      <UniqueIdentifier>{8dd0c79f-97c0-4485-b1d1-49b64cbd83d8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="measuremtf_global.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="accordion\qaccordion_config.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mtfmodelconfig.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MetricInfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="iqmetricconfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GenCSVHeader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="icecream.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageSwitch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageRotationConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MLPostProcessing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Cylinder\CmConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SlbManage.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LumStatistics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EtManage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Parallel\IQ_BasicDataType.h">
+      <Filter>Parallel</Filter>
+    </ClInclude>
+    <ClInclude Include="FocusConfig.h">
+      <Filter>Focus</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="cropper.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="resizer.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="accordion\clickableframe.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="accordion\contentpane.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="accordion\qaccordion.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="counter.hpp">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="crossimgmtfmodel.h">
+      <Filter>Source Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ninesquaremtfmodel.h">
+      <Filter>Source Files</Filter>
+    </QtMoc>
+    <QtMoc Include="resultprocessor.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="mtfresultwidget.h">
+      <Filter>Source Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ExposureWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="iqmetricwidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="iqtmodel.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="metricsdatabase.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="limitconfig.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="metricsdatacache.h">
+      <Filter>Source Files</Filter>
+    </QtMoc>
+    <QtMoc Include="grayscaleimagecapture.h">
+      <Filter>Source Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MeasureWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MeasurePlugin.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="FilterwheelWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Cylinder\CmWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="LineCutWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="HistogramWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="MinMaxStaWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\MetricsWidgetBase.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="Focus\AutoFocusModel.h">
+      <Filter>Focus</Filter>
+    </QtMoc>
+    <QtMoc Include="Focus\focuswidget.h">
+      <Filter>Focus</Filter>
+    </QtMoc>
+    <QtMoc Include="visionAlgorithm.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\RotationDialog.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\ChromacityDialog.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\ChromacityWidget.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\ContrastDialog.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\ContrastWidget.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\CraDialog.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\CraWidget.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\GhostDialog.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\GhostWidget.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\LumEfficiencyDialog.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\LumEfficiencyWidget.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\LuminanceDialog.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\LuminanceWidget.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\MtfWidget.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\MtfDialog.h">
+      <Filter>IQ Metrics</Filter>
+    </QtMoc>
+    <QtMoc Include="TaskAsync.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="IQT4Recipe.h">
+      <Filter>Recipe_Node</Filter>
+    </QtMoc>
+    <QtMoc Include="System4Recipe.h">
+      <Filter>Recipe_Node</Filter>
+    </QtMoc>
+    <QtMoc Include="MLColorimeterMode.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Parallel\ImageDataManager.h">
+      <Filter>Parallel</Filter>
+    </QtMoc>
+    <QtMoc Include="Parallel\IQ_ParallelTask.h">
+      <Filter>Parallel</Filter>
+    </QtMoc>
+    <QtMoc Include="Parallel\MetricsProcessorProxy.h">
+      <Filter>Parallel</Filter>
+    </QtMoc>
+    <QtMoc Include="Parallel\CameraSimulator.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="Cylinder\RxFilterWheelWidget.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="measureMTF.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="mtfresource.qrc">
+      <Filter>Resource Files</Filter>
+    </QtRcc>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cropper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="resizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="accordion\clickableframe.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="accordion\contentpane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="accordion\qaccordion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="counter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="crossimgmtfmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mtfmodelconfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ninesquaremtfmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="resultprocessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mtfresultwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExposureWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iqmetricwidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iqmetricconfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="iqtmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metricsdatabase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="limitconfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GenCSVHeader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="metricsdatacache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="grayscaleimagecapture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeasureWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeasurePlugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FilterwheelWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageSwitch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageRotationConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MLPostProcessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylinder\CmConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylinder\CmWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SlbManage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineCutWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HistogramWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MinMaxStaWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\ChromacityDialog.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\ChromacityWidget.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\ContrastDialog.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\ContrastWidget.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\CraDialog.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\CraWidget.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\GhostDialog.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\GhostWidget.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\LumEfficiencyDialog.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\LumEfficiencyWidget.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\LuminanceDialog.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\LuminanceWidget.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\MetricsWidgetBase.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\MtfDialog.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\MtfWidget.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\RotationDialog.cpp">
+      <Filter>IQ Metrics</Filter>
+    </ClCompile>
+    <ClCompile Include="Focus\AutoFocusModel.cpp">
+      <Filter>Focus</Filter>
+    </ClCompile>
+    <ClCompile Include="Focus\focuswidget.cpp">
+      <Filter>Focus</Filter>
+    </ClCompile>
+    <ClCompile Include="visionAlgorithm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LumStatistics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TaskAsync.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EtManage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="IQT4Recipe.cpp">
+      <Filter>Recipe_Node</Filter>
+    </ClCompile>
+    <ClCompile Include="System4Recipe.cpp">
+      <Filter>Recipe_Node</Filter>
+    </ClCompile>
+    <ClCompile Include="MLColorimeterMode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Parallel\ImageDataManager.cpp">
+      <Filter>Parallel</Filter>
+    </ClCompile>
+    <ClCompile Include="Parallel\IQ_ParallelTask.cpp">
+      <Filter>Parallel</Filter>
+    </ClCompile>
+    <ClCompile Include="Parallel\MetricsProcessorProxy.cpp">
+      <Filter>Parallel</Filter>
+    </ClCompile>
+    <ClCompile Include="FocusConfig.cpp">
+      <Filter>Focus</Filter>
+    </ClCompile>
+    <ClCompile Include="Parallel\CameraSimulator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Cylinder\RxFilterWheelWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="settingwidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="ExposureWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="iqmetricwidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="mtfresultwidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="MeasureWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="FilterwheelWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Cylinder\CmWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="LineCutWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="HistogramWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="MinMaxStaWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\ChromacityDialog.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\ChromacityWidget.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\ContrastDialog.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\ContrastWidget.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\CraDialog.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\CraWidget.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\GhostDialog.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\GhostWidget.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\LumEfficiencyDialog.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\LumEfficiencyWidget.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\LuminanceDialog.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\LuminanceWidget.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\MtfDialog.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\MtfWidget.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="IQMetrics\RotationDialog.ui">
+      <Filter>Form IQ Files</Filter>
+    </QtUic>
+    <QtUic Include="Focus\AutoFocusROI.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Focus\focuswidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+    <QtUic Include="Cylinder\RxFilterWheelWidget.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+</Project>

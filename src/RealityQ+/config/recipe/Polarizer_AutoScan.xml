@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+ <BehaviorTree ID="BehaviorTree">
+  <!-- Add nodes here -->
+  <Sequence name="Sequence">
+   <!--connect devices-->
+   <Parallel name="Parallel">
+    <Action name="IS_Connect" ID="IS_Connect"/>
+    <Action name="Reticle_2D_Connect" ID="Reticle_2D_Connect"/>
+    <Action name="Polarizer_Connect" ID="Polarizer_Connect"/>
+   </Parallel>
+   <Action name="Colorimeter_Connect_All_Async" ID="Colorimeter_Connect_All_Async"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_R" value="0.895"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_G" value="0.427"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_B" value="1.239"/>
+   <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="Large" reticle_name="Flare"/>
+   <Action name="IS_SetSolution" ID="IS_SetSolution" light_source="B" isphere_scale="{ISphere_scale_B}"/>
+   <Action name="Colorimeter_Filter_NDSwitch" ID="Colorimeter_Filter_NDSwitch" nd_filter="ND3"/>
+   <Action name="Colorimeter_Filter_ColorSwitch" ID="Colorimeter_Filter_ColorSwitch" color_filter="Clear"/>
+   <!-- <Action name="Colorimeter_RX_SetCylinder" ID="Colorimeter_RX_SetCylinder" RX_Cylinder="0" RX_Axis="0"/> -->
+   <Action name="Colorimeter_Motion_SetFocus" ID="Colorimeter_Motion_SetFocus" focus="25.84"/>
+   <!-- <Action name="Colorimeter_Camera_SetBinningSelector" ID="Colorimeter_Camera_SetBinningSelector" binning_selector="0"/> -->
+   <Action name="Colorimeter_Camera_SetBinningMode" ID="Colorimeter_Camera_SetBinningMode" binning_mode="Average"/>
+   <!-- <Action name="Colorimeter_Camera_SetBinning" ID="Colorimeter_Camera_SetBinning" binning="1"/> -->
+   <Action name="Colorimeter_Camera_StopGrabbing" ID="Colorimeter_Camera_StopGrabbing"/>
+   <Action name="Colorimeter_Camera_SetExposureByAuto" ID="Colorimeter_Camera_SetExposureByAuto" init_time="100"/>
+   <Action name="IQ_Polarizer_AutoScan" ID="IQ_Polarizer_AutoScan" max_angle="360" min_angle="0" step="5" roi_x="6688" roi_y="4764" roi_width="100" roi_height="100" save_dir="D:\pcdata\jian_test"/>
+   <Action name="Colorimeter_Camera_StartGrabbing" ID="Colorimeter_Camera_StartGrabbing"/>
+  </Sequence>
+ </BehaviorTree>
+</root>

@@ -1,0 +1,18 @@
+{
+  "cneterGussian": {
+    "searchlength": 20,
+    "iterationInterval": 50,
+	"asfilterROI":20,
+    "dataFilterVer": 60,
+    "dataFilterHor": 50
+  },
+  "centerMTF": {
+    "roilength": 120
+  },
+  "centerGird": {
+    "pointdistance": 10
+  },
+  "centerLines": {
+    "anglediff": 30
+  }
+}

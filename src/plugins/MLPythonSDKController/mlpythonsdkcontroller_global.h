@@ -1,0 +1,13 @@
+#pragma once
+
+#include <QtCore/qglobal.h>
+
+#ifndef BUILD_STATIC
+# if defined(MLPYTHONSDKCONTROLLER_LIB)
+#  define MLPYTHONSDKCONTROLLER_EXPORT Q_DECL_EXPORT
+# else
+#  define MLPYTHONSDKCONTROLLER_EXPORT Q_DECL_IMPORT
+# endif
+#else
+# define MLPYTHONSDKCONTROLLER_EXPORT
+#endif

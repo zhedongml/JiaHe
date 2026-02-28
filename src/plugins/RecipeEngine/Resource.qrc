@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Error.qml</file>
+        <file>Fatal.qml</file>
+        <file>RecipeControl.qml</file>
+        <file>RecipeGui.qml</file>
+        <file>RecipeInfo.qml</file>
+        <file>RecipeModules.qml</file>
+        <file>RecipeStatus.qml</file>
+        <file>SessionDialogDut.qml</file>
+        <file>SessionDialogStart.qml</file>
+        <file>SessionDialogStop.qml</file>
+        <file>Warning.qml</file>
+        <file>image/mode_recipe.png</file>
+        <file>image/mode_recipe_mask.png</file>
+        <file>image/recipe.png</file>
+    </qresource>
+</RCC>

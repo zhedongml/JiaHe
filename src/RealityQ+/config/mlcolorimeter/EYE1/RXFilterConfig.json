@@ -1,0 +1,119 @@
+{
+	"FilterMap": [
+		{
+			"Enable": true,
+			"Key": "RXFilter",
+			"Type": "RXFilterWheel",
+			"Name": "RXFilter",
+			"Protocol": "modbus/serial",
+			"MotorType": "Oriental/AZ",
+			"Port": "COM8",
+			"Station": 3,
+			"SerialInfo": {
+				"BaudRate": 115200,
+				"ByteSize": 8,
+				"Parity": "Even",
+				"StopBit": "OneStop",
+				"FlowControl": "None"
+			},
+			"PositionList": [
+				{
+					"Channel": 0,
+					"Name": "0d"
+				},
+				{
+					"Channel": 1,
+					"Name": "-0.25d"
+				},
+				{
+					"Channel": 2,
+					"Name": "-0.5d"
+				},
+				{
+					"Channel": 3,
+					"Name": "-0.75d"
+				},
+				{
+					"Channel": 4,
+					"Name": "-1d"
+				},
+				{
+					"Channel": 5,
+					"Name": "-1.25d"
+				},
+				{
+					"Channel": 6,
+					"Name": "-1.5d"
+				},
+				{
+					"Channel": 7,
+					"Name": "-1.75d"
+				},
+				{
+					"Channel": 8,
+					"Name": "-2d"
+				},
+				{
+					"Channel": 9,
+					"Name": "-2.25d"
+				},
+				{
+					"Channel": 10,
+					"Name": "-2.5d"
+				},
+				{
+					"Channel": 11,
+					"Name": "-2.75d"
+				},
+				{
+					"Channel": 12,
+					"Name": "-3d"
+				},
+				{
+					"Channel": 13,
+					"Name": "-3.25d"
+				},
+				{
+					"Channel": 14,
+					"Name": "-3.5d"
+				},
+				{
+					"Channel": 15,
+					"Name": "-3.75d"
+				},
+				{
+					"Channel": 16,
+					"Name": "-4d"
+				},
+				{
+					"Channel": 17,
+					"Name": "Clear"
+				}
+			],
+			"IOCommand": {
+				"Enable": true,
+				"Start": 5,
+				"ZHome": 6,
+				"Stop": 7,
+				"AlarmRst": 8
+			},
+			"Axis": {
+				"Enable": true,
+				"Name": "RXAxis",
+				"MotorType": "Oriental/AZ",
+				"Station": 4,
+				"IOCommand": {
+					"Enable": true,
+					"Start": 5,
+					"ZHome": 6,
+					"Stop": 7,
+					"AlarmRst": 8
+				},
+				"Axis_Index": 0,
+				"PulsePerCycle": 18182,
+				"Min": 0,
+				"Max": 360
+			}
+		}
+	]
+}

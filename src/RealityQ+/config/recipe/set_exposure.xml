@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+ <BehaviorTree ID="BehaviorTree">
+  <!-- Add nodes here -->
+  <Sequence name="Sequence">
+   <Action name="System_Date" ID="System_Date" date_key="cur_data"/>
+   <Action name="System_DateTime" ID="System_DateTime" date_time_key="cur_datatime"/>
+   <Action name="Colorimeter_Connect_All_Async" ID="Colorimeter_Connect_All_Async"/>
+   <Action name="Colorimeter_LoadCalibrationData" ID="Colorimeter_LoadCalibrationData" aperture="3" binning="1" colorfilter_list="Y,Clear" ndfliter_list="ND0" lightsource_list="G" is_load_dark="1" is_load_colorshift="1" is_load_ffc="1" is_load_distortion="1" is_load_exposure="1" is_load_fliprotation="1" is_load_luminance="1" is_load_fourcolor="0"/>
+   <Action name="IQ_Metrics_CreateResultFile" ID="IQ_Metrics_CreateResultFile" root_dir="E:\SLB_Data" dut_seq="111_{cur_datatime}" csvname="SLB_metrics" all_csvname="SLB_metrics_all"/>
+   <Action name="Colorimeter_Camera_StopGrabbing" ID="Colorimeter_Camera_StopGrabbing"/>
+   <!--auto_exposure: set auto exposure-->
+   <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="111" eyeboxid="5" binning="1" nd_filter="ND0" color_filter="Clear" light_source="G" image_type="solid" is_auto_et="1" exposure_time="1000" et_factor="1" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time="" nameRule="#LightSource#_#Pattern#_#EyeboxID#_#ColorFilter#"/>
+   <!--fix_exposure: get exposure time from config file by image name-->
+   <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="111" eyeboxid="5" binning="1" nd_filter="ND0" color_filter="Y" light_source="G" image_type="solid" is_auto_et="0" exposure_time="" et_factor="1" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time="" nameRule="#LightSource#_#Pattern#_#EyeboxID#_#ColorFilter#"/>
+   <!--auto_exposure: get current exposure time from camera and multiplied by et_factor-->
+   <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="3" dutid="111" eyeboxid="5" binning="1" nd_filter="ND0" color_filter="Y" light_source="G" image_type="solid" is_auto_et="0" exposure_time="" et_factor="20" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time="" nameRule="#LightSource#_#Pattern#_#EyeboxID#_#ColorFilter#"/>
+   <Action name="Colorimeter_WaitForCaptureEnd" ID="Colorimeter_WaitForCaptureEnd" timeout="20"/>
+  </Sequence>
+ </BehaviorTree>
+</root>

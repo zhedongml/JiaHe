@@ -1,0 +1,510 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1979B050-12C7-44A2-A297-83BF5F542A66}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtModules>core;sql;network;gui;uitools;widgets;serialport;concurrent</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+    <QtInstall>msvc2019_64</QtInstall>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtInstall>msvc2019_64</QtInstall>
+    <QtModules>core;sql;network;gui;uitools;widgets;serialport;concurrent;charts</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgConfiguration>Debug</VcpkgConfiguration>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\plugins\ImageDetection;$(SolutionDir)src\plugins\IQMetrics;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src;$(SolutionDir)src\libs;$(SolutionDir)src\plugins;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\extlib\yaml-cpp\include;$(SolutionDir)src\extlib\fp16\include;$(SolutionDir)src\extlib\color-util\include;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\extlib\python3.8\include;$(SolutionDir)src\extlib\python3.8;$(SolutionDir)src\extlib;$(SolutionDir)src\plugins\CameraViewer;$(SolutionDir)src\plugins\Core;$(SolutionDir)\src\extlib\ISapi;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;$(SolutionDir)src\plugins\mtfpipeline;$(SolutionDir)src\extlib\recipeLib\include\Recipe2;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\armadillo\lib_win64;$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\lib;$(SolutionDir)src\extlib\libcbdetect\lib\x64\Debug;$(SolutionDir)src\extlib\logplus\lib\x64\bin.Debug_Unicode;$(SolutionDir)src\extlib\yaml-cpp\lib\x64\Debug;$(SolutionDir)src\extlib\mlcolorimeter\lib_debug;$(SolutionDir)src\extlib\python3.8\libx64\debug64;$(SolutionDir)src\extlib\recipeLib\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cbdetect.lib;opencv_world451d.lib;log4cplusUD.lib;python312.lib;python3.lib;yaml-cppd.lib;MLColorimeterInterface.lib;libopenblas.lib;MLTaskManager.lib;MLColorimeterCommond.lib;ML_AddinMangerd.lib;behaviortree_cpp_v3.lib;ObjectManager.lib;Recipe2.lib;MLAutoFocusProcessd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\registerRecipe\"
+xcopy /y "$(SolutionDir)src\extlib\mlcolorimeter\lib_debug\*.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\bin\opencv_world451d.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\bin\opencv_world452d.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\python3.8\libx64\debug64\python312.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\recipeLib\$(Configuration)\ObjectManager.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+windeployqt --debug  "$(TargetPath)"  --dir "$(SolutionDir)bin\$(Platform)\$(Configuration)"
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\plugins\ImageDetection;$(SolutionDir)src\plugins\IQMetrics;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src;$(SolutionDir)src\plugins;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\extlib\yaml-cpp\include;$(SolutionDir)src\extlib\fp16\include;$(SolutionDir)src\extlib\color-util\include;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\CameraViewer;$(SolutionDir)src\extlib\python3.8\include;$(SolutionDir)src\extlib\python3.8;$(SolutionDir)src\extlib;./;$(SolutionDir)src\plugins\Core;$(SolutionDir)src\extlib\ISapi;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\plugins\mtfpipeline;$(SolutionDir)src\extlib\recipeLib\include\Recipe2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\armadillo\lib_win64;$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\lib;$(SolutionDir)src\extlib\libcbdetect\lib\x64\Release;$(SolutionDir)src\extlib\logplus\lib\x64\bin.Release_Unicode;$(SolutionDir)src\extlib\yaml-cpp\lib\x64\Release;$(SolutionDir)src\extlib\mlcolorimeter\lib_release;$(SolutionDir)src\extlib\python3.8\libx64\release64;$(SolutionDir)src\extlib\recipeLib\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cbdetect.lib;opencv_world451.lib;log4cplusU.lib;yaml-cpp.lib;python312.lib;python3.lib;MLColorimeterInterface.lib;ML_AddinManger.lib;libopenblas.lib;MLTaskManager.lib;MLColorimeterCommon.lib;behaviortree_cpp_v3.lib;ObjectManager.lib;Recipe2.lib;MLAutoFocusProcess.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\registerRecipe\"
+xcopy /y "$(SolutionDir)src\extlib\mlcolorimeter\lib_release\*.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\bin\opencv_world451.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\bin\opencv_world452.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\python3.8\libx64\release64\python312.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+xcopy /y "$(SolutionDir)src\extlib\recipeLib\$(Configuration)\ObjectManager.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
+windeployqt --release  "$(TargetPath)"  --dir "$(SolutionDir)bin\$(Platform)\$(Configuration)"</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>MEASUREMTF_LIB;MYSHAREDLIB_LIBRARY;BT_PLUGIN_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PreprocessorDefinitions>MEASUREMTF_LIB;MYSHAREDLIB_LIBRARY;BT_PLUGIN_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="accordion\clickableframe.cpp" />
+    <ClCompile Include="accordion\contentpane.cpp" />
+    <ClCompile Include="accordion\qaccordion.cpp" />
+    <ClCompile Include="counter.cpp" />
+    <ClCompile Include="cropper.cpp" />
+    <ClCompile Include="crossimgmtfmodel.cpp" />
+    <ClCompile Include="Cylinder\CmConfig.cpp" />
+    <ClCompile Include="Cylinder\CmWidget.cpp" />
+    <ClCompile Include="Cylinder\RxFilterWheelWidget.cpp" />
+    <ClCompile Include="EtManage.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ExposureWidget.cpp" />
+    <ClCompile Include="FilterwheelWidget.cpp" />
+    <ClCompile Include="FocusConfig.cpp" />
+    <ClCompile Include="Focus\AutoFocusModel.cpp" />
+    <ClCompile Include="Focus\focuswidget.cpp" />
+    <ClCompile Include="GenCSVHeader.cpp" />
+    <ClCompile Include="grayscaleimagecapture.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="HistogramWidget.cpp" />
+    <ClCompile Include="ImageRotationConfig.cpp" />
+    <ClCompile Include="Parallel\CameraSimulator.cpp" />
+    <ClCompile Include="Parallel\ImageDataManager.cpp" />
+    <ClCompile Include="Parallel\IQ_ParallelTask.cpp" />
+    <ClCompile Include="Parallel\MetricsProcessorProxy.cpp" />
+    <ClCompile Include="System4Recipe.cpp" />
+    <ClCompile Include="ImageSwitch.cpp" />
+    <ClCompile Include="iqmetricconfig.cpp" />
+    <ClCompile Include="IQMetrics\ChromacityDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\ChromacityWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\ContrastDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\ContrastWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\CraDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\CraWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\GhostDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\GhostWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\LumEfficiencyDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\LumEfficiencyWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\LuminanceDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\LuminanceWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\MetricsWidgetBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\MtfDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\MtfWidget.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="IQMetrics\RotationDialog.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="MLColorimeterMode.cpp" />
+    <ClCompile Include="iqmetricwidget.cpp" />
+    <ClCompile Include="IQT4Recipe.cpp" />
+    <ClCompile Include="iqtmodel.cpp" />
+    <ClCompile Include="limitconfig.cpp" />
+    <ClCompile Include="LineCutWidget.cpp" />
+    <ClCompile Include="LumStatistics.cpp" />
+    <ClCompile Include="MeasurePlugin.cpp" />
+    <ClCompile Include="MeasureWidget.cpp" />
+    <ClCompile Include="metricsdatabase.cpp" />
+    <ClCompile Include="metricsdatacache.cpp" />
+    <ClCompile Include="MinMaxStaWidget.cpp" />
+    <ClCompile Include="MLPostProcessing.cpp" />
+    <ClCompile Include="mtfmodelconfig.cpp" />
+    <ClCompile Include="mtfresultwidget.cpp" />
+    <ClCompile Include="ninesquaremtfmodel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="resizer.cpp" />
+    <ClCompile Include="resultprocessor.cpp" />
+    <ClCompile Include="SlbManage.cpp" />
+    <ClCompile Include="TaskAsync.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="visionAlgorithm.cpp" />
+    <QtMoc Include="TaskAsync.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="visionAlgorithm.h" />
+    <QtMoc Include="HistogramWidget.h" />
+    <QtMoc Include="LineCutWidget.h" />
+    <QtMoc Include="MinMaxStaWidget.h" />
+    <QtMoc Include="MLColorimeterMode.h" />
+    <QtMoc Include="Cylinder\RxFilterWheelWidget.h" />
+    <ClInclude Include="EtManage.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClInclude>
+    <QtMoc Include="Focus\AutoFocusModel.h" />
+    <QtMoc Include="Focus\focuswidget.h" />
+    <QtMoc Include="IQMetrics\ChromacityDialog.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\ChromacityWidget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\ContrastDialog.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\ContrastWidget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\CraDialog.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\CraWidget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\GhostDialog.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\GhostWidget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\LumEfficiencyDialog.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\LumEfficiencyWidget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\LuminanceDialog.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\LuminanceWidget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\MetricsWidgetBase.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\MtfWidget.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\RotationDialog.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQMetrics\MtfDialog.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="IQT4Recipe.h" />
+    <QtMoc Include="System4Recipe.h" />
+    <ClInclude Include="FocusConfig.h" />
+    <ClInclude Include="LumStatistics.h" />
+    <QtMoc Include="Parallel\ImageDataManager.h" />
+    <QtMoc Include="Parallel\CameraSimulator.h" />
+    <ClInclude Include="Parallel\IQ_BasicDataType.h" />
+    <QtMoc Include="Parallel\IQ_ParallelTask.h" />
+    <QtMoc Include="Parallel\MetricsProcessorProxy.h" />
+    <ClInclude Include="SlbManage.h" />
+    <QtMoc Include="MeasureWidget.h" />
+    <QtMoc Include="MeasurePlugin.h" />
+    <QtMoc Include="FilterwheelWidget.h" />
+    <ClInclude Include="Cylinder\CmConfig.h" />
+    <QtMoc Include="Cylinder\CmWidget.h" />
+    <ClInclude Include="ImageRotationConfig.h" />
+    <ClInclude Include="ImageSwitch.h" />
+    <QtMoc Include="resultprocessor.h" />
+    <QtMoc Include="accordion\clickableframe.hpp" />
+    <QtMoc Include="accordion\contentpane.hpp" />
+    <QtMoc Include="accordion\qaccordion.hpp" />
+    <ClInclude Include="accordion\qaccordion_config.hpp" />
+    <QtMoc Include="cropper.hpp" />
+    <QtMoc Include="counter.hpp" />
+    <QtMoc Include="crossimgmtfmodel.h" />
+    <QtMoc Include="ExposureWidget.h" />
+    <ClInclude Include="GenCSVHeader.h" />
+    <QtMoc Include="grayscaleimagecapture.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <ClInclude Include="icecream.hpp" />
+    <QtMoc Include="iqmetricwidget.h" />
+    <ClInclude Include="iqmetricconfig.h" />
+    <QtMoc Include="iqtmodel.h" />
+    <QtMoc Include="limitconfig.h" />
+    <ClInclude Include="measuremtf_global.h" />
+    <QtMoc Include="resizer.hpp" />
+    <ClInclude Include="MetricInfo.h" />
+    <QtMoc Include="metricsdatabase.h" />
+    <QtMoc Include="metricsdatacache.h" />
+    <ClInclude Include="MLPostProcessing.h" />
+    <ClInclude Include="mtfmodelconfig.h" />
+    <QtMoc Include="ninesquaremtfmodel.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtMoc>
+    <QtMoc Include="mtfresultwidget.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="measureMTF.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="mtfresource.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="Cylinder\CmWidget.ui" />
+    <QtUic Include="Cylinder\RxFilterWheelWidget.ui" />
+    <QtUic Include="ExposureWidget.ui" />
+    <QtUic Include="FilterwheelWidget.ui" />
+    <QtUic Include="Focus\AutoFocusROI.ui" />
+    <QtUic Include="Focus\focuswidget.ui" />
+    <QtUic Include="HistogramWidget.ui" />
+    <QtUic Include="IQMetrics\ChromacityDialog.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\ChromacityWidget.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\ContrastDialog.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\ContrastWidget.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\CraDialog.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\CraWidget.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\GhostDialog.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\GhostWidget.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\LumEfficiencyDialog.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\LumEfficiencyWidget.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\LuminanceDialog.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\LuminanceWidget.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\MtfDialog.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\MtfWidget.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="IQMetrics\RotationDialog.ui">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </QtUic>
+    <QtUic Include="iqmetricwidget.ui" />
+    <QtUic Include="LineCutWidget.ui" />
+    <QtUic Include="MeasureWidget.ui" />
+    <QtUic Include="MinMaxStaWidget.ui" />
+    <QtUic Include="mtfresultwidget.ui" />
+    <QtUic Include="settingwidget.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CameraViewer\CameraViewer.vcxproj">
+      <Project>{d60d18d4-c2fe-4771-a74e-8e03d6e89c94}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.vcxproj">
+      <Project>{9bce8e7a-22bc-4497-bde8-e54ac1b46d8e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\ImageDetection\ImageDetection.vcxproj">
+      <Project>{88aa6911-48b3-408c-938e-ea1f235fbd88}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\integratingSphere\integratingSphere.vcxproj">
+      <Project>{7f97994d-8761-4a19-b258-6aa5b2629f5a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\IQMetrics\IQMetrics.vcxproj">
+      <Project>{3db96304-4c8d-4a01-a32f-2e8693636587}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\MLPythonSDKController\MLPythonSDKController.vcxproj">
+      <Project>{776e3a34-7bc6-4771-b034-7a728087f93a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\mtfpipeline\mtfpipeline.vcxproj">
+      <Project>{23d65b72-be67-46b6-b8c1-a7799b2a63ee}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\pluginsystem\pluginsystem.vcxproj">
+      <Project>{15e206c7-ae3a-48dc-9996-495dc04d8893}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\PolarizerControl\PolarizerControl.vcxproj">
+      <Project>{4294ade0-2a4a-4abe-af5d-0d783342f908}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\PrjCommon\PrjCommon.vcxproj">
+      <Project>{6c74adc6-8df4-4346-b887-dfcecf036efd}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

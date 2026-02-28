@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+ <BehaviorTree ID="BehaviorTree">
+  <!-- Add nodes here -->
+  <Sequence name="Sequence">
+   <!-- System Init -->
+   <!-- <Action name="System_Tips" ID="System_Tips" tip="Please confirm whether the prism is in the SLB test state?"/> -->
+   <Action name="System_Date" ID="System_Date" date_key="cur_data"/>
+   <Action name="System_DateTime" ID="System_DateTime" date_time_key="cur_datatime"/>
+   <!-- Devices Connect & CalibrationData Load -->
+   <Action name="Reticle_2D_Connect" ID="Reticle_2D_Connect"/>
+   <Action name="Colorimeter_Connect_All_Async" ID="Colorimeter_Connect_All_Async"/>
+   <!-- SLB Alignment Module -->
+   <Action name="IQ_SetDutID" ID="IQ_SetDutID" id_key="dutid" id_value="test_lum"/>
+   <Action name="IQ_SetTestState" ID="IQ_SetTestState" is_dut="0" is_update_slb="0" size="0" size_key="size"/>
+   <!-- <Action name="AA_SetMotionMoveSpeed" ID="AA_SetMotionMoveSpeed" projector_dxdy="" dut_x="20" dut_y="20" dut_z="10" imaging_x="20" imaging_y="20" imaging_z="10" imaging_dxdy="" reticle_x="" reticle_y=""/> -->
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="aperture" value="2.6"/>
+   <Parallel name="Parallel">
+    <Action name="IS_Connect" ID="IS_Connect"/>
+    <Action name="AA_Connect_Polarizer" ID="AA_Connect_Polarizer"/>
+    <Action name="Colorimeter_LoadCalibrationData" ID="Colorimeter_LoadCalibrationData" aperture="{aperture}" binning="1" colorfilter_list="Y,Clear" ndfliter_list="ND3" lightsource_list="G" is_load_dark="1" is_load_colorshift="1" is_load_ffc="1" is_load_distortion="1" is_load_exposure="1" is_load_fliprotation="1" is_load_luminance="1" is_load_fourcolor="0"/>
+    <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="{size}" reticle_name="Clear"/>
+   </Parallel>
+   <!-- IQ Init -->
+   <Action name="Polarizer_MoveAbs" ID="Polarizer_MoveAbs" position="136.625"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_R" value="0.895"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_G" value="0.427"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_B" value="1.239"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_W" value="0.895&amp;0.427&amp;1.239"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_off" value="0,0,0"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="nd_select" value="ND3"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="xyzc_select" value="Clear"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="is_auto_exposure" value="1"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="exposure_init_time" value="1000"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="binning" value="4"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="color" value="G"/>
+   <!-- <Action name="IQ_UpdateFlipRotation" ID="IQ_UpdateFlipRotation"/> -->
+   <!-- IQ Metrics Module -->
+   <Action name="IQ_SetEyeboxList" ID="IQ_SetEyeboxList" eyeboxlist="5" key="eyeboxids"/>
+   <Action name="IQ_Metrics_CreateDBTable" ID="IQ_Metrics_CreateDBTable"/>
+   <Action name="IQ_Metrics_CreateResultFile" ID="IQ_Metrics_CreateResultFile" all_csvname="test_lum_metrics_all" csvname="test_lum_metrics" dut_seq="{dutid}_{cur_datatime}" root_dir="E:\test_lum_Data"/>
+   <Action name="Colorimeter_Camera_StopGrabbing" ID="Colorimeter_Camera_StopGrabbing"/>
+   <Action name="Colorimeter_Motion_SetFocus" ID="Colorimeter_Motion_SetFocus" focus="25.84"/>
+   <Action name="Colorimeter_Camera_SetBinningSelector" ID="Colorimeter_Camera_SetBinningSelector" binning_selector="1"/>
+   <Action name="Colorimeter_Camera_SetBinningMode" ID="Colorimeter_Camera_SetBinningMode" binning_mode="Average"/>
+   <For name="For" traverse_params="{eyeboxids}">
+    <Sequence name="Sequence">
+     <Action name="System_GetForNodeValue1" ID="System_GetForNodeValue1" value_key="cur_eb"/>
+     <For name="For" traverse_params="G;{ISphere_scale_G}">
+      <Sequence name="Sequence">
+       <Action name="System_GetForNodeValue2" ID="System_GetForNodeValue2" value_key1="color" value_key2="isphere_scale"/>
+       <Action name="IS_SetSolution" ID="IS_SetSolution" isphere_scale="{isphere_scale}" light_source="{color}"/>
+       <Action name="Reticle_2D_Change" ID="Reticle_2D_Change" type="{size}" reticle_name="Clear"/>
+       <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="3" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="Y" light_source="{color}" image_type="solid" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+      </Sequence>
+     </For>
+    </Sequence>
+   </For>
+   <Sequence name="Sequence">
+    <Action name="Colorimeter_WaitForCaptureEnd" ID="Colorimeter_WaitForCaptureEnd" timeout="20"/>
+    <SequenceStar name="SequenceStar">
+     <Action name="IQ_Metrics_Location_Clear" ID="IQ_Metrics_Location_Clear"/>
+     <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="LuminanceRolloff"/>
+     <Action name="IQ_Metrics_ExportToCSV" ID="IQ_Metrics_ExportToCSV"/>
+    </SequenceStar>
+    <Action name="IQ_Metrics_Luminance_Dialog" ID="IQ_Metrics_Luminance_Dialog" color="{color}" eyebox="5"/>
+   </Sequence>
+  </Sequence>
+ </BehaviorTree>
+</root>

@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+***************************************************************************************************
+ Copyright (C) 2023 The Qt Company Ltd.
+ SPDX-License-Identifier: LicenseRef-Qt-Commercial OR LGPL-3.0-only OR GPL-2.0-only OR GPL-3.0-only
+***************************************************************************************************
+-->
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9BCE8E7A-22BC-4497-BDE8-E54AC1B46D8E}</ProjectGuid>
+    <Keyword>QtVS_v304</Keyword>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
+    <QtMsBuild Condition="'$(QtMsBuild)'=='' OR !Exists('$(QtMsBuild)\qt.targets')">$(MSBuildProjectDirectory)\QtMsBuild</QtMsBuild>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt_defaults.props')">
+    <Import Project="$(QtMsBuild)\qt_defaults.props" />
+  </ImportGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
+    <QtInstall>msvc2019_64</QtInstall>
+    <QtModules>core;widgets;gui</QtModules>
+    <QtBuildConfig>debug</QtBuildConfig>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
+    <QtModules>core;widgets;gui</QtModules>
+    <QtBuildConfig>release</QtBuildConfig>
+    <QtInstall>msvc2019_64</QtInstall>
+  </PropertyGroup>
+  <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
+    <Message Importance="High" Text="QtMsBuild: could not locate qt.targets, qt.props; project may not build correctly." />
+  </Target>
+  <ImportGroup Label="ExtensionSettings" />
+  <ImportGroup Label="Shared" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(QtMsBuild)\Qt.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnabled>false</VcpkgEnabled>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\plugins;$(SolutionDir)src\extlib\CDock\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\logplus\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>xcopy /Y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\CDock\lib;$(SolutionDir)src\extlib\logplus\lib\x64\bin.Debug_Unicode;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>qtadvanceddockingd.lib;log4cplusUD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\plugins;$(SolutionDir)src\extlib\CDock\include;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\logplus;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>xcopy /Y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\CDock\lib;$(SolutionDir)src\extlib\logplus\lib\x64\bin.Release_Unicode;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>qtadvanceddocking.lib;log4cplusU.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
+    <ClCompile>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <DebugInformationFormat>None</DebugInformationFormat>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>CORE_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\extlib\logplus\LogPlus.cpp" />
+    <ClCompile Include="actionmanager\actioncontainer.cpp" />
+    <ClCompile Include="actionmanager\actionmanager.cpp" />
+    <ClCompile Include="actionmanager\command.cpp" />
+    <ClCompile Include="ansiescapecodehandler.cpp" />
+    <ClCompile Include="fancytab.cpp" />
+    <ClCompile Include="fancytabbar.cpp" />
+    <ClCompile Include="fancytabwidget.cpp" />
+    <ClCompile Include="icontext.cpp" />
+    <ClCompile Include="icore.cpp" />
+    <ClCompile Include="IAction.cpp" />
+    <ClCompile Include="imode.cpp" />
+    <ClCompile Include="itoolbox.cpp" />
+    <ClCompile Include="loggingwrapper.cpp" />
+    <ClCompile Include="loginform.cpp" />
+    <ClCompile Include="logmanager.cpp" />
+    <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="modemanager.cpp" />
+    <ClCompile Include="outputformatter.cpp" />
+    <ClCompile Include="outputpane.cpp" />
+    <ClCompile Include="outputwindow.cpp" />
+    <ClCompile Include="proxyaction.cpp" />
+    <ClCompile Include="rightpane.cpp" />
+    <ClCompile Include="statusbarmanager.cpp" />
+    <ClCompile Include="styledbar.cpp" />
+    <ClCompile Include="theme\manhattanstyle.cpp" />
+    <ClCompile Include="theme\styleanimator.cpp" />
+    <ClCompile Include="theme\stylehelper.cpp" />
+    <ClCompile Include="theme\theme.cpp" />
+    <ClCompile Include="theme\themechooser.cpp" />
+    <QtMoc Include="theme\styleanimator.h" />
+    <QtMoc Include="itoolbox.h" />
+    <QtMoc Include="IAction.h" />
+    <ClInclude Include="loggingwrapper.h" />
+    <QtMoc Include="loginform.h" />
+    <ClInclude Include="theme\stylehelper.h" />
+    <ClInclude Include="theme\themechooser.h" />
+    <ClInclude Include="theme\theme_p.h" />
+    <QtMoc Include="theme\theme.h" />
+    <QtMoc Include="theme\manhattanstyle.h" />
+    <QtMoc Include="styledbar.h" />
+    <QtMoc Include="actionmanager\actioncontainer.h" />
+    <QtMoc Include="actionmanager\actioncontainer_p.h" />
+    <QtMoc Include="actionmanager\actionmanager.h" />
+    <QtMoc Include="actionmanager\actionmanager_p.h" />
+    <QtMoc Include="actionmanager\command.h" />
+    <QtMoc Include="actionmanager\command_p.h" />
+    <ClInclude Include="ansiescapecodehandler.h" />
+    <ClInclude Include="coreconstants.h" />
+    <ClInclude Include="core_global.h" />
+    <QtMoc Include="fancytab.h" />
+    <QtMoc Include="icore.h" />
+    <QtMoc Include="proxyaction.h" />
+    <QtMoc Include="outputpane.h" />
+    <QtMoc Include="outputwindow.h" />
+    <QtMoc Include="outputformatter.h" />
+    <QtMoc Include="logmanager.h" />
+    <ClInclude Include="outputformat.h" />
+    <ClInclude Include="statusbarmanager.h" />
+    <QtMoc Include="rightpane.h" />
+    <QtMoc Include="modemanager.h" />
+    <QtMoc Include="imode.h" />
+    <QtMoc Include="icontext.h" />
+    <QtMoc Include="fancytabwidget.h" />
+    <QtMoc Include="fancytabbar.h" />
+    <QtMoc Include="coreplugin.h" />
+    <ClCompile Include="coreplugin.cpp" />
+    <QtMoc Include="mainwindow.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\pluginsystem\pluginsystem.vcxproj">
+      <Project>{15e206c7-ae3a-48dc-9996-495dc04d8893}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="fancytabwidget.ui" />
+    <QtUic Include="loginDialog.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="core.qrc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\pluginsystem\pluginsystem.vcxproj" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
+    <Import Project="$(QtMsBuild)\qt.targets" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
