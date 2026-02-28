@@ -22,8 +22,8 @@ bool PolarizerControl::initialize(const QStringList& arguments, QString* errorMe
 	//RecipeWrapperRegistry::Instance()->regist("QrCode", wrapper);
 	//PolarizerControlSN::Decoder4Recipe::getInstance();
 
-	PolarizerWidget* widget = new PolarizerWidget("Polarizer");
-	Polarizer::Polarizer4Recipe::getInstance();
+	//PolarizerWidget* widget = new PolarizerWidget("Polarizer");
+	//Polarizer::Polarizer4Recipe::getInstance();
 	return true;
 }
 

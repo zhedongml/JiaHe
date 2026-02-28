@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/image">
         <file>image/ISLoad.gif</file>
+        <file>image/switch_off.png</file>
+        <file>image/switch_on.png</file>
     </qresource>
 </RCC>

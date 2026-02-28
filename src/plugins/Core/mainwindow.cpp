@@ -185,7 +185,7 @@ void Core::MainWindow::addToolBox(QWidget* wdg, QString toolName)
 
     m_docks.append(dockTab);
     m_Toolbox++;
-    if (m_Toolbox == 15)
+    if (m_Toolbox == 14)
     {
         emit finishDock(m_docks);
     }
@@ -319,7 +319,7 @@ void Core::MainWindow::setCurrent(QList<ads::CDockWidget*> docks)
 {
     QList<ads::CDockWidget*> reDocks;
     int index = 0;
-    int firstIndex = 8;
+    int firstIndex = 7;
     for (; index < m_docks.size(); index++)
     {
         if (!index)
