@@ -159,7 +159,7 @@ namespace IQT
 				return obj->IQ_Camera_SetBinningMode(node);
 			},
 			{
-				BT::InputPort<std::string>("binning_mode","string, e.g.  Average/Sum")
+				BT::InputPort<std::string>("binning_mode","[Average,Sum]","string, e.g.  Average/Sum")
 			});
 
 		factory.registerSimpleAction(
@@ -169,7 +169,7 @@ namespace IQT
 				return obj->IQ_Camera_SetBinningSelector(node);
 			},
 			{
-				BT::InputPort<std::string>("binning_selector","int, e.g. 0:Sensor/1:Logic")
+				BT::InputPort<std::string>("binning_selector","[Sensor,Logic]","string, e.g. 0:Sensor/1:Logic")
 			});
 
 		factory.registerSimpleAction(
@@ -179,7 +179,7 @@ namespace IQT
 				return obj->IQ_Camera_SetBitDepth(node);
 			},
 			{
-				BT::InputPort<std::string>("bit_depth","int, e.g. 8/10/12")
+				BT::InputPort<std::string>("bit_depth","[8,10,12]","int, e.g. 8/10/12")
 			});
 
 		factory.registerSimpleAction(
@@ -623,9 +623,9 @@ namespace IQT
 				return obj->IQ_SetTestState(node);
 			},
 			{
-				BT::InputPort<std::string>("is_dut","bool, e.g. 0/1"),
-				BT::InputPort<std::string>("is_update_slb","0","bool, e.g. 0/1"),
-				BT::InputPort<std::string>("size","bool, e.g. 0:Large,1:Small"),
+				BT::InputPort<std::string>("is_dut","[0,1]","bool"),
+				BT::InputPort<std::string>("is_update_slb","[0,1]","bool"),
+				BT::InputPort<std::string>("size","[Large,Small]","string, e.g. 0:Large,1:Small"),
 				BT::OutputPort<std::string>("size_key","string")
 			});
 

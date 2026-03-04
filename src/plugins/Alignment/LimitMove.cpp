@@ -290,10 +290,6 @@ namespace AAProcess
 			return "Oriental motor is not connected, oriental abs move failed.";
 		}
 
-		if (perJudgeLimitOriental(targetPos)) {
-			return "Oriental motor abs move exceed limit, abs move failed.";
-		}
-
 		Result ret = OrientalMotorControl::getInstance()->MoveByDegreeAsync(OrientalAxle::DX, targetPos.x);
 		if (!ret.success) {
 			return ret.errorMsg;

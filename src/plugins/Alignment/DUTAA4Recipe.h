@@ -33,12 +33,14 @@ namespace DutAA
 
 		// ¨T¨T¨T¨T¨T¨T¨T DutAA Nodes(Alignment)¨T¨T¨T¨T¨T¨T¨T¨T //
 		NodeStatus AA_Dut_LoadDUT(BT::TreeNode& node);
+		NodeStatus AA_Dut_QrScanPos(BT::TreeNode& node);
 		NodeStatus AA_Dut_AdjustLevel(BT::TreeNode& node);
 		NodeStatus AA_Dut_FindFiducial(BT::TreeNode& node);
 		NodeStatus AA_Dut_Ranging(BT::TreeNode& node);
 		NodeStatus AA_Dut_Align_EntrancePupil(BT::TreeNode& node);
 		NodeStatus AA_Dut_Align_EyeBox(BT::TreeNode& node);
 		NodeStatus AA_Dut_GetDutType(BT::TreeNode& node);
+		NodeStatus AA_SetWaferDutId(BT::TreeNode& node);
 
 		// ¨T¨T¨T¨T¨T¨T¨T SlbAA Nodes(Alignment)¨T¨T¨T¨T¨T¨T¨T¨T //
 		NodeStatus AA_SLB_Alignment(BT::TreeNode& node);
@@ -148,6 +150,24 @@ namespace DutAA
 				return obj->AA_Dut_LoadDUT(node);
 			},
 			{});
+		
+		factory.registerSimpleAction(
+			"AA_Dut_QrScanPos",
+			[=](BT::TreeNode& node)-> BT::NodeStatus
+			{
+				return obj->AA_Dut_QrScanPos(node);
+			},
+			{});
+
+		factory.registerSimpleAction(
+			"AA_SetWaferDutId",
+			[=](BT::TreeNode& node)-> BT::NodeStatus
+			{
+				return obj->AA_SetWaferDutId(node);
+			},
+			{
+				BT::InputPort<std::string>("wafer_dut_id","int"),
+			});
 		
 		factory.registerSimpleAction(
 			"AA_Dut_AdjustLevel",

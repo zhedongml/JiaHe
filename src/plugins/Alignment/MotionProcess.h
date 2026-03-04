@@ -61,6 +61,7 @@ namespace AAProcess
 		void setTreeSystemRun(bool isRun);
 		//DUT Alignment
 		std::string LoadDUT();
+		std::string DutQrScanPos();
 		std::string DutParallelAdjustment();
 		std::string Ranging();
 		std::string IsAutoIdentifyFiducial(bool isAuto);

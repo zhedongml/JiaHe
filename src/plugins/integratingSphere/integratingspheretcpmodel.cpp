@@ -826,9 +826,14 @@ Result IntegratingSphereTCPModel::setCurrentOutput(const QString& enColor, QMap<
     }
     
     ret = setShutterTurn(enColor.toUpper(), true, true);
-    for (QChar c : otherColors[enColor.toUpper()].toUtf8()) {
-        ret = setShutterTurn(c, false,true);
+
+    if (enColor.toUpper() != "W")
+    {
+        for (QChar c : otherColors[enColor.toUpper()].toUtf8()) {
+            ret = setShutterTurn(c, false, true);
+        }
     }
+
     
     int takeTime = QDateTime::currentMSecsSinceEpoch() - startTime;
     qWarning() << "Integrating sphere set " << enColor << ", times:" << takeTime << " ms...";

@@ -248,9 +248,9 @@ namespace AAProcess
 		if (currentWaferName != "")
 		{
 			//wafer
-			loadx = m_waferConfigInfoMap[currentWaferName].dutScanPos_map[wafer_dut_id].x;
-			loady = m_waferConfigInfoMap[currentWaferName].dutScanPos_map[wafer_dut_id].y;
-			loadz = m_waferConfigInfoMap[currentWaferName].scanZPos;
+			loadx = m_waferConfigInfoMap[currentWaferName].waferLoadPos.x;
+			loady = m_waferConfigInfoMap[currentWaferName].waferLoadPos.y;
+			loadz = m_waferConfigInfoMap[currentWaferName].waferLoadPos.z;
 		}
 		else {
 			//dut
@@ -354,6 +354,72 @@ namespace AAProcess
 		PrintModulePosition(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy);
 
 		return "";
+	}
+
+	std::string MotionProcess::DutQrScanPos()
+	{
+		PrintLog(LogType::Normal, "[DutQrScanPos]");
+
+		if (currentWaferName == "") {
+			PrintLog(LogType::Normal, "Current Dut type is not wafer, already on scan pos");
+			return "";
+		}	
+
+		PrintLog(LogType::Normal, "Current Dut type is wafer, start move on scan pos");
+		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ);
+		if (msg != "")
+			return msg;
+
+		double scanx = 0.0;
+		double scany = 0.0;
+		double scanz = 0.0;
+
+		{
+			//wafer
+			scanx = m_waferConfigInfoMap[currentWaferName].dutScanPos_map[wafer_dut_id].x;
+			scany = m_waferConfigInfoMap[currentWaferName].dutScanPos_map[wafer_dut_id].y;
+			scanz = m_waferConfigInfoMap[currentWaferName].dutScanPos_map[wafer_dut_id].z;
+		}
+
+
+		CORE::ML_Point3D currentPos = Motion3DModel::getInstance(motion3DType::withDUT)->getPosition(); //um
+		/*if (loadz < currentPos.z / 1000.0)
+		{
+			return PrintLog(LogType::Error, "Load motor Z value calibration error", !m_isTreeSystemRun);
+		}*/
+		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(currentPos.x / 1000.0, currentPos.y / 1000.0, scanz), withDUT);
+		if (!msg.empty())
+			return msg;
+		while (CheckModuleIsMoving(ModuleName::DutModuleXYZ))
+		{
+			if (m_isStopTreeSystem.load())
+			{
+				StopModuleMove(ModuleName::DutModuleXYZ);
+				m_isStopTreeSystem.store(false);
+				return "Operation is force stopped by user.";
+			}
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
+
+		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(scanx, scany, scanz), withDUT);
+		if (!msg.empty())
+			return msg;
+
+		while (CheckModuleIsMoving(ModuleName::DutModuleXYZ))
+		{
+			if (m_isStopTreeSystem.load())
+			{
+				StopModuleMove(ModuleName::DutModuleXYZ);
+				m_isStopTreeSystem.store(false);
+				return "Operation is force stopped by user.";
+			}
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
+
+		PrintLog(LogType::Normal, "dut motor loading end.");
+		PrintModulePosition(ModuleName::DutModuleXYZ);
 	}
 
 	std::string MotionProcess::DutParallelAdjustment()
@@ -462,11 +528,11 @@ namespace AAProcess
 		if (msg != "")
 			return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
 
-		// Restore the state without angles
-		double dutDZ_before = OrientalMotorControl::getInstance()->GetPosition(OrientalAxle::DZ);
-		PrintLog(LogType::Normal, "Rotation angle before dut: " + to_string(dutDZ_before));
+		//// Restore the state without angles
+		//double dutDZ_before = OrientalMotorControl::getInstance()->GetPosition(OrientalAxle::DZ);
+		//PrintLog(LogType::Normal, "Rotation angle before dut: " + to_string(dutDZ_before));
 
-		PrintLog(LogType::Normal, "Restore the state without angles");
+		//PrintLog(LogType::Normal, "Restore the state without angles");
 		
 		////配置文件第一个fid作为origin点，则角度-180，否则+180
 		//int compensation = -180;
@@ -485,18 +551,18 @@ namespace AAProcess
 		//}
 		//_sleep(1000);
 
-		double dutDZ_Current = OrientalMotorControl::getInstance()->GetPosition(OrientalAxle::DZ);
-		PrintLog(LogType::Normal, "dut current rotation angle: " + to_string(dutDZ_Current));
+		//double dutDZ_Current = OrientalMotorControl::getInstance()->GetPosition(OrientalAxle::DZ);
+		//PrintLog(LogType::Normal, "dut current rotation angle: " + to_string(dutDZ_Current));
 
-		//safe verification
-		double safeAngleMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutMotorAngleMax;
-		double safeAngleMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutMotorAngleMin;
-		if (dutDZ_Current > safeAngleMax || dutDZ_Current < safeAngleMin)
-		{
-			msg = "current dut motor angle: " + to_string(dutDZ_Current) + ", exceeded the safe range [" +
-				to_string(safeAngleMin) + ", " + to_string(safeAngleMax) + "]";
-			return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
-		}
+		////safe verification
+		//double safeAngleMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutMotorAngleMax;
+		//double safeAngleMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutMotorAngleMin;
+		//if (dutDZ_Current > safeAngleMax || dutDZ_Current < safeAngleMin)
+		//{
+		//	msg = "current dut motor angle: " + to_string(dutDZ_Current) + ", exceeded the safe range [" +
+		//		to_string(safeAngleMin) + ", " + to_string(safeAngleMax) + "]";
+		//	return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
+		//}
 
 		setSavePosition("", "\n");
 
@@ -951,6 +1017,7 @@ namespace AAProcess
 
 		return logMsg;
 	}
+
 	std::string MotionProcess::FindFiducialToCalculate()
 	{
 		PrintLog(LogType::Normal, "[FindFiducialToCalculate]");
@@ -1090,6 +1157,7 @@ namespace AAProcess
 
 		return "";
 	}
+
 	std::string MotionProcess::EyeboxScanning(int eyeBoxIndex)
 	{
 		PrintLog(LogType::Normal, "[EyeboxScanning], eyeBox " + to_string(eyeBoxIndex));
@@ -1179,10 +1247,12 @@ namespace AAProcess
 
 		return "";
 	}
+
 	void MotionProcess::setTreeSystemRun(bool isRun)
 	{
 		m_isTreeSystemRun = isRun;
 	}
+
 	std::string MotionProcess::CheckModuleConnectStatus(ModuleName moduleName)
 	{
 		switch (moduleName)
@@ -1227,6 +1297,7 @@ namespace AAProcess
 
 		return "";
 	}
+
 	void MotionProcess::PrintModulePosition(ModuleName moduleName)
 	{
 		std::string posMsg;
@@ -1280,6 +1351,7 @@ namespace AAProcess
 		}
 		}
 	}
+
 	bool MotionProcess::CheckModuleIsMoving(ModuleName moduleName)
 	{
 		switch (moduleName)
@@ -1566,6 +1638,7 @@ namespace AAProcess
 		}
 		else {
 			currentWaferName = "";
+			dut_nums = 1;
 			if (!m_dutConfigInfoMap.count(currentDutName) || !m_processConfigInfo.offsetRoatate.loadPos.count(currentDutName))
 				return "the current dut type " + currentDutName + " does not exist, please confirm the dut type again!";
 

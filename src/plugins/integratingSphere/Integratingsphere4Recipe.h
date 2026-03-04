@@ -23,6 +23,7 @@ namespace IntegratingSphere
 		NodeStatus Connect();
 		NodeStatus Disconnect();
 		NodeStatus SetSolution(BT::TreeNode& node);
+
 		NodeStatus SetCurLuminance(BT::TreeNode& node);
 
 	private:

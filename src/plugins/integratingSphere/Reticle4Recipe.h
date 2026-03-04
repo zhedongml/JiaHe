@@ -21,9 +21,13 @@ namespace Reticle
 
 
 		// ¨T¨T¨T¨T¨T¨T¨T Reticle Nodes¨T¨T¨T¨T¨T¨T¨T¨T //
-		NodeStatus Connect();
-		NodeStatus ReticleChange(BT::TreeNode& node);
-		NodeStatus ReticleMoveAbs(BT::TreeNode& node);
+		NodeStatus Reticle2D_Connect();
+		NodeStatus Reticle2D_Change(BT::TreeNode& node);
+		NodeStatus Reticle2D_MoveAbs(BT::TreeNode& node);
+
+		NodeStatus Reticle1D_Connect();
+		NodeStatus Reticle1D_Change(BT::TreeNode& node);
+		NodeStatus Reticle1D_MoveAbs(BT::TreeNode& node);
 
 	private:
 		static Reticle4Recipe* self;
@@ -35,33 +39,60 @@ namespace Reticle
 		if (!obj) {
 			throw BT::RuntimeError("Reticle4Recipe object not found !");
 		}
+		//factory.registerSimpleAction(
+		//	"Reticle_2D_Connect",
+		//	[=](BT::TreeNode& node)-> BT::NodeStatus
+		//	{
+		//		return obj->Reticle2D_Connect();
+		//	}, {});
+
+		//factory.registerSimpleAction(
+		//	"Reticle_2D_Change",
+		//	[=](BT::TreeNode& node)-> BT::NodeStatus
+		//	{
+		//		return obj->Reticle2D_Change(node);
+		//	}, 
+		//	{
+		//		BT::InputPort<std::string>("type","string, e.g. Small/Large"),
+		//		BT::InputPort<std::string>("reticle_name","string, e.g. Cross/Clear/Dark/Flare/Ghost/Grid/Checker0.5deg/PositiveChecker/NegativeChecker/PositiveCheckerSmall/NegativeCheckerSmall"),
+		//	});
+
+		//factory.registerSimpleAction(
+		//	"Reticle_2D_MoveAbs",
+		//	[=](BT::TreeNode& node)-> BT::NodeStatus
+		//	{
+		//		return obj->Reticle2D_MoveAbs(node);
+		//	},
+		//	{
+		//		BT::InputPort<std::string>("coord_x","float"),
+		//		BT::InputPort<std::string>("coord_y","float"),
+		//	});
+
 		factory.registerSimpleAction(
-			"Reticle_2D_Connect",
+			"Reticle_1D_Connect",
 			[=](BT::TreeNode& node)-> BT::NodeStatus
 			{
-				return obj->Connect();
+				return obj->Reticle1D_Connect();
 			}, {});
 
 		factory.registerSimpleAction(
-			"Reticle_2D_Change",
+			"Reticle_1D_Change",
 			[=](BT::TreeNode& node)-> BT::NodeStatus
 			{
-				return obj->ReticleChange(node);
-			}, 
+				return obj->Reticle1D_Change(node);
+			},
 			{
-				BT::InputPort<std::string>("type","string, e.g. Small/Large"),
-				BT::InputPort<std::string>("reticle_name","string, e.g. Cross/Clear/Dark/Flare/Ghost/Grid/Checker0.5deg/PositiveChecker/NegativeChecker/PositiveCheckerSmall/NegativeCheckerSmall"),
+				BT::InputPort<std::string>("reticle_name","[Grid,SlantedEdge,2deg_Checker,0.5deg_Checker,Solid,Calibration]","string")
 			});
 
 		factory.registerSimpleAction(
-			"Reticle_2D_MoveAbs",
+			"Reticle_1D_MoveAbs",
 			[=](BT::TreeNode& node)-> BT::NodeStatus
 			{
-				return obj->ReticleMoveAbs(node);
+				return obj->Reticle1D_MoveAbs(node);
 			},
 			{
-				BT::InputPort<std::string>("coord_x","float"),
-				BT::InputPort<std::string>("coord_y","float"),
+				BT::InputPort<std::string>("coord_x","float")
 			});
 	}
 }

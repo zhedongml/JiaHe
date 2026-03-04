@@ -12,10 +12,18 @@
 
 const std::string WAFER_FILE_NAME = "./config/waferConfig.json";
 
+struct WaferLoadPos
+{
+	double x;
+	double y;
+	double z;
+};
+
 struct DutScanPos
 {
 	double x;
 	double y;
+	double z;
 };
 
 struct DutFiducialViewPos
@@ -42,7 +50,7 @@ struct waferConfigInfo
 {
 	std::string waferName;
 	int dutNum;
-	double scanZPos;
+	WaferLoadPos waferLoadPos;
 
 	std::map<int, DutScanPos>  dutScanPos_map;
 	std::map<int, DutFiducialViewPos>  dutFiducialViewPos_map;

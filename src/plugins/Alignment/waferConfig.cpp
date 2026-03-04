@@ -26,7 +26,13 @@ std::map<std::string, waferConfigInfo> waferConfig::GetWaferConfigInfo()
 		waferConfigInfo waferConfigInfo_;
 		waferConfigInfo_.waferName = it.value()["Name"].get<std::string>();
         waferConfigInfo_.dutNum = it.value()["DutNums"].get<int>(); 
-        waferConfigInfo_.scanZPos = it.value()["ScanZMotorPos"].get<double>();
+
+        WaferLoadPos waferLoadPos_;
+        waferLoadPos_.x = it.value()["LoadPos"]["x"].get<double>();
+        waferLoadPos_.y = it.value()["LoadPos"]["y"].get<double>();
+        waferLoadPos_.z = it.value()["LoadPos"]["z"].get<double>();
+
+        waferConfigInfo_.waferLoadPos = waferLoadPos_;
 
 		DutScanPos base_dutSacnPos;
 		base_dutSacnPos.x = it.value()["FirstDutScanPos"]["x"].get<double>();

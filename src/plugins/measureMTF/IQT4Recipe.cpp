@@ -165,12 +165,18 @@ NodeStatus IQT4Recipe::IQ_Camera_SetBinningSelector(BT::TreeNode& node)
 	QString binning_selector = getNodeValueByName(node, "binning_selector");
 	try
 	{
-		Result res = MLColorimeterMode::Instance()->SetBinningSelector(BinningSelector::Sensor);
-		if (!res.success)throw std::runtime_error(res.errorMsg);
-		if (binning_selector.toInt() > 0)
+		Result res;
+		
+		if (binning_selector == "Sensor")
 		{
-			res = MLColorimeterMode::Instance()->SetBinning(ML::CameraV2::Binning::ONE_BY_ONE);
-			if (!res.success) throw std::runtime_error(res.errorMsg);
+			res = MLColorimeterMode::Instance()->SetBinningSelector(BinningSelector::Sensor);
+			if (!res.success)throw std::runtime_error(res.errorMsg);
+
+			//res = MLColorimeterMode::Instance()->SetBinning(ML::CameraV2::Binning::ONE_BY_ONE);
+			//if (!res.success) throw std::runtime_error(res.errorMsg);
+		}
+		else
+		{
 			res = MLColorimeterMode::Instance()->SetBinningSelector(BinningSelector::Logic);
 			if (!res.success) throw std::runtime_error(res.errorMsg);
 		}
@@ -1064,13 +1070,14 @@ NodeStatus IQT4Recipe::IQ_SetTestState(BT::TreeNode& node)
 	QString is_dut = getNodeValueByName(node, "is_dut");
 	QString size = getNodeValueByName(node, "size");
 	QString is_update_slb = getNodeValueByName(node, "is_update_slb");
+
 	MLUtils::TestState state;
 	state.IsDut = is_dut.toInt() > 0;
 	state.IsUpdateSLB = is_update_slb.toInt() > 0;
-	state.size = MLUtils::MLUtilCommon::instance()->TransIntToSize(size.toInt());
+	state.size = MLUtils::MLUtilCommon::instance()->TransStrToSize(size.toStdString());
 	MetricsData::instance()->SetTestState(state);
-	std::string type = MLUtils::MLUtilCommon::instance()->TransSizeToStr(state.size);
-	node.setOutput("size_key", type);
+
+	node.setOutput("size_key", size.toStdString());
 	return BT::NodeStatus::SUCCESS;
 }
 

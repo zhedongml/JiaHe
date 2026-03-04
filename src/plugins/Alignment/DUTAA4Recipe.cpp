@@ -8,8 +8,8 @@
 #include "dutTypeConfig.h"
 #include "MLUtilCommon.h"
 #include "LimitMove.h"
-//#include "OrientalMotor/OrientalMotorControl.h"
 
+//#include "OrientalMotor/OrientalMotorControl.h"
 using namespace DutAA;
 using namespace AAProcess;
 DutAA4Recipe* DutAA4Recipe::self = nullptr;
@@ -161,6 +161,20 @@ NodeStatus DutAA::DutAA4Recipe::AA_Dut_LoadDUT(BT::TreeNode& node)
     return BT::NodeStatus::SUCCESS;
 }
 
+NodeStatus DutAA::DutAA4Recipe::AA_Dut_QrScanPos(BT::TreeNode& node)
+{
+    RegisterStopHandler(node);
+    MotionProcess::getInstance().StopTreeSystem(false);
+    std::string msg = MotionProcess::getInstance().DutQrScanPos();
+    if (msg != "")
+    {
+        QString message = QString("Recipe Node [ AA_Dut_QrScan ] run error, %1").arg(QString::fromStdString(msg));
+        LoggingWrapper::instance()->error(message);
+        return BT::NodeStatus::FAILURE;
+    }
+    return BT::NodeStatus::SUCCESS;
+}
+
 NodeStatus DutAA::DutAA4Recipe::AA_Dut_AdjustLevel(BT::TreeNode& node)
 {
     RegisterStopHandler(node);
@@ -294,6 +308,14 @@ NodeStatus DutAA::DutAA4Recipe::AA_Dut_GetDutType(BT::TreeNode& node)
         .arg(QString::fromStdString(parts[2]));
     LoggingWrapper::instance()->info(message);
 
+    return BT::NodeStatus::SUCCESS;
+}
+
+NodeStatus DutAA::DutAA4Recipe::AA_SetWaferDutId(BT::TreeNode& node)
+{
+    QString wafer_dut_id = getNodeValueByName(node, "wafer_dut_id");
+    MotionProcess::getInstance().setWaferDutID(wafer_dut_id.toInt());
+        
     return BT::NodeStatus::SUCCESS;
 }
 

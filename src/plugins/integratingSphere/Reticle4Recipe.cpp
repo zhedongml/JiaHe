@@ -1,6 +1,7 @@
 #include "Reticle4Recipe.h"
 #include "ReticleMode2D.h"
 #include "loggingwrapper.h"
+#include "ReticleMode.h"
 
 using namespace Reticle;
 Reticle4Recipe* Reticle4Recipe::self = nullptr;
@@ -33,7 +34,7 @@ QString Reticle4Recipe::getNodeValueByName(BT::TreeNode& node, std::string name)
 	return QString::fromStdString(f_value.value());
 }
 
-NodeStatus Reticle4Recipe::Connect()
+NodeStatus Reticle4Recipe::Reticle2D_Connect()
 {
 	Result res = ReticleMode2D::instance()->connect();
 	if (!res.success) {
@@ -45,7 +46,7 @@ NodeStatus Reticle4Recipe::Connect()
 	return BT::NodeStatus::SUCCESS;
 }
 
-NodeStatus Reticle4Recipe::ReticleChange(BT::TreeNode& node)
+NodeStatus Reticle4Recipe::Reticle2D_Change(BT::TreeNode& node)
 {
 	Result res;
 	
@@ -74,7 +75,7 @@ NodeStatus Reticle4Recipe::ReticleChange(BT::TreeNode& node)
 	return BT::NodeStatus::SUCCESS;
 }
 
-NodeStatus Reticle4Recipe::ReticleMoveAbs(BT::TreeNode& node)
+NodeStatus Reticle4Recipe::Reticle2D_MoveAbs(BT::TreeNode& node)
 {
 	QString coord_x = getNodeValueByName(node, "coord_x");
 	QString coord_y = getNodeValueByName(node, "coord_y");
@@ -82,6 +83,46 @@ NodeStatus Reticle4Recipe::ReticleMoveAbs(BT::TreeNode& node)
 	Result res = ReticleMode2D::instance()->absMove({ coord_x.toFloat(), coord_y.toFloat() });
 	if (!res.success) {
 		QString message = QString("Recipe Node [ Reticle_2D_MoveAbs ] run error, %1").arg(QString::fromStdString(res.errorMsg));
+		LoggingWrapper::instance()->error(message);
+		return BT::NodeStatus::FAILURE;
+	}
+	return BT::NodeStatus::SUCCESS;
+}
+
+NodeStatus Reticle::Reticle4Recipe::Reticle1D_Connect()
+{
+	Result res = ReticleMode::instance()->connect();
+	if (!res.success) {
+		QString message = QString("Recipe Node [ Reticle_1D_Connect ] run error, %1").arg(QString::fromStdString(res.errorMsg));
+		LoggingWrapper::instance()->error(message);
+		return BT::NodeStatus::FAILURE;
+	}
+
+	return BT::NodeStatus::SUCCESS;
+}
+
+NodeStatus Reticle::Reticle4Recipe::Reticle1D_Change(BT::TreeNode& node)
+{
+	Result res;
+	QString reticle_name = getNodeValueByName(node, "reticle_name");
+	res = ReticleMode::instance()->changeReticle(reticle_name);
+	
+	if (!res.success) {
+		QString message = QString("Recipe Node [ Reticle_1D_Change ] run error, %1").arg(QString::fromStdString(res.errorMsg));
+		LoggingWrapper::instance()->error(message);
+		return BT::NodeStatus::FAILURE;
+	}
+
+	return BT::NodeStatus::SUCCESS;
+}
+
+NodeStatus Reticle::Reticle4Recipe::Reticle1D_MoveAbs(BT::TreeNode& node)
+{
+	QString coord_x = getNodeValueByName(node, "coord_x");
+
+	Result res = ReticleMode::instance()->absMove(coord_x.toFloat());
+	if (!res.success) {
+		QString message = QString("Recipe Node [ Reticle_1D_MoveAbs ] run error, %1").arg(QString::fromStdString(res.errorMsg));
 		LoggingWrapper::instance()->error(message);
 		return BT::NodeStatus::FAILURE;
 	}
