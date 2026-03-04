@@ -395,3 +395,8 @@ bool PLCController::GetSensorCState()
 {
     return m_readThread->getState("Sensor C");
 }
+
+bool PLCController::GetSensorDState()
+{
+    return m_readThread->getState("Sensor D");
+}

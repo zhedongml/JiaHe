@@ -77,6 +77,9 @@
     <ClInclude Include="slbConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="waferConfig.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ImageManage.cpp">
@@ -204,6 +207,9 @@
     </ClCompile>
     <ClCompile Include="PImotion4Recipe.cpp">
       <Filter>Recipe_Node</Filter>
+    </ClCompile>
+    <ClCompile Include="waferConfig.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

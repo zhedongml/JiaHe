@@ -46,6 +46,7 @@ class PLCCONTROL_EXPORT PLCController : public QObject, public PlcCallback
     bool GetSensorAState();
     bool GetSensorBState();
     bool GetSensorCState();
+    bool GetSensorDState();
 
   private:
     PLCController(QObject *parent = nullptr);

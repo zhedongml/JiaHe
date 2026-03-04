@@ -254,7 +254,8 @@ NodeStatus DutAA::DutAA4Recipe::AA_Dut_GetDutType(BT::TreeNode& node)
     QString cust_type = getNodeValueByName(node, "cust_type");
 
     std::string dut_name;
-    std::string msg = MotionProcess::getInstance().GetDutTypeName(cust_type.toStdString(), dut_name);
+    int wafer_dut_nums;
+    std::string msg = MotionProcess::getInstance().GetDutTypeName(cust_type.toStdString(), dut_name, wafer_dut_nums);
     if (msg != "")
     {
         QString message = QString("Recipe Node [ AA_Dut_GetDutType ] run error, %1").arg(QString::fromStdString(msg));
@@ -280,8 +281,10 @@ NodeStatus DutAA::DutAA4Recipe::AA_Dut_GetDutType(BT::TreeNode& node)
     state.eyeType = MLUtils::MLUtilCommon::instance()->TransStrToEyeType(parts[1]);
     state.cust_type = parts[2];
     MetricsData::instance()->SetTestState(state);
+
     node.setOutput("size_key", parts[0]);
     node.setOutput("eyetype_key", parts[1]);
+    node.setOutput("wafer_dut_num_key", wafer_dut_nums);
 
     QString message = QString("=========================== Current Test State: IsDut=%1, IsUpdateSLB=%2, size=%3 ,eyeType=%4, custom_type=%5 ===========================")
         .arg("1")

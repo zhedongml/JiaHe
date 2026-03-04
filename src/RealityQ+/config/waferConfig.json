@@ -1,0 +1,116 @@
+{
+"WaferType":[
+{
+	"Name":"Wafer_Small_Right",
+	"DutNums":6,
+	"FirstDutScanPos":{		
+			"x": 36.011,
+			"y": 51.59
+		},
+	"FirstDutFiducialViewPos":{
+			"x": 36.011,
+			"y": 51.59
+		},
+	"FirstDutRanging": {
+			"x": -5.448,
+			"y": 30.851,
+			"z": 40
+			},
+	"FirstDutParallelAdjustment": {
+		"x": -86.6035,
+		"y": 133.4262,
+		"z": 50
+	},
+	"ScanZMotorPos":  15.0978,
+	"DutsOffset": [
+		{
+			"id":1,
+			"x": 0,
+			"y": 0
+		},
+		{
+			"id":2,
+			"x": 36.011,
+			"y": 51.59
+		},
+		{
+			"id":3,
+			"x": 36.011,
+			"y": 51.59
+		},
+		{
+			"id":4,
+			"x": 36.011,
+			"y": 51.59
+		},
+		{
+			"id":5,
+			"x": 36.011,
+			"y": 51.59
+		},
+		{
+			"id":6,
+			"x": 36.011,
+			"y": 51.59
+		}				
+		
+	]
+},
+{
+	"Name":"Wafer_Large_Right",
+	"DutNums":6,
+	"FirstDutScanPos":{		
+			"x": 36.011,
+			"y": 51.59
+		},
+	"FirstDutFiducialViewPos":{
+			"x": 36.011,
+			"y": 51.59
+		},
+	"FirstDutRanging": {
+			"x": -5.448,
+			"y": 30.851,
+			"z": 40
+			},
+	"FirstDutParallelAdjustment": {
+		"x": -86.6035,
+		"y": 133.4262,
+		"z": 50
+	},
+	"ScanZMotorPos":  15.0978,
+	"DutsOffset": [
+		{
+			"id":1,
+			"x": 0,
+			"y": 0
+		},
+		{
+			"id":2,
+			"x": 36.011,
+			"y": 51.59
+		},
+		{
+			"id":3,
+			"x": 36.011,
+			"y": 51.59
+		},
+		{
+			"id":4,
+			"x": 36.011,
+			"y": 51.59
+		},
+		{
+			"id":5,
+			"x": 36.011,
+			"y": 51.59
+		},
+		{
+			"id":6,
+			"x": 36.011,
+			"y": 51.59
+		}				
+		
+	]
+}
+]
+}

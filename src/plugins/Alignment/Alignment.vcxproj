@@ -162,6 +162,7 @@ xcopy /y "$(SolutionDir)src\extlib\recipeLib\$(Configuration)\ObjectManager.dll"
     <ClCompile Include="processConfig.cpp" />
     <ClCompile Include="SelectFiducialWidget.cpp" />
     <ClCompile Include="slbConfig.cpp" />
+    <ClCompile Include="waferConfig.cpp" />
     <ClCompile Include="WaitPause.cpp" />
     <ClCompile Include="webcamera\CamereAction.cpp" />
     <ClCompile Include="webcamera\qtcamera.cpp" />
@@ -185,6 +186,7 @@ xcopy /y "$(SolutionDir)src\extlib\recipeLib\$(Configuration)\ObjectManager.dll"
     <ClInclude Include="processConfig.h" />
     <QtMoc Include="SelectFiducialWidget.h" />
     <ClInclude Include="slbConfig.h" />
+    <ClInclude Include="waferConfig.h" />
     <ClInclude Include="WaitPause.h" />
     <QtMoc Include="Alignment3D.h" />
     <ClInclude Include="alignment_global.h" />

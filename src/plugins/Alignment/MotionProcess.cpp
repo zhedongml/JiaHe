@@ -241,9 +241,23 @@ namespace AAProcess
 		if (msg != "")
 			return msg;
 
-		double loadx = m_processConfigInfo.offsetRoatate.loadPos[currentDutName].dutModule.x;
-		double loady = m_processConfigInfo.offsetRoatate.loadPos[currentDutName].dutModule.y;
-		double loadz = m_processConfigInfo.offsetRoatate.loadPos[currentDutName].dutModule.z;
+		double loadx = 0.0;
+		double loady = 0.0;
+		double loadz = 0.0;
+
+		if (currentWaferName != "")
+		{
+			//wafer
+			loadx = m_waferConfigInfoMap[currentWaferName].dutScanPos_map[wafer_dut_id].x;
+			loady = m_waferConfigInfoMap[currentWaferName].dutScanPos_map[wafer_dut_id].y;
+			loadz = m_waferConfigInfoMap[currentWaferName].scanZPos;
+		}
+		else {
+			//dut
+			loadx = m_processConfigInfo.offsetRoatate.loadPos[currentDutName].dutModule.x;
+			loady = m_processConfigInfo.offsetRoatate.loadPos[currentDutName].dutModule.y;
+			loadz = m_processConfigInfo.offsetRoatate.loadPos[currentDutName].dutModule.z;
+		}
 
 		CORE::ML_Point3D currentPos = Motion3DModel::getInstance(motion3DType::withDUT)->getPosition(); //um
 		/*if (loadz < currentPos.z / 1000.0)
@@ -352,9 +366,20 @@ namespace AAProcess
 			return msg;
 
 		cv::Point3f parallelAdjust;
-		parallelAdjust.x = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.x;
-		parallelAdjust.y = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.y;
-		parallelAdjust.z = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.z;
+
+		if (currentWaferName != "")
+		{
+			parallelAdjust.x = m_waferConfigInfoMap[currentWaferName].dutParallelAdjustmentPos_map[wafer_dut_id].x;
+			parallelAdjust.y = m_waferConfigInfoMap[currentWaferName].dutParallelAdjustmentPos_map[wafer_dut_id].y;
+			parallelAdjust.z = m_waferConfigInfoMap[currentWaferName].dutParallelAdjustmentPos_map[wafer_dut_id].z;
+		}
+		else
+		{
+			parallelAdjust.x = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.x;
+			parallelAdjust.y = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.y;
+			parallelAdjust.z = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.z;
+		}
+		
 
 		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(parallelAdjust.x, parallelAdjust.y, parallelAdjust.z), withDUT);
 		if (!msg.empty())
@@ -443,22 +468,23 @@ namespace AAProcess
 
 		PrintLog(LogType::Normal, "Restore the state without angles");
 		
-		//配置文件第一个fid作为origin点，则角度-180，否则+180
-		int compensation = -180;
-		if (m_dutConfigInfoMap[currentDutName].fiducialOffset_[1].x == 0 && m_dutConfigInfoMap[currentDutName].fiducialOffset_[1].y == 0)
-			compensation = -180;
-		else
-			compensation = 180;
+		////配置文件第一个fid作为origin点，则角度-180，否则+180
+		//int compensation = -180;
+		//if (m_dutConfigInfoMap[currentDutName].fiducialOffset_[1].x == 0 && m_dutConfigInfoMap[currentDutName].fiducialOffset_[1].y == 0)
+		//	compensation = -180;
+		//else
+		//	compensation = 180;
 
-		msg = LimitMove::getInstance()->orientalMoveRel(OrientalAxle::DZ, -(dutOffsetRotate.rotate * 180.0f / CV_PI + compensation));
-		if (!msg.empty())
-			return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
-		while (CheckModuleIsMoving(ModuleName::DutModuleDxDyDz))
-		{
-			QCoreApplication::processEvents();
-			_sleep(100);
-		}
-		_sleep(1000);
+		//msg = LimitMove::getInstance()->orientalMoveRel(OrientalAxle::DZ, -(dutOffsetRotate.rotate * 180.0f / CV_PI + compensation));
+		//if (!msg.empty())
+		//	return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
+		//while (CheckModuleIsMoving(ModuleName::DutModuleDxDyDz))
+		//{
+		//	QCoreApplication::processEvents();
+		//	_sleep(100);
+		//}
+		//_sleep(1000);
+
 		double dutDZ_Current = OrientalMotorControl::getInstance()->GetPosition(OrientalAxle::DZ);
 		PrintLog(LogType::Normal, "dut current rotation angle: " + to_string(dutDZ_Current));
 
@@ -474,10 +500,10 @@ namespace AAProcess
 
 		setSavePosition("", "\n");
 
-		PrintLog(LogType::Normal, "Starting the second find fiducial.");
-		msg = FindFiducialToCalculate();
-		if (msg != "")
-			return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
+		//PrintLog(LogType::Normal, "Starting the second find fiducial.");
+		//msg = FindFiducialToCalculate();
+		//if (msg != "")
+		//	return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
 
 		return "";
 	}
@@ -656,9 +682,19 @@ namespace AAProcess
 			return msg;
 
 		cv::Point3f keyence;
-		keyence.x = m_processConfigInfo.offsetRoatate.rangingPos[currentDutName].rangingPos.x;
-		keyence.y = m_processConfigInfo.offsetRoatate.rangingPos[currentDutName].rangingPos.y;
-		keyence.z = m_processConfigInfo.offsetRoatate.rangingPos[currentDutName].rangingPos.z;
+		if (currentWaferName != "")
+		{
+			keyence.x = m_waferConfigInfoMap[currentWaferName].dutRangingPos_map[wafer_dut_id].x;
+			keyence.y = m_waferConfigInfoMap[currentWaferName].dutRangingPos_map[wafer_dut_id].y;
+			keyence.z = m_waferConfigInfoMap[currentWaferName].dutRangingPos_map[wafer_dut_id].z;
+		}
+		else
+		{
+			keyence.x = m_processConfigInfo.offsetRoatate.rangingPos[currentDutName].rangingPos.x;
+			keyence.y = m_processConfigInfo.offsetRoatate.rangingPos[currentDutName].rangingPos.y;
+			keyence.z = m_processConfigInfo.offsetRoatate.rangingPos[currentDutName].rangingPos.z;
+		}
+
 
 		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(keyence.x, keyence.y, keyence.z), withDUT);
 		if (!msg.empty())
@@ -730,6 +766,10 @@ namespace AAProcess
 	{
 		PrintLog(LogType::Normal, "[InitConfig]");
 
+		if (!waferConfig::GetInstance().Load(WAFER_FILE_NAME.c_str()))
+		{
+			return PrintLog(LogType::Error, "read wafer config.json failed!", true);
+		}
 		if (!dutConfig::GetInstance().Load(DUT_FILE_NAME.c_str()))
 		{
 			return PrintLog(LogType::Error, "read dutconfig.json failed!", true);
@@ -743,6 +783,7 @@ namespace AAProcess
 			return PrintLog(LogType::Error, "read slbConfig.json failed!", true);
 		}
 
+		m_waferConfigInfoMap = waferConfig::GetInstance().GetWaferConfigInfo();
 		m_dutConfigInfoMap = dutConfig::GetInstance().GetDutConfigInfo();
 		m_processConfigInfo = processConfig::GetInstance().GetProcessConfigInfo();
 		m_slbConfigInfo = slbConfig::GetInstance().GetSlbConfigInfo();
@@ -939,9 +980,20 @@ namespace AAProcess
 		PrintModulePosition(ModuleName::ImagingModuleXYZ);
 
 		std::vector<cv::Point3f> fiducialMotorPosition;
+		cv::Point3f originAbsCoordinates;
+		if (currentWaferName != "")
+		{
+			originAbsCoordinates.x = m_waferConfigInfoMap[currentWaferName].dutFiducialViewPos_map[wafer_dut_id].x,
+			originAbsCoordinates.y = m_waferConfigInfoMap[currentWaferName].dutFiducialViewPos_map[wafer_dut_id].y,
+			originAbsCoordinates.z = 0;
+		}
+		else
+		{
+			originAbsCoordinates.x = m_dutConfigInfoMap[currentDutName].originPointMotorPositionInMV_.x,
+			originAbsCoordinates.y = m_dutConfigInfoMap[currentDutName].originPointMotorPositionInMV_.y,
+			originAbsCoordinates.z = 0;
+		}
 
-		cv::Point3f originAbsCoordinates(m_dutConfigInfoMap[currentDutName].originPointMotorPositionInMV_.x,
-			m_dutConfigInfoMap[currentDutName].originPointMotorPositionInMV_.y, 0);
 
 		//fiducial1, 2 absolute coordinates
 		CORE::ML_Point3D currentDutPos = Motion3DModel::getInstance(motion3DType::withDUT)->getPosition(); //um
@@ -1057,6 +1109,7 @@ namespace AAProcess
 		PrintLog(LogType::Normal, "Calculate the motor movement height based on eyeRelief");
 		double eyeBoxCenter_currentEyeBoxDifference = m_dutConfigInfoMap[currentDutName].outputgratingOffset_[5].z -
 			m_dutConfigInfoMap[currentDutName].outputgratingOffset_[eyeBoxIndex].z;
+
 		double currentEyeBoxNeedHeight = m_processConfigInfo.offsetRoatate.eyeBoxCenterKeyenceValue[currentDutName] - eyeBoxCenter_currentEyeBoxDifference;
 		double heightDifference = currentRangingPos - currentEyeBoxNeedHeight;
 		double imgingAbsZPos = currentPos.z / 1000.0 + heightDifference; //mm
@@ -1477,7 +1530,7 @@ namespace AAProcess
 		return m_waitPause.isStop();
 	}
 
-	std::string MotionProcess::GetDutTypeName(std::string cust_type, std::string& dut_name)
+	std::string MotionProcess::GetDutTypeName(std::string cust_type, std::string& dut_name,int& dut_nums)
 	{
 		std::string state;
 		std::string msg = JudgeHolderState(state);
@@ -1496,10 +1549,28 @@ namespace AAProcess
 		dut_name = state_name_map[state] + "_" + cust_type;
 		currentDutName = dut_name;
 
-		if(!m_dutConfigInfoMap.count(currentDutName)|| !m_processConfigInfo.offsetRoatate.loadPos.count(currentDutName))
-			return "the current dut type " + currentDutName + " does not exist, please confirm the dut type again!";
 
-		return "";
+		QString dutType = QString::fromStdString(currentDutName);
+		if (dutType.toLower().contains("wafer"))
+		{
+			currentWaferName = currentDutName;
+			currentDutName = dutType.mid(QString("Wafer_").length()).toStdString();
+			dut_nums = m_waferConfigInfoMap[currentWaferName].dutNum;
+
+			if (!m_waferConfigInfoMap.count(currentWaferName))
+				return "the current wafer type " + currentWaferName + " does not exist, please confirm the dut type again!";
+			
+			if (!m_dutConfigInfoMap.count(currentDutName) || !m_processConfigInfo.offsetRoatate.loadPos.count(currentDutName))
+				return "the current dut type " + currentDutName + " does not exist, please confirm the dut type again!";
+			return "";
+		}
+		else {
+			currentWaferName = "";
+			if (!m_dutConfigInfoMap.count(currentDutName) || !m_processConfigInfo.offsetRoatate.loadPos.count(currentDutName))
+				return "the current dut type " + currentDutName + " does not exist, please confirm the dut type again!";
+
+			return "";
+		}
 	}
 
 	std::string MotionProcess::SetIsSaveFiducialImage(bool isSave, QString rootDir, QString dutSeq)
@@ -1779,6 +1850,11 @@ namespace AAProcess
 		}
 	}
 
+	void MotionProcess::setWaferDutID(int dut_id)
+	{
+		wafer_dut_id = dut_id; // start from 1
+	}
+
 	void MotionProcess::StopTreeSystem(bool isStopTreeSystem)
 	{
 		m_isStopTreeSystem.store(isStopTreeSystem);
@@ -1793,7 +1869,8 @@ namespace AAProcess
 		std::ostringstream oss;
 		oss << PLCController::instance()->GetSensorAState()
 			<< PLCController::instance()->GetSensorBState()
-			<< PLCController::instance()->GetSensorCState();
+			<< PLCController::instance()->GetSensorCState()
+			<< PLCController::instance()->GetSensorDState();
 
 		holder_type = oss.str();
 

@@ -6,6 +6,7 @@
 #include "processConfig.h"
 #include "dutConfig.h"
 #include "slbConfig.h"
+#include "waferConfig.h"
 
 #include "WaitPause.h"
 
@@ -66,12 +67,15 @@ namespace AAProcess
 		std::string FindFiducial();
 		std::string EntrancePupilAlignment();
 		std::string EyeboxScanning(int eyeBoxIndex);
-		std::string GetDutTypeName(std::string cust_type, std::string& dut_name);
+		std::string GetDutTypeName(std::string cust_type, std::string& dut_name, int& dut_nums);
 		std::string SetIsSaveFiducialImage(bool isSave, QString rootDir = "", QString dutSeq = "");
 
 		//SLB Alignment
 		std::string SLBAlignment();
 		std::string LoadSLB();
+
+		//Wafer
+		void setWaferDutID(int dut_id);
 
 		void StopTreeSystem(bool isStopTreeSystem);
 		std::string JudgeHolderState(std::string& holder_type);
@@ -160,16 +164,18 @@ namespace AAProcess
 		QPointF onSignalgetFiducialPos(QImage& image);
 
 	private:
+		std::map<std::string, waferConfigInfo> m_waferConfigInfoMap;
 		std::map<std::string, dutConfigInfo> m_dutConfigInfoMap;
 		processConfigInfo m_processConfigInfo;
 		slbConfigInfo m_slbConfigInfo;
 		bool m_isTreeSystemRun;
+		int wafer_dut_id;
 
 		QString m_collimatorDeltaX = "NULL";
 		QString m_collimatorDeltaY = "NULL";
 
 		std::string currentDutName;
-
+		std::string currentWaferName = "";
 		OffsetRotate dutOffsetRotate;
 
 		double currentRangingPos = -9999;

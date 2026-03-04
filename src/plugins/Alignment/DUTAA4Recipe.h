@@ -204,6 +204,8 @@ namespace DutAA
 			{
 				BT::OutputPort<std::string>("size_key","string"),
 				BT::OutputPort<std::string>("eyetype_key","string"),
+				BT::OutputPort<std::string>("wafer_dut_num_key","int"),
+				
 			    BT::InputPort<std::string>("cust_type","string")
 			});
 

@@ -1,10 +1,10 @@
 {
-	"000":"None",
-	"100":"Small_Right",
-	"010":"Large_Right",
-	"001":"Large_Left",
-	"110":"None",
-	"101":"None",
-	"011":"None",
-	"111":"None"
+	"0000":"None",
+	"1000":"Small_Right",
+	"0100":"Large_Right",
+	"0010":"Large_Left",
+	"1100":"Wafer_Small_Right",
+	"1010":"Wafer_Large_Right",
+	"0110":"Wafer_Large_Left",
+	"1110":"None"
 }
