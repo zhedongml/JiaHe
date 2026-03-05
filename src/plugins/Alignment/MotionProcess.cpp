@@ -1139,6 +1139,7 @@ namespace AAProcess
 		dutOffsetRotate = CalculateOffsetAndRotate(mvCenterAbsCoor, fidOffsetFromOrigin);
 
 		//配置文件第一个fid作为origin点，则角度-180，否则+180
+
 		int compensation = -180;
 		if (fidOffsetFromOrigin[0].x == 0 && fidOffsetFromOrigin[0].y == 0)
 			compensation = -180;

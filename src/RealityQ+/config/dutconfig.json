@@ -1,7 +1,7 @@
 {
 	"NewDUT": [
 		{
-			"name": "Small_Right_1",
+			"name": "Small_Right",
 			"eyeType": "Right",
 			"walkoffDistance": 8,
 			"eyeBoxPupil": 3,
@@ -17,14 +17,14 @@
 					"y": 0
 				},
 				{
-					"id": 3,
-					"x": -16.87,
-					"y": -6.85
+					"id": 2,
+					"x": -51.198,
+					"y": 15.374
 				}
 			],
 			"inputgratingOffset": {
-				"x": -13.65,
-				"y": -10.01
+				"x": -53.91,
+				"y": 13.591
 			},
 			"QROffset": {
 				"x": 0,
@@ -33,149 +33,38 @@
 			"outputgratingOffset": [
 				{
 					"id": 1,
-					"x": 22.736,
-					"y": -13.043,
-					"eyeRelief": 13.58
+					"x": -17.868,
+					"y": 7.202,
+					"eyeRelief": 16.337
 				},
 				{
 					"id": 2,
-					"x": 17.008,
-					"y": -13.043,
-					"eyeRelief": 13.08
+					"x": -26.846,
+					"y": 7.278,
+					"eyeRelief": 15.713
 				},
 				{
 					"id": 3,
-					"x": 11.28,
-					"y": -13.043,
-					"eyeRelief": 12.58
+					"x": -22.357,
+					"y": 3.766,
+					"eyeRelief": 15.6
 				},
 				{
 					"id": 4,
-					"x": 22.798,
-					"y": -18.82,
-					"eyeRelief": 12.87
+					"x": -17.868,
+					"y": 0.254,
+					"eyeRelief": 15.486
 				},
 				{
 					"id": 5,
-					"x": 17.07,
-					"y": -18.82,
-					"eyeRelief": 12.37
-				},
-				{
-					"id": 6,
-					"x": 11.342,
-					"y": -18.82,
-					"eyeRelief": 11.87
-				},
-				{
-					"id": 7,
-					"x": 22.86,
-					"y": -24.597,
-					"eyeRelief": 12.16
-				},
-				{
-					"id": 8,
-					"x": 17.132,
-					"y": -24.597,
-					"eyeRelief": 11.66
-				},
-				{
-					"id": 9,
-					"x": 11.404,
-					"y": -24.597,
-					"eyeRelief": 11.16
+					"x": -26.846,
+					"y": 0.33,
+					"eyeRelief": 14.862
 				}
 			]
 		},
 		{
-			"name": "Small_Right_2",
-			"eyeType": "Right",
-			"walkoffDistance": 8,
-			"eyeBoxPupil": 3,
-			"fiducialZMotorPos":  15.0978,
-			"originPointMotorPositionInMV": {
-				"x": 36.011,
-				"y": 51.59
-			},
-			"fiducialOffset": [
-				{
-					"id": 1,
-					"x": 0,
-					"y": 0
-				},
-				{
-					"id": 3,
-					"x": -16.87,
-					"y": -6.85
-				}
-			],
-			"inputgratingOffset": {
-				"x": -13.65,
-				"y": -10.01
-			},
-			"QROffset": {
-				"x": 0,
-				"y": 0
-			},
-			"outputgratingOffset": [
-				{
-					"id": 1,
-					"x": 22.736,
-					"y": -13.043,
-					"eyeRelief": 13.58
-				},
-				{
-					"id": 2,
-					"x": 17.008,
-					"y": -13.043,
-					"eyeRelief": 13.08
-				},
-				{
-					"id": 3,
-					"x": 11.28,
-					"y": -13.043,
-					"eyeRelief": 12.58
-				},
-				{
-					"id": 4,
-					"x": 22.798,
-					"y": -18.82,
-					"eyeRelief": 12.87
-				},
-				{
-					"id": 5,
-					"x": 17.07,
-					"y": -18.82,
-					"eyeRelief": 12.37
-				},
-				{
-					"id": 6,
-					"x": 11.342,
-					"y": -18.82,
-					"eyeRelief": 11.87
-				},
-				{
-					"id": 7,
-					"x": 22.86,
-					"y": -24.597,
-					"eyeRelief": 12.16
-				},
-				{
-					"id": 8,
-					"x": 17.132,
-					"y": -24.597,
-					"eyeRelief": 11.66
-				},
-				{
-					"id": 9,
-					"x": 11.404,
-					"y": -24.597,
-					"eyeRelief": 11.16
-				}
-			]
-		},
-		{
-			"name": "Large_Left_1",
+			"name": "Large_Left",
 			"eyeType": "Left",
 			"walkoffDistance": 8,
 			"eyeBoxPupil": 3,
@@ -187,18 +76,18 @@
 			"fiducialOffset": [
 				{
 					"id": 1,
-					"x": 3.9,
-					"y": 34.92
+					"x": 0,
+					"y": 0
 				},
 				{
 					"id": 2,
-					"x": 0,
-					"y": 0
+					"x": -54.288,
+					"y": -15.402
 				}
 			],
 			"inputgratingOffset": {
-				"x": -10.78,
-				"y": 3.06
+				"x": -57,
+				"y": -13.619
 			},
 			"QROffset": {
 				"x": 0,
@@ -206,15 +95,39 @@
 			},
 			"outputgratingOffset": [
 				{
+					"id": 1,
+					"x": -20.958,
+					"y": -7.23,
+					"eyeRelief": 16.337
+				},
+				{
+					"id": 2,
+					"x": -29.936,
+					"y": -7.306,
+					"eyeRelief": 15.713
+				},
+				{
+					"id": 3,
+					"x": -25.447,
+					"y": -3.794,
+					"eyeRelief": 15.6
+				},
+				{
+					"id": 4,
+					"x": -20.958,
+					"y": -0.282,
+					"eyeRelief": 15.486
+				},
+				{
 					"id": 5,
-					"x": 21.04,
-					"y": 15.6,
-					"eyeRelief": 15.29
+					"x": -29.936,
+					"y": -0.358,
+					"eyeRelief": 14.862
 				}
 			]
 		},
 		{
-			"name": "Large_Right_1",
+			"name": "Large_Right",
 			"eyeType": "Right",
 			"walkoffDistance": 8,
 			"eyeBoxPupil": 3,
@@ -226,185 +139,53 @@
 			"fiducialOffset": [
 				{
 					"id": 1,
-					"x": 3.9,
-					"y": -34.92
+					"x": 0,
+					"y": 0
 				},
 				{
 					"id": 2,
-					"x": 0,
-					"y": 0
+					"x": -54.288,
+					"y": 15.402
 				}
 			],
 			"inputgratingOffset": {
-				"x": -10.78,
-				"y": -3.06
+				"x": -57,
+				"y": 13.619
 			},
 			"QROffset": {
 				"x": 0,
 				"y": 0
 			},
 			"outputgratingOffset": [
-				{
-					"id": 5,
-					"x": 21.04,
-					"y": -15.6,
-					"eyeRelief": 15.29
-				}
-			]
-		},
-		{
-			"name": "Large_Right_MB1A",
-			"eyeType": "Right",
-			"walkoffDistance": 8.5,
-			"eyeBoxPupil": 3,
-			"fiducialZMotorPos": 90.8,
-			"originPointMotorPositionInMV": {
-				"x": 37.495,
-				"y": 57.5751
-			},
-			"fiducialOffset": [
 				{
 					"id": 1,
-					"x": 7.424,
-					"y": -36.422
+					"x": -20.958,
+					"y": 7.23,
+					"eyeRelief": 16.337
 				},
 				{
 					"id": 2,
-					"x": 0,
-					"y": 0
-				}
-			],
-			"inputgratingOffset": {
-				"x": -9.655,
-				"y": -3.473
-			},
-			"QROffset": {
-				"x": 0,
-				"y": 0
-			},
-			"outputgratingOffset": [
-				{
-					"id": 5,
-					"x": 22.126,
-					"y": -15.009,
-					"eyeRelief": 15.29
-				}
-			]
-		},
-		{
-			"name": "Large_Left_MB1A",
-			"eyeType": "Left",
-			"walkoffDistance": 8.5,
-			"eyeBoxPupil": 3,
-			"fiducialZMotorPos": 90.8,
-			"originPointMotorPositionInMV": {
-				"x": 37.495,
-				"y": 57.5751
-			},
-			"fiducialOffset": [
-				{
-					"id": 1,
-					"x": 7.424,
-					"y": 36.422
+					"x": -29.936,
+					"y": 7.306,
+					"eyeRelief": 15.713
 				},
 				{
-					"id": 2,
-					"x": 0,
-					"y": 0
-				}
-			],
-			"inputgratingOffset": {
-				"x": -9.655,
-				"y": 3.473
-			},
-			"QROffset": {
-				"x": 0,
-				"y": 0
-			},
-			"outputgratingOffset": [
-				{
-					"id": 5,
-					"x": 22.126,
-					"y": 15.009,
-					"eyeRelief": 15.29
-				}
-			]
-		},
-		{
-			"name": "Large_Right_MB1B",
-			"eyeType": "Right",
-			"walkoffDistance": 8.5,
-			"eyeBoxPupil": 3,
-			"fiducialZMotorPos": 90.8,
-			"originPointMotorPositionInMV": {
-				"x": 37.495,
-				"y": 57.5751
-			},
-			"fiducialOffset": [
-				{
-					"id": 1,
-					"x": 7.424,
-					"y": -36.422
+					"id": 3,
+					"x": -25.447,
+					"y": 3.794,
+					"eyeRelief": 15.6
 				},
 				{
-					"id": 2,
-					"x": 0,
-					"y": 0
-				}
-			],
-			"inputgratingOffset": {
-				"x": -8.281,
-				"y": -1.038
-			},
-			"QROffset": {
-				"x": 0,
-				"y": 0
-			},
-			"outputgratingOffset": [
-				{
-					"id": 5,
-					"x": 22.127,
-					"y": -15.009,
-					"eyeRelief": 15.29
-				}
-			]
-		},
-		{
-			"name": "Large_Left_MB1B",
-			"eyeType": "Left",
-			"walkoffDistance": 8.5,
-			"eyeBoxPupil": 3,
-			"fiducialZMotorPos": 90.8,
-			"originPointMotorPositionInMV": {
-				"x": 37.495,
-				"y": 57.5751
-			},
-			"fiducialOffset": [
-				{
-					"id": 1,
-					"x": 7.424,
-					"y": 36.422
+					"id": 4,
+					"x": -20.958,
+					"y": 0.282,
+					"eyeRelief": 15.486
 				},
 				{
-					"id": 2,
-					"x": 0,
-					"y": 0
-				}
-			],
-			"inputgratingOffset": {
-				"x": -8.281,
-				"y": 1.038
-			},
-			"QROffset": {
-				"x": 0,
-				"y": 0
-			},
-			"outputgratingOffset": [
-				{
 					"id": 5,
-					"x": 22.127,
-					"y": 15.009,
-					"eyeRelief": 15.29
+					"x": -29.936,
+					"y": 0.358,
+					"eyeRelief": 14.862
 				}
 			]
 		}
