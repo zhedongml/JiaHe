@@ -266,7 +266,7 @@ NodeStatus System::System4Recipe::System_Split(BT::TreeNode& node)
 NodeStatus System::System4Recipe::System_Subfolders(BT::TreeNode& node)
 {
 	QString parent_dir = getNodeValueByName(node, "parent_dir");
-	std::vector<string> subfolders;
+	std::vector<std::string> subfolders;
 
 	std::ostringstream oss;
 	bool first = true;

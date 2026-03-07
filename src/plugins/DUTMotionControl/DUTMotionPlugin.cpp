@@ -20,7 +20,7 @@ bool DUTMotionPlugin::initialize(const QStringList &arguments, QString *errorMes
 {
 
     DUTMotion::DUTMotion4Recipe::getInstance();
-    DUTMotionWidget *widget = new DUTMotionWidget("Motion3D-Tilt Dut");
+    DUTMotionWidget *widget = new DUTMotionWidget("Motion2D-Tilt-Cant Dut");
 
     //DUTMotionWrapper *wrapper = new DUTMotionWrapper(this);
     //RecipeWrapperRegistry::Instance()->regist("DUTMotion", wrapper);

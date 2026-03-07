@@ -1,0 +1,23 @@
+{
+	"DataUpload": {
+		"TCP":{
+			"Ip":"127.0.0.1",
+			"Port":5000
+		},
+		"SWDebug":false
+	},
+	"MesHttp":{
+		"TestMachine":{
+			"SingleLensLoadURL":"https://alnbmestest.sunnyoptical.cn/thirdparty/mesVehicleLoading/singleLensFeeding",
+			"SingleLensUnloadURL":"https://alnbmestest.sunnyoptical.cn/thirdparty/mesVehicleLoading/singleLensCutting",
+			"CuttingPreventURL":"https://alnbmestest.sunnyoptical.cn/thirdparty/mesDevice/cuttingPrevent"
+		},
+		"ProductionMachine":{
+			"SingleLensLoadURL":"https://almesyy.sunnyoptical.cn/thirdparty/mesVehicleLoading/singleLensFeeding",
+			"SingleLensUnloadURL":"https://almesyy.sunnyoptical.cn/thirdparty/mesVehicleLoading/singleLensCutting",
+			"CuttingPreventURL":"https://almesyy.sunnyoptical.cn/thirdparty/mesVehicleLoading/cuttingPrevent"
+		},
+		"IsTest":true
+	},
+	"MesOnline":false
+}

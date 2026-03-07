@@ -184,8 +184,15 @@ void Core::MainWindow::addToolBox(QWidget* wdg, QString toolName)
     dockTab->setFeature(ads::CDockWidget::NoTab, false);
 
     m_docks.append(dockTab);
+
+    // °´×ÖµäË³ÐòÅÅÐò
+    std::sort(m_docks.begin(), m_docks.end(),
+        [](ads::CDockWidget* a, ads::CDockWidget* b) {
+            return a->windowTitle().compare(b->windowTitle(), Qt::CaseInsensitive) < 0;
+        });
+
     m_Toolbox++;
-    if (m_Toolbox == 14)
+
     {
         emit finishDock(m_docks);
     }
@@ -200,6 +207,17 @@ void Core::MainWindow::addMenuAction(QAction* action, QString id, QString parent
     Command* cmdT = ActionManager::registerAction(action, id);
     cmdT->setAttribute(Command::CA_UpdateText);
     mtools->addAction(cmdT, Constants::M_TOOL_VIEWS); 
+}
+
+void Core::MainWindow::addMenuAction(QAction* action, QString id, QString parentId, QString groupId)
+{
+    action->setMenuRole(QAction::PreferencesRole);
+    action->setCheckable(false);
+
+    ActionContainer* mtools = ActionManager::actionContainer(parentId);
+    Command* cmdT = ActionManager::registerAction(action, id);
+    cmdT->setAttribute(Command::CA_UpdateText);
+    mtools->addAction(cmdT, groupId);
 }
 
 static void setRestart(bool restart)
@@ -319,24 +337,13 @@ void Core::MainWindow::setCurrent(QList<ads::CDockWidget*> docks)
 {
     QList<ads::CDockWidget*> reDocks;
     int index = 0;
-    int firstIndex = 7;
-    for (; index < m_docks.size(); index++)
-    {
-        if (!index)
-        {
-            reDocks.append(docks[firstIndex]);
-        }
-        else if (index > firstIndex)
-        {
-            reDocks.append(docks[index]);
-        }
-        else
-        {
-            reDocks.append(docks[index - 1]);
-        }
+
+    for (; index < docks.size(); index++)
+    {       
+         reDocks.append(docks[index]);
     }
     index = 0;
-    for (; index < m_docks.size(); index++)
+    for (; index < docks.size(); index++)
     {
         if (!index)
         {

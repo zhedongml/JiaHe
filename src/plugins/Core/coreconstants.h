@@ -6,6 +6,8 @@ namespace Core {
         const char G_DEFAULT_ONE[] = "Group.Default.One";
         const char G_DEFAULT_TWO[] = "Group.Default.Two";
         const char G_DEFAULT_THREE[] = "Group.Default.Three";
+        const char G_DEFAULT_FOUR[] = "Group.Default.Four";
+        const char G_DEFAULT_FIVE[] = "Group.Default.Five";
         const char C_GLOBAL[] = "Global Context";
 
         // Menubar

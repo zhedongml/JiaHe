@@ -74,7 +74,7 @@ namespace PrjCommon {
             m_queue.taskEnd(ret);
         }
 
-        Result waitEnd(const QString &taskName = "All tasks")
+        Result waitEnd(const QString& taskName = "All tasks")
         {
             int waitTime = 0;
             while (m_queue.waitCount()) {
@@ -98,7 +98,31 @@ namespace PrjCommon {
             }
 
             QString msg = resultToStr(m_queue.taskErrorResult());
-            if(!msg.isEmpty()) {
+            if (!msg.isEmpty()) {
+                flag = false;
+                msg = QString("%1 were failed executed. Finish tasks number is %2. %3").arg(taskName).arg(m_queue.finishCount()).arg(msg);
+            }
+
+            m_queue.clearResult();
+            if (!flag) {
+                return Result(false, msg.toStdString());
+            }
+            msg = QString("%1 were successfully executed. Finish tasks number is %2.").arg(taskName).arg(m_queue.finishCount());
+            return Result(true, msg.toStdString());
+        }
+
+        Result judgeEnd(bool& isEnd, const QString& taskName = "All tasks")
+        {
+            int waitCount = m_queue.waitCount();
+            if (waitCount > 0) {
+                isEnd = false;
+                return Result();
+            }
+
+            bool flag = true;
+
+            QString msg = resultToStr(m_queue.taskErrorResult());
+            if (!msg.isEmpty()) {
                 flag = false;
                 msg = QString("%1 were failed executed. Finish tasks number is %2. %3").arg(taskName).arg(m_queue.finishCount()).arg(msg);
             }

@@ -38,6 +38,7 @@ namespace Core {
 
 		void addToolBox(QWidget* wdg, QString title = "Tab");
 		void addMenuAction(QAction* action, QString id, QString parentId);
+		void addMenuAction(QAction* action, QString id, QString parentId, QString groupId);
 
 		void restart();
 		void addPreCloseListener(const std::function<bool()>& listener);

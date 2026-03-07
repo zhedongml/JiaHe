@@ -1,0 +1,21 @@
+{
+    "SummaryHeader": {
+        "TesterName": "DIQ-01-WG-L",
+        "Appraiser": "1",
+        "sw_version": "1.0.0",
+        "work_order": "NA",
+        "checkroute_status": "FALSE",
+        "checkroute_result": "FALSE",
+        "keyparts_sn": "MY61390646"
+    },
+	"SummaryHeader_Right": {
+        "TesterName": "DIQ-02-WG-R",
+        "Appraiser": "1",
+        "sw_version": "1.0.0",
+        "work_order": "NA",
+        "checkroute_status": "FALSE",
+        "checkroute_result": "FALSE",
+        "keyparts_sn": "MY61390646"
+    }
+	
+}

@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{6C74ADC6-8DF4-4346-B887-DFCECF036EFD}</ProjectGuid>
+    <ProjectGuid>{31388655-50F7-4584-B361-1C511E5B299C}</ProjectGuid>
     <Keyword>QtVS_v304</Keyword>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">10.0</WindowsTargetPlatformVersion>
     <WindowsTargetPlatformVersion Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">10.0</WindowsTargetPlatformVersion>
@@ -21,7 +21,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v142</PlatformToolset>
-    <UseDebugLibraries>true</UseDebugLibraries>
+    <UseDebugLibraries>false</UseDebugLibraries>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
@@ -37,12 +37,12 @@
   </ImportGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="QtSettings">
     <QtInstall>msvc2019_64</QtInstall>
-    <QtModules>core;sql;gui;widgets;printsupport;concurrent</QtModules>
+    <QtModules>core;network;gui;widgets;concurrent</QtModules>
     <QtBuildConfig>debug</QtBuildConfig>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="QtSettings">
     <QtInstall>msvc2019_64</QtInstall>
-    <QtModules>core;sql;gui;widgets;printsupport;concurrent</QtModules>
+    <QtModules>core;xml;network;gui;widgets;concurrent</QtModules>
     <QtBuildConfig>release</QtBuildConfig>
   </PropertyGroup>
   <Target Name="QtMsBuildNotFound" BeforeTargets="CustomBuild;ClCompile" Condition="!Exists('$(QtMsBuild)\qt.targets') or !Exists('$(QtMsBuild)\qt.props')">
@@ -60,11 +60,13 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
-    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SolutionPath);$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
-    <OutDir>$(ProjectDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
@@ -72,36 +74,43 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\logplus;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include;$(SolutionDir)src;..\..\plugins;$(SolutionDir)src\extlib\measureCamera\include;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\AutoDP;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\extlib\recipeLib\include\Recipe2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\lib;$(SolutionDir)src\extlib\logplus\lib\x64\bin.Debug_Unicode;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_world451d.lib;log4cplusUD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Recipe2.lib;behaviortree_cpp_v3.lib;ObjectManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\recipeLib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <StackReserveSize>10000000</StackReserveSize>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"</Command>
+      <Command>xcopy /y "$(SolutionDir)src\extlib\SSL\*.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\registerRecipe\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\logplus;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include;$(SolutionDir)src;..\..\plugins;$(SolutionDir)src\extlib\measureCamera\include;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\AutoDP;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\extlib\recipeLib\include\Recipe2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
-    <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\lib;$(SolutionDir)src\extlib\logplus\lib\x64\bin.Release_Unicode;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_world451.lib;log4cplusU.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
     <PostBuildEvent>
-      <Command>xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"</Command>
+      <Command>xcopy /y "$(SolutionDir)src\extlib\SSL\*.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"
+xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\registerRecipe\"</Command>
     </PostBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)$(Platform)\$(Configuration)\;$(SolutionDir)src\extlib\recipeLib\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Recipe2.lib;
+behaviortree_cpp_v3.lib
+;ObjectManager.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>PRJCOMMON_LIB;_CRT_SECURE_NO_WARNINGS;QCUSTOMPLOT_COMPILE_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <WarningLevel>Level3</WarningLevel>
-      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>MESANDFILELOAD_LIB=1;BT_PLUGIN_EXPORT;_CRT_SECURE_NO_WARNINGS;WIN32_LEAN_AND_MEAN;_WINSOCKAPI_;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <WarningLevel>Level1</WarningLevel>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -112,7 +121,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'" Label="Configuration">
     <ClCompile>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <PreprocessorDefinitions>PRJCOMMON_LIB;_CRT_SECURE_NO_WARNINGS;QCUSTOMPLOT_COMPILE_LIBRARY;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>BT_PLUGIN_EXPORT;MESANDFILELOAD_LIB;_WINSOCK_DEPRECATED_NO_WARNINGS;_CRT_SECURE_NO_WARNINGS;_WINSOCKAPI_;WIN32_LEAN_AND_MEAN;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
@@ -120,75 +129,56 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="compressFile\CompressFile.cpp" />
-    <ClCompile Include="compressFile\miniz.c" />
-    <ClCompile Include="CustomPlot.cpp" />
-    <ClCompile Include="irecipewrapper.cpp" />
-    <ClCompile Include="MetricsCheck.cpp" />
-    <ClCompile Include="MLUtilCommon.cpp" />
-    <ClCompile Include="MultiLineInputDialog.cpp" />
-    <ClCompile Include="qcustomplot.cpp" />
-    <ClCompile Include="RecipeAsync.cpp" />
-    <ClCompile Include="recipewrapperregistry.cpp" />
-    <ClCompile Include="service\config.cpp" />
-    <ClCompile Include="service\MLFrame.cpp" />
-    <ClCompile Include="service\MLMetadata.cpp" />
-    <ClCompile Include="service\ml_motion.cpp" />
-    <ClCompile Include="service\ml_motion2D.cpp" />
-    <ClCompile Include="service\ml_motion3D.cpp" />
-    <ClCompile Include="Session.cpp" />
-    <ClCompile Include="TipsDialog.cpp" />
-    <ClCompile Include="WaitWidget.cpp" />
-    <ClInclude Include="..\..\extlib\logplus\LogPlus.h" />
-    <ClInclude Include="compressFile\CompressFile.h" />
-    <ClInclude Include="compressFile\miniz.h" />
-    <ClInclude Include="MetricsCheck.h" />
-    <ClInclude Include="MLUtilCommon.h" />
-    <QtMoc Include="TipsDialog.h" />
-    <QtMoc Include="MultiLineInputDialog.h" />
-    <ClInclude Include="taskManage\ResultTask.h" />
-    <ClInclude Include="taskManage\TaskBase.h" />
-    <ClInclude Include="taskManage\TaskWorker.h" />
-    <ClInclude Include="taskManage\TaskManager.h" />
-    <ClInclude Include="taskManage\TaskRunner.h" />
-    <ClInclude Include="taskManage\ThreadSafeQueue.h" />
-    <QtMoc Include="qcustomplot.h" />
-    <QtMoc Include="CustomPlot.h" />
-    <QtMoc Include="RecipeAsync.h" />
-    <ClInclude Include="Session.h" />
-    <QtMoc Include="WaitWidget.h" />
-    <QtMoc Include="irecipewrapper.h" />
-    <QtMoc Include="recipewrapperregistry.h" />
-    <ClInclude Include="service\config.h" />
-    <ClInclude Include="service\helper.h" />
-    <ClInclude Include="service\McCommon.h" />
-    <ClInclude Include="service\ml.h" />
-    <ClInclude Include="service\MLFrame.h" />
-    <ClInclude Include="service\MLMetadata.h" />
-    <QtMoc Include="service\ml_camera.h" />
-    <QtMoc Include="service\ml_motion.h" />
-    <ClInclude Include="service\ml_motion2D.h" />
-    <ClInclude Include="service\ml_motion3D.h" />
-    <ClInclude Include="service\ml_rangefinder.h" />
-    <QtMoc Include="configdatabase.h" />
-    <QtMoc Include="logindata.h" />
-    <QtMoc Include="metricsdata.h" />
-    <ClInclude Include="prjcommon_global.h" />
-    <QtMoc Include="PrjCommon.h" />
-    <ClCompile Include="configdatabase.cpp" />
-    <ClCompile Include="logindata.cpp" />
-    <ClCompile Include="metricsdata.cpp" />
-    <ClCompile Include="PrjCommon.cpp" />
+    <ClCompile Include="Mes4Recipe.cpp" />
+    <ClCompile Include="MesConfig.cpp" />
+    <ClCompile Include="MesConfigAction.cpp" />
+    <ClCompile Include="MesMode.cpp" />
+    <ClCompile Include="MesPlugin.cpp" />
+    <ClCompile Include="MesTaskAsync.cpp" />
+    <ClCompile Include="MesWrapper.cpp" />
+    <ClCompile Include="TaskMesZip.cpp" />
+    <ClCompile Include="TaskQdp.cpp" />
+    <ClCompile Include="TcpModel.cpp" />
+    <ClCompile Include="MyHTTPClient.cpp" />
+    <ClCompile Include="QtWidgetsClass.cpp" />
+    <QtMoc Include="Mes4Recipe.h" />
+    <ClInclude Include="MesCommon.h" />
+    <ClInclude Include="MesConfig.h" />
+    <QtMoc Include="MesConfigAction.h" />
+    <ClInclude Include="MesMode.h" />
+    <QtMoc Include="MesPlugin.h" />
+    <QtMoc Include="MesWrapper.h" />
+    <QtMoc Include="MesTaskAsync.h" />
+    <QtMoc Include="TaskMesZip.h" />
+    <QtMoc Include="TaskQdp.h" />
+    <ClInclude Include="TcpModel.h" />
+    <ClInclude Include="mesandfileload_global.h" />
+    <QtMoc Include="MyHTTPClient.h" />
+    <QtMoc Include="QtWidgetsClass.h" />
   </ItemGroup>
   <ItemGroup>
-    <QtUic Include="TipsDialog.ui" />
+    <QtUic Include="QtWidgetsClass.ui" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AutoDP\AutoDP.vcxproj">
+      <Project>{986fc3e0-a44c-4ab6-bbbf-9db4da5ef4f5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.vcxproj">
+      <Project>{9bce8e7a-22bc-4497-bde8-e54ac1b46d8e}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\pluginsystem\pluginsystem.vcxproj">
+      <Project>{15e206c7-ae3a-48dc-9996-495dc04d8893}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\PrjCommon\PrjCommon.vcxproj">
+      <Project>{6c74adc6-8df4-4346-b887-dfcecf036efd}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

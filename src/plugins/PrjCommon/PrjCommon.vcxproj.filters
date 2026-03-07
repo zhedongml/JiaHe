@@ -89,6 +89,15 @@
     <ClInclude Include="MLUtilCommon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MetricsCheck.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compressFile\CompressFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="compressFile\miniz.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="configdatabase.cpp">
@@ -145,6 +154,18 @@
     <ClCompile Include="MultiLineInputDialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MetricsCheck.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TipsDialog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compressFile\CompressFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="compressFile\miniz.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="configdatabase.h">
@@ -186,5 +207,13 @@
     <QtMoc Include="MultiLineInputDialog.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="TipsDialog.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+  </ItemGroup>
+  <ItemGroup>
+    <QtUic Include="TipsDialog.ui">
+      <Filter>Form Files</Filter>
+    </QtUic>
   </ItemGroup>
 </Project>

@@ -12,6 +12,7 @@ namespace Core {
 
 	public:
 		IAction(QString id, QString parentId, QObject* parent = nullptr);
+		IAction(QString id, QString parentId, QString groupId, QObject* parent = nullptr);
 		~IAction();
 	};
 }

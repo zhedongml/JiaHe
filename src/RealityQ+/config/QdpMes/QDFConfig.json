@@ -1,0 +1,61 @@
+{
+    "qdf_data": {
+        "assembly_phase": "MODULE",
+        "build_config": "",
+        "build_phase": "P2",
+        "cm": "sunny_omnilight",
+        "diags_version": "",
+        "factory_id": "yuyao",
+        "firmware_version": "",
+        "fixture": "",
+        "hostname": "ml-etc",
+        "line_id": 1,
+        "operator_id": "20117499",
+        "os_version": "",
+        "product_name": "Plaid",
+        "slot": 1,
+        "station_id": "1",
+        "station_sequence": 1,
+        "station_type": "DIQ-01-WG-L",
+        "test_status": 1
+    },
+	"qdf_data_Right": {
+        "assembly_phase": "MODULE",
+        "build_config": "",
+        "build_phase": "P2",
+        "cm": "sunny_omnilight",
+        "diags_version": "",
+        "factory_id": "yuyao",
+        "firmware_version": "",
+        "fixture": "",
+        "hostname": "ml-etc",
+        "line_id": 1,
+        "operator_id": "20117499",
+        "os_version": "",
+        "product_name": "Plaid",
+        "slot": 1,
+        "station_id": "1",
+        "station_sequence": 1,
+        "station_type": "DIQ-02-WG-R",
+        "test_status": 1
+    },
+    "station_type": {
+        "EP": [
+            "FFV-01-EP",
+            "PST-01-EP",
+            "Cary7K-01-EP",
+            "DIQ-01-EP-L",
+            "DIQ-01-EP-R",
+            "DIQ-02-EP-L",
+            "DIQ-02-EP-R",
+            "BYK-01-EP"
+        ],
+        "WG": [
+            "Cary7K-01-WG",
+            "DIQ-01-WG-L",
+            "DIQ-01-WG-R",
+            "DIQ-02-WG-L",
+            "DIQ-02-WG-R"
+        ]
+    }
+}
