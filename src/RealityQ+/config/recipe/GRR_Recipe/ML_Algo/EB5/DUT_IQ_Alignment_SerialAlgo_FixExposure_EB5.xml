@@ -71,21 +71,22 @@
       <IfThenElse name="IfThenElse">
        <Action name="Decoder_SN" ID="Decoder_SN" key="dutid"/>
        <Action name="SetBlackboard" ID="SetBlackboard" output_key="dutid" value="{dutid}"/>
-       <Action name="System_InputTips" ID="System_InputTips" tip="Please input the serial number of dut!" text_key="dutid"/>
+       <Action name="System_InputTips" ID="System_InputTips" tip="Please enter dut serial number !" param="serial_number" is_lable_visual="1" text_key="dutid"/>
       </IfThenElse>
       <Action name="AA_Dut_AdjustLevel" ID="AA_Dut_AdjustLevel"/>
       <Action name="AA_Dut_Ranging" ID="AA_Dut_Ranging"/>
       <Action name="AA_Dut_FindFiducial" ID="AA_Dut_FindFiducial" is_auto="1" is_save="1" is_auto_exposure="0" exposure_time="{fiducial_expo_time}" root_dir="E:/SAT_GRR/{cur_data}_MetricsTest/" dut_seq="COT_{dutid}_{cur_datatime}_WG_IQT-MTF-1_OQC"/>
       <Action name="AA_Dut_Align_EntrancePupil" ID="AA_Dut_Align_EntrancePupil"/>
      </Sequence>
-     <!--Create Csv File-->
-     <Action name="IQ_Metrics_CreateResultFile" ID="IQ_Metrics_CreateResultFile" root_dir="E:\SAT_GRR\{cur_data}_MetricsTest" dut_seq="COT_{dutid}_{cur_datatime}_WG_IQT-MTF-1_OQC" csvname="{dutid}_{cur_datatime}_metrics_{eyeboxids}" all_csvname="metrics_{eyeboxids}_all" autodp_root_dir=""/>
-     <For name="For" traverse_params="{eyeboxids}">
+     <!--Define Csv File and dut folder path-->
+     <Action name="IQ_Metrics_CreateDutResultFile" ID="IQ_Metrics_CreateDutResultFile" root_dir="E:\SAT_GRR\{cur_data}_MetricsTest" dut_seq="COT_{dutid}_{cur_datatime}_WG_IQT-MTF-1_OQC" csvname="{dutid}_{cur_datatime}_metrics_{eyeboxids}" all_csvname="metrics_{eyeboxids}_all" dut_folder="dut_measure_folder"/>
+	 <For name="For" traverse_params="{eyeboxids}">
       <Sequence name="Sequence">
        <Action name="System_GetForNodeValue1" ID="System_GetForNodeValue1" value_key="cur_eb"/>
        <Parallel name="Parallel">
         <Action name="AA_Dut_Align_EyeBox" ID="AA_Dut_Align_EyeBox" eyebox_id="{cur_eb}"/>
-        <Action name="IS_SetSolution" ID="IS_SetSolution" isphere_scale="{ISphere_scale_R}" light_source="R"/>
+	<Action name="IQ_Metrics_CreateEyeboxResultFile" ID="IQ_Metrics_CreateEyeboxResultFile" root_dir="{dut_measure_folder}\{dutid}_EB{cur_eb}_{cur_datatime}"/>
+	<Action name="IS_SetSolution" ID="IS_SetSolution" isphere_scale="{ISphere_scale_R}" light_source="R"/>
        </Parallel>
        <For name="For" traverse_params="R,G,B;{ISphere_scale_R},{ISphere_scale_G},{ISphere_scale_B}">
         <Sequence name="Sequence">

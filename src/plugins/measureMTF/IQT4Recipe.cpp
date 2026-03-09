@@ -1151,7 +1151,77 @@ NodeStatus IQT4Recipe::IQ_Metrics_CreateResultFile(BT::TreeNode& node)
 		}
 	}
 
-	node.setOutput("autodp_root_dir", root_dir.toStdString());
+	return BT::NodeStatus::SUCCESS;
+}
+
+NodeStatus IQT4Recipe::IQ_Metrics_CreateDutResultFile(BT::TreeNode& node)
+{
+	QString root_dir = getNodeValueByName(node, "root_dir");
+	QString dut_seq = getNodeValueByName(node, "dut_seq");
+	QString csvname = getNodeValueByName(node, "csvname").remove(',');
+	QString all_csvname = getNodeValueByName(node, "all_csvname").remove(',');
+
+	QString all_csv_path = root_dir + QDir::separator() + all_csvname + ".csv";
+	QString dut_folder = root_dir + QDir::separator() + dut_seq + QDir::separator();
+	QString csv_path = dut_folder + csvname + ".csv";
+	//QString iq_dir = root_dir + QDir::separator() + dut_seq + QDir::separator() + "IQ" + QDir::separator();
+	//QString throughfocus_dir = root_dir + QDir::separator() + dut_seq + QDir::separator() + "ThroughFocus" + QDir::separator();
+
+	MetricsData::instance()->setCsvPath(csv_path, all_csv_path);
+	MetricsData::instance()->setDutTestSeqName(dut_seq);
+	//MetricsData::instance()->setMTFImgsDir(iq_dir);
+	bool ret = MLColorimeterMode::Instance()->isDirExist(dut_folder);
+	if (!ret)
+	{
+		QString message = QString("Recipe Node [ IQ_Metrics_CreateResultFile ] run error, create iq_dir error!");
+		LoggingWrapper::instance()->error(message);
+		return BT::NodeStatus::FAILURE;
+	}
+
+	QFile file(all_csv_path);
+	if (!file.exists())
+	{
+		bool ok = false;
+		ok = IQTModel::instance()->createMetricsResutCSVFile(all_csv_path);
+		if (!ok)
+		{
+			QString message = QString("Recipe Node [ IQ_Metrics_CreateResultFile ] run error, create all csv file error!");
+			LoggingWrapper::instance()->error(message);
+			return BT::NodeStatus::FAILURE;
+		}
+	}
+	QFile file1(csv_path);
+	if (!file1.exists())
+	{
+		bool ok = false;
+		ok = IQTModel::instance()->createMetricsResutCSVFile(csv_path);
+		if (!ok)
+		{
+			QString message = QString("Recipe Node [ IQ_Metrics_CreateResultFile ] run error, create csv file error!");
+			LoggingWrapper::instance()->error(message);
+			return BT::NodeStatus::FAILURE;
+		}
+	}
+
+	node.setOutput("dut_folder", dut_folder.toStdString());
+
+	return BT::NodeStatus::SUCCESS;
+}
+
+NodeStatus IQT4Recipe::IQ_Metrics_CreateEyeboxResultFile(BT::TreeNode& node)
+{
+	QString root_dir = getNodeValueByName(node, "root_dir");
+	QString iq_dir = root_dir + QDir::separator() + "IQ" + QDir::separator();
+
+	MetricsData::instance()->setMTFImgsDir(iq_dir);
+
+	bool ret = MLColorimeterMode::Instance()->isDirExist(iq_dir);
+	if (!ret)
+	{
+		QString message = QString("Recipe Node [ IQ_Metrics_CreateResultFile ] run error, create iq_dir error!");
+		LoggingWrapper::instance()->error(message);
+		return BT::NodeStatus::FAILURE;
+	}
 
 	return BT::NodeStatus::SUCCESS;
 }

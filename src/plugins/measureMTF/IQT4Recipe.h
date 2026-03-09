@@ -74,7 +74,11 @@ namespace IQT
 		//Metrics
 		NodeStatus IQ_Metrics_CreateDBTable();
 		NodeStatus IQ_Metrics_LoadLimitConfig(BT::TreeNode& node);
+
 		NodeStatus IQ_Metrics_CreateResultFile(BT::TreeNode& node);
+		NodeStatus IQ_Metrics_CreateDutResultFile(BT::TreeNode& node);
+		NodeStatus IQ_Metrics_CreateEyeboxResultFile(BT::TreeNode& node);
+
 		NodeStatus IQ_Metrics_Calculate(BT::TreeNode& node);
 		NodeStatus IQ_Metrics_Location_Clear(BT::TreeNode& node);
 		NodeStatus IQ_StartParallelCalculate(BT::TreeNode& node);
@@ -595,8 +599,31 @@ namespace IQT
 				BT::InputPort<std::string>("root_dir","string"),
 				BT::InputPort<std::string>("dut_seq","string"),
 				BT::InputPort<std::string>("csvname","string"),
+				BT::InputPort<std::string>("all_csvname","string")
+			});
+
+		factory.registerSimpleAction(
+			"IQ_Metrics_CreateDutResultFile",
+			[=](BT::TreeNode& node)-> BT::NodeStatus
+			{
+				return obj->IQ_Metrics_CreateDutResultFile(node);
+			},
+			{
+				BT::InputPort<std::string>("root_dir","string"),
+				BT::InputPort<std::string>("dut_seq","string"),
+				BT::InputPort<std::string>("csvname","string"),
 				BT::InputPort<std::string>("all_csvname","string"),
-				BT::OutputPort<std::string>("autodp_root_dir","string")
+				BT::OutputPort<std::string>("dut_folder","string")
+			});
+
+		factory.registerSimpleAction(
+			"IQ_Metrics_CreateEyeboxResultFile",
+			[=](BT::TreeNode& node)-> BT::NodeStatus
+			{
+				return obj->IQ_Metrics_CreateEyeboxResultFile(node);
+			},
+			{
+				BT::InputPort<std::string>("root_dir","string")
 			});
 
 		factory.registerSimpleAction(
