@@ -75,9 +75,10 @@ namespace AAProcess
 
 	std::string MotionProcess::ConnectMeasureCameraMotionModule()
 	{
-		// Measure 3D move/tilt station
 		Result result;
 		std::string msg;
+
+		// 3D move station
 		//if (!Motion3DModel::getInstance(withCamera)->Motion3DisConnected())
 		{
 			QString mcIp = ConfigItem::instance()->getMotion3DIpAndOther(withCamera);
@@ -88,6 +89,8 @@ namespace AAProcess
 				return msg;
 			}
 		}
+		
+		// 2D tilt station 
 		//if (!Motion2DModel::getInstance(ACS2DCameraTilt)->Motion2DisConnected())
 		{
 			QString cameraTiltIp = ConfigItem::instance()->getMotion2DIpAndOther(ACS2DCameraTilt);
@@ -108,6 +111,8 @@ namespace AAProcess
 		// DUT 3D move/tilt station
 		Result result;
 		std::string msg;
+
+		// 3D move station
 		//if (!Motion3DModel::getInstance(withDUT)->Motion3DisConnected())
 		{
 			QString dutIp = ConfigItem::instance()->getMotion3DIpAndOther(withDUT);
@@ -119,18 +124,20 @@ namespace AAProcess
 				return msg;
 			}
 		}
+
+		// 2D tilt station
 		//if (!OrientalMotorControl::getInstance()->IsConnected())
 		{
 			result = OrientalMotorControl::getInstance()->Connect();
 			if (!result.success)
 			{
-				msg = "DUT 3D tilt motion connect failed, " + result.errorMsg;
+				msg = "DUT 2D tilt motion connect failed, " + result.errorMsg;
 				return msg;
 			}
 			result = OrientalMotorControl::getInstance()->HomingAsync();
 			if (!result.success)
 			{
-				msg = "DUT 3D tilt motion homing failed, " + result.errorMsg;
+				msg = "DUT 2D tilt motion homing failed, " + result.errorMsg;
 				return msg;
 			}
 			while (CheckModuleIsMoving(ModuleName::DutModuleDxDyDz))
@@ -145,9 +152,12 @@ namespace AAProcess
 
 	std::string MotionProcess::ConnectProjectorMotionModule()
 	{
-		// Projector tilt station
+
 		Result result;
 		std::string msg;
+
+		// Projector 2D tilt
+		
 		//if (!Motion2DModel::getInstance(ACS2DPro)->GetIsConnected())
 		{
 			QString ipEtc = ConfigItem::instance()->getMotion2DIpAndOther(ACS2DPro);

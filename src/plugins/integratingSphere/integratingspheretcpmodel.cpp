@@ -833,6 +833,10 @@ Result IntegratingSphereTCPModel::setCurrentOutput(const QString& enColor, QMap<
             ret = setShutterTurn(c, false, true);
         }
     }
+    else
+    {
+        ret = setShutterTurn("W", true, true);
+    }
 
     
     int takeTime = QDateTime::currentMSecsSinceEpoch() - startTime;

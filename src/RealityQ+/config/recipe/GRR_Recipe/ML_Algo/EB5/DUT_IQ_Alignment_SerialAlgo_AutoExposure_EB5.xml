@@ -12,11 +12,11 @@
    <Parallel name="Parallel">
     <Action name="AA_Connect_MVCamera" ID="AA_Connect_MVCamera"/>
     <Action name="AA_Connect_Collimator" ID="AA_Connect_Collimator"/>
+    <Action name="AA_Connect_Keyence" ID="AA_Connect_Keyence"/>
     <Action name="AA_Connect_MeasureCameraMotionModule" ID="AA_Connect_MeasureCameraMotionModule"/>
     <Action name="AA_Connect_ProjectorMotionModule" ID="AA_Connect_ProjectorMotionModule"/>
-    <Action name="AA_Connect_Keyence" ID="AA_Connect_Keyence"/>
-    <Action name="Decoder_Connect" ID="Decoder_Connect"/>
     <Action name="AA_Connect_DutMotionModule" ID="AA_Connect_DutMotionModule"/>
+    <Action name="Decoder_Connect" ID="Decoder_Connect"/>
    </Parallel>
    <Action name="Colorimeter_Connect_All_Async" ID="Colorimeter_Connect_All_Async"/>
    <!-- Alignment Init-->
@@ -48,25 +48,23 @@
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_R" value="0.96"/>
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_G" value="0.96"/>
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_B" value="0.96"/>
-   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_W" value="0.6,0.9,0.96"/>
    <!-- <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_off" value="0,0,0"/> -->
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="nd_select" value="ND0"/>
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="xyzc_select" value="Clear"/>
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="binning" value="4"/>
-   <Action name="SetBlackboard" ID="SetBlackboard" output_key="is_auto_exposure" value="0"/>
-   <Action name="SetBlackboard" ID="SetBlackboard" output_key="exposure_init_time" value=""/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="is_auto_exposure" value="1"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="exposure_init_time" value="1000"/>
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="is_convert_16bit" value="0"/>
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="method" value="1"/>
    <Action name="Colorimeter_Camera_StopGrabbing" ID="Colorimeter_Camera_StopGrabbing"/>
    <Action name="Colorimeter_Camera_SetBinningSelector" ID="Colorimeter_Camera_SetBinningSelector" binning_selector="Logic"/>
    <Action name="Colorimeter_Camera_SetBinningMode" ID="Colorimeter_Camera_SetBinningMode" binning_mode="Average"/>
-   <Action name="IQ_LoadFixExposureTime" ID="IQ_LoadFixExposureTime"/>
    <!--alignment process-->
    <For name="For" traverse_params="wafer_dut_num">
     <Sequence name="Sequence">
      <Action name="System_GetForNodeValue1" ID="System_GetForNodeValue1" value_key="cur_wafer_dutID"/>
-     <Action name="AA_SetWaferDutId" ID="AA_SetWaferDutId" wafer_dut_id="{cur_wafer_dutID}"/>
      <Sequence name="Sequence">
+      <Action name="AA_SetWaferDutId" ID="AA_SetWaferDutId" wafer_dut_id="{cur_wafer_dutID}"/>
       <Action name="AA_Dut_LoadDUT" ID="AA_Dut_LoadDUT"/>
       <Action name="AA_Dut_QrScanPos" ID="AA_Dut_QrScanPos"/>
       <IfThenElse name="IfThenElse">
@@ -80,7 +78,7 @@
       <Action name="AA_Dut_Align_EntrancePupil" ID="AA_Dut_Align_EntrancePupil"/>
      </Sequence>
      <!--Create Csv File-->
-     <Action name="IQ_Metrics_CreateResultFile" ID="IQ_Metrics_CreateResultFile" all_csvname="metrics_{eyeboxids}_all" csvname="{dutid}_{cur_datatime}_metrics_{eyeboxids}" dut_seq="COT_{dutid}_{cur_datatime}_WG_IQT-MTF-1_OQC" root_dir="E:\SAT_GRR\{cur_data}_MetricsTest"/>
+     <Action name="IQ_Metrics_CreateResultFile" ID="IQ_Metrics_CreateResultFile" root_dir="E:\SAT_GRR\{cur_data}_MetricsTest" dut_seq="COT_{dutid}_{cur_datatime}_WG_IQT-MTF-1_OQC" csvname="{dutid}_{cur_datatime}_metrics_{eyeboxids}" all_csvname="metrics_{eyeboxids}_all" autodp_root_dir=""/>
      <For name="For" traverse_params="{eyeboxids}">
       <Sequence name="Sequence">
        <Action name="System_GetForNodeValue1" ID="System_GetForNodeValue1" value_key="cur_eb"/>
@@ -133,9 +131,10 @@
       </Sequence>
      </For>
      <Parallel name="Parallel">
-      <Action name="IS_SetSolution" ID="IS_SetSolution" isphere_scale="{ISphere_off}" light_source="W"/>
+      <Action name="IS_CloseAllShutter" ID="IS_CloseAllShutter"/>
       <Sequence name="Sequence">
        <Action name="Colorimeter_WaitForCaptureEnd" ID="Colorimeter_WaitForCaptureEnd" timeout="20"/>
+       <Action name="IQ_UpdateFixExposureTimeConfig" ID="IQ_UpdateFixExposureTimeConfig"/>
        <SequenceStar name="SequenceStar">
         <Action name="IQ_Metrics_Location_Clear" ID="IQ_Metrics_Location_Clear"/>
         <Parallel name="Parallel">

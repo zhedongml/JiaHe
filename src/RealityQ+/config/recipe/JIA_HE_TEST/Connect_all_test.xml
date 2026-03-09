@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+ <BehaviorTree ID="BehaviorTree">
+  <!-- Add nodes here -->
+  <Sequence name="Sequence">
+   <Parallel name="Parallel">
+    <Action name="AA_Connect_MVCamera" ID="AA_Connect_MVCamera"/>
+    <Action name="AA_Connect_Collimator" ID="AA_Connect_Collimator"/>
+    <Action name="AA_Connect_Keyence" ID="AA_Connect_Keyence"/>
+    <Action name="AA_Connect_MeasureCameraMotionModule" ID="AA_Connect_MeasureCameraMotionModule"/>
+    <Action name="AA_Connect_ProjectorMotionModule" ID="AA_Connect_ProjectorMotionModule"/>
+    <Action name="AA_Connect_DutMotionModule" ID="AA_Connect_DutMotionModule"/>
+    <Action name="Decoder_Connect" ID="Decoder_Connect"/>
+   </Parallel>
+   <Action name="Colorimeter_Connect_All_Async" ID="Colorimeter_Connect_All_Async"/>
+   <Parallel name="Parallel">
+    <!--reticle connect and move-->
+    <Sequence name="Sequence">
+     <Action name="Reticle_1D_Connect" ID="Reticle_1D_Connect"/>
+     <Action name="Reticle_1D_Change" ID="Reticle_1D_Change" reticle_name="Clear"/>
+    </Sequence>
+    <!--integrating sphere & colorimeter connect and setting-->
+    <Sequence name="Sequence">
+     <Action name="IS_Connect" ID="IS_Connect"/>
+    </Sequence>
+   </Parallel>
+  </Sequence>
+ </BehaviorTree>
+</root>

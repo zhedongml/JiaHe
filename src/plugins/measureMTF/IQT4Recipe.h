@@ -595,7 +595,8 @@ namespace IQT
 				BT::InputPort<std::string>("root_dir","string"),
 				BT::InputPort<std::string>("dut_seq","string"),
 				BT::InputPort<std::string>("csvname","string"),
-				BT::InputPort<std::string>("all_csvname","string")
+				BT::InputPort<std::string>("all_csvname","string"),
+				BT::OutputPort<std::string>("autodp_root_dir","string")
 			});
 
 		factory.registerSimpleAction(

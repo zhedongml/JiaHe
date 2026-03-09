@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+ <BehaviorTree ID="BehaviorTree">
+  <!-- Add nodes here -->
+  <Sequence name="Sequence">
+   <!-- System Init -->
+   <Action name="System_Date" ID="System_Date" date_key="cur_data"/>
+   <Action name="System_DateTime" ID="System_DateTime" date_time_key="cur_datatime"/>
+   <!-- <Action name="System_InputTips" ID="System_InputTips" tip="Please input operator initials !" text_key="{name}"/> -->
+   <!-- <Action name="System_Tips" ID="System_Tips" tip="Please confirm if the loading has been completed ?"/> -->
+   <!--AA Devices Connect-->
+   <Parallel name="Parallel">
+    <Action name="AA_Connect_MVCamera" ID="AA_Connect_MVCamera"/>
+    <Action name="AA_Connect_Collimator" ID="AA_Connect_Collimator"/>
+    <Action name="AA_Connect_Keyence" ID="AA_Connect_Keyence"/>
+    <Action name="AA_Connect_MeasureCameraMotionModule" ID="AA_Connect_MeasureCameraMotionModule"/>
+    <Action name="AA_Connect_ProjectorMotionModule" ID="AA_Connect_ProjectorMotionModule"/>
+    <Action name="AA_Connect_DutMotionModule" ID="AA_Connect_DutMotionModule"/>
+    <Action name="Decoder_Connect" ID="Decoder_Connect"/>
+   </Parallel>
+   <!-- Alignment Init-->
+   <Action name="AA_Dut_GetDutType" ID="AA_Dut_GetDutType" size_key="size" eyetype_key="eyetype" wafer_dut_num_key="wafer_dut_num" cust_type=""/>
+   <Action name="AA_SetMotionMoveSpeed" ID="AA_SetMotionMoveSpeed" projector_dxdy="" dut_x="20" dut_y="20" dut_z="10" imaging_x="20" imaging_y="20" imaging_z="10" imaging_dxdy="" reticle_x="" reticle_y=""/>
+   <IfThenElse name="IfThenElse">
+    <Action name="System_CompareStr" ID="System_CompareStr" origin_str="{size}" target_str="Small"/>
+    <Action name="SetBlackboard" ID="SetBlackboard" output_key="fiducial_expo_time" value="4"/>
+    <Action name="SetBlackboard" ID="SetBlackboard" output_key="fiducial_expo_time" value="1"/>
+   </IfThenElse>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="aperture" value="3"/>
+   <!-- Dut Alignment Module  & IQ Device Connect & CalibrationData Load -->
+   <!--IQ metrics init-->
+   <Action name="IQ_SetEyeboxList" ID="IQ_SetEyeboxList" eyeboxlist="3" key="eyeboxids"/>
+   <!--alignment process-->
+   <For name="For" traverse_params="wafer_dut_num">
+    <Sequence name="Sequence">
+     <Action name="System_GetForNodeValue1" ID="System_GetForNodeValue1" value_key="cur_wafer_dutID"/>
+     <Sequence name="Sequence">
+      <Action name="AA_SetWaferDutId" ID="AA_SetWaferDutId" wafer_dut_id="{cur_wafer_dutID}"/>
+      <Action name="AA_Dut_LoadDUT" ID="AA_Dut_LoadDUT"/>
+      <Action name="AA_Dut_QrScanPos" ID="AA_Dut_QrScanPos"/>
+      <IfThenElse name="IfThenElse">
+       <Action name="Decoder_SN" ID="Decoder_SN" key="dutid"/>
+       <Action name="SetBlackboard" ID="SetBlackboard" output_key="dutid" value="{dutid}"/>
+       <Action name="System_InputTips" ID="System_InputTips" tip="Please input the serial number of dut!" text_key="dutid"/>
+      </IfThenElse>
+      <Action name="AA_Dut_AdjustLevel" ID="AA_Dut_AdjustLevel"/>
+      <Action name="AA_Dut_Ranging" ID="AA_Dut_Ranging"/>
+      <Action name="AA_Dut_FindFiducial" ID="AA_Dut_FindFiducial" is_auto="1" is_save="1" is_auto_exposure="0" exposure_time="{fiducial_expo_time}" root_dir="E:/SAT_GRR/{cur_data}_MetricsTest/" dut_seq="COT_{dutid}_{cur_datatime}_WG_IQT-MTF-1_OQC"/>
+      <Action name="AA_Dut_Align_EntrancePupil" ID="AA_Dut_Align_EntrancePupil"/>
+     </Sequence>
+     <!--Create Csv File-->
+     <For name="For" traverse_params="{eyeboxids}">
+      <Sequence name="Sequence">
+       <Action name="System_GetForNodeValue1" ID="System_GetForNodeValue1" value_key="cur_eb"/>
+       <Parallel name="Parallel">
+        <Action name="AA_Dut_Align_EyeBox" ID="AA_Dut_Align_EyeBox" eyebox_id="{cur_eb}"/>       
+       </Parallel>
+      </Sequence>
+     </For>
+    </Sequence>
+   </For>
+   <Action name="AA_Dut_LoadDUT" ID="AA_Dut_LoadDUT"/>
+   <!-- IQ Metrics Module -->
+  </Sequence>
+ </BehaviorTree>
+</root>

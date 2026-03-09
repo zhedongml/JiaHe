@@ -23,7 +23,7 @@ namespace IntegratingSphere
 		NodeStatus Connect();
 		NodeStatus Disconnect();
 		NodeStatus SetSolution(BT::TreeNode& node);
-
+		NodeStatus CloseAllShutter();
 		NodeStatus SetCurLuminance(BT::TreeNode& node);
 
 	private:
@@ -48,6 +48,13 @@ namespace IntegratingSphere
 			[=](BT::TreeNode& node)-> BT::NodeStatus
 			{
 				return obj->Disconnect();
+			}, {});
+
+		factory.registerSimpleAction(
+			"IS_CloseAllShutter",
+			[=](BT::TreeNode& node)-> BT::NodeStatus
+			{
+				return obj->CloseAllShutter();
 			}, {});
 
 		factory.registerSimpleAction(

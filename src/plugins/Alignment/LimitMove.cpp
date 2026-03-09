@@ -58,9 +58,9 @@ namespace AAProcess
 
 		ML_Point3D currentPos = Motion3DModel::getInstance(type)->getPosition();
 
-		//if (perJudgeLimit3D(targetPos, type)) {
-		//	return "3D motion abs move exceed limit, abs move failed.";
-		//}
+		if (perJudgeLimit3D(targetPos, type)) {
+			return "3D motion abs move exceed limit, abs move failed.";
+		}
 
 		Result ret = Motion3DModel::getInstance(type)->Motion3DMoveAbsAsync(targetPos.x * 1000, targetPos.y * 1000, targetPos.z * 1000);
 		if (!ret.success)

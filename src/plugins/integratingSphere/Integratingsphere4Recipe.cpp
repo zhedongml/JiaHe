@@ -141,6 +141,19 @@ NodeStatus IntegratingSphere4Recipe::SetSolution(BT::TreeNode& node)
     return BT::NodeStatus::SUCCESS;
 }
 
+NodeStatus IntegratingSphere::IntegratingSphere4Recipe::CloseAllShutter()
+{
+    Result res;
+    res = IntegratingSphereTCPModel::getInstance()->setShutterTurn("W", false, true);
+    if (!res.success)
+    {
+        QString message = QString("Recipe Node [ IS_CloseAllShutter ] run error, %1").arg(QString::fromStdString(res.errorMsg));
+        LoggingWrapper::instance()->error(message);
+        return BT::NodeStatus::FAILURE;
+    }
+    return BT::NodeStatus::SUCCESS;
+}
+
 NodeStatus IntegratingSphere4Recipe::SetCurLuminance(BT::TreeNode& node)
 {
     QString color = getNodeValueByName(node, "color_name");

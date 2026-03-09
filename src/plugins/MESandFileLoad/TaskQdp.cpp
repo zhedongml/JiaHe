@@ -39,6 +39,8 @@ Result TaskQdp::execute()
     int takeTime = QDateTime::currentMSecsSinceEpoch() - startTime;
     qWarning() << QString("### QDP ###: end AUtoDP. time is %1 ms...").arg(takeTime);
 
+#if 0
+
     startTime = QDateTime::currentMSecsSinceEpoch();
     qWarning() << QString("### QDP ###: start Compression file, source dir is %1, result dir is %2.")
         .arg(QString::fromStdString(proTask.sourceImageDir))
@@ -115,8 +117,9 @@ Result TaskQdp::execute()
     //pass = (metricsResult.result == 1);
     //MetricsData::instance()->updateDutAutoDPResult(pass);
 
+#endif // 0
 
-    return ret;
+    return Result();
 }
 
 QString TaskQdp::taskInfo()

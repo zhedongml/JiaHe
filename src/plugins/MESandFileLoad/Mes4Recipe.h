@@ -48,7 +48,7 @@ namespace MesNS
 			});
 
 		factory.registerSimpleAction(
-			"MES_SubmitAutoDPTask",
+			"AutoDP_SubmitTask",
 			[=](BT::TreeNode& node)-> BT::NodeStatus
 			{
 				return obj->Mes_SubmitAutoDPTask(node);

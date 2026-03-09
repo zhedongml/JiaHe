@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+ <BehaviorTree ID="BehaviorTree">
+  <!-- Add nodes here -->
+  <Sequence name="Sequence">
+   <!-- System Init -->
+   <!-- <Parallel name="Parallel"> -->
+   <!-- <Sequence name="Sequence"> -->
+   <!-- <Action name="IS_Connect" ID="IS_Connect"/> -->
+   <!-- </Sequence> -->
+   <!-- </Parallel> -->
+   <!--IQ metrics init-->
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_R" value="0.96"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_G" value="0.96"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_B" value="0.96"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_W" value="0.96&amp;0.23&amp;0.56"/>
+   <!-- <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_off" value="0,0,0"/> -->
+   <For name="For" traverse_params="R,G,B,W;{ISphere_scale_R},{ISphere_scale_G},{ISphere_scale_B},{ISphere_scale_W}">
+    <Sequence name="Sequence">
+     <Action name="System_GetForNodeValue2" ID="System_GetForNodeValue2" value_key1="color" value_key2="isphere_scale"/>
+     <Parallel name="Parallel">
+      <Action name="IS_SetSolution" ID="IS_SetSolution" isphere_scale="{isphere_scale}" light_source="{color}"/>
+      <!-- <Action name="Colorimeter_Motion_SetLightFocus" ID="Colorimeter_Motion_SetLightFocus" size="{size}" color="{color}"/> -->
+     </Parallel>
+     <!-- Clear Pattern (R&G&B) -->
+    </Sequence>
+   </For>
+   <Parallel name="Parallel">
+    <Action name="IS_CloseAllShutter" ID="IS_CloseAllShutter"/>
+   </Parallel>
+  </Sequence>
+ </BehaviorTree>
+</root>

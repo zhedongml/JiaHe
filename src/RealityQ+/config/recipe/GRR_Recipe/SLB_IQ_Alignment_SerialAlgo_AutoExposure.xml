@@ -46,18 +46,16 @@
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_R" value="0.96"/>
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_G" value="0.96"/>
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_B" value="0.96"/>
-   <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_scale_W" value="0.6;0.9;0.96"/>
    <!-- <Action name="SetBlackboard" ID="SetBlackboard" output_key="ISphere_off" value="0,0,0"/> -->
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="nd_select" value="ND3"/>
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="xyzc_select" value="Clear"/>
-   <Action name="SetBlackboard" ID="SetBlackboard" output_key="is_auto_exposure" value="0"/>
-   <Action name="SetBlackboard" ID="SetBlackboard" output_key="exposure_init_time" value=""/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="is_auto_exposure" value="1"/>
+   <Action name="SetBlackboard" ID="SetBlackboard" output_key="exposure_init_time" value="1000"/>
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="binning" value="4"/>
    <Action name="IQ_SetEyeboxList" ID="IQ_SetEyeboxList" eyeboxlist="5" key="eyeboxids"/>
    <Action name="IQ_Metrics_CreateDBTable" ID="IQ_Metrics_CreateDBTable"/>
-   <Action name="IQ_Metrics_CreateResultFile" ID="IQ_Metrics_CreateResultFile" all_csvname="SLB_metrics_all" csvname="SLB_{cur_datatime}_metrics" dut_seq="{dutid}_{cur_datatime}" root_dir="E:\SAT_GRR\{cur_data}_MetricsTest"/>
-   <Action name="IQ_UpdateFlipRotation" ID="IQ_UpdateFlipRotation"/>
-   <Action name="IQ_LoadFixExposureTime" ID="IQ_LoadFixExposureTime"/>
+   <Action name="IQ_Metrics_CreateResultFile" ID="IQ_Metrics_CreateResultFile" root_dir="E:\SAT_GRR\{cur_data}_MetricsTest" dut_seq="{dutid}_{cur_datatime}" csvname="SLB_{cur_datatime}_metrics" all_csvname="SLB_metrics_all" autodp_root_dir=""/>
+   <!-- <Action name="IQ_UpdateFlipRotation" ID="IQ_UpdateFlipRotation"/> -->
    <!-- IQ Metrics Module -->
    <For name="For" traverse_params="{eyeboxids}">
     <Sequence name="Sequence">
@@ -71,7 +69,11 @@
        <Action name="Reticle_1D_Change" ID="Reticle_1D_Change" reticle_name="Clear"/>
        <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="{aperture}" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="X" light_source="{color}" image_type="solid" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
        <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="{aperture}" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="Y" light_source="{color}" image_type="solid" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
-       <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="{aperture}" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="Z" light_source="{color}" image_type="solid" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+       <IfThenElse name="IfThenElse">
+        <Action name="System_CompareStr" ID="System_CompareStr" origin_str="{color}" target_str="R"/>
+        <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="{aperture}" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="Z" light_source="{color}" image_type="solid" is_set_et="1" is_auto_et="0" exposure_time="100" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+        <Action name="Colorimeter_Capture_LuminanceImage_Async" ID="Colorimeter_Capture_LuminanceImage_Async" aperture="{aperture}" dutid="{dutid}" eyeboxid="{cur_eb}" binning="{binning}" nd_filter="{nd_select}" color_filter="Z" light_source="{color}" image_type="solid" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
+       </IfThenElse>
        <!-- Cross Pattern (R&G&B&W) -->
        <Action name="Reticle_1D_Change" ID="Reticle_1D_Change" reticle_name="Cross"/>
        <Action name="Colorimeter_Capture_GrayImage_Async" ID="Colorimeter_Capture_GrayImage_Async" aperture="{aperture}" dutid="{dutid}" eyeboxid="{cur_eb}" binning="1" nd_filter="{nd_select}" color_filter="{xyzc_select}" light_source="{color}" image_type="crosshair" is_set_et="1" is_auto_et="{is_auto_exposure}" exposure_time="{exposure_init_time}" is_convert_16bit="0" convert_method="0" save_raw_image="1" save_calibration_image="0" is_hdr="0" max_exposure_time=""/>
@@ -99,9 +101,10 @@
    </For>
    <!--Algo Module-->
    <Parallel name="Parallel">
-    <!-- <Action name="IS_SetSolution" ID="IS_SetSolution" isphere_scale="{ISphere_off}" light_source="W"/> -->
+    <Action name="IS_CloseAllShutter" ID="IS_CloseAllShutter"/>
     <Sequence name="Sequence">
      <Action name="Colorimeter_WaitForCaptureEnd" ID="Colorimeter_WaitForCaptureEnd" timeout="20"/>
+     <Action name="IQ_UpdateFixExposureTimeConfig" ID="IQ_UpdateFixExposureTimeConfig"/>
      <SequenceStar name="SequenceStar">
       <Action name="IQ_Metrics_Location_Clear" ID="IQ_Metrics_Location_Clear"/>
       <Parallel name="Parallel">

@@ -27,5 +27,5 @@ bool MqttMesCommunicate::initialize(const QStringList& arguments, QString* error
 
 void MqttMesCommunicate::extensionsInitialized()
 {
-	MqttConfigAction* mqttAction = new MqttConfigAction(Core::Constants::TOGGLE_MQTT_CONFIG, Core::Constants::M_TOOLS);
+	//MqttConfigAction* mqttAction = new MqttConfigAction(Core::Constants::TOGGLE_MQTT_CONFIG, Core::Constants::M_TOOLS);
 }

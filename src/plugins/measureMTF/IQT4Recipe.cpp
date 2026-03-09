@@ -1150,6 +1150,9 @@ NodeStatus IQT4Recipe::IQ_Metrics_CreateResultFile(BT::TreeNode& node)
 			return BT::NodeStatus::FAILURE;
 		}
 	}
+
+	node.setOutput("autodp_root_dir", root_dir.toStdString());
+
 	return BT::NodeStatus::SUCCESS;
 }
 

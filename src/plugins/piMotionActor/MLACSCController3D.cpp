@@ -114,7 +114,7 @@ Result MLACSCController3D::setAcsSLimit(cv::Point3f max, cv::Point3f min)
 }
 Result MLACSCController3D::Connect(const char* address)
 {
-    if (m_IsConnected)
+    if (IsConnected())
     {
         SetEnable(true);
         return Result();
@@ -356,7 +356,26 @@ Result MLACSCController3D::getPosition(const char *axis, int &pos)
 
 bool MLACSCController3D::IsConnected()
 {
-    return m_IsConnected;
+    //return m_IsConnected;
+
+    ACSC_CONNECTION_INFO* ConnectionInfo;
+    
+    if (!acsc_GetConnectionInfo(m_AcsHandle, ConnectionInfo))
+    {
+        string msg = "ACS 3D motion get connection info failed: " + GetErrorMessage();
+        LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, msg.c_str());
+        return false;
+    }
+
+    if (ConnectionInfo->Type == ACSC_CONNECTION_TYPE::ACSC_NOT_CONNECTED)
+    {
+        m_IsConnected = false;
+        return false;
+    }
+    else {
+        m_IsConnected = true;
+        return true;
+    }
 }
 
 void MLACSCController3D::SetEnable(bool enable)

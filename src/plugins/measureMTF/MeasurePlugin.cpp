@@ -108,7 +108,7 @@ void MeasurePlugin::extensionsInitialized()
 
     FocusWidget* focusWgt = new FocusWidget("Colorimeter-Focus");
 
-    RxFilterWheelWidget* rxfilter = new RxFilterWheelWidget("Colorimeter-RX");
+   // RxFilterWheelWidget* rxfilter = new RxFilterWheelWidget("Colorimeter-RX");
 
     //MeasureSetupWidget *meaSetupTlbox = new MeasureSetupWidget("Measure Setup");
 }
