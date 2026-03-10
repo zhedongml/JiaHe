@@ -41,7 +41,7 @@
       <IfThenElse name="IfThenElse">
        <Action name="Decoder_SN" ID="Decoder_SN" key="dutid"/>
        <Action name="SetBlackboard" ID="SetBlackboard" output_key="dutid" value="{dutid}"/>
-       <Action name="System_InputTips" ID="System_InputTips" tip="Please input the serial number of dut!" text_key="dutid"/>
+       <Action name="System_InputTips" ID="System_InputTips" tip="Please enter dut serial number !" param="serial_number" is_lable_visual="1" text_key="dutid"/>
       </IfThenElse>
       <Action name="AA_Dut_AdjustLevel" ID="AA_Dut_AdjustLevel"/>
       <Action name="AA_Dut_Ranging" ID="AA_Dut_Ranging"/>

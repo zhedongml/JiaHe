@@ -63,8 +63,8 @@ void MoveWidget::init()
     ui.btn_left->setIcon(QIcon(":/image/image/left.png"));
     ui.btn_right->setIcon(QIcon(":/image/image/right.png"));
 
-	QPixmap pixmap(":/image/image/direction.png");
-	ui.direction->setPixmap(pixmap);
+	//QPixmap pixmap(":/image/image/direction.png");
+	//ui.direction->setPixmap(pixmap);
 }
 
 MotionMoveWidget::MotionMoveWidget(QWidget* parent)

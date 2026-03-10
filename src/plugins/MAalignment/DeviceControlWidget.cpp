@@ -209,6 +209,14 @@ void DeviceControlWidget::init()
     connect(Motion2DModel::getInstance(type), SIGNAL(updateMotion2DStatusSignal(MLMotionState)), this, SLOT(updateMotion2DStatusSlot(MLMotionState)));
     connect(Motion2DModel::getInstance(type), SIGNAL(updateMotion2DPositionOriginalSignal(float, float)), this,
             SLOT(updateMotion2DPositionOriginalSlot(float, float)));
+
+    QPixmap pixmap(":/image/image/direction.png");
+    ui.markLabel->setPixmap(
+        pixmap.scaledToWidth(
+            ui.markLabel->width(),
+            Qt::SmoothTransformation
+        )
+    );
 }
 
 void DeviceControlWidget::initSolider()
