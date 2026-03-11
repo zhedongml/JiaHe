@@ -245,7 +245,7 @@ namespace AAProcess
 
 	std::string MotionProcess::LoadDUT()
 	{
-		PrintLog(LogType::Normal, "[LoadDUT]");
+		PrintLog(LogType::Normal, "[LoadDUT Start]");
 
 		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ, ModuleName::ImagingModuleXYZ);
 		if (msg != "")
@@ -368,7 +368,7 @@ namespace AAProcess
 
 	std::string MotionProcess::DutQrScanPos()
 	{
-		PrintLog(LogType::Normal, "[DutQrScanPos]");
+		PrintLog(LogType::Normal, "[DutQrScanPos Start]");
 
 		if (currentWaferName == "") {
 			PrintLog(LogType::Normal, "Current Dut type is not wafer, already on scan pos");
@@ -430,11 +430,12 @@ namespace AAProcess
 
 		PrintLog(LogType::Normal, "dut motor loading end.");
 		PrintModulePosition(ModuleName::DutModuleXYZ);
+		return "";
 	}
 
 	std::string MotionProcess::DutParallelAdjustment()
 	{
-		PrintLog(LogType::Normal, "[DutParallelAdjustment]");
+		PrintLog(LogType::Normal, "[DutParallelAdjustment Start]");
 
 		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ, ModuleName::DutModuleDxDyDz, ModuleName::Collimator,
 			ModuleName::PLC);
@@ -531,7 +532,7 @@ namespace AAProcess
 
 	std::string MotionProcess::FindFiducial()
 	{
-		PrintLog(LogType::Normal, "[FindFiducial]");
+		PrintLog(LogType::Normal, "[FindFiducial Start]");
 
 		PrintLog(LogType::Normal, "Starting the first find fiducial.");
 		std::string msg = FindFiducialToCalculate();
@@ -751,7 +752,7 @@ namespace AAProcess
 
 	std::string MotionProcess::Ranging()
 	{
-		PrintLog(LogType::Normal, "[Ranging]");
+		PrintLog(LogType::Normal, "[Ranging Start]");
 
 		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ, ModuleName::keyence, ModuleName::PLC);
 		if (msg != "")
@@ -874,7 +875,7 @@ namespace AAProcess
 
 	std::string MotionProcess::EntrancePupilAlignment()
 	{
-		PrintLog(LogType::Normal, "[EntrancePupilAlignment]");
+		PrintLog(LogType::Normal, "[EntrancePupilAlignment Start]");
 
 		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ, ModuleName::DutModuleDxDyDz, ModuleName::ProjectionDxDy,
 			ModuleName::ImagingModuleXYZ, ModuleName::ImagingModuleDxDy);
@@ -1072,7 +1073,7 @@ namespace AAProcess
 		}
 
 
-		//fiducial1, 2 absolute coordinates
+		//fiducial1, 2 view absolute coordinates
 		CORE::ML_Point3D currentDutPos = Motion3DModel::getInstance(motion3DType::withDUT)->getPosition(); //um
 		cv::Point3f fid1(originAbsCoordinates.x - m_dutConfigInfoMap[currentDutName].fiducialOffset_[1].x,
 			originAbsCoordinates.y - m_dutConfigInfoMap[currentDutName].fiducialOffset_[1].y, currentDutPos.z / 1000.0);
@@ -1130,14 +1131,14 @@ namespace AAProcess
 		ConfigItem::instance()->getCameraResolution(width, height);
 		cv::Point2f mvCenter(width / 2.0, height / 2.0);
 
-		setSavePosition("pixelCoor1", pixelCoor[0]);
-		setSavePosition("pixelCoor2", pixelCoor[1]);
-		setSavePosition("motorCoor1", fid1);
-		setSavePosition("motorCoor2", fid2);
+		setSavePosition("fiducial_pixelCoor1", pixelCoor[0]);
+		setSavePosition("fiducial_pixelCoor2", pixelCoor[1]);
+		setSavePosition("fiducial_motorCoor1", fid1);
+		setSavePosition("fiducial_motorCoor2", fid2);
 		setSavePosition("mvCenter", mvCenter);
 		std::vector<cv::Point2f> mvCenterAbsCoor = CalculateFidAbsPosInMVCenter(pixelCoor, motorCoor, mvCenter);
-		setSavePosition("mvCenterAbsCoor1", mvCenterAbsCoor[0]);
-		setSavePosition("mvCenterAbsCoor2", mvCenterAbsCoor[1]);
+		setSavePosition("fiducial_mvCenterAbsCoor1", mvCenterAbsCoor[0]);
+		setSavePosition("fiducial_mvCenterAbsCoor2", mvCenterAbsCoor[1]);
 		PrintLog(LogType::Normal, "Fiducial 1 in MV center motor absolute coordinates: " + to_string(mvCenterAbsCoor[0].x) + ", " + to_string(mvCenterAbsCoor[0].y));
 		PrintLog(LogType::Normal, "Fiducial 2 in MV center motor absolute coordinates: " + to_string(mvCenterAbsCoor[1].x) + ", " + to_string(mvCenterAbsCoor[1].y));
 
@@ -1171,7 +1172,7 @@ namespace AAProcess
 
 	std::string MotionProcess::EyeboxScanning(int eyeBoxIndex)
 	{
-		PrintLog(LogType::Normal, "[EyeboxScanning], eyeBox " + to_string(eyeBoxIndex));
+		PrintLog(LogType::Normal, "[EyeboxScanning Start], eyeBox " + to_string(eyeBoxIndex));
 
 		if (!m_dutConfigInfoMap[currentDutName].outputgratingOffset_.count(eyeBoxIndex))
 			return PrintLog(LogType::Error, "No eyebox"+ std::to_string(eyeBoxIndex) + " information in the map, Please re - enter the eyebox scanning list.", !m_isTreeSystemRun);
@@ -1672,7 +1673,7 @@ namespace AAProcess
 
 	std::string MotionProcess::LoadSLB()
 	{
-		PrintLog(LogType::Normal, "[LoadSLB]");
+		PrintLog(LogType::Normal, "[LoadSLB Start]");
 
 		std::string holder_type;
 		std::string message = JudgeHolderState(holder_type);
@@ -1685,48 +1686,48 @@ namespace AAProcess
 		if (message != "")
 			return message;
 
-		//ML_Point3D currentPos = Motion3DModel::getInstance(withDUT)->getPosition();
+		ML_Point3D currentPos = Motion3DModel::getInstance(withDUT)->getPosition();
 
-		//if (currentPos.z / 1000 > m_slbConfigInfo.slb_DutXYZPosition.z)
-		//{
-		//	return PrintLog(LogType::Error, "Load dut module xyz motor Z value calibration error", !m_isTreeSystemRun);
-		//}
-		//message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(currentPos.x / 1000.0,
-		//	currentPos.y / 1000.0, m_slbConfigInfo.slb_DutXYZPosition.z), withDUT);
-		//if (!message.empty())
-		//	return message;
+		if (currentPos.z / 1000 > m_slbConfigInfo.slb_DutXYZPosition.z)
+		{
+			return PrintLog(LogType::Error, "Load dut module xyz motor Z value calibration error,lower than currentPos Z value ", !m_isTreeSystemRun);
+		}
+		message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(currentPos.x / 1000.0,
+			currentPos.y / 1000.0, m_slbConfigInfo.slb_DutXYZPosition.z), withDUT);
+		if (!message.empty())
+			return message;
 
-		//while (CheckModuleIsMoving(ModuleName::DutModuleXYZ))
-		//{
-		//	if (m_isStopTreeSystem)
-		//	{
-		//		StopModuleMove(ModuleName::DutModuleXYZ);
-		//		m_isStopTreeSystem = false;
-		//		return "Operation is force stopped by user.";
-		//	}
+		while (CheckModuleIsMoving(ModuleName::DutModuleXYZ))
+		{
+			if (m_isStopTreeSystem)
+			{
+				StopModuleMove(ModuleName::DutModuleXYZ);
+				m_isStopTreeSystem = false;
+				return "Operation is force stopped by user.";
+			}
 
-		//	QCoreApplication::processEvents();
-		//	_sleep(100);
-		//}
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
 
-		//message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(m_slbConfigInfo.slb_DutXYZPosition.x,
-		//	m_slbConfigInfo.slb_DutXYZPosition.y, m_slbConfigInfo.slb_DutXYZPosition.z), withDUT);
-		//if (!message.empty())
-		//	return message;
+		message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(m_slbConfigInfo.slb_DutXYZPosition.x,
+			m_slbConfigInfo.slb_DutXYZPosition.y, m_slbConfigInfo.slb_DutXYZPosition.z), withDUT);
+		if (!message.empty())
+			return message;
 
-		//while (CheckModuleIsMoving(ModuleName::DutModuleXYZ))
-		//{
-		//	if (m_isStopTreeSystem)
-		//	{
-		//		StopModuleMove(ModuleName::DutModuleXYZ);
-		//		m_isStopTreeSystem = false;
-		//		return "Operation is force stopped by user.";
-		//	}
+		while (CheckModuleIsMoving(ModuleName::DutModuleXYZ))
+		{
+			if (m_isStopTreeSystem)
+			{
+				StopModuleMove(ModuleName::DutModuleXYZ);
+				m_isStopTreeSystem = false;
+				return "Operation is force stopped by user.";
+			}
 
-		//	QCoreApplication::processEvents();
-		//	_sleep(100);
-		//}
-		//PrintModulePosition(ModuleName::DutModuleXYZ);
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
+		PrintModulePosition(ModuleName::DutModuleXYZ);
 
 		message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(m_slbConfigInfo.slb_LoadImageXYZPosition.x,
 			m_slbConfigInfo.slb_LoadImageXYZPosition.y, m_slbConfigInfo.slb_LoadImageXYZPosition.z), withCamera);
@@ -1752,12 +1753,13 @@ namespace AAProcess
 
 	std::string MotionProcess::SLBAlignment()
 	{
-		PrintLog(LogType::Normal, "[SLBAlignment]");
+		PrintLog(LogType::Normal, "[SLBAlignment Start]");
 
-		std::string message = LoadSLB();
-		if (message != "")
-			return message;
+		//std::string message = LoadSLB();
+		//if (message != "")
+		//	return message;
 
+		std::string message;
 		message = CheckModuleConnectStatus(ModuleName::ProjectionDxDy, ModuleName::ImagingModuleDxDy);
 		if (message != "")
 			return message;

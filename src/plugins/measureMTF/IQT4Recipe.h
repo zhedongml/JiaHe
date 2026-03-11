@@ -613,7 +613,8 @@ namespace IQT
 				BT::InputPort<std::string>("dut_seq","string"),
 				BT::InputPort<std::string>("csvname","string"),
 				BT::InputPort<std::string>("all_csvname","string"),
-				BT::OutputPort<std::string>("dut_folder","string")
+				BT::OutputPort<std::string>("dut_folder","string"),
+				BT::OutputPort<std::string>("root_folder","string")
 			});
 
 		factory.registerSimpleAction(

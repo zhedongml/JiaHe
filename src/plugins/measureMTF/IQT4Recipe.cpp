@@ -1204,7 +1204,8 @@ NodeStatus IQT4Recipe::IQ_Metrics_CreateDutResultFile(BT::TreeNode& node)
 	}
 
 	node.setOutput("dut_folder", dut_folder.toStdString());
-
+	node.setOutput("root_folder", root_dir.toStdString());
+	
 	return BT::NodeStatus::SUCCESS;
 }
 

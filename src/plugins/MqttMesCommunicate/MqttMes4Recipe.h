@@ -33,7 +33,7 @@ inline void RegisterNodes(BT::BehaviorTreeFactory& factory)
 		throw BT::RuntimeError("MqttMes4Recipe object not found !");
 	}
 
-	factory.registerSimpleAction(
+	/*factory.registerSimpleAction(
 		"MES_Connect",
 		[=](BT::TreeNode& node)-> BT::NodeStatus
 		{
@@ -58,5 +58,5 @@ inline void RegisterNodes(BT::BehaviorTreeFactory& factory)
 		}, 
 		{
 			BT::InputPort<std::string>("status","int, e.g. start->1/alarm->4/stop->10")
-		});
+		});*/
 }

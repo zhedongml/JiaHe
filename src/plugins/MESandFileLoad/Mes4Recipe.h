@@ -37,15 +37,15 @@ namespace MesNS
 			throw BT::RuntimeError("Mes4Recipe object not found !");
 		}
 
-		factory.registerSimpleAction(
-			"MES_Lens_Load",
-			[=](BT::TreeNode& node)-> BT::NodeStatus
-			{
-				return obj->Mes_Lens_Load(node);
-			},
-			{
-				BT::InputPort<std::string>("dut_sn","string")
-			});
+		//factory.registerSimpleAction(
+		//	"MES_Lens_Load",
+		//	[=](BT::TreeNode& node)-> BT::NodeStatus
+		//	{
+		//		return obj->Mes_Lens_Load(node);
+		//	},
+		//	{
+		//		BT::InputPort<std::string>("dut_sn","string")
+		//	});
 
 		factory.registerSimpleAction(
 			"AutoDP_SubmitTask",
@@ -59,39 +59,39 @@ namespace MesNS
 				BT::InputPort<std::string>("resultSaveDir","bool, e.g. 0,1")
 			});
 
-		factory.registerSimpleAction(
-			"MES_SubmitAdpTaskNew",
-			[=](BT::TreeNode& node)-> BT::NodeStatus
-			{
-				return obj->Mes_SubmitAdpTaskNew(node);
-			},
-			{
-				//BT::InputPort<std::string>("sn","string"),
-				//BT::InputPort<std::string>("resultSaveDir","bool, e.g. 0,1")
-				//BT::InputPort<std::string>("checkEnabled","bool, e.g. 0,1"),
-				//BT::InputPort<std::string>("modelName","string"),
-				//BT::InputPort<std::string>("liveRefresh","bool, e.g. 0,1")
-			});
+		//factory.registerSimpleAction(
+		//	"MES_SubmitAdpTaskNew",
+		//	[=](BT::TreeNode& node)-> BT::NodeStatus
+		//	{
+		//		return obj->Mes_SubmitAdpTaskNew(node);
+		//	},
+		//	{
+		//		//BT::InputPort<std::string>("sn","string"),
+		//		//BT::InputPort<std::string>("resultSaveDir","bool, e.g. 0,1")
+		//		//BT::InputPort<std::string>("checkEnabled","bool, e.g. 0,1"),
+		//		//BT::InputPort<std::string>("modelName","string"),
+		//		//BT::InputPort<std::string>("liveRefresh","bool, e.g. 0,1")
+		//	});
 
-		factory.registerSimpleAction(
-			"MES_MetricsLimitAutoDP",
-			[=](BT::TreeNode& node)-> BT::NodeStatus
-			{
-				return obj->Mes_MetricsLimitAutoDP(node);
-			},
-			{
-				BT::InputPort<std::string>("checkEnabled","bool, e.g. 0,1"),
-				BT::InputPort<std::string>("modelName","string"),
-				BT::InputPort<std::string>("liveRefresh","bool, e.g. 0,1")
-			});
+		//factory.registerSimpleAction(
+		//	"MES_MetricsLimitAutoDP",
+		//	[=](BT::TreeNode& node)-> BT::NodeStatus
+		//	{
+		//		return obj->Mes_MetricsLimitAutoDP(node);
+		//	},
+		//	{
+		//		BT::InputPort<std::string>("checkEnabled","bool, e.g. 0,1"),
+		//		BT::InputPort<std::string>("modelName","string"),
+		//		BT::InputPort<std::string>("liveRefresh","bool, e.g. 0,1")
+		//	});
 
-		factory.registerSimpleAction(
-			"MES_Test_Node",
-			[=](BT::TreeNode& node)-> BT::NodeStatus
-			{
-				return obj->Mes_Test_Node(node);
-			},
-			{});
+		//factory.registerSimpleAction(
+		//	"MES_Test_Node",
+		//	[=](BT::TreeNode& node)-> BT::NodeStatus
+		//	{
+		//		return obj->Mes_Test_Node(node);
+		//	},
+		//	{});
 	}
 }
 
