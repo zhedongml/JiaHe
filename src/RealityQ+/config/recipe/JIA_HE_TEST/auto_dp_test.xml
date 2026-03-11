@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<root main_tree_to_execute="BehaviorTree">
+ <BehaviorTree ID="BehaviorTree">
+  <!-- Add nodes here -->
+  <Action name="AutoDP_SubmitTask" ID="AutoDP_SubmitTask" sourceImageDir="F:\JiaDing_Images\3N2QG01HBT0964_20251227T160956_MetricsTest" resultSaveDir="F:\JiaDing_Images"/>
+ </BehaviorTree>
+</root>
