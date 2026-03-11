@@ -74,7 +74,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include;$(SolutionDir)src;..\..\plugins;$(SolutionDir)src\extlib\measureCamera\include;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\AutoDP;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\extlib\recipeLib\include\Recipe2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include;$(SolutionDir)src;..\..\plugins;$(SolutionDir)src\extlib\measureCamera\include;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\AutoDP;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\extlib\recipeLib\include\Recipe2;$(SolutionDir)src\extlib\opencv4.5.1\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -93,7 +93,7 @@ xcopy /y "$(TargetPath)" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(OPENCV_DIR)\include;$(SolutionDir)src;..\..\plugins;$(SolutionDir)src\extlib\measureCamera\include;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\AutoDP;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\extlib\recipeLib\include\Recipe2;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)src;..\..\plugins;$(SolutionDir)src\extlib\measureCamera\include;$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\plugins\AutoDP;$(SolutionDir)src\extlib\mlcolorimeter\include;$(SolutionDir)src\extlib\recipeLib\include\behaviortree_cpp_v3\BehaviorTree.CPP\include;$(SolutionDir)src\extlib\recipeLib\include\ObjectManager;$(SolutionDir)src\extlib\recipeLib\include\Recipe2;$(SolutionDir)src\extlib\opencv4.5.1\build\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <PostBuildEvent>
       <Command>xcopy /y "$(SolutionDir)src\extlib\SSL\*.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\"

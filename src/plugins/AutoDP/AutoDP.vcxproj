@@ -135,7 +135,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;AUTODP_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\extlib\measureCamera\include;$(SolutionDir)src;..\..\plugins;$(OPENCV_DIR)\include;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\mlcolorimeter\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\extlib\measureCamera\include;$(SolutionDir)src;..\..\plugins;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\mlcolorimeter\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
@@ -157,7 +157,7 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;AUTODP_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\extlib\measureCamera\include;$(SolutionDir)src;..\..\plugins;$(OPENCV_DIR)\include;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\mlcolorimeter\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\json4moderncpp;$(SolutionDir)src\extlib\measureCamera\include;$(SolutionDir)src;..\..\plugins;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\mlcolorimeter\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>

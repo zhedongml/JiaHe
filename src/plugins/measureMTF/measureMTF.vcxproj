@@ -86,7 +86,7 @@ xcopy /y "$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\bin\opencv_world45
 xcopy /y "$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\bin\opencv_world452d.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
 xcopy /y "$(SolutionDir)src\extlib\python3.8\libx64\debug64\python312.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
 xcopy /y "$(SolutionDir)src\extlib\recipeLib\$(Configuration)\ObjectManager.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
-windeployqt --debug  "$(TargetPath)"  --dir "$(SolutionDir)bin\$(Platform)\$(Configuration)"
+
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
