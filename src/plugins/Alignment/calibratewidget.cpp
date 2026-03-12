@@ -290,10 +290,11 @@ void CalibrateWidget::deviceMoveInitDUTPosition()
         QMessageBox::warning(this, "Warning!",QString::fromStdString( msg));
         return;
     }
-    if (state != "000") {
+    if (state != PLCController::instance()->GetEmptySensorState()) {
         QMessageBox::StandardButton box = QMessageBox::question(
             this, "Question!",
-            "Confirm whether to move the 3D motion platform and tip/tilt device to the initial position in DUT mode?");
+            "Please confirm whether the prism is in the DUT test state ? "
+           /* "Confirm whether to move the 3D motion platform and tip/tilt device to the initial position in DUT mode?"*/);
         if (box == QMessageBox::Yes)
         {
 
@@ -314,10 +315,11 @@ void CalibrateWidget::deviceMoveInitSLBPosition()
         QMessageBox::warning(this, "Warning!", QString::fromStdString(msg));
         return;
     }
-    if (state == "000") {
+    if (state == PLCController::instance()->GetEmptySensorState()) {
         QMessageBox::StandardButton box = QMessageBox::question(
             this, "Question!",
-            "Confirm whether to move the 3D motion platform and tip/tilt device to the initial position in SLB mode?");
+            "Please confirm whether the prism is in the SLB test state?"
+           /* "Confirm whether to move the 3D motion platform and tip/tilt device to the initial position in SLB mode?"*/);
         if (box == QMessageBox::Yes)
         {
 			QFuture<std::string> future = QtConcurrent::run([&]() {
@@ -330,6 +332,11 @@ void CalibrateWidget::deviceMoveInitSLBPosition()
 				message = MotionProcess::getInstance().ConnectProjectorMotionModule();
 				if (!message.empty())
 					return message;
+
+                message = MotionProcess::getInstance().LoadSLB();
+                if (!message.empty())
+                    return message;
+
                 return MotionProcess::getInstance().SLBAlignment();
 				});
             watcherMoveInit.setFuture(future);
@@ -337,7 +344,7 @@ void CalibrateWidget::deviceMoveInitSLBPosition()
         return;
     }
     else {
-        QMessageBox::warning(this, "Warning!", "Please check current mode and your choice!");
+        QMessageBox::warning(this, "Warning!", "Please check DUT placement status, current state is not 0000!");
     }
 }
 

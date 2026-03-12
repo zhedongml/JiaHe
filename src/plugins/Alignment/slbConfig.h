@@ -30,7 +30,7 @@ struct slbConfigInfo
 {
 	acsPos3D slb_LoadImageXYZPosition;
 	acsPos3D slb_ImagingXYZPosition;
-	acsPos3D slb_DutXYZPosition;
+	acsPos3D slb_LoadDutXYZPosition;
 	tiptilt2D slb_projectionTiptilt;
 	tiptilt2D slb_imagingTiptilt;
 };

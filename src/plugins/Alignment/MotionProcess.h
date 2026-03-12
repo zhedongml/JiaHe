@@ -171,7 +171,7 @@ namespace AAProcess
 		slbConfigInfo m_slbConfigInfo;
 		bool m_isTreeSystemRun;
 		int wafer_dut_id;
-
+		int center_eyebox_idex = 3;
 		QString m_collimatorDeltaX = "NULL";
 		QString m_collimatorDeltaY = "NULL";
 

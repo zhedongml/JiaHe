@@ -34,31 +34,31 @@
  },
  "Solutions":[
 	{
-	"name":"Red_1.176A_622nm", 
+	"name":"Red_1.042A_627nm", 
 	"index":1,
 	"luminance":0,
 	"luminanceMax":900000,
 	"colorFocus": "R",
-	"currentOutput":"1.176",
-	"steadyCurrent":"1.056"
+	"currentOutput":"1.042",
+	"steadyCurrent":"0.8"
  	}, 
 	{
- 	"name":"Green_0.8A_521nm", 
+ 	"name":"Green_0.898A_530nm", 
  	"index":2,
 	"luminance":0,
 	"luminanceMax":679000,
 	"colorFocus": "G",
-	"currentOutput":"0.8",
-	"steadyCurrent":"0.696"
+	"currentOutput":"0.898",
+	"steadyCurrent":"0.52"
  	},  
  	{
-	"name":"Blue_1.5A_468nm", 
+	"name":"Blue_1.99A_465nm", 
 	"index":3,
 	"luminance":0,
 	"luminanceMax":430000,
 	"colorFocus": "B",
-	"currentOutput":"1.5",
-	"steadyCurrent":"1.22"
+	"currentOutput":"1.99",
+	"steadyCurrent":"0.4"
  	}, 
 	{
  	"name":"White", 
@@ -66,22 +66,22 @@
 	"luminance":0,
 	"luminanceMax":1088000,
 	"colorFocus": "W",
-	"currentOutput":"1.176,0.8,1.5",
+	"currentOutput":"1.042,0.898,1.99",
 	"steadyCurrent":"1.056,0.696,1.22"
 	}
  ], 
  "Scale":1,
- "TestInfoR":"IntergratingSphere: Color=Red, current=1.056A, PeakWavelength=623nm;",
- "TestInfoG":"IntergratingSphere: Color=Green, current=0.696A, PeakWavelength=519nm;",
- "TestInfoB":"IntergratingSphere: Color=Blue, current=1.22A, PeakWavelength=469nm",
+ "TestInfoR":"IntergratingSphere: Color=Red, current=1.042A, PeakWavelength=627nm;",
+ "TestInfoG":"IntergratingSphere: Color=Green, current=0.898A, PeakWavelength=530nm;",
+ "TestInfoB":"IntergratingSphere: Color=Blue, current=1.99A, PeakWavelength=465nm",
  "CurrentSetting":{
 	 "ResultJudge": true,
 	 "WaitMilliseconds":2000
  },
  "SteadyCurrentCoefficient":{
 	 "useCoefficient":false,
-	 "R":0.898,
-	 "G":0.87,
-     "B":0.813
+	 "R":0.768,
+	 "G":0.579,
+     "B":0.201
  }
 }

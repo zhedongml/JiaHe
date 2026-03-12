@@ -48,6 +48,8 @@ class PLCCONTROL_EXPORT PLCController : public QObject, public PlcCallback
     bool GetSensorCState();
     bool GetSensorDState();
 
+    std::string GetEmptySensorState();
+
   private:
     PLCController(QObject *parent = nullptr);
     Result SendCommond(const QString &name, bool isOpen);
@@ -71,4 +73,5 @@ class PLCCONTROL_EXPORT PLCController : public QObject, public PlcCallback
     static PLCController *self;
 
     PlcReadThread *m_readThread;
+    std::string m_emptyState = "0000";
 };

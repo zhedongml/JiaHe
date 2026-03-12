@@ -400,3 +400,8 @@ bool PLCController::GetSensorDState()
 {
     return m_readThread->getState("Sensor D");
 }
+
+std::string PLCController::GetEmptySensorState()
+{
+    return m_emptyState;
+}
