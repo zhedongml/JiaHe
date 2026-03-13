@@ -236,11 +236,11 @@ void CalibrateWidget::initActionMenu()
 {
     IAction* action_dut = new IAction(Constants::TOGGLE_DEVICES_MOVE_INIT_POS_DUT, Constants::M_TOOLS);
 
-    action_dut->setText("Devices Move Init DUT Position");
+    action_dut->setText("Load DUT Position");
     connect(action_dut, SIGNAL(triggered()), this, SLOT(deviceMoveInitDUTPosition()));
 
     IAction* action_slb = new IAction(Constants::TOGGLE_DEVICES_MOVE_INIT_POS_SLB, Constants::M_TOOLS);
-    action_slb->setText("Devices Move Init SLB Position");
+    action_slb->setText("Load and Align SLB Position");
     connect(action_slb, SIGNAL(triggered()), this, SLOT(deviceMoveInitSLBPosition()));
 }
 

@@ -81,11 +81,11 @@ void DistanceSensorWidget::stateChangedSlot(bool old_state, bool new_state)
     {
         if (new_state)
         {
-            ui.status->setText("Distance sensor connection success.");
+            ui.status->setText("Connection success.");
         }
         else
         {
-            ui.status->setText("Distance sensor disconnected.");
+            ui.status->setText("Disconnected.");
             ui.lineEdit_distance->setText("");
             setCheckLabel(0);
         }
