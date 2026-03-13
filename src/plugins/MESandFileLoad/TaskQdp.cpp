@@ -32,10 +32,20 @@ Result TaskQdp::execute()
     proTask.submitTime = std::chrono::system_clock::now();
     bool flag = ImageProcessor().processTask(proTask);
     if(!flag){
-        MetricsData::instance()->updateDutAutoDPResult("Metrics_ERR");
+        //MetricsData::instance()->updateDutAutoDPResult("Metrics_ERR");
         return Result(false, "AutoDP run error.");
     }
 
+    std::string sourceFolderName = fs::path(proTask.sourceImageDir).filename().string();
+
+    std::string tempDir = ImageProcessor().getTempDirPath(proTask.sourceImageDir);
+
+    std::string finalResultDir = proTask.resultSaveDir + "\\" + sourceFolderName;
+
+    if (ImageProcessor().moveDirectory(tempDir, finalResultDir)) {
+        std::cout << "Task " << proTask.taskId << " completed successfully. Results saved to: "
+            << finalResultDir << std::endl;
+    }
     int takeTime = QDateTime::currentMSecsSinceEpoch() - startTime;
     qWarning() << QString("### QDP ###: end AUtoDP. time is %1 ms...").arg(takeTime);
 

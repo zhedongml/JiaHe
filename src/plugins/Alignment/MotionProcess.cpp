@@ -41,6 +41,7 @@ namespace AAProcess
 	MotionProcess::~MotionProcess()
 	{
 	}
+
 	std::string MotionProcess::ConnectMVCamera() {
 
 		std::string msg;
@@ -1187,7 +1188,7 @@ namespace AAProcess
 		CORE::ML_Point3D currentPos = Motion3DModel::getInstance(motion3DType::withCamera)->getPosition(); //um
 
 		PrintLog(LogType::Normal, "Calculate the motor movement height based on eyeRelief");
-		double eyeBoxCenter_currentEyeBoxDifference = m_dutConfigInfoMap[currentDutName].outputgratingOffset_[5].z -
+		double eyeBoxCenter_currentEyeBoxDifference = m_dutConfigInfoMap[currentDutName].outputgratingOffset_[center_eyebox_idex].z -
 			m_dutConfigInfoMap[currentDutName].outputgratingOffset_[eyeBoxIndex].z;
 
 		double currentEyeBoxNeedHeight = m_processConfigInfo.offsetRoatate.eyeBoxCenterKeyenceValue[currentDutName] - eyeBoxCenter_currentEyeBoxDifference;
@@ -1218,11 +1219,12 @@ namespace AAProcess
 			m_dutConfigInfoMap[currentDutName].outputgratingOffset_[eyeBoxIndex].y);
 		//cv::Point2f outputAbs = DutAnyPointToMVCenterCoordinate(outputOffset, dutOffsetRotate);
 		Eigen::Vector2d deltaP(outputOffset.x - inputOffset.x, outputOffset.y - inputOffset.y);
+
 		//When the input is at the center of the MV, the offset of eyeBox relative to the center of the MV
 		Eigen::Rotation2Dd rot(dutOffsetRotate.rotate);
 		Eigen::Vector2d eyeBoxOffset_ = rot * deltaP;
-		//input平移后，eyeBox相对于MV中心偏移 
 
+		//input平移后，eyeBox相对于MV中心偏移 
 		double p_offsetx = m_processConfigInfo.offsetRoatate.projectionOffsetRelativeToMV[currentDutName].x;
 		double p_offsety = m_processConfigInfo.offsetRoatate.projectionOffsetRelativeToMV[currentDutName].y;
 		cv::Point2f eyeBoxOffsetRelativeToMV(-eyeBoxOffset_.x() + p_offsetx, -eyeBoxOffset_.y() + p_offsety);
@@ -1630,7 +1632,15 @@ namespace AAProcess
 		if (state_name_map[state] == "None")
 			return state + " holder state is None.";
 
-		dut_name = state_name_map[state] + "_" + cust_type;
+		if (cust_type == "")
+		{
+			dut_name = state_name_map[state];
+		}
+		else
+		{
+			dut_name = state_name_map[state] + "_" + cust_type;
+
+		}
 		currentDutName = dut_name;
 
 
@@ -1679,7 +1689,7 @@ namespace AAProcess
 		std::string message = JudgeHolderState(holder_type);
 		if (message != "")
 			return message;
-		if (holder_type != "000")
+		if (holder_type != PLCController::instance()->GetEmptySensorState())
 			return "Please remove the dut first !";
 
 		message = CheckModuleConnectStatus(ModuleName::ImagingModuleXYZ/*, ModuleName::DutModuleXYZ*/);
@@ -1688,12 +1698,12 @@ namespace AAProcess
 
 		ML_Point3D currentPos = Motion3DModel::getInstance(withDUT)->getPosition();
 
-		if (currentPos.z / 1000 > m_slbConfigInfo.slb_DutXYZPosition.z)
+		if (currentPos.z / 1000 > m_slbConfigInfo.slb_LoadDutXYZPosition.z)
 		{
 			return PrintLog(LogType::Error, "Load dut module xyz motor Z value calibration error,lower than currentPos Z value ", !m_isTreeSystemRun);
 		}
 		message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(currentPos.x / 1000.0,
-			currentPos.y / 1000.0, m_slbConfigInfo.slb_DutXYZPosition.z), withDUT);
+			currentPos.y / 1000.0, m_slbConfigInfo.slb_LoadDutXYZPosition.z), withDUT);
 		if (!message.empty())
 			return message;
 
@@ -1710,8 +1720,8 @@ namespace AAProcess
 			_sleep(100);
 		}
 
-		message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(m_slbConfigInfo.slb_DutXYZPosition.x,
-			m_slbConfigInfo.slb_DutXYZPosition.y, m_slbConfigInfo.slb_DutXYZPosition.z), withDUT);
+		message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(m_slbConfigInfo.slb_LoadDutXYZPosition.x,
+			m_slbConfigInfo.slb_LoadDutXYZPosition.y, m_slbConfigInfo.slb_LoadDutXYZPosition.z), withDUT);
 		if (!message.empty())
 			return message;
 
@@ -1764,7 +1774,7 @@ namespace AAProcess
 		if (message != "")
 			return message;
 
-		//adjust image & projection module tiptilt
+		//adjust tiptilt ( image & projection )
 		double projectionTiptiltX = m_slbConfigInfo.slb_projectionTiptilt.dx;
 		double projectionTiptiltY = m_slbConfigInfo.slb_projectionTiptilt.dy;
 		double imagingTiptiltX = m_slbConfigInfo.slb_imagingTiptilt.dx;
@@ -1796,6 +1806,7 @@ namespace AAProcess
 		}
 		PrintModulePosition(ModuleName::ProjectionDxDy, ModuleName::ImagingModuleDxDy);
 
+		//adjust image 3D motion
 		cv::Point3f imageXYZPosition = cv::Point3f(m_slbConfigInfo.slb_ImagingXYZPosition.x,
 			m_slbConfigInfo.slb_ImagingXYZPosition.y, m_slbConfigInfo.slb_ImagingXYZPosition.z);
 

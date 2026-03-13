@@ -12,6 +12,7 @@ DUTMotionWidget::DUTMotionWidget(QString toolBoxName, QWidget *parent) : IToolBo
     ui.setupUi(this);
     init();
     ui.groupBox_5->hide();
+    ui.groupBox_7->hide();
 }
 
 DUTMotionWidget::~DUTMotionWidget()
@@ -41,8 +42,6 @@ void DUTMotionWidget::init()
     //m_checkStateTimer = new QTimer(this);
     //connect(m_checkStateTimer, &QTimer::timeout, this, &DUTMotionWidget::on_checkStateTimer_timeout);
     //m_checkStateTimer->start(2000);
-
-    ui.groupBox_7->hide();
 }
 
 void DUTMotionWidget::on_btn_connect_clicked()
