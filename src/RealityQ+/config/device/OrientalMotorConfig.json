@@ -6,8 +6,8 @@
 			"Name": "Tilt",
 			"Protocol": "modbus/serial",
 			"MotorType": "Oriental/AZ",
-			"Port": "COM10",
-			"Station": 1,
+			"Port": "COM8",
+			"Station": 5,
 			"SerialInfo": {
 				"BaudRate": 115200,
 				"ByteSize": 8,
@@ -17,10 +17,10 @@
 			},
 			"IOCommand": {
 				"Enable": false,
-				"Start": 5,
-				"ZHome": 6,
-				"Stop": 7,
-				"AlarmRst": 8
+				"Start": 3,
+				"ZHome": 4,
+				"Stop": 5,
+				"AlarmRst": 7
 			},
 			"Init_Index": 0,
 			"Move_Index": 1,
@@ -34,8 +34,8 @@
 			"Name": "Cant",
 			"Protocol": "modbus/serial",
 			"MotorType": "Oriental/AZ",
-			"Port": "COM10",
-			"Station": 2,
+			"Port": "COM8",
+			"Station": 6,
 			"SerialInfo": {
 				"BaudRate": 115200,
 				"ByteSize": 8,
@@ -45,10 +45,10 @@
 			},
 			"IOCommand": {
 				"Enable": false,
-				"Start": 5,
-				"ZHome": 6,
-				"Stop": 7,
-				"AlarmRst": 8
+				"Start": 3,
+				"ZHome": 4,
+				"Stop": 5,
+				"AlarmRst": 7
 			},
 			"Init_Index": 0,
 			"Move_Index": 1,

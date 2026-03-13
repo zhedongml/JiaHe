@@ -1,12 +1,14 @@
 {
-	"FocusMax": 27.43,
-	"FocusMin": 24.25,
-	"InfinityPosition": 25.81,
-	"FocalLength": 39.91,
-	"FocalPlanesObjectSpace": -1.116,
-	"RoughStep": 0.4,
-	"IsUseFineAdjust": true,
-	"FineStep": 0.04,
+	"FocusMax": 35,
+	"FocusMin": 5,
+	"InfinityPosition": 20.12,
+	"FocalLength": 40.92,
+	"FocalPlanesObjectSpace": 11.45,
+	"RoughStep": 0.5,
+	"IsUseFineAdjust": false,
+	"FineRange": 5,
+	"FineStep": 0.05,
+	"AverageCount":1,
 	"ROIs": [
 		{
 			"X": 4000,

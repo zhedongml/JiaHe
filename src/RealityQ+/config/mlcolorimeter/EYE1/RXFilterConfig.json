@@ -1,7 +1,7 @@
 {
 	"FilterMap": [
 		{
-			"Enable": true,
+			"Enable": false,
 			"Key": "RXFilter",
 			"Type": "RXFilterWheel",
 			"Name": "RXFilter",

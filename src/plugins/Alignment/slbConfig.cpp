@@ -25,9 +25,9 @@ slbConfigInfo slbConfig::GetSlbConfigInfo()
 	m_slbConfigInfo.slb_ImagingXYZPosition.y = m_JsonControl["SLB_ImagingXYZPosition"]["Y"].get<double>();
 	m_slbConfigInfo.slb_ImagingXYZPosition.z = m_JsonControl["SLB_ImagingXYZPosition"]["Z"].get<double>();
 
-	m_slbConfigInfo.slb_DutXYZPosition.x = m_JsonControl["SLB_DutXYZPosition"]["X"].get<double>();
-	m_slbConfigInfo.slb_DutXYZPosition.y = m_JsonControl["SLB_DutXYZPosition"]["Y"].get<double>();
-	m_slbConfigInfo.slb_DutXYZPosition.z = m_JsonControl["SLB_DutXYZPosition"]["Z"].get<double>();
+	m_slbConfigInfo.slb_LoadDutXYZPosition.x = m_JsonControl["SLB_DutXYZPosition"]["X"].get<double>();
+	m_slbConfigInfo.slb_LoadDutXYZPosition.y = m_JsonControl["SLB_DutXYZPosition"]["Y"].get<double>();
+	m_slbConfigInfo.slb_LoadDutXYZPosition.z = m_JsonControl["SLB_DutXYZPosition"]["Z"].get<double>();
 
 	m_slbConfigInfo.slb_projectionTiptilt.dx = m_JsonControl["SLB_ProjectionTiptilt"]["dX"].get<double>();
 	m_slbConfigInfo.slb_projectionTiptilt.dy = m_JsonControl["SLB_ProjectionTiptilt"]["dY"].get<double>();

@@ -37,7 +37,7 @@ FilterwheelWidget::FilterwheelWidget(QWidget *parent)
     ui.xyzcomboBox->addItem("Y");
     ui.xyzcomboBox->addItem("Z");
     ui.xyzcomboBox->addItem("Clear");
-    ui.xyzcomboBox->addItem("YA");
+    ui.xyzcomboBox->addItem("Block");
     setMinimumSize(0, 0);
 }
 

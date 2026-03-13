@@ -182,7 +182,7 @@ void DUTMotionWidget::handleFinished()
     if(watcher.result().success)
     {
         ui.label_status->setText("Connected.");
-        on_z_refresh_clicked();
+        //on_z_refresh_clicked();
         on_x_refresh_clicked();
         on_y_refresh_clicked();
     }

@@ -134,26 +134,26 @@ bool MLACSCController2D::Disconnect()
 
 bool MLACSCController2D::IsConnected()
 {
-    //return m_IsConnected;
+    return m_IsConnected;
 
-    ACSC_CONNECTION_INFO* ConnectionInfo;
+    //ACSC_CONNECTION_INFO* ConnectionInfo;
    
-    if (!acsc_GetConnectionInfo(m_AcsHandle, ConnectionInfo))
-    {
-        string msg = "ACS 2D motion get connection info failed: " + GetErrorMessage();
-        LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, msg.c_str());
-        return false;
-    }
+    //if (!acsc_GetConnectionInfo(m_AcsHandle, ConnectionInfo))
+    //{
+    //    string msg = "ACS 2D motion get connection info failed: " + GetErrorMessage();
+    //    LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, msg.c_str());
+    //    return false;
+    //}
 
-    if (ConnectionInfo->Type == ACSC_CONNECTION_TYPE::ACSC_NOT_CONNECTED)
-    {
-        m_IsConnected = false;
-        return false;
-    }
-    else {
-        m_IsConnected = true;
-        return true;
-    }
+    //if (ConnectionInfo->Type == ACSC_CONNECTION_TYPE::ACSC_NOT_CONNECTED)
+    //{
+    //    m_IsConnected = false;
+    //    return false;
+    //}
+    //else {
+    //    m_IsConnected = true;
+    //    return true;
+    //}
 
 }
 

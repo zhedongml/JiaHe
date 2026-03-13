@@ -6,7 +6,8 @@
 			"Type": "matroxv2",
 			"Name": "Vieworks",
 			"ConnectAddress": "0",
-			"ColourCamera": false
+			"ColourCamera": false,
+			"CameraSN":"MP127BEX002"
 		}
 	]
 }

@@ -1,14 +1,15 @@
 {
-	"DiopterMax": 1,
-	"DiopterMin": -1,
-	"InfinityPosition":25.81,
-	"FocalLength": 39.91,
+	"DiopterMax": 7,
+	"DiopterMin": -9,
+	"InfinityPosition": 20.12,
+	"FocalLength":40.92,
 	"PixelSize": 0.00345,
-	"FocalPlanesObjectSpace": -1.116,
+	"FocalPlanesObjectSpace": 11.45,
 	"Freq": 7.5,
 	"RoughStepNumber": 11,
-	"IsUseFineAdjust": true,
-	"FineStepNumber": 20,
+	"IsUseFineAdjust": false,
+	"FineStepNumber": 21,
+	"AverageCount":1,
 	"ROIs": [
 		{
 			"X": 4000,

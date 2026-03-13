@@ -7,7 +7,7 @@
 			"Name": "ND",
 			"Protocol": "modbus/serial",
 			"MotorType": "Oriental/AZ",
-			"Port": "COM8",
+			"Port": "COM9",
 			"Station": 1,
 			"SerialInfo": {
 				"BaudRate": 115200,
@@ -36,11 +36,6 @@
 					"Channel": 3,
 					"Name": "ND3",
 					"Enum": "ND3"
-				},
-				{
-					"Channel": 4,
-					"Name": "ND4",
-					"Enum": "ND4"
 				}
 			],
 			"IOCommand": {
@@ -49,7 +44,8 @@
 				"ZHome": 6,
 				"Stop": 7,
 				"AlarmRst": 8
-			}
+			},
+			"HomeEnum":"ND0"
 		},
 		{
 			"Enable": true,
@@ -58,7 +54,7 @@
 			"Name": "XYZ",
 			"Protocol": "modbus/serial",
 			"MotorType": "Oriental/AZ",
-			"Port": "COM8",
+			"Port": "COM9",
 			"Station": 2,
 			"SerialInfo": {
 				"BaudRate": 115200,
@@ -90,8 +86,8 @@
 				},
 				{
 					"Channel": 4,
-					"Name": "YA",
-					"Enum": "YA"
+					"Name": "Block",
+					"Enum": "Block"
 				}
 			],
 			"IOCommand": {
@@ -100,7 +96,8 @@
 				"ZHome": 6,
 				"Stop": 7,
 				"AlarmRst": 8
-			}
+			},
+			"HomeEnum":"X"
 		}
 	]
 }

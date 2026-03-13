@@ -78,13 +78,13 @@ Result aligmentWidget::deviceConnect(bool isBtn)
         return Result(false, result.errorMsg);
     }
 
-    // DUT 2D move station
-    QString ipAndOther = ConfigItem::instance()->getMotion2DIpAndOther(ACS2DDUTPlane);
-    result = Motion2DModel::getInstance(ACS2DDUTPlane)->connectAndInit(ipAndOther);
-    if (!result.success)
-    {
-        return Result(false, "DUT Move Station connect failed, " + result.errorMsg);
-    }
+    //// DUT 2D move station
+    //QString ipAndOther = ConfigItem::instance()->getMotion2DIpAndOther(ACS2DDUTPlane);
+    //result = Motion2DModel::getInstance(ACS2DDUTPlane)->connectAndInit(ipAndOther);
+    //if (!result.success)
+    //{
+    //    return Result(false, "DUT Move Station connect failed, " + result.errorMsg);        
+    //}
 
     //// Measure 3D move station
     //QString mcIp = ConfigItem::instance()->getMotion3DIpAndOther(withCamera);

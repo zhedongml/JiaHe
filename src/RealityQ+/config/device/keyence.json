@@ -6,6 +6,6 @@
 	"Ranging": {
 		"Max": 40,
 		"Min": -40,
-		"ZeroPos": 150
+		"ZeroPos": 30
 	}
 }

@@ -1,18 +1,18 @@
 {
 	"MotionMap": [
 		{
-			"Enable":true,
+			"Enable": true,
 			"Key": "CameraMotion",
 			"Type": "ACS",
 			"Name": "CameraMotion",
-			"ConnectAddress": "10.0.0.101:701",
+			"ConnectAddress": "10.0.0.100:701",
 			"AxisName": "X",
-			"FocalLength": 39.91,
-			"FocalPlanesObjectSpace": -2.824,
-			"SoftwareLimitMax": 45,
-			"SoftwareLimitMin": 3,
-			"HomingPosition": 26.68,
-			"InfinityPosition": 26.68,
+			"FocalLength": 40.92,
+			"FocalPlanesObjectSpace": 11.45,
+			"SoftwareLimitMax": 35,
+			"SoftwareLimitMin":5,
+			"HomingPosition": 20.12,
+			"InfinityPosition": 20.12,
 			"IsReverse": false,
 			"Speed": 100,
 			"InfPosList": {
