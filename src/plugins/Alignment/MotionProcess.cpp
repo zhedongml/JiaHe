@@ -1219,11 +1219,12 @@ namespace AAProcess
 			m_dutConfigInfoMap[currentDutName].outputgratingOffset_[eyeBoxIndex].y);
 		//cv::Point2f outputAbs = DutAnyPointToMVCenterCoordinate(outputOffset, dutOffsetRotate);
 		Eigen::Vector2d deltaP(outputOffset.x - inputOffset.x, outputOffset.y - inputOffset.y);
+
 		//When the input is at the center of the MV, the offset of eyeBox relative to the center of the MV
 		Eigen::Rotation2Dd rot(dutOffsetRotate.rotate);
 		Eigen::Vector2d eyeBoxOffset_ = rot * deltaP;
-		//input平移后，eyeBox相对于MV中心偏移 
 
+		//input平移后，eyeBox相对于MV中心偏移 
 		double p_offsetx = m_processConfigInfo.offsetRoatate.projectionOffsetRelativeToMV[currentDutName].x;
 		double p_offsety = m_processConfigInfo.offsetRoatate.projectionOffsetRelativeToMV[currentDutName].y;
 		cv::Point2f eyeBoxOffsetRelativeToMV(-eyeBoxOffset_.x() + p_offsetx, -eyeBoxOffset_.y() + p_offsety);
