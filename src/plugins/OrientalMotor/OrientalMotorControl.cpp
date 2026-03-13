@@ -3,7 +3,7 @@
 
 OrientalMotorControl* OrientalMotorControl::m_instance = nullptr;
 
-OrientalMotorControl::OrientalMotorControl()
+OrientalMotorControl::OrientalMotorControl(QObject* parent):QObject(parent)
 {
 	Init();
 }
@@ -39,6 +39,7 @@ Result OrientalMotorControl::Connect()
 			return ret;
 	}
 	m_bIsOpen = true;
+	emit sigOrientalMotorConnectStatus(m_bIsOpen);
 	return ret;
 }
 
@@ -54,6 +55,8 @@ Result OrientalMotorControl::Disconnect()
 			return ret;
 	}
 	m_bIsOpen = false;
+	emit sigOrientalMotorConnectStatus(m_bIsOpen);
+
 	return ret;
 }
 

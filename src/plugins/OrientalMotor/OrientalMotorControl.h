@@ -1,19 +1,20 @@
 #pragma once
 #include "Result.h"
-
 #include "MLSerialManage.h"
 #include "OrientalMotorConfig.h"
 #include "OrientalMotor.h"
-
 #include "orientalmotor_global.h"
+#include <QObject>
 
-class ORIENTALMOTOR_EXPORT OrientalMotorControl
+class ORIENTALMOTOR_EXPORT OrientalMotorControl : public QObject
 {
+    Q_OBJECT
+
 public:
 
     static OrientalMotorControl* getInstance();
 
-    OrientalMotorControl();
+    OrientalMotorControl(QObject* parent = nullptr);
     ~OrientalMotorControl();
 
     Result Connect();
@@ -37,6 +38,9 @@ public:
     Result ClearAlarm();
     bool IsAlarm(int type);
     bool IsAlarm();
+
+signals:
+    void sigOrientalMotorConnectStatus(bool res);
 
 private:
     void Init();

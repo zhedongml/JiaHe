@@ -50,7 +50,7 @@ private:
     void on_clearAlarm_clicked();
     void handleFinished();
     void moveFinished();
-
+    void updateOrientalMotorConnectStatus(bool res);
     void RadioButtonSwitch(QAbstractButton*);
 
   private:

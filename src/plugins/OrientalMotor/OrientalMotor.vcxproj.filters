@@ -38,9 +38,6 @@
     <ClInclude Include="OrientalMotorConfig.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrientalMotorControl.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MLSerial.cpp">
@@ -58,5 +55,10 @@
     <ClCompile Include="OrientalMotorControl.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <QtMoc Include="OrientalMotorControl.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
 </Project>

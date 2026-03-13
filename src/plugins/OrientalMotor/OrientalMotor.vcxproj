@@ -135,7 +135,7 @@
     <ClInclude Include="OrientalMotor.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="OrientalMotorControl.h" />
+    <QtMoc Include="OrientalMotorControl.h" />
     <ClInclude Include="orientalmotor_global.h" />
     <ClCompile Include="MLSerial.cpp" />
     <ClCompile Include="MLSerialManage.cpp" />

@@ -24,6 +24,7 @@ void DUTMotionWidget::init()
     ui.label_status->setText("Not connected.");
     connect(&watcher, &QFutureWatcher<Result>::finished, this, &DUTMotionWidget::handleFinished);
     connect(&watcher_, &QFutureWatcher<Result>::finished, this, &DUTMotionWidget::moveFinished);
+    connect(OrientalMotorControl::getInstance(),&OrientalMotorControl::sigOrientalMotorConnectStatus,this, &DUTMotionWidget::updateOrientalMotorConnectStatus);
 
     ui.rotationAlarm->setStyleSheet("background-color: rgb(0, 0, 255);");
     ui.tiltAlarm->setStyleSheet("background-color: rgb(0, 0, 255);");
@@ -46,6 +47,7 @@ void DUTMotionWidget::init()
 
 void DUTMotionWidget::on_btn_connect_clicked()
 {
+
     /*if (OrientalMotorControl::getInstance()->IsConnected())
     {
         ui.label_status->setText("Connected.");
@@ -60,6 +62,7 @@ void DUTMotionWidget::on_btn_connect_clicked()
 
 void DUTMotionWidget::on_btn_disconnect_clicked()
 {
+
     if (!OrientalMotorControl::getInstance()->IsConnected())
     {
         return;
@@ -197,6 +200,18 @@ void DUTMotionWidget::moveFinished()
     if (!watcher_.result().success)
     {
         QMessageBox::warning(this, tr("Dut Motion Moving Error"), QString::fromStdString(watcher_.result().errorMsg));
+    }
+}
+
+void DUTMotionWidget::updateOrientalMotorConnectStatus(bool res)
+{
+    if (res)
+    {
+        ui.label_status->setText("Connected.");
+    }
+    else
+    {
+        ui.label_status->setText("Disonnected.");
     }
 }
 
