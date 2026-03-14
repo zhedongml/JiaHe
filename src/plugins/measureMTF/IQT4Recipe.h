@@ -477,6 +477,7 @@ namespace IQT
 				BT::InputPort<std::string>("save_calibration_image","0","bool, e.g. 0/1"),
 				BT::InputPort<std::string>("is_hdr","0","bool, e.g. 0/1"),
 				BT::InputPort<std::string>("max_exposure_time","double"),
+				BT::InputPort<std::string>("is_exposure_check","0","bool, e.g. 0/1"),
 				BT::InputPort<std::string>("nameRule","#LightSource#_#Pattern#_#EyeboxID#_#ColorFilter#_#NDFilter#","string")
 			});
 
@@ -504,6 +505,7 @@ namespace IQT
 				BT::InputPort<std::string>("save_calibration_image","0","bool, e.g. 0/1"),
 				BT::InputPort<std::string>("is_hdr","0","bool, e.g. 0/1"),
 				BT::InputPort<std::string>("max_exposure_time","double"),
+				BT::InputPort<std::string>("is_exposure_check","0","bool, e.g. 0/1"),
 				BT::InputPort<std::string>("nameRule","#LightSource#_#Pattern#_#EyeboxID#_#ColorFilter#_#NDFilter#","string")
 			});
 
@@ -531,6 +533,7 @@ namespace IQT
 				BT::InputPort<std::string>("save_calibration_image","0","bool, e.g. 0/1"),
 				BT::InputPort<std::string>("is_hdr","0","bool, e.g. 0/1"),
 				BT::InputPort<std::string>("max_exposure_time","double"),
+				BT::InputPort<std::string>("is_exposure_check","0","bool, e.g. 0/1"),
                 BT::InputPort<std::string>("nameRule","#LightSource#_#Pattern#_#EyeboxID#_#ColorFilter#_#NDFilter#","string")
 			});
 
@@ -558,6 +561,7 @@ namespace IQT
 				BT::InputPort<std::string>("save_calibration_image","0","bool, e.g. 0/1"),
 				BT::InputPort<std::string>("is_hdr","0","bool, e.g. 0/1"),
 				BT::InputPort<std::string>("max_exposure_time","double"),
+				BT::InputPort<std::string>("is_exposure_check","0","bool, e.g. 0/1"),
 				BT::InputPort<std::string>("nameRule","#LightSource#_#Pattern#_#EyeboxID#_#ColorFilter#_#NDFilter#","string")
 
 			});

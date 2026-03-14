@@ -18,6 +18,7 @@
 #include "MLSolidDetection.h"
 #include "PolarizerControl/ThorlabsMode.h"
 #include "MetricsDataBase.h"
+#include "MLConfigHelp.h"
 #include <QMessageBox>
 
 using namespace IQT;
@@ -610,8 +611,10 @@ NodeStatus IQT4Recipe::IQ_Capture_GrayImage_Sync(BT::TreeNode& node)
 	QString color_filter = getNodeValueByName(node, "color_filter");
 	QString light_source = getNodeValueByName(node, "light_source");
 	QString image_type = getNodeValueByName(node, "image_type");
-	QString nameRule = getNodeValueByName(node, "nameRule");
+    QString nameRule = getNodeValueByName(node, "nameRule");
+	QString is_exposure_check = getNodeValueByName(node, "is_exposure_check");
 
+	QString name = MLColorimeterMode::Instance()->AnalyzeImageName(nameRule, nd_filter, light_source, image_type, eyeboxid, color_filter);
 	ImageCaptureConfig config;
 	config.binning = MLColorimeterMode::Instance()->TransIntToBinning(binning.toInt());
 	config.ndFilter = MLColorimeterHelp::instance()->TransStrToFilterEnum(nd_filter.toStdString());
@@ -641,13 +644,11 @@ NodeStatus IQT4Recipe::IQ_Capture_GrayImage_Sync(BT::TreeNode& node)
 	s_config.ImageNameRule = nameRule.toStdString();
 	config.saveDataMeta = s_config;
 
-	ExposureMode mode = is_auto_et.toInt() == 1 ? ExposureMode::Auto : ExposureMode::Fixed;
-	ExposureSetting setting{ mode, exposure_time.toDouble() };
-
-	// judge et factor to get new exposure setting
-	if (!qFuzzyCompare(et_factor.toDouble(), 1.0))
+	ExposureCheckParam param;
+	param.isExposureCheck = is_exposure_check.toInt() > 0;
+	if (param.isExposureCheck)
 	{
-		Result ret = MLColorimeterMode::Instance()->TransExposureSetting(mode, et_factor.toDouble(), setting);
+		Result ret = MLConfigHelp::GetInstance().GetExposureCheckParam(param);
 		if (!ret.success)
 		{
 			QString message = QString("Recipe Node [ Colorimeter_Capture_GrayImage_Sync ] run error, %1").arg(QString::fromStdString(ret.errorMsg));
@@ -655,13 +656,21 @@ NodeStatus IQT4Recipe::IQ_Capture_GrayImage_Sync(BT::TreeNode& node)
 			return BT::NodeStatus::FAILURE;
 		}
 	}
-	else
+	config.exposureCheckParam = param;
+
+	// Instructions: 
+	// 1.when is_auto_et=1 and is_auto_et=0 && exposure_time!="", et_factor does not work
+	// 2.when is_auto_et=0 && exposure_time="" && et_factor="", search for the exposure time from the configuration by image name
+	// 3.when is_auto_et=0 && exposure_time="" && et_factor!="", the final exposure time=current exposure time*et_factor
+	ExposureMode mode = is_auto_et.toInt() == 1 ? ExposureMode::Auto : ExposureMode::Fixed;
+	ExposureSetting setting{ mode, exposure_time.toDouble() };
+	if (mode == ExposureMode::Fixed && exposure_time.isEmpty())
 	{
-		// Fixed mode + no exposure time -> search for the exposure time in the configuration by name
-		if (mode == ExposureMode::Fixed && exposure_time.isEmpty())
+		double time = 0.0;
+		if (!et_factor.isEmpty())
+			time = MLColorimeterMode::Instance()->GetExposureTime() * et_factor.toDouble();
+		else
 		{
-			double time = 0.0;
-			QString name = MLColorimeterMode::Instance()->AnalyzeImageName(nameRule, nd_filter, light_source, image_type, eyeboxid, color_filter);
 			Result ret = MLColorimeterMode::Instance()->GetFixExposureTime(name.toStdString(), eyeboxid.toStdString(), time);
 			if (!ret.success)
 			{
@@ -669,10 +678,9 @@ NodeStatus IQT4Recipe::IQ_Capture_GrayImage_Sync(BT::TreeNode& node)
 				LoggingWrapper::instance()->error(message);
 				return BT::NodeStatus::FAILURE;
 			}
-			setting.ExposureTime = time;
 		}
+		setting.ExposureTime = time;
 	}
-
 	config.colorFilterToExposureMap = {
 	{MLColorimeterHelp::instance()->TransStrToFilterEnum(color_filter.toStdString()), setting}
 	};
@@ -707,7 +715,9 @@ NodeStatus IQT4Recipe::IQ_Capture_LuminanceImage_Sync(BT::TreeNode& node)
 	QString light_source = getNodeValueByName(node, "light_source");
 	QString image_type = getNodeValueByName(node, "image_type");
 	QString nameRule = getNodeValueByName(node, "nameRule");
+	QString is_exposure_check = getNodeValueByName(node, "is_exposure_check");
 
+	QString name = MLColorimeterMode::Instance()->AnalyzeImageName(nameRule, nd_filter, light_source, image_type, eyeboxid, color_filter);
 	ImageCaptureConfig config;
 	config.binning = MLColorimeterMode::Instance()->TransIntToBinning(binning.toInt());
 	config.ndFilter = MLColorimeterHelp::instance()->TransStrToFilterEnum(nd_filter.toStdString());
@@ -739,13 +749,11 @@ NodeStatus IQT4Recipe::IQ_Capture_LuminanceImage_Sync(BT::TreeNode& node)
 	s_config.ImageNameRule = nameRule.toStdString();
 	config.saveDataMeta = s_config;
 
-	ExposureMode mode = is_auto_et.toInt() == 1 ? ExposureMode::Auto : ExposureMode::Fixed;
-	ExposureSetting setting{ mode, exposure_time.toDouble() };
-
-	// judge et factor to get new exposure setting
-	if (!qFuzzyCompare(et_factor.toDouble(), 1.0))
+	ExposureCheckParam param;
+	param.isExposureCheck = is_exposure_check.toInt() > 0;
+	if (param.isExposureCheck)
 	{
-		Result ret = MLColorimeterMode::Instance()->TransExposureSetting(mode, et_factor.toDouble(), setting);
+		Result ret = MLConfigHelp::GetInstance().GetExposureCheckParam(param);
 		if (!ret.success)
 		{
 			QString message = QString("Recipe Node [ Colorimeter_Capture_LuminanceImage_Sync ] run error, %1").arg(QString::fromStdString(ret.errorMsg));
@@ -753,13 +761,21 @@ NodeStatus IQT4Recipe::IQ_Capture_LuminanceImage_Sync(BT::TreeNode& node)
 			return BT::NodeStatus::FAILURE;
 		}
 	}
-	else
+	config.exposureCheckParam = param;
+
+	// Instructions: 
+	// 1.when is_auto_et=1 and is_auto_et=0 && exposure_time!="", et_factor does not work
+	// 2.when is_auto_et=0 && exposure_time="" && et_factor="", search for the exposure time from the configuration by image name
+	// 3.when is_auto_et=0 && exposure_time="" && et_factor!="", the final exposure time=current exposure time*et_factor
+	ExposureMode mode = is_auto_et.toInt() == 1 ? ExposureMode::Auto : ExposureMode::Fixed;
+	ExposureSetting setting{ mode, exposure_time.toDouble() };
+	if (mode == ExposureMode::Fixed && exposure_time.isEmpty())
 	{
-		// Fixed mode + no exposure time -> search for the exposure time in the configuration by name
-		if (mode == ExposureMode::Fixed && exposure_time.isEmpty())
+		double time = 0.0;
+		if (!et_factor.isEmpty())
+			time = MLColorimeterMode::Instance()->GetExposureTime() * et_factor.toDouble();
+		else
 		{
-			double time = 0.0;
-			QString name = MLColorimeterMode::Instance()->AnalyzeImageName(nameRule, nd_filter, light_source, image_type, eyeboxid, color_filter);
 			Result ret = MLColorimeterMode::Instance()->GetFixExposureTime(name.toStdString(), eyeboxid.toStdString(), time);
 			if (!ret.success)
 			{
@@ -767,10 +783,9 @@ NodeStatus IQT4Recipe::IQ_Capture_LuminanceImage_Sync(BT::TreeNode& node)
 				LoggingWrapper::instance()->error(message);
 				return BT::NodeStatus::FAILURE;
 			}
-			setting.ExposureTime = time;
 		}
+		setting.ExposureTime = time;
 	}
-
 	config.colorFilterToExposureMap = {
 	{MLColorimeterHelp::instance()->TransStrToFilterEnum(color_filter.toStdString()), setting}
 	};
@@ -867,7 +882,9 @@ NodeStatus IQT4Recipe::IQ_Capture_GrayImage_Async(BT::TreeNode& node)
 	QString light_source = getNodeValueByName(node, "light_source");
 	QString image_type = getNodeValueByName(node, "image_type");
 	QString nameRule = getNodeValueByName(node, "nameRule");
+	QString is_exposure_check = getNodeValueByName(node, "is_exposure_check");
 
+	QString name = MLColorimeterMode::Instance()->AnalyzeImageName(nameRule, nd_filter, light_source, image_type, eyeboxid, color_filter);
 	ImageCaptureConfig config;
 	config.binning = MLColorimeterMode::Instance()->TransIntToBinning(binning.toInt());
 	config.isSaveCali = save_calibration_image.toInt() > 0;
@@ -897,13 +914,11 @@ NodeStatus IQT4Recipe::IQ_Capture_GrayImage_Async(BT::TreeNode& node)
 	s_config.ImageNameRule = nameRule.toStdString();
 	config.saveDataMeta = s_config;
 
-	ExposureMode mode = is_auto_et.toInt() == 1 ? ExposureMode::Auto : ExposureMode::Fixed;
-	ExposureSetting setting{ mode, exposure_time.toDouble() };
-
-	// judge et factor to get new exposure setting
-	if (!qFuzzyCompare(et_factor.toDouble(), 1.0))
+	ExposureCheckParam param;
+	param.isExposureCheck = is_exposure_check.toInt() > 0;
+	if (param.isExposureCheck)
 	{
-		Result ret = MLColorimeterMode::Instance()->TransExposureSetting(mode, et_factor.toDouble(), setting);
+		Result ret = MLConfigHelp::GetInstance().GetExposureCheckParam(param);
 		if (!ret.success)
 		{
 			QString message = QString("Recipe Node [ Colorimeter_Capture_GrayImage_Async ] run error, %1").arg(QString::fromStdString(ret.errorMsg));
@@ -911,13 +926,21 @@ NodeStatus IQT4Recipe::IQ_Capture_GrayImage_Async(BT::TreeNode& node)
 			return BT::NodeStatus::FAILURE;
 		}
 	}
-	else
+	config.exposureCheckParam = param;
+
+	// Instructions: 
+	// 1.when is_auto_et=1 and is_auto_et=0 && exposure_time!="", et_factor does not work
+	// 2.when is_auto_et=0 && exposure_time="" && et_factor="", search for the exposure time from the configuration by image name
+	// 3.when is_auto_et=0 && exposure_time="" && et_factor!="", the final exposure time=current exposure time*et_factor
+	ExposureMode mode = is_auto_et.toInt() == 1 ? ExposureMode::Auto : ExposureMode::Fixed;
+	ExposureSetting setting{ mode, exposure_time.toDouble() };
+	if (mode == ExposureMode::Fixed && exposure_time.isEmpty())
 	{
-		// Fixed mode + no exposure time -> search for the exposure time in the configuration by name
-		if (mode == ExposureMode::Fixed && exposure_time.isEmpty())
+		double time = 0.0;
+		if (!et_factor.isEmpty())
+			time = MLColorimeterMode::Instance()->GetExposureTime() * et_factor.toDouble();
+		else
 		{
-			double time = 0.0;
-			QString name = MLColorimeterMode::Instance()->AnalyzeImageName(nameRule, nd_filter, light_source, image_type, eyeboxid, color_filter);
 			Result ret = MLColorimeterMode::Instance()->GetFixExposureTime(name.toStdString(), eyeboxid.toStdString(), time);
 			if (!ret.success)
 			{
@@ -925,10 +948,9 @@ NodeStatus IQT4Recipe::IQ_Capture_GrayImage_Async(BT::TreeNode& node)
 				LoggingWrapper::instance()->error(message);
 				return BT::NodeStatus::FAILURE;
 			}
-			setting.ExposureTime = time;
 		}
+		setting.ExposureTime = time;
 	}
-
 	config.colorFilterToExposureMap = {
 	{MLColorimeterHelp::instance()->TransStrToFilterEnum(color_filter.toStdString()), setting}
 	};
@@ -963,7 +985,9 @@ NodeStatus IQT4Recipe::IQ_Capture_LuminanceImage_Async(BT::TreeNode& node)
 	QString light_source = getNodeValueByName(node, "light_source");
 	QString image_type = getNodeValueByName(node, "image_type");
 	QString nameRule = getNodeValueByName(node, "nameRule");
+	QString is_exposure_check = getNodeValueByName(node, "is_exposure_check");
 
+	QString name = MLColorimeterMode::Instance()->AnalyzeImageName(nameRule, nd_filter, light_source, image_type, eyeboxid, color_filter);
 	ImageCaptureConfig config;
 	config.binning = MLColorimeterMode::Instance()->TransIntToBinning(binning.toInt());
 	//norx
@@ -997,13 +1021,11 @@ NodeStatus IQT4Recipe::IQ_Capture_LuminanceImage_Async(BT::TreeNode& node)
 	s_config.ImageNameRule = nameRule.toStdString();
 	config.saveDataMeta = s_config;
 
-	ExposureMode mode = is_auto_et.toInt() == 1 ? ExposureMode::Auto : ExposureMode::Fixed;
-	ExposureSetting setting{ mode, exposure_time.toDouble() };
-
-	// judge et factor to get new exposure setting
-	if (!qFuzzyCompare(et_factor.toDouble(), 1.0))
+	ExposureCheckParam param;
+	param.isExposureCheck = is_exposure_check.toInt() > 0;
+	if (param.isExposureCheck)
 	{
-		Result ret = MLColorimeterMode::Instance()->TransExposureSetting(mode, et_factor.toDouble(), setting);
+		Result ret = MLConfigHelp::GetInstance().GetExposureCheckParam(param);
 		if (!ret.success)
 		{
 			QString message = QString("Recipe Node [ Colorimeter_Capture_LuminanceImage_Async ] run error, %1").arg(QString::fromStdString(ret.errorMsg));
@@ -1011,13 +1033,21 @@ NodeStatus IQT4Recipe::IQ_Capture_LuminanceImage_Async(BT::TreeNode& node)
 			return BT::NodeStatus::FAILURE;
 		}
 	}
-	else
+	config.exposureCheckParam = param;
+
+	// Instructions: 
+	// 1.when is_auto_et=1 and is_auto_et=0 && exposure_time!="", et_factor does not work
+	// 2.when is_auto_et=0 && exposure_time="" && et_factor="", search for the exposure time from the configuration by image name
+	// 3.when is_auto_et=0 && exposure_time="" && et_factor!="", the final exposure time=current exposure time*et_factor
+	ExposureMode mode = is_auto_et.toInt() == 1 ? ExposureMode::Auto : ExposureMode::Fixed;
+	ExposureSetting setting{ mode, exposure_time.toDouble() };
+	if (mode == ExposureMode::Fixed && exposure_time.isEmpty())
 	{
-		// Fixed mode + no exposure time -> search for the exposure time in the configuration by name
-		if (mode == ExposureMode::Fixed && exposure_time.isEmpty())
+		double time = 0.0;
+		if (!et_factor.isEmpty())
+			time = MLColorimeterMode::Instance()->GetExposureTime() * et_factor.toDouble();
+		else
 		{
-			double time = 0.0;
-			QString name = MLColorimeterMode::Instance()->AnalyzeImageName(nameRule, nd_filter, light_source, image_type, eyeboxid, color_filter);
 			Result ret = MLColorimeterMode::Instance()->GetFixExposureTime(name.toStdString(), eyeboxid.toStdString(), time);
 			if (!ret.success)
 			{
@@ -1025,10 +1055,9 @@ NodeStatus IQT4Recipe::IQ_Capture_LuminanceImage_Async(BT::TreeNode& node)
 				LoggingWrapper::instance()->error(message);
 				return BT::NodeStatus::FAILURE;
 			}
-			setting.ExposureTime = time;
 		}
+		setting.ExposureTime = time;
 	}
-
 	config.colorFilterToExposureMap = {
 	{MLColorimeterHelp::instance()->TransStrToFilterEnum(color_filter.toStdString()), setting}
 	};

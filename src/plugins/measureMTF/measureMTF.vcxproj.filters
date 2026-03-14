@@ -89,6 +89,9 @@
     <ClInclude Include="FocusConfig.h">
       <Filter>Focus</Filter>
     </ClInclude>
+    <ClInclude Include="MLConfigHelp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="cropper.hpp">
@@ -446,6 +449,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Cylinder\RxFilterWheelWidget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MLConfigHelp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

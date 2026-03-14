@@ -256,11 +256,6 @@ Result MLColorimeterMode::Disconnect()
     }
     m_IsConnected = false;
     emit connectStatus(false);
-    if (m_taskManager != nullptr)
-    {
-        delete m_taskManager;
-        m_taskManager = nullptr;
-    }
     return Result();
 }
 

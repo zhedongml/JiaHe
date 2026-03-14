@@ -162,6 +162,7 @@ windeployqt --release  "$(TargetPath)"  --dir "$(SolutionDir)bin\$(Platform)\$(C
     </ClCompile>
     <ClCompile Include="HistogramWidget.cpp" />
     <ClCompile Include="ImageRotationConfig.cpp" />
+    <ClCompile Include="MLConfigHelp.cpp" />
     <ClCompile Include="Parallel\CameraSimulator.cpp" />
     <ClCompile Include="Parallel\ImageDataManager.cpp" />
     <ClCompile Include="Parallel\IQ_ParallelTask.cpp" />
@@ -341,6 +342,7 @@ windeployqt --release  "$(TargetPath)"  --dir "$(SolutionDir)bin\$(Platform)\$(C
     <ClInclude Include="LumStatistics.h" />
     <QtMoc Include="Parallel\ImageDataManager.h" />
     <QtMoc Include="Parallel\CameraSimulator.h" />
+    <ClInclude Include="MLConfigHelp.h" />
     <ClInclude Include="Parallel\IQ_BasicDataType.h" />
     <QtMoc Include="Parallel\IQ_ParallelTask.h" />
     <QtMoc Include="Parallel\MetricsProcessorProxy.h" />
