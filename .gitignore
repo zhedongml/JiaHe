@@ -457,7 +457,7 @@ compile_commands.json
 
 # Project
 src/RealityQ/logFile/
-#/src/RealityQ+/config
+/src/RealityQ+/config
 /bin
 /x64
 /src/RealityQ+/config_1
