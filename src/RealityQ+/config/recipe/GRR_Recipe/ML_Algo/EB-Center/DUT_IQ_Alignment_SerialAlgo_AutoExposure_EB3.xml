@@ -45,7 +45,7 @@
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="convert_method" value="1"/>
    <Action name="SetBlackboard" ID="SetBlackboard" output_key="nameRule" value="#LightSource#_#Pattern#_#EyeboxID#_#ColorFilter#_#NDFilter#"/>
    <!--IQ init-->   
-   <Action name="IQ_SetEyeboxList" ID="IQ_SetEyeboxList" eyeboxlist="5" key="eyeboxids"/>
+   <Action name="IQ_SetEyeboxList" ID="IQ_SetEyeboxList" eyeboxlist="3" key="eyeboxids"/>
    <Action name="IQ_Metrics_CreateDBTable" ID="IQ_Metrics_CreateDBTable"/>
    <Action name="Colorimeter_Camera_StopGrabbing" ID="Colorimeter_Camera_StopGrabbing"/>
    <Action name="Colorimeter_Camera_SetBinningSelector" ID="Colorimeter_Camera_SetBinningSelector" binning_selector="Logic"/>
@@ -116,7 +116,6 @@
         <Action name="Colorimeter_WaitForCaptureEnd" ID="Colorimeter_WaitForCaptureEnd" timeout="20"/>
         <Action name="IQ_UpdateFixExposureTimeConfig" ID="IQ_UpdateFixExposureTimeConfig"/>
         <SequenceStar name="SequenceStar">
-         <Action name="IQ_Metrics_Location_Clear" ID="IQ_Metrics_Location_Clear"/>
          <Parallel name="Parallel">
           <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="FOV"/>
           <Action name="IQ_Metrics_Calculate" ID="IQ_Metrics_Calculate" metrics_name="FOVOffset"/>
