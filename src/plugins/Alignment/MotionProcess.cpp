@@ -1692,7 +1692,7 @@ namespace AAProcess
 		if (holder_type != PLCController::instance()->GetEmptySensorState())
 			return "Please remove the dut first !";
 
-		message = CheckModuleConnectStatus(ModuleName::ImagingModuleXYZ/*, ModuleName::DutModuleXYZ*/);
+		message = CheckModuleConnectStatus(ModuleName::ImagingModuleXYZ, ModuleName::DutModuleXYZ);
 		if (message != "")
 			return message;
 
