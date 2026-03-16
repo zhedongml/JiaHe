@@ -1,7 +1,0 @@
-{
-    "topN": 1000,
-    "threadCount": 4,
-    "minGray": 0,
-    "over_ratio": 0.9,
-	"low_ratio": 0.5
-}

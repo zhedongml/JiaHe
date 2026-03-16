@@ -1,2 +1,0 @@
-isValid=false
-pointPath=D:\code\JiAn\src\RealityQ+\config\mlcolorimeter
