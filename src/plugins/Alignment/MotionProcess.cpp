@@ -1950,6 +1950,19 @@ namespace AAProcess
 	void MotionProcess::setWaferDutID(int dut_id)
 	{
 		wafer_dut_id = dut_id; // start from 1
+
+		std::string logMsg;
+		if (currentWaferName.empty())
+		{
+			logMsg = "[DUT] Type: WG | Name: " + currentDutName;
+		}
+		else
+		{
+			logMsg = "[DUT] Type: Wafer | Wafer: " + currentWaferName +
+				" | DUT ID: " + std::to_string(dut_id);
+		}
+
+		PrintLog(LogType::Normal, logMsg);
 	}
 
 	void MotionProcess::StopTreeSystem(bool isStopTreeSystem)
