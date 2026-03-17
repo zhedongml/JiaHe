@@ -265,11 +265,11 @@ NodeStatus DutAA::DutAA4Recipe::AA_Dut_Align_EyeBox(BT::TreeNode& node)
 
 NodeStatus DutAA::DutAA4Recipe::AA_Dut_GetDutType(BT::TreeNode& node)
 {
-    QString cust_type = getNodeValueByName(node, "cust_type");
+    QString wafer_cust_type = getNodeValueByName(node, "wafer_cust_type");
 
     std::string dut_name;
     int wafer_dut_nums;
-    std::string msg = MotionProcess::getInstance().GetDutTypeName(cust_type.toStdString(), dut_name, wafer_dut_nums);
+    std::string msg = MotionProcess::getInstance().GetDutTypeName(wafer_cust_type.toStdString(), dut_name, wafer_dut_nums);
     if (msg != "")
     {
         QString message = QString("Recipe Node [ AA_Dut_GetDutType ] run error, %1").arg(QString::fromStdString(msg));
@@ -279,7 +279,8 @@ NodeStatus DutAA::DutAA4Recipe::AA_Dut_GetDutType(BT::TreeNode& node)
     
     MLUtils::TestState state;
     std::vector<std::string> parts = MLUtils::MLUtilCommon::instance()->split(dut_name, '_');
-    if (parts.size() != 3)
+
+    if (parts.size() < 2)
     {
         QString message = QString("Recipe Node [ AA_Dut_GetDutType ] run error, dut name %1 is nonconforming.")
             .arg(QString::fromStdString(dut_name));
@@ -291,9 +292,11 @@ NodeStatus DutAA::DutAA4Recipe::AA_Dut_GetDutType(BT::TreeNode& node)
 
     state.IsDut = true;
     state.IsUpdateSLB = false;
+
     state.size = MLUtils::MLUtilCommon::instance()->TransStrToSize(parts[0]);
     state.eyeType = MLUtils::MLUtilCommon::instance()->TransStrToEyeType(parts[1]);
-    state.cust_type = parts[2];
+    
+    //state.cust_type = parts[2];
     MetricsData::instance()->SetTestState(state);
 
     node.setOutput("size_key", parts[0]);

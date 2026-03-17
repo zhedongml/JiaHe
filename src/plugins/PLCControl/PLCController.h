@@ -7,6 +7,7 @@
 #include "PLCConfig.h"
 #include "Result.h"
 #include "PlcReadThread.h"
+#include <set>
 
 class PLCCONTROL_EXPORT PLCController : public QObject, public PlcCallback
 {
@@ -48,7 +49,8 @@ class PLCCONTROL_EXPORT PLCController : public QObject, public PlcCallback
     bool GetSensorCState();
     bool GetSensorDState();
 
-    std::string GetEmptySensorState();
+    const std::string& GetEmptySensorState();
+    const std::set<std::string>& GetValidSensorStates();
 
   private:
     PLCController(QObject *parent = nullptr);
@@ -73,5 +75,8 @@ class PLCCONTROL_EXPORT PLCController : public QObject, public PlcCallback
     static PLCController *self;
 
     PlcReadThread *m_readThread;
-    std::string m_emptyState = "0000";
+    const std::string m_emptyState = "0000";
+    const std::set<std::string> m_validStates = {
+        "0000", "1000", "0100", "0010", "0001"
+    };
 };

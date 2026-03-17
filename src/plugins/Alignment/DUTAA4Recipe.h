@@ -226,7 +226,7 @@ namespace DutAA
 				BT::OutputPort<std::string>("eyetype_key","string"),
 				BT::OutputPort<std::string>("wafer_dut_num_key","int"),
 				
-			    BT::InputPort<std::string>("cust_type","string")
+			    BT::InputPort<std::string>("wafer_cust_type","[ ,Small_Right,Large_Left,Large_Right]","string")
 			});
 
 		factory.registerSimpleAction(

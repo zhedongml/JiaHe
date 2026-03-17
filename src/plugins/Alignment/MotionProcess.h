@@ -68,7 +68,7 @@ namespace AAProcess
 		std::string FindFiducial();
 		std::string EntrancePupilAlignment();
 		std::string EyeboxScanning(int eyeBoxIndex);
-		std::string GetDutTypeName(std::string cust_type, std::string& dut_name, int& dut_nums);
+		std::string GetDutTypeName(std::string wafer_cust_type, std::string& dut_name, int& dut_nums);
 		std::string SetIsSaveFiducialImage(bool isSave, QString rootDir = "", QString dutSeq = "");
 
 		//SLB Alignment

@@ -34,8 +34,8 @@ namespace MLUtils {
 		Size size;
 		EyeType eyeType;
 		EyeRelief relief;
-		std::string cust_type;
-
+		std::string wafer_cust_type = "";
+		std::string dut_cust_type = "";
 		TestState() : size(Size_UnKnown), eyeType(EyeType_UnKnown), relief(EyeRelief_UnKnown) {}
 	};
 

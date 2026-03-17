@@ -1616,7 +1616,7 @@ namespace AAProcess
 		return m_waitPause.isStop();
 	}
 
-	std::string MotionProcess::GetDutTypeName(std::string cust_type, std::string& dut_name,int& dut_nums)
+	std::string MotionProcess::GetDutTypeName(std::string wafer_cust_type, std::string& dut_name,int& dut_nums)
 	{
 		std::string state;
 		std::string msg = JudgeHolderState(state);
@@ -1632,23 +1632,29 @@ namespace AAProcess
 		if (state_name_map[state] == "None")
 			return state + " holder state is None.";
 
-		if (cust_type == "")
+		if (wafer_cust_type == "")
 		{
 			dut_name = state_name_map[state];
 		}
 		else
 		{
-			dut_name = state_name_map[state] + "_" + cust_type;
+			dut_name =  wafer_cust_type + "_" + state_name_map[state] ;
 
 		}
 		currentDutName = dut_name;
 
 
 		QString dutType = QString::fromStdString(currentDutName);
-		if (dutType.toLower().contains("wafer"))
+		if (dutType.toLower().contains("wafer") && wafer_cust_type != "")
 		{
 			currentWaferName = currentDutName;
-			currentDutName = dutType.mid(QString("Wafer_").length()).toStdString();
+			currentDutName = wafer_cust_type;
+
+			//if (dutType.toLower().endsWith("_wafer"))
+			//{
+			//	currentDutName = dutType.left(dutType.length() - QString("_wafer").length()).toStdString();
+			//}
+
 			dut_nums = m_waferConfigInfoMap[currentWaferName].dutNum;
 
 			if (!m_waferConfigInfoMap.count(currentWaferName))
@@ -1779,19 +1785,15 @@ namespace AAProcess
 		double projectionTiptiltY = m_slbConfigInfo.slb_projectionTiptilt.dy;
 		double imagingTiptiltX = m_slbConfigInfo.slb_imagingTiptilt.dx;
 		double imagingTiptiltY = m_slbConfigInfo.slb_imagingTiptilt.dy;
+
 		Result ret = Motion2DModel::getInstance(ACS2DPro)->Motion2DMoveAbsAsync(projectionTiptiltX, projectionTiptiltY);
 		if (!ret.success)
 			return ret.errorMsg;
 
-		//while (CheckModuleIsMoving(ModuleName::ProjectionDxDy))
-		//{
-		//	QCoreApplication::processEvents();
-		//	_sleep(100);
-		//}
-
 		ret = Motion2DModel::getInstance(ACS2DCameraTilt)->Motion2DMoveAbsAsync(imagingTiptiltX, imagingTiptiltY);
 		if (!ret.success)
 			return ret.errorMsg;
+
 		while (CheckModuleIsMoving(ModuleName::ProjectionDxDy, ModuleName::ImagingModuleDxDy))
 		{
 			if (m_isStopTreeSystem.load())
@@ -1983,6 +1985,16 @@ namespace AAProcess
 			<< PLCController::instance()->GetSensorDState();
 
 		holder_type = oss.str();
+
+		const std::set<std::string>& validStates = PLCController::instance()->GetValidSensorStates();
+
+		// 非法状态判断
+		if (validStates.find(holder_type) == validStates.end())
+		{
+			return PrintLog(LogType::Error,
+				"Invalid PLC holder state: " + holder_type,
+				!m_isTreeSystemRun);
+		}
 
 		return "";
 	}
