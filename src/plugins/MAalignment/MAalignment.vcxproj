@@ -86,6 +86,7 @@ xcopy /y "$(SolutionDir)src\extlib\CDock\lib\qtadvanceddockingd.dll" "$(Solution
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>$(SolutionDir)src\plugins;$(SolutionDir)src;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\vimba;$(SolutionDir)src\extlib\vimba\VimbaImageTransform\Include;$(SolutionDir)SDK\extlib\json4moderncpp;$(SolutionDir)src\extlib\libdmtx-0.7.2\src;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\plugins\MLAlgorithm;$(SolutionDir)src\extlib\ISapi;$(SolutionDir)src\extlib\CDock\include;$(SolutionDir)src\extlib\mlcolorimeter\include;.;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <AdditionalDependencies>log4cplusU.lib;VimbaCPP.lib;VimbaImageTransform.lib;opencv_world451.lib;qtadvanceddocking.lib;%(AdditionalDependencies)</AdditionalDependencies>

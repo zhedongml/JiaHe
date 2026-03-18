@@ -135,11 +135,13 @@ Result MLACSController1D::Connect(const char* type_name)
         LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, msg.c_str());
         return Result(false, msg);
     }
-    Result err = InitialMotionSystem();
-    if (!err.success)
-    {
-        Disconnect();
-        return err;
+    if (m_bufFlag) {
+        Result err = InitialMotionSystem();
+        if (!err.success)
+        {
+            Disconnect();
+            return err;
+        }
     }
     m_IsConnected = true;
     SetEnable(true);

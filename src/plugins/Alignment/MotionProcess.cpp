@@ -500,7 +500,7 @@ namespace AAProcess
 				return "";
 			}
 
-			msg = LimitMove::getInstance()->orientalMoveRel(cv::Point3f(m_collimatorDeltaX.toDouble() / 3600.0,
+			msg = LimitMove::getInstance()->orientalMoveRel(cv::Point3f(-m_collimatorDeltaX.toDouble() / 3600.0,
 				m_collimatorDeltaY.toDouble() / 3600.0, 0));
 			if (!msg.empty())
 				return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);

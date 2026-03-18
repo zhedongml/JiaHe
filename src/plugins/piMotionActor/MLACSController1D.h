@@ -72,5 +72,6 @@ private:
     Result InitialMotionSystem();
     std::string GetErrorMessage();
     std::vector<std::string> split(std::string str, char a);
+    bool m_bufFlag = false;
 };
 #endif
