@@ -303,12 +303,13 @@ NodeStatus DutAA::DutAA4Recipe::AA_Dut_GetDutType(BT::TreeNode& node)
     node.setOutput("eyetype_key", parts[1]);
     node.setOutput("wafer_dut_num_key", wafer_dut_nums);
 
-    QString message = QString("=========================== Current Test State: IsDut=%1, IsUpdateSLB=%2, size=%3 ,eyeType=%4, custom_type=%5 ===========================")
-        .arg("1")
-        .arg("0")
+    QString message = QString("=========================== Current Test State: IsDut = %1, IsUpdateSLB = %2,IsWafer = %3 size = %4 ,eyeType = %5 ===========================")
+        .arg(state.IsDut)
+        .arg(state.IsUpdateSLB)
+        .arg(wafer_dut_nums > 1)
         .arg(QString::fromStdString(parts[0]))
-        .arg(QString::fromStdString(parts[1]))
-        .arg(QString::fromStdString(parts[2]));
+        .arg(QString::fromStdString(parts[1]));
+  
     LoggingWrapper::instance()->info(message);
 
     return BT::NodeStatus::SUCCESS;

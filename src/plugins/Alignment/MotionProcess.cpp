@@ -735,12 +735,23 @@ namespace AAProcess
 		if (imgFid.empty())
 			return PrintLog(LogType::Error, "Fiducial image acquisition failed!", !m_isTreeSystemRun);
 
-		cv::imwrite(QDateTime::currentDateTime().toString("hhmmsszzz").toStdString() + "cv.tif", imgFid);
+		QString strSavePath = QString(m_strFiducialRootDir + "/" + m_dutSeq + "/fiducial/");
+		QDir dir(strSavePath);
+		if (!dir.exists())
+		{
+			if (!dir.mkpath(strSavePath))
+				PrintLog(LogType::Error, "Fiducial save path create failed, " + strSavePath.toStdString(), !m_isTreeSystemRun);
+		}
+
+		QString timeStamp = QDateTime::currentDateTime().toString("hhmmsszzz");
+		cv::imwrite((strSavePath + timeStamp + "cv.tif").toStdString(), imgFid);
 
 		QImage image = matToQImageCopy(imgFid);
 		if (image.isNull())
 			return PrintLog(LogType::Error, "Fiducial image conversion to QImage failed!", !m_isTreeSystemRun);
-		image.save(QDateTime::currentDateTime().toString("hhmmsszzz") + "qt.tif");
+
+		image.save(strSavePath + timeStamp + "qt.tif");
+
 		QPointF fiducialPos = emit onSignalgetFiducialPos(image);
 		if (qFuzzyCompare(fiducialPos.x(), 0) || qFuzzyCompare(fiducialPos.y(), 0))
 		{
@@ -1645,8 +1656,13 @@ namespace AAProcess
 
 
 		QString dutType = QString::fromStdString(currentDutName);
-		if (dutType.toLower().contains("wafer") && wafer_cust_type != "")
+		if (dutType.toLower().contains("wafer"))
 		{
+			if (wafer_cust_type == "")
+			{
+				msg = "DUT type is wafer, but wafer customer type is not set.";
+				return msg;
+			}
 			currentWaferName = currentDutName;
 			currentDutName = wafer_cust_type;
 
@@ -1956,11 +1972,11 @@ namespace AAProcess
 		std::string logMsg;
 		if (currentWaferName.empty())
 		{
-			logMsg = "[DUT] Type: WG | Name: " + currentDutName;
+			logMsg = "Type: WG | Name: " + currentDutName;
 		}
 		else
 		{
-			logMsg = "[DUT] Type: Wafer | Wafer: " + currentWaferName +
+			logMsg = "Type: Wafer | Name: " + currentWaferName +
 				" | DUT ID: " + std::to_string(dut_id);
 		}
 
