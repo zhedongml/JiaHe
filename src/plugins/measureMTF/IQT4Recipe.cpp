@@ -1513,13 +1513,23 @@ NodeStatus IQT4Recipe::IQ_UpdateFlipRotation()
 		LoggingWrapper::instance()->error(message);
 		return BT::NodeStatus::FAILURE;
 	}
-	Flipping flip_x; Flipping flip_y; ML::MLColorimeter::Rotation rotate;
-	if (state.IsDut && state.eyeType == MLUtils::EyeType::Right)
+	Flipping flip_x; 
+	Flipping flip_y; 
+	ML::MLColorimeter::Rotation rotate;
+
+	if (state.IsDut && state.eyeType == MLUtils::EyeType::Right) 
+	{
 		ImageRotationConfig::instance()->GetFilpRotationConfig_DutRightEye(flip_x, flip_y, rotate);
-	else if (state.IsDut && state.eyeType == MLUtils::EyeType::Left)
+	}
+	else if (state.IsDut && state.eyeType == MLUtils::EyeType::Left) 
+	{
 		ImageRotationConfig::instance()->GetFilpRotationConfig_DutLeftEye(flip_x, flip_y, rotate);
-	else
+	}
+	else 
+	{
 		ImageRotationConfig::instance()->GetFilpRotationConfig_SLB(flip_x, flip_y, rotate);
+	}
+
 	if (!MLColorimeterMode::Instance()->UpdateFlipRotation(flip_x, flip_y, rotate))
 	{
 		QString message = QString::fromStdString("Recipe Node [ IQ_UpdateFlipRotation ] run error, update Flip_Rotate.json error.");

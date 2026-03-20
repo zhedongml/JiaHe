@@ -85,9 +85,19 @@ NodeStatus Mes4Recipe::Mes_SubmitAutoDPTask(BT::TreeNode& node)
 	QString msg = QString("sourceImageDir: %1  resultSaveDir: %2").arg(sourceImageDir).arg(resultSaveDir);
 	LoggingWrapper::instance()->info(msg);
 
+	//MetricsData::instance()->pushDutAdpHistoryQueue(_dutInfo);
     Result ret = MesTaskAsync::instance().runQdp(sourceImageDir.toStdString(),
         resultSaveDir.toStdString());
 
+	if (ret.success)
+		return BT::NodeStatus::SUCCESS;
+	else
+		return BT::NodeStatus::FAILURE;
+}
+
+NodeStatus MesNS::Mes4Recipe::Mes_WaitAutoDPTask(BT::TreeNode& node)
+{
+	Result ret = MesTaskAsync::instance().waitAllTask();
 	if (ret.success)
 		return BT::NodeStatus::SUCCESS;
 	else

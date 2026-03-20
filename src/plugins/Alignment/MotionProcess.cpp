@@ -744,13 +744,13 @@ namespace AAProcess
 		}
 
 		QString timeStamp = QDateTime::currentDateTime().toString("hhmmsszzz");
-		cv::imwrite((strSavePath + timeStamp + "cv.tif").toStdString(), imgFid);
+		cv::imwrite((strSavePath + timeStamp + "_manual-cv.tif").toStdString(), imgFid);
 
 		QImage image = matToQImageCopy(imgFid);
 		if (image.isNull())
 			return PrintLog(LogType::Error, "Fiducial image conversion to QImage failed!", !m_isTreeSystemRun);
 
-		image.save(strSavePath + timeStamp + "qt.tif");
+		image.save(strSavePath + timeStamp + "_manual-qt.tif");
 
 		QPointF fiducialPos = emit onSignalgetFiducialPos(image);
 		if (qFuzzyCompare(fiducialPos.x(), 0) || qFuzzyCompare(fiducialPos.y(), 0))

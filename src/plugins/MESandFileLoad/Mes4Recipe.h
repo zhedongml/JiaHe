@@ -19,8 +19,11 @@ namespace MesNS
 		Mes4Recipe(QObject* parent = nullptr);
 		QString getNodeValueByName(BT::TreeNode& node, std::string name);
 
-		NodeStatus Mes_Lens_Load(BT::TreeNode& node);
+		
 		NodeStatus Mes_SubmitAutoDPTask(BT::TreeNode& node);
+		NodeStatus Mes_WaitAutoDPTask(BT::TreeNode& node);
+
+		NodeStatus Mes_Lens_Load(BT::TreeNode& node);
 		NodeStatus Mes_SubmitAdpTaskNew(BT::TreeNode& node);
 		NodeStatus Mes_MetricsLimitAutoDP(BT::TreeNode& node);
 		NodeStatus Mes_Test_Node(BT::TreeNode& node);
@@ -58,6 +61,15 @@ namespace MesNS
 				BT::InputPort<std::string>("sourceImageDir","int"),
 				BT::InputPort<std::string>("resultSaveDir","bool, e.g. 0,1")
 			});
+
+		factory.registerSimpleAction(
+			"AutoDP_WaitTask",
+			[=](BT::TreeNode& node)-> BT::NodeStatus
+			{
+				return obj->Mes_WaitAutoDPTask(node);
+			},
+			{});
+		
 
 		//factory.registerSimpleAction(
 		//	"MES_SubmitAdpTaskNew",

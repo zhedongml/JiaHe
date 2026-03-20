@@ -36,11 +36,10 @@ namespace IQT
 		NodeStatus IQ_Camera_SetExposureByAuto(BT::TreeNode& node);
 		NodeStatus IQ_Camera_SetExposureByFix(BT::TreeNode& node);
 		NodeStatus IQ_Camera_SetOverExposure(BT::TreeNode& node);
+		
 		//RX
 		NodeStatus IQ_RX_SetRXSync(BT::TreeNode& node);
-
 		NodeStatus IQ_RX_SetRXASync(BT::TreeNode& node);
-
 		NodeStatus IQ_RX_SetCylinder(BT::TreeNode& node);
 
 
