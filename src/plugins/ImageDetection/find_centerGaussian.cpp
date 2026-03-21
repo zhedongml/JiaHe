@@ -1,7 +1,6 @@
 #pragma once
 //#include "pch.h"
 #include "CrossCenter.h"
-#include<armadillo>
 //#include <MLAlgorithm/ml_optpara_kunlun.h>
 //#include"qlog.h"
 using namespace std;
@@ -64,7 +63,7 @@ bool gaussiantCurveFit(const vector<cv::Point2f>& cvRawPointVec, int n, cv::Mat&
 			{
 				ptr[j] = pow(cvRawPointVec[i].x, j);
 			}
-			Y.at<float>(i, 0) = log(cvRawPointVec[i].y+1);
+			Y.at<float>(i, 0) = log(cvRawPointVec[i].y);
 		}
 		//Solve matrix A£ºX*A = Y
 		if (!X.empty() & !Y.empty() & X.rows == Y.rows & X.rows > 3)
@@ -74,65 +73,6 @@ bool gaussiantCurveFit(const vector<cv::Point2f>& cvRawPointVec, int n, cv::Mat&
 	}
 	return true;
 }
-double findIndexByGaussianFit(vector<cv::Point2f>gaussFitdata)
-{
-	double index = -1;
-	cv::Mat A(3, 1, CV_32FC1, cv::Scalar(0));
-	gaussiantCurveFit(gaussFitdata, 2, A);
-	float a0 = A.at<float>(0, 0);
-	float a1 = A.at<float>(1, 0);
-	float a2 = A.at<float>(2, 0);
-	double total = NAN;
-	if (abs(a1) > 1e-6)
-	{
-		float fParmB = -1 / (a2);
-		float fParmC = -a1 / (2 * a2);
-		float fParmA = std::exp(a0 + fParmC * fParmC / fParmB);
-		//  cout << fParmA << ',' << fParmC << ',' << fParmB << endl;
-		vector<double> xfit, yfit;
-		double dMaxYValue = -1.0;
-		double yfitmax = 0;
-		double maxX = gaussFitdata[gaussFitdata.size() - 1].x;
-		for (double i = 0; i < maxX; i = i + 0.1)
-		{
-			double x = i;
-			double y = 0;
-			if (int(fParmA) != 0)
-			{
-				y = fParmA * exp(-pow(x - fParmC, 2) / fParmB);
-			}
-			if (y >= dMaxYValue)
-			{
-				dMaxYValue = y;
-			}
-			xfit.push_back(x);
-			yfit.push_back(y);
-
-		}
-		int listLineFit = max_element(yfit.begin(), yfit.end()) - yfit.begin();
-		index = xfit[listLineFit];
-		return index;
-	}
-	else
-		return -1;
-}
-double findIndexByPolynominal(vector<cv::Point2f>gaussFitdata,int num=2)
-{
-	double index = -1;
-	arma::vec xvec(gaussFitdata.size()), yvec(gaussFitdata.size());
-	for (int i = 0; i < gaussFitdata.size(); i++)
-	{
-		xvec[i] = gaussFitdata[i].x;
-		yvec[i] = gaussFitdata[i].y;
-	}
-	arma::vec p = arma::polyfit(xvec, yvec, num);
-	arma::vec xvecfit = arma::regspace(arma::min(xvec), 0.1, arma::max(xvec));
-	arma::vec yvecfit = arma::polyval(p, xvecfit);
-	arma::uvec indexvec = arma::find(yvecfit == arma::max(yvecfit));
-	index = xvecfit[indexvec[0]];
-	return index;
-}
-
 vector<int> dataFilter(vector<double> rawdata, double thresh)
 {
 	vector<int>vecList;
@@ -182,6 +122,8 @@ cv::Vec4f CrossCenter::verticalLineFit(cv::Mat img_gray,bool fitflag)
 			continue;
 		//y = rowMat;
 		//x = linespace(0, img_gray.cols, 1);
+		if (rec.x < 0 || rec.y < 1e-6)
+			continue;
 		cv::Mat roi = img_gray(rec);
 		cv::Scalar meanRoi = cv::mean(roi);
 		cv::Mat meanMat, stdMat;
@@ -194,7 +136,7 @@ cv::Vec4f CrossCenter::verticalLineFit(cv::Mat img_gray,bool fitflag)
 			cv::Point maxLoc;
 			cv::minMaxLoc(rowMat, NULL, NULL, NULL, &maxLoc);
 
-			double index=-1;
+			double index;
             if (fitflag==false)
             {
                 index = maxLoc.x;
@@ -209,15 +151,48 @@ cv::Vec4f CrossCenter::verticalLineFit(cv::Mat img_gray,bool fitflag)
 			{
 				gaussFitdata.push_back(cv::Point2f(j, rowMat.at<uchar>(0, j)));
 			}
-			//index = findIndexByGaussianFit(gaussFitdata);
-			index = findIndexByPolynominal(gaussFitdata, 2);
-			}
-			if (index > -1)
+			//if (findGaussianFitRawData(x, y, gaussFitdata))
 			{
-				fitLineData.push_back(cv::Point2f(index, i0));
-				rawData.push_back(index);
-				cv::circle(m_img_draw, cv::Point2f(index, i0), 1, cv::Scalar(255, 0, 0), -1);
+				cv::Mat A(3, 1, CV_32FC1, cv::Scalar(0));
+				gaussiantCurveFit(gaussFitdata, 2, A);
+				float a0 = A.at<float>(0, 0);
+				float a1 = A.at<float>(1, 0);
+				float a2 = A.at<float>(2, 0);
+				double total = NAN;
+                if (abs(a1) > 1e-6)
+                {
+                    float fParmB = -1 / (a2);
+                    float fParmC = -a1 / (2 * a2);
+                    float fParmA = std::exp(a0 + fParmC * fParmC / fParmB);
+                    //  cout << fParmA << ',' << fParmC << ',' << fParmB << endl;
+                    vector<double> xfit, yfit;
+                    double dMaxYValue = -1.0;
+                    for (int i = 0; i < gaussFitdata.size(); i++)
+                    {
+                        double x = gaussFitdata[i].x;
+                        double y = 0;
+                        if (int(fParmA) != 0)
+                        {
+                            y = fParmA * exp(-pow(x - fParmC, 2) / fParmB);
+                        }
+                        if (y >= dMaxYValue)
+                        {
+                            dMaxYValue = y;
+                        }
+                        xfit.push_back(x);
+                        yfit.push_back(y);
+                    }
+                   int listLineFit = max_element(yfit.begin(), yfit.end()) - yfit.begin();
+                    index = xfit[listLineFit];
+				}
+
+				}
+
 			}
+
+		    fitLineData.push_back(cv::Point2f(index, i0));
+            rawData.push_back(index);
+            circle(m_img_draw, cv::Point2f(index, i0), 1, cv::Scalar(255, 0, 0), -1);
 
 		}
 	}
@@ -258,8 +233,6 @@ cv::Vec4f CrossCenter::verticalLineFit(cv::Mat img_gray,bool fitflag)
 
 	return lines;
 }
-
-
 PointSet CrossCenter::verticalScan(cv::Mat img_gray)
 {
 	int num = 0;
@@ -289,6 +262,8 @@ PointSet CrossCenter::verticalScan(cv::Mat img_gray)
 			continue;
 		//y = rowMat;
 		//x = linespace(0, img_gray.cols, 1);
+		if (rec.x < 0 || rec.y < 1e-6)
+			continue;
 		cv::Mat roi = img_gray(rec).clone();
 		cv::Scalar meanRoi = cv::mean(roi);
 		cv::Mat meanMat, stdMat;
@@ -360,11 +335,11 @@ PointSet CrossCenter::verticalScan(cv::Mat img_gray)
 	{
 		for (int i = 0; i < ptset.pts.size(); i++)
 		{
-			cv::circle(m_img_draw, ptset.pts[i], 5, Scalar(0, 0, 255),-1);
+			circle(m_img_draw, ptset.pts[i], 5, Scalar(0, 0, 255),-1);
 		}
 		for (int i = 0; i < ptset.ptsOther.size(); i++)
 		{
-			cv::circle(m_img_draw, ptset.ptsOther[i], 5, Scalar(255, 255, 0), -1);
+			circle(m_img_draw, ptset.ptsOther[i], 5, Scalar(255, 255, 0), -1);
 		}
 
 	}
@@ -397,6 +372,8 @@ PointSet CrossCenter::horizontalScan(cv::Mat img_gray)
 		int roiLen = CrossCenterParameter::roilength;
 		bool flag = getROIRect(img_gray, rowMat, i0, 1, roiLen, rec, maxVec);
 		if (!flag)
+			continue;
+		if (rec.x < 0 || rec.y < 1e-6)
 			continue;
 		cv::Mat roi = img_gray(rec).clone();
 		cv::Scalar meanRoi = cv::mean(roi);
@@ -473,11 +450,11 @@ PointSet CrossCenter::horizontalScan(cv::Mat img_gray)
 	{
 		for (int i = 0; i < ptset.pts.size(); i++)
 		{
-			cv::circle(m_img_draw, ptset.pts[i], 5, Scalar(0, 0, 255), -1);
+			circle(m_img_draw, ptset.pts[i], 5, Scalar(0, 0, 255), -1);
 		}
 		for (int i = 0; i < ptset.ptsOther.size(); i++)
 		{
-			cv::circle(m_img_draw, ptset.ptsOther[i], 5, Scalar(255, 255, 0), -1);
+			circle(m_img_draw, ptset.ptsOther[i], 5, Scalar(255, 255, 0), -1);
 		}
 	}
 	return ptset;
@@ -551,6 +528,8 @@ cv::Vec4f CrossCenter::horizontalLineFit(cv::Mat img_gray, bool fitflag)
 			continue;
 		y = rowMat;
 		x = linespace(0, img_gray.rows, 1);
+		if (rec.x < 0 || rec.y < 1e-6)
+			continue;
 		cv::Mat roi = img_gray(rec);
 		cv::Scalar meanRoi = cv::mean(roi);
 		double corr = corrlateMat180(roi);
@@ -561,7 +540,7 @@ cv::Vec4f CrossCenter::horizontalLineFit(cv::Mat img_gray, bool fitflag)
 			vector<cv::Point2f>gaussFitdata;
 			cv::Point maxLoc;
 			cv::minMaxLoc(rowMat, NULL, NULL, NULL, &maxLoc);
-            double index=-1;
+            double index;
             if (fitflag == false)
             {
                 index = maxLoc.y;
@@ -575,16 +554,45 @@ cv::Vec4f CrossCenter::horizontalLineFit(cv::Mat img_gray, bool fitflag)
 			{
 				gaussFitdata.push_back(cv::Point2f(j, rowMat.at<uchar>(j, 0)));
 			}
-			//index = findIndexByGaussianFit(gaussFitdata);
-			index = findIndexByPolynominal(gaussFitdata);
 
-			}
-			if (index > -1)
+			//if (findGaussianFitRawData(x, y, gaussFitdata))
 			{
-				fitLineData.push_back(cv::Point2f(j0, index));
-				rawData.push_back(index);
-				cv::circle(m_img_draw, cv::Point2f(j0, index), 1, cv::Scalar(0, 0, 255), -1);
+				cv::Mat A(3, 1, CV_32FC1, cv::Scalar(0));
+				gaussiantCurveFit(gaussFitdata, 2, A);
+				float a0 = A.at<float>(0, 0);
+				float a1 = A.at<float>(1, 0);
+				float a2 = A.at<float>(2, 0);
+                if (abs(a1) > 1e-6)
+                {
+                    float fParmB = -1 / (a2);
+                    float fParmC = -a1 / (2 * a2);
+                    float fParmA = std::exp(a0 + fParmC * fParmC / fParmB);
+                    // cout << fParmA << ',' << fParmC << ',' << fParmB << endl;
+                    vector<double> xfit, yfit;
+                    double dMaxYValue = -1.0;
+                    for (int i = 0; i < gaussFitdata.size(); i++)
+                    {
+                        double x = gaussFitdata[i].x;
+                        double y = 0;
+                        if (int(fParmA) != 0)
+                        {
+                            y = fParmA * exp(-pow(x - fParmC, 2) / fParmB);
+                        }
+                        if (y >= dMaxYValue)
+                        {
+                            dMaxYValue = y;
+                        }
+                        xfit.push_back(x);
+                        yfit.push_back(y);
+                    }
+                    int listLineFit = max_element(yfit.begin(), yfit.end()) - yfit.begin();
+                    index=xfit[listLineFit];
+                }
+				}
 			}
+            fitLineData.push_back(cv::Point2f(j0, index));
+            rawData.push_back(index);
+            circle(m_img_draw, cv::Point2f(j0, index), 1, cv::Scalar(0, 0, 255), -1);
 
 		}
 	}
@@ -646,10 +654,10 @@ bool CrossCenter::getROIRect(cv::Mat img, cv::Mat rowMat, int i0, int flag, int 
         rect.y = rect.y + i0;
     else
         rect.x = rect.x + i0;
-	if (rect.x < 0 || rect.y < 0)
-		return false;
-	if (rect.x + len > img.cols || rect.y + len > img.rows)
-		return false;
+	//if (rect.x < 0 || rect.y < 0)
+	//	return false;
+	//if (rect.x + len > img.cols || rect.y + len > img.rows)
+	//	return false;
 	return true;
 }
 vector<double> CrossCenter::linespace(double start, double end, double step)
@@ -1046,8 +1054,8 @@ cv::Point2f CrossCenter::find_centerGaussian(cv::Mat img,bool fitflag)
 			point2.x = 10000;
 			point2.y = k * (10000 - point0.x) + point0.y;
 			cv::line(m_img_draw, point1, point2, cv::Scalar(0, 255, 0), 1, 8, 0);
-			cv::circle(m_img_draw, m_center, 3, cv::Scalar(0, 255, 0), -1);
-			cv::circle(img_draw, m_center, 1, cv::Scalar(0, 0, 255), -1);
+			circle(m_img_draw, m_center, 3, cv::Scalar(0, 255, 0), -1);
+			circle(img_draw, m_center, 1, cv::Scalar(0, 0, 255), -1);
 
 			m_a2 = a2; m_b2 = b2; m_c2 = c2;
 
@@ -1064,7 +1072,7 @@ cv::Point2f CrossCenter::find_centerGaussian(cv::Mat img,bool fitflag)
 				roi_center = find_roi_center(m_center + center_offset, a1, b1, c1, a2, b2, c2);
 				for (int i = 0; i < roi_center.size(); i++)
 				{
-					cv::circle(m_img_draw, roi_center[i], 1, cv::Scalar(0, 255, 0), -1);
+					circle(m_img_draw, roi_center[i], 1, cv::Scalar(0, 255, 0), -1);
 
 				}
 			}
@@ -1150,8 +1158,8 @@ cv::Point2f CrossCenter::find_centerGaussianEn(cv::Mat img)
 			point2.x = 10000;
 			point2.y = k * (10000 - point0.x) + point0.y;
 			cv::line(m_img_draw, point1, point2, cv::Scalar(0, 255, 0), 1, 8, 0);
-			cv::circle(m_img_draw, m_center, 3, cv::Scalar(0, 255, 0), -1);
-			cv::circle(img_draw, m_center, 1, cv::Scalar(0, 0, 255), -1);
+			circle(m_img_draw, m_center, 3, cv::Scalar(0, 255, 0), -1);
+			circle(img_draw, m_center, 1, cv::Scalar(0, 0, 255), -1);
 			m_a2 = a2; m_b2 = b2; m_c2 = c2;
             m_thetaH = atan(-a2 / (b2 + 1e-6));
 
@@ -1167,7 +1175,7 @@ cv::Point2f CrossCenter::find_centerGaussianEn(cv::Mat img)
 				roi_center = find_roi_center(m_center + center_offset, a1, b1, c1, a2, b2, c2);
 				for (int i = 0; i < roi_center.size(); i++)
 				{
-					cv::circle(m_img_draw, roi_center[i], 3, cv::Scalar(0, 255, 0), -1);
+					circle(m_img_draw, roi_center[i], 3, cv::Scalar(0, 255, 0), -1);
 
 				}
 			}
@@ -1247,7 +1255,7 @@ cv::Point2f CrossCenter::find_centerHoughLineAndWidth(cv::Mat img, int i, int si
 				break;
 			}
 			}
-			cv::circle(img_draw, re, 5, cv::Scalar(255, 0, 255), -1);
+			circle(img_draw, re, 5, cv::Scalar(255, 0, 255), -1);
 		}
 	}
 	return re;
@@ -1380,11 +1388,11 @@ cv::Point2f CrossCenter::find_centerLSD(cv::Mat img)
 					m_angle2.clear();
 					m_angle2.push_back(angle2);
 				}
-				cv::circle(m_img_draw, m_center, 2, cv::Scalar(255, 0, 0), -1);
+				circle(m_img_draw, m_center, 2, cv::Scalar(255, 0, 0), -1);
 				roi_center = find_roi_center(m_center + center_offset, a1, b1, c1, a2, b2, c2);
 				for (int i = 0; i < roi_center.size(); i++)
 				{
-					cv::circle(m_img_draw, roi_center[i], 5, cv::Scalar(255, 0, 0), -1);
+					circle(m_img_draw, roi_center[i], 5, cv::Scalar(255, 0, 0), -1);
 				}
 				return m_center;
 

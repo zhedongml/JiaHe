@@ -27,6 +27,6 @@ namespace MLImageDetection {
 		vector<cv::Point> matchTemplateMaxLocs(cv::Mat img, cv::Mat templ, double score = 0.7, int bin = 1);
 		void getSortData(vector<cv::Rect>rectVec, vector<cv::Rect>& rectVecSort);
 	private:
-		string m_filePath = "\\JsonFile\\AlgJson\\ALGConfig\\ghostTemplate.tif";
+		string m_filePath = "\\JsonFile\\AlgJson\\templateImg\\ghostTemplate.tif";
 	};
 }

@@ -123,13 +123,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;ALGORITHM_EXPORTS;MLALGORITHM_EXPORTS;LOG4CPLUS_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\MIPP;$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\extlib\color-util\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\extlib\libdmtx-0.7.2\src;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\mlcolorimeter\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\MIPP;$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\extlib\color-util\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\extlib\libdmtx-0.7.2\src;$(OPENCV_DIR)\include;$(SolutionDir)src\extlib\measureCamera\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\logplus\lib\x64\bin.Debug_Unicode;$(SolutionDir)src\extlib\armadillo\lib_win64;$(SolutionDir)src\extlib\libcbdetect\lib\x64\Debug;$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\Debug;$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\logplus\lib\x64\bin.Debug_Unicode;$(SolutionDir)src\extlib\armadillo\lib_win64;$(SolutionDir)src\extlib\libcbdetect\lib\x64\Debug;$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\Debug;$(OPENCV_DIR)\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world451d.lib;log4cplusUD.lib;cbdetect.lib;libdmtx.lib;libopenblas.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -147,16 +147,17 @@ xcopy /y "$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\$(Configuration)\*.dll" "$(
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>ALGORITHM_EXPORTS;MLALGORITHM_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\MIPP;$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\extlib\color-util\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\extlib\libdmtx-0.7.2\src;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\mlcolorimeter\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\MIPP;$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\extlib\color-util\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\extlib\libdmtx-0.7.2\src;$(OPENCV_DIR)\include;$(SolutionDir)src\extlib\measureCamera\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Optimization>MaxSpeed</Optimization>
       <LanguageStandard>Default</LanguageStandard>
+      <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\logplus\lib\x64\bin.Release_Unicode;$(SolutionDir)src\extlib\armadillo\lib_win64;$(SolutionDir)src\extlib\libcbdetect\lib\x64\Release;$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\Release;$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\logplus\lib\x64\bin.Release_Unicode;$(SolutionDir)src\extlib\armadillo\lib_win64;$(SolutionDir)src\extlib\libcbdetect\lib\x64\Release;$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\Release;$(OPENCV_DIR)\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opencv_world451.lib;log4cplusU.lib;cbdetect.lib;libdmtx.lib;libopenblas.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -169,7 +170,6 @@ xcopy /y "$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\$(Configuration)\*.dll" "$(
   <ItemGroup>
     <ClCompile Include="..\..\extlib\logplus\LogPlus.cpp" />
     <ClCompile Include="CrossCenter.cpp" />
-    <ClCompile Include="CrossCenterPro.cpp" />
     <ClCompile Include="FiducialDetect.cpp" />
     <ClCompile Include="find_centerCentroid.cpp" />
     <ClCompile Include="find_centerGaussian.cpp" />
@@ -185,7 +185,6 @@ xcopy /y "$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\$(Configuration)\*.dll" "$(
     <ClCompile Include="MLGhostRectangleDetect.cpp" />
     <ClCompile Include="ml_AF.cpp" />
     <ClCompile Include="ML_CoordinateTransformation.cpp" />
-    <ClCompile Include="ml_cross_center.cpp" />
     <ClCompile Include="ml_distortion_correction.cpp" />
     <ClCompile Include="ml_gridDetect.cpp" />
     <ClCompile Include="ml_image_public.cpp" />
@@ -193,14 +192,11 @@ xcopy /y "$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\$(Configuration)\*.dll" "$(
     <ClCompile Include="ml_multiCrossHairDetection.cpp" />
     <ClCompile Include="ml_rectangleDetection.cpp" />
     <ClCompile Include="ml_rigidTrans3D.cpp" />
-    <ClCompile Include="ml_two_cross.cpp" />
     <ClCompile Include="MTFRectangleDetect.cpp" />
-    <ClCompile Include="qlog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\extlib\json4moderncpp\json.hpp" />
     <ClInclude Include="CrossCenter.h" />
-    <ClInclude Include="CrossCenterPro.h" />
     <ClInclude Include="FiducialDetect.h" />
     <ClInclude Include="find_multiCrosshair.h" />
     <ClInclude Include="ImageFilter.h" />
@@ -210,7 +206,6 @@ xcopy /y "$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\$(Configuration)\*.dll" "$(
     <ClInclude Include="MLGhostRectangleDetect.h" />
     <ClInclude Include="ml_AF.h" />
     <ClInclude Include="ML_CoordinateTransformation.h" />
-    <ClInclude Include="ml_cross_center.h" />
     <ClInclude Include="ml_distortion_correction.h" />
     <ClInclude Include="ml_gridDetect.h" />
     <ClInclude Include="ml_image_public.h" />
@@ -218,9 +213,7 @@ xcopy /y "$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\$(Configuration)\*.dll" "$(
     <ClInclude Include="ml_multiCrossHairDetection.h" />
     <ClInclude Include="ml_rectangleDetection.h" />
     <ClInclude Include="ml_rigidTrans3D.h" />
-    <ClInclude Include="ml_two_cross.h" />
     <ClInclude Include="MTFRectangleDetect.h" />
-    <ClInclude Include="qlog.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

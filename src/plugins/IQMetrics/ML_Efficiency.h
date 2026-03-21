@@ -11,14 +11,27 @@ namespace MLIQMetrics
 {
 struct LumiEfficencyRe
 {
+
+    //double p5_disp = 0;
+    //double p95_disp = 0;
+    //double p50_disp = 0;
+    //double efficicncy_disp = -1;
     double efficicncy = -1;
     double p5=0;
     double p50 = 0;
     double p95 = 0;
     cv::Mat efficiencyMat;
+    double efficicncyLum = -1;
+    double p5Lum = 0;
+    double p50Lum = 0;
+    double p95Lum = 0;
+
+
+    cv::Mat efficiencyMatLum;
     cv::Mat slb_draw;
     bool flag = true;
     string errMsg = "";
+    MLImageDetection::ALGResult flag1;
     cv::Mat imgdraw;
 };
 class IQMETRICS_API MLEfficiency:public MLImageDetection::MLimagePublic
@@ -27,24 +40,21 @@ class IQMETRICS_API MLEfficiency:public MLImageDetection::MLimagePublic
     MLEfficiency();
     ~MLEfficiency();
     static MLEfficiency *instance();
-
+    void setIsDisparityEyebox(bool flag);
   public:
-      void setFOVType(FOVTYPE type);
     LumiEfficencyRe GetLuminanceEfficiency(cv::Mat img, string color, float angle, int eyeLoc);
-    LumiEfficencyRe GetLuminanceEfficiency(cv::Mat img, string color);
-    LumiEfficencyRe getLuminanceEfficiency(cv::Mat img, string color);
+    LumiEfficencyRe GetLuminanceEfficiency(const cv::Mat img, string color);
 
-    cv::Mat getSolidImgRotated(cv::Mat img,cv::Rect&rect);
+    cv::Mat getSolidImgRotated(cv::Mat img, cv::Rect& rect, bool isSLB = false);
     cv::RotatedRect getSolidBorder(cv::Mat img, cv::Rect &rect);
     cv::Rect getLumiEfficiencyROI(cv::Mat img, float angle);
 
   private:
     cv::Mat preProcess(cv::Mat img);
-    double readSLBLuminance(string color);
 
   private:
     double m_rotationAngle = 0;
     static MLEfficiency *effSelf;
-    FOVTYPE m_fovType;
+    bool m_isDisparityEyebox = false;
 };
 } // namespace MLIQMetrics

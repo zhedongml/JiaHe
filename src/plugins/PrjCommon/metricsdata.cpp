@@ -476,6 +476,11 @@ QString MetricsData::getLuminanceFile()
     return m_luminanceFile;
 }
 
+QString MetricsData::getColor()
+{
+    return m_focusEffect.colorIS;
+}
+
 void MetricsData::setCsvPath(QString csv,QString allcsv)
 {
     m_allcsvpath = allcsv;
@@ -1218,6 +1223,16 @@ void MetricsData::setRecipeTotalSeconds(int seconds)
 int MetricsData::getRecipeTotalSeconds()
 {
     return m_recipeTotalSeconds;
+}
+
+void MetricsData::setIQSLB(bool flag)
+{
+    m_IQSLB = flag;
+}
+
+bool MetricsData::getIQSLB()
+{
+    return m_IQSLB;
 }
 
 QDateTime MetricsData::getStartEyeboxTime()

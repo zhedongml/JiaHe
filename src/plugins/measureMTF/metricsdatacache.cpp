@@ -27,7 +27,7 @@ MetricsDataCache *MetricsDataCache::getInstance(QObject *parent)
     return self;
 }
 
-void MetricsDataCache::updateFOVCenter(QString color, float centerX, float centerY, std::vector<double> rotateH,
+/*void MetricsDataCache::updateFOVCenter(QString color, float centerX, float centerY, std::vector<double> rotateH,
                                        std::vector<double> rotateV)
 {
     QString colorLow = color.toLower();
@@ -38,6 +38,17 @@ void MetricsDataCache::updateFOVCenter(QString color, float centerX, float cente
     cen.centerY = centerY;
     cen.rotateH = rotateH;
     cen.rotateV = rotateV;
+    fovCenterMap.insert(colorLow.trimmed(), cen);
+}*/
+void MetricsDataCache::updateFOVCenter(QString color, float centerX, float centerY)
+{
+
+    QString colorLow = color.toLower();
+    if (colorLow.isEmpty())
+        return;
+    FOVCenter cen;
+    cen.centerX = centerX;
+    cen.centerY = centerY;
     fovCenterMap.insert(colorLow.trimmed(), cen);
 }
 

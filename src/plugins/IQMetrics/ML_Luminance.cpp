@@ -4,7 +4,6 @@
 #include"ml_rectangleDetection.h"
 #include<armadillo>
 #include"LogPlus.h"
-#include"MLSolidDetection.h"
 using namespace cv;
 using namespace MLIQMetrics;
 using namespace MLImageDetection;
@@ -17,21 +16,6 @@ MLIQMetrics::MLLuminance::~MLLuminance()
 {
 }
 
-
-void MLIQMetrics::MLLuminance::setColor(string color)
-{
-	m_color = color;
-}
-
-void MLIQMetrics::MLLuminance::setIsSLB(bool flag)
-{
-	m_isSLB = flag;
-}
-
-void MLIQMetrics::MLLuminance::setFOVType(FOVTYPE type)
-{
-	m_fovType = type;
-}
 
 LuminanceGuSuRe MLIQMetrics::MLLuminance::getLuminanceGusu(cv::Mat img)
 {
@@ -102,24 +86,20 @@ LuminanceRe MLIQMetrics::MLLuminance::getLuminance(cv::Mat img)
 		re.errMsg = info + "The input image is null!";
 		return re;
 	}
-	int binNum = IQMetricUtl::instance()->getBinNum(img.size());
-	cv::Rect rectROI = IQMetricsParameters::ROIRect;
-	cv::Mat imgROI = GetROIMat(img, rectROI);
-	cv::Mat img8 = convertToUint8(imgROI);
+	cv::Mat img8 = convertToUint8(img);
 	cv::Mat imgdraw = convertTo3Channels(img8);
+	int binNum = IQMetricUtl::instance()->getBinNum(img.size());
 	cv::Rect rect;
-	MLSolidDetection solid;
-	solid.setBinNum(binNum);
-	solid.setFOVType(m_fovType);
-	SolidDetectionRe solidRe=solid.getSolidLocation(img8);
+	cv::RotatedRect rectR = MLEfficiency::instance()->getSolidBorder(img8, rect);
+	cv::Rect rectRAfterRotation;
 	cv::Point2f center((float)(img.cols / 2), (float)(img.rows / 2));
-	updateRotateImg(imgdraw, solidRe.rotationAngle);
-	updateRotateImg(img8, solidRe.rotationAngle);
-	updateRotateImg(imgROI, solidRe.rotationAngle);
-	cv::Rect rectRAfterRotation = solid.getSolidExactRect(img8, solidRe.rectAf);
+
+	updateRotateImg(imgdraw, rectR.angle);
+	updateRotateImg(img, rectR.angle);
+	rectRAfterRotation = updateRotateRect(rectR, center);
 	float ratio = IQMetricsParameters::LuminaceActive;
 	cv::Rect ROIrect = updateRectByRatio(rectRAfterRotation, ratio);
-	cv::Mat roi = imgROI(ROIrect).clone();
+	cv::Mat roi = img(ROIrect).clone();
 	cv::Scalar m0, std;
 	cv::meanStdDev(roi, m0, std);
 	re.rectMean = m0(0);
@@ -129,10 +109,6 @@ LuminanceRe MLIQMetrics::MLLuminance::getLuminance(cv::Mat img)
 	putTextOnImage(imgdraw, "rectMean:" + numToString(m0(0)), ROIrect.tl(), 16 / binNum);
 	putTextOnImage(imgdraw, "rectCov:" + to_string(re.rectCov), ROIrect.tl() + cv::Point(0, 300 / binNum), 16 / binNum);
 	re.imgdraw = imgdraw;
-	std::mutex mtx;
-	mtx.lock();
-	saveSLBLuminane(re.rectMean);
-	mtx.unlock();
 	return re;
 }
 
@@ -156,16 +132,4 @@ cv::Mat MLIQMetrics::MLLuminance::getZoneAMask(cv::Size size, int radius)
 	maskMat.convertTo(maskMat, CV_8UC1);
 	cv::rotate(maskMat, maskMat, ROTATE_90_CLOCKWISE);
 	return maskMat;
-}
-
-void MLIQMetrics::MLLuminance::saveSLBLuminane(double lumi)
-{
-	
-	if (m_isSLB)
-	{
-		string fovstr = IQMetricUtl::instance()->fovTypeToString(m_fovType);
-		string filepath= "./config/ALGConfig/slbLumi_"+ fovstr+"_"+m_color + ".csv";
-		cv::Mat lumimat(1,CV_32FC1,lumi);
-		writeMatTOCSV(filepath, lumimat);
-	}
 }

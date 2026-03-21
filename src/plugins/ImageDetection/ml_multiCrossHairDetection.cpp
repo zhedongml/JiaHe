@@ -26,8 +26,8 @@ MultiCrossHairRe MLImageDetection::MultiCrossHairDetection::getMuliCrossHairCent
         cv::Mat img8 = convertToUint8(img);
         cv::Mat img_draw = convertTo3Channels(img8);
         cv::Mat gray = convertToGrayImage(img8);
-        // cv::Mat templ = cv::imread("./config/ALGConfig/template41.tif",0);
-        string filepath = get_exe_dir() + "/config/ALGConfig/crossTempl.tif";
+        // cv::Mat templ = cv::imread("./config/AlgConfig/template41.tif",0);
+        string filepath = get_exe_dir() + "./config/AlgConfig/crossTempl.tif";
         cv::Mat templ = cv::imread(filepath, 0);
         cv::resize(templ, templ, templ.size() / binNum);
         vector<cv::Point2f> P;
@@ -153,8 +153,8 @@ MLImageDetection::MultiCrossHairRe MLImageDetection::MultiCrossHairDetection::ge
         cv::Mat img8 = convertToUint8(img);
         cv::Mat img_draw = convertTo3Channels(img8);
         cv::Mat gray = convertToGrayImage(img8);
-        // cv::Mat templ = cv::imread("./config/ALGConfig/template41.tif",0);
-        //string filepath = get_exe_dir() + "./config/ALGConfig/crossTempl.tif";
+        // cv::Mat templ = cv::imread("./config/AlgConfig/template41.tif",0);
+        //string filepath = get_exe_dir() + "./config/AlgConfig/crossTempl.tif";
        // cv::Mat templ = cv::imread(filepath, 0);
         //cv::resize(templ, templ, templ.size() / binNum);
         cv::Mat imgResize;

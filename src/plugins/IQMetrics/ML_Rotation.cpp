@@ -4,7 +4,6 @@
 #include"LogPlus.h"
 #include"ml_gridDetect.h"
 #include"CrossCenter.h"
-#include"ML_NineCrossDetection.h"
 using namespace MLImageDetection;
 using namespace MLIQMetrics;
 using namespace cv;
@@ -16,19 +15,9 @@ MLIQMetrics::MLRotation::~MLRotation()
 {
 }
 
-void MLIQMetrics::MLRotation::setIsUpdateSLB(bool flag)
-{
-	m_IsUpdateSLB = flag;
-}
-
 void MLIQMetrics::MLRotation::setIsSLB(bool flag)
 {
 	m_IsSLB = flag;
-}
-
-void MLIQMetrics::MLRotation::setFOVType(FOVTYPE type)
-{
-	m_FOVType = type;
 }
 
 void MLIQMetrics::MLRotation::setColor(string color)
@@ -36,7 +25,12 @@ void MLIQMetrics::MLRotation::setColor(string color)
 	m_color = color;
 }
 
-RotationRe MLIQMetrics::MLRotation::getGridRotation(cv::Mat img)
+void MLIQMetrics::MLRotation::setIsUpdateSLB(bool flag)
+{
+	m_updateSLB = flag;
+}
+
+RotationRe MLIQMetrics::MLRotation::getGridRotation(const cv::Mat imgRaw)   //-------this--------
 {
 
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Cross Rotation calculation start");
@@ -44,16 +38,16 @@ RotationRe MLIQMetrics::MLRotation::getGridRotation(cv::Mat img)
 	string info = "------getCrossRotationGusu------";
 	RotationRe re;
 	double rotation = -1;
-	if (img.empty())
+	if (imgRaw.empty())
 	{
 		re.flag = false;
 		re.errMsg = info + "input image is null";
 		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
 		return re;
 	}
-
-	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
+	cv::Mat img = IQMetricUtl::instance()->getRotationAndFlipImg(imgRaw, m_IsSLB);
 	int binNum = IQMetricUtl::instance()->getBinNum(img.size());
+	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
 	m_binNum = binNum;
 	if (binNum <= 0)
 	{
@@ -66,13 +60,22 @@ RotationRe MLIQMetrics::MLRotation::getGridRotation(cv::Mat img)
 	cv::Mat img8 = convertToUint8(img);
 	cv::Mat img_draw = convertTo3Channels(img8);
 
-	int resizeNum = IQMetricsParameters::ResizeNum / binNum;
+	int resizeNum = IQMetricsParameters::GridResizeNum / binNum;
 	cv::Mat imgResize;
 	cv::resize(img8, imgResize, img8.size() / resizeNum);
 	MLGridDetect grid;
 	grid.setAccurateDetectionFlag(false);
 	grid.SetbinNum(resizeNum);
-	GridRe gridRe = grid.getGridContour(imgResize);
+	GridRe gridRe= grid.getGridContour(imgResize);
+	if (gridRe.flag == true && gridRe.xLocMat.size() == IQMetricsParameters::GridSize)
+	{
+		grid.writeGridInfoToCSV(gridRe);
+	}
+	else if (gridRe.xLocMat.size() != IQMetricsParameters::GridSize)
+	{
+		grid.readGridInfoFromCSV(gridRe);
+	}
+
 	if (gridRe.flag == false)
 	{
 		re.flag = false;
@@ -84,13 +87,13 @@ RotationRe MLIQMetrics::MLRotation::getGridRotation(cv::Mat img)
 
 	if (gridRe.flag)
 	{
-		int rows = gridRe.xLocMat.rows - 1;
-		int cols = gridRe.xLocMat.cols - 1;
+		int rows = gridRe.xLocMat.rows-1;
+		int cols = gridRe.xLocMat.cols-1;
 		cv::Point2f cenLeft, cenRight;
-		cenLeft.x = gridRe.xLocMat.at<float>(rows / 2, 0) * resizeNum;
-		cenLeft.y = gridRe.yLocMat.at<float>(rows / 2, 0) * resizeNum;
-		cenRight.x = gridRe.xLocMat.at<float>(rows / 2, cols) * resizeNum;
-		cenRight.y = gridRe.yLocMat.at<float>(rows / 2, cols) * resizeNum;
+		cenLeft.x = gridRe.xLocMat.at<float>(rows / 2,0)*resizeNum;
+		cenLeft.y = gridRe.yLocMat.at<float>(rows / 2,0)*resizeNum;
+		cenRight.x = gridRe.xLocMat.at<float>(rows/2,cols)*resizeNum;
+		cenRight.y = gridRe.yLocMat.at<float>( rows/2,cols)*resizeNum;
 		if (accurateFlag)
 		{
 			updateGridPoint(cenLeft, img8);
@@ -108,16 +111,9 @@ RotationRe MLIQMetrics::MLRotation::getGridRotation(cv::Mat img)
 			updateImgdraw(img_draw, cenRight, binNum);
 			double deltaPixelX = cenLeft.x - cenRight.x;
 			double deltaPixelY = cenLeft.y - cenRight.y;
-			rotation = atan(deltaPixelY / deltaPixelX) * 180.0 / CV_PI;
-			if (m_IsSLB)
-			{
-				writeMatTOCSV("./config/ALGConfig/rotation.csv", cv::Mat(1, 1, CV_32FC1, rotation));
-			}
-			else
-			{
-				cv::Mat romat = readCSVToMat("./config/ALGConfig/rotation.csv");
-				rotation = rotation - romat.at<float>(0, 0);
-			}
+			rotation = atan(deltaPixelY / deltaPixelX) * 180.0 / CV_PI;			
+			updateRotationRe(rotation, m_IsSLB);
+
 			string stry = "Delty(pixel):" + to_string(deltaPixelY);
 			string strx = "Deltx(pixel):" + to_string(deltaPixelX);
 			string strR = "RoationAngle(degree):" + to_string(rotation);
@@ -127,7 +123,13 @@ RotationRe MLIQMetrics::MLRotation::getGridRotation(cv::Mat img)
 			re.rotaionPts.push_back(cenLeft);
 			re.rotaionPts.push_back(cenRight);
 			re.imgdraw = img_draw;
+
+			if (m_IsSLB == false)
+				rotation = rotation - IQMetricsParameters::SystemRotationError;
+			else
+				rotation = rotation;
 			re.angle = rotation;
+
 		}
 		else
 		{
@@ -244,106 +246,58 @@ RotationRe MLIQMetrics::MLRotation::getCrossRotationGusu(cv::Mat img)
 	return re;
 }
 
-RotationRe MLIQMetrics::MLRotation::getNineCrossRotation(const cv::Mat img)
+RotationRe MLIQMetrics::MLRotation::getCrossRotationNoBorder(cv::Mat img)
 {
-
-	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Cross Rotation calculation start");
-	string info = "------getCrossRotationGusu------";
 	RotationRe re;
 	double rotation = -1;
-	if (img.empty())
+	if (img.data != NULL)
 	{
-		re.flag = false;
-		re.errMsg = info + "input image is null";
-		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
-		return re;
-	}
-	int binNum = IQMetricUtl::instance()->getBinNum(img.size());
-	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
-	m_binNum = binNum;
-	if (binNum <= 0)
-	{
-		re.flag = false;
-		re.errMsg = info + "the image size is not right, please check the input image";
-		return re;
-	}
-	updateRectByRatio1(ROIRect, 1.0 / binNum);
-	if (m_FOVType == BIGFOV)
-		ROIRect = cv::Rect(0, 0, -1, -1);
-	cv::Mat imgROI = GetROIMat(img, ROIRect);
-	cv::Mat img8 = convertToUint8(imgROI);
-	cv::Mat img_draw = convertTo3Channels(img8);
-	MLNineCrossDetection cross;
-	cross.setBinNum(binNum);
-	map<string, cv::Point2f>cenMap = cross.getNineCrosshairLocation(img8, m_FOVType);
-	map<string, cv::Rect>cenRectMap = cross.getNineCrossRect();
-	if (cenMap.size() != 9)
-	{
-		re.flag = false;
-		re.errMsg = info + "nine crosshair detection fail";
-		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
-		return re;
-	}
-	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "image detection sucessfully");
-	cv::Rect rectL = cenRectMap["4"];
-	cv::Rect rectR = cenRectMap["6"];
-	cv::Point2f cenLeft, cenRight;
-	CrossCenter cc;
-	//cv::Point2f cenLeft = cc.find_centerGaussian(img8(rectL),false);
-	//cv::Point2f cenRight = cc.find_centerGaussian(img8(rectR), false);
-	if (m_IsSLB)
-	{
-		 cenLeft = cc.find_centerLINES(img8(rectL));
-		 cenRight = cc.find_centerLINES(img8(rectR));
-	}
-	else
-	{
-		cenLeft = cc.find_centerGaussian(img8(rectL),false);
-		cenRight = cc.find_centerGaussian(img8(rectR),false);
-	}
+		cv::Rect rec, rect;
+		cv::Mat img8 = convertToUint8(img);
+		cv::Mat img_draw = convertTo3Channels(img8);
+		MultiCrossHairDetection md;
+		vector<cv::Point2f> ptsVec;
+		MultiCrossHairRe cenRe = md.getMultiCrossHairCenterBySlope(img8, ptsVec);
+		if (cenRe.flag)
+		{
+			cv::Mat lMat = img8(cenRe.rectMap["ML"]).clone();
+			cv::Mat rMat = img8(cenRe.rectMap["MR"]).clone();
+			CrossCenter cc;
+			cv::Point2f lcen, rcen;
+			lcen = cc.find_centerLINES(lMat);
+			rcen = cc.find_centerLINES(rMat);
+			//if (isSLB)
+			//{
+			//	lcen = cc.find_centerLINES(lMat);
+			//	rcen = cc.find_centerLINES(rMat);
+			//}
+			//else
+			//{
+			//	lcen = cc.find_centerGaussian(lMat, false);
+			//	rcen = cc.find_centerGaussian(rMat, false);
+			//}
+			vector<cv::Point2f> rotaionPts;
+			int binNum = IQMetricUtl::instance()->getBinNum(img.size());
+			if (lcen.x > 1e-6 && lcen.y > 1e-6 && rcen.x > 1e-6 && rcen.y > 1e-6)
+			{
+				lcen = lcen + Point2f(cenRe.rectMap["ML"].x, cenRe.rectMap["ML"].y);
+				rcen = rcen + Point2f(cenRe.rectMap["MR"].x, cenRe.rectMap["MR"].y);
+				rotaionPts.clear();
+				rotaionPts.push_back(lcen);
+				rotaionPts.push_back(rcen);
+				re.rotaionPts = rotaionPts;
+				updateImgdraw(img_draw, lcen, binNum);
+				updateImgdraw(img_draw, rcen, binNum);
+				double deltaPixelX = lcen.x - rcen.x;
+				double deltaPixelY = lcen.y - rcen.y;
+				rotation = atan(deltaPixelY / deltaPixelX) * 180.0 / CV_PI;
+			}
+		}
 
-	vector<cv::Point2f> rotaionPts;
-	if (cenLeft.x > 1e-6 && cenLeft.y > 1e-6 && cenRight.x > 1e-6 && cenRight.y > 1e-6)
-	{
-		cenLeft = cenLeft + cv::Point2f(rectL.tl());
-		cenRight = cenRight + cv::Point2f(rectR.tl());
-		rotaionPts.clear();
-		rotaionPts.push_back(cenLeft);
-		rotaionPts.push_back(cenRight);
-		re.rotaionPts = rotaionPts;
-		updateImgdraw(img_draw, cenLeft, binNum);
-		updateImgdraw(img_draw, cenRight, binNum);
-		double deltaPixelX = cenLeft.x - cenRight.x;
-		double deltaPixelY = cenLeft.y - cenRight.y;
-		rotation = atan(deltaPixelY / deltaPixelX) * 180.0 / CV_PI;
-		string stry = "Delty(pixel):" + to_string(deltaPixelY);
-		string strx = "Deltx(pixel):" + to_string(deltaPixelX);
-		string strR = "RoationAngle(degree):" + to_string(rotation);
-		updateImgdraw(img_draw, cenLeft + Point2f(0, 300 / binNum), stry, binNum);
-		updateImgdraw(img_draw, cenLeft + Point2f(0, 600 / binNum), strx, binNum);
-		updateImgdraw(img_draw, cenLeft + Point2f(0, 900 / binNum), strR, binNum);
-		//updateRotationRe(rotation, m_IsSLB);
-		if (m_IsSLB == false&&m_FOVType==SMALLFOV)
-			rotation = rotation - IQMetricsParameters::DUTRotationAngle;
-		re.rotaionPts.push_back(cenLeft);
-		re.rotaionPts.push_back(cenRight);
 		re.imgdraw = img_draw;
-		re.angle = rotation;
 	}
-	else
-	{
-		re.flag = false;
-		re.errMsg = info + " image detection fail";
-		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
-		return re;
-	}
-
-	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, " Rotation calculation successfully");
+	re.angle = rotation;
 	return re;
-
-
-
-
 }
 
 RotationRe MLIQMetrics::MLRotation::getMultiCrossRotation(cv::Mat img, int eyeLoc)
@@ -413,14 +367,12 @@ void MLIQMetrics::MLRotation::updateGridPoint(cv::Point2f& cen, cv::Mat img)
 	CrossCenter cc;
 	cv::Point2f c0 = cc.find_centerLINES(roi);
 	if (c0.x > 0 && c0.y > 0)
-		cen = c0 + Point2f(rect.tl());
+		cen= c0 + Point2f(rect.tl());
 }
 
 void MLIQMetrics::MLRotation::updateImgdraw(cv::Mat& imgdraw, cv::Point2f lcen, int binNum)
 {
-	//circle(imgdraw, lcen, 16 / binNum, Scalar(0, 0, 255), -1);
-	circle(imgdraw, lcen, 1, Scalar(0, 0, 255), -1);
-
+	circle(imgdraw, lcen, 16 / binNum, Scalar(0, 0, 255), -1);
 	string xstr = to_string(lcen.x);
 	string ystr = to_string(lcen.y);
 	string text = xstr.substr(0, xstr.size() - 4) + "," + ystr.substr(0, ystr.size() - 4);
@@ -432,18 +384,19 @@ void MLIQMetrics::MLRotation::updateImgdraw(cv::Mat& imgdraw, cv::Point2f pts1, 
 	cv::putText(imgdraw, str, pts1, FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(0, 255, 0), 16 / binNum);
 }
 
-void MLIQMetrics::MLRotation::updateRotationRe(double& rotation, bool m_IsSLB)
+void MLIQMetrics::MLRotation::updateRotationRe(double& rotation, bool isSLB)
 {
-	string fovstr = IQMetricUtl::instance()->fovTypeToString(m_FOVType);
-	string filepath = "./config/ALGConfig/" + fovstr + "_" + m_color + "_rotation.csv";
-	if (m_IsSLB)
+	string path = "./config/AlgConfig/slbInfo/rotation_" + m_color + ".csv";
+	if (isSLB)
 	{
-		if(m_IsUpdateSLB)
-		writeMatTOCSV(filepath, cv::Mat(1, 1, CV_32FC1, rotation));
+		std::mutex mtx;
+		mtx.lock();
+		writeMatTOCSV(path, cv::Mat(1, 1, CV_32FC1, rotation));
+		mtx.unlock();
 	}
-	else
+	else if (isSLB == false)
 	{
-		cv::Mat romat = readCSVToMat(filepath);
+		cv::Mat romat = readCSVToMat(path);
 		rotation = rotation - romat.at<float>(0, 0);
 	}
 }

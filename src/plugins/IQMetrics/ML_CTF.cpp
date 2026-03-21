@@ -68,8 +68,8 @@ AmazonCTFRe MLIQMetrics::MLCTF::getCTFAmazon(cv::Mat img, CTFType type)
             re.errMsg = info + "Input image is NULL";
             return re;
         }
-        cv::Rect ROIRect = IQMetricsParameters::ROIRect;
         int binNum = IQMetricUtl::instance()->getBinNum(img.size());
+        cv::Rect ROIRect = IQMetricsParameters::ROIRect;
         img = GetROIMat(img, ROIRect);
         cv::Mat img8 = convertToUint8(img);
         cv::Mat imgdraw = convertTo3Channels(img8);

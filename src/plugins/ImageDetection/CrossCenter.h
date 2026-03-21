@@ -64,7 +64,6 @@ using namespace std;
 		//static bool isInitFromJson;
 		void loadJsonConfig(const char* path);
 		void SetbinNum(int bin);
-		void setROILength(int len);
 
 		cv::Point2f get_crossCenter(int flag = 2);
 		cv::Point2f get_crossCenterMTF();// flag=5
@@ -81,8 +80,6 @@ using namespace std;
 		int get_line_width();
 		cv::Mat getImgDraw();
 		cv::Point2f getRotationAngle();
-		double getHorizontalLineAngle();
-	
 		vector<double> GetVerticalLine();
 		vector<double> GetHorizontalLine();
 		double GetHorizontalLineTheta();
@@ -111,8 +108,6 @@ using namespace std;
 		double m_thetaV = 0;
 		cv::Point2f m_center = cv::Point2f(0, 0);
 		cv::Point2f center_offset = cv::Point2f(0, 0);
-	    double m_hAngle =0;
-		double m_vAngle = 0;
 		//Mat img;
 		cv::Mat m_img_draw;
 		cv::Mat m_img;

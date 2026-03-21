@@ -29,16 +29,9 @@ namespace MLIQMetrics {
 		static int denseMTFHeight;
 		static int crossMTFWidth;
 		static int crossMTFHeight;
-		static int crossMTFWidthBig;
-		static int crossMTFHeightBig;
 		static int gridMTFWidth;
 		static int gridMTFHeight;
-		static int checkerMTFWidth_2;
-		static int checkerMTFHeight_2;
-		static int checkerMTFWidth_05;
-		static int checkerMTFHeight_05;
 		static int ROI_center_offset;
-		static int ROI_center_offset_big;
 		static double mtfFreq;
 		static double mtfFreq2;
 		static double zoneARadius;
@@ -49,15 +42,28 @@ namespace MLIQMetrics {
 		static double xsecWidth;
 		static int avg_width;
 		static double flareAngle;
+		static double flareRotationAngle;
 		static double distortonTheHor;
 		static double distortonTheVer;
-		static double distortonTheHorBig;
-		static double distortonTheVerBig;
 		static double CheckerRECTMaskHor;
 		static double CheckerRECTMaskVer;
 		static double CheckerCIRCLEMaskRadius;
-		static int ResizeNum;
+		static int GridResizeNum;
+		static int SolidResizeNum;
+		static bool IsUseNewMethod;
+		static double SystemRotationError;
+		static double SLBRotationAngle;
 		static double DUTRotationAngle;
+		static bool SLBFlipLR;
+		static bool DUTFlipLR;
+		static bool SLBFlipUD;
+		static bool DUTFlipUD;
+		static cv::Rect2f zoneBRect;
+		static cv::Size CheckerSize;
+		static cv::Size GridSize;
+
+		
+
 	};
 	static struct ROIParaNew
 	{
@@ -87,12 +93,15 @@ namespace MLIQMetrics {
 		~IQMetricUtl();
 		static IQMetricUtl* instance();
 	public:
+		cv::Rect getZoneRect(cv::Rect2f rect,cv::Point2f center, int binNum);
+		cv::Mat getRotationAndFlipImg(cv::Mat img, bool isSLB);
 		cv::Rect getRect(ROIParaNew para, cv::Point2f center);
 		int getBinNum(cv::Size s);
 		double getPix2Arcmin(cv::Size s);
 		double getPix2Degree(cv::Size s);
 		static bool isInitFromJson;
 		void loadJsonConfig(const char* path);
+		void rotateImg(cv::Mat src, cv::Mat& dst,double angle);
 		string fovTypeToString(FOVTYPE type);
 
 	private:

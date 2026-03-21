@@ -118,6 +118,13 @@ struct OtherImageInfo {
 	}
 };
 
+struct FocusEffect
+{
+	QString colorIS = "W"; // R,G,B
+	QString reticle = ""; // Clear, chessboard
+	QString nd = "";      // ND0,ND1,ND2,ND3
+};
+
 struct DutMeasureInfo {
 	QDateTime StartTime;
 	QDateTime EndTime;
@@ -329,6 +336,8 @@ public:
 	Result createCsvResultFile();
 	Result writeImageInfoCsv(QString message);
 
+	QString getColor();
+
 	void setDutEyeType(int eyeType);
 	int getDutEyeType();
 	void setReticleEyeType(int eyeType);
@@ -351,6 +360,9 @@ public:
 
 	void setLuminanceFile(QString file);
 	QString getLuminanceFile();
+
+	void setIQSLB(bool flag);
+	bool getIQSLB();
 
 	//Result csv path
 	void setCsvPath(QString csv, QString allcsv = "");
@@ -569,6 +581,7 @@ private:
 	const QString m_imageInfoFileName = "Image info.csv";
 
 	QDateTime startTime;
+	FocusEffect m_focusEffect;
 
 	int m_dutEyeType = RMT_DUT_RIGHT;
 	ROTATION_MIRROR_TYPE m_rotationMirrorType = RMT_SLB;

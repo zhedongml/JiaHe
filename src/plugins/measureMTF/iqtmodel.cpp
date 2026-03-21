@@ -87,8 +87,8 @@ QString IQTModel::calculateFOV(QString color, QString mtcName, std::vector<cv::M
 
 		clock_t start = clock();
 		MLUtils::TestState state = MetricsData::instance()->GetTestState();
-		FOVTYPE type = getFOVType();
-		fov.setFOVType(type);
+		//FOVTYPE type = getFOVType();
+		//fov.setFOVType(type);
 		MLIQMetrics::FovRe re = fov.getFOVSolid(img);
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
@@ -212,10 +212,10 @@ QString IQTModel::calculateFOVOffset(QString color, QString mtcName, std::vector
 			//MLIQMetrics::MLFOVOffset offset;
 			offset.setIsUpdateSLB(state.IsUpdateSLB);
 			offset.setIsSLB(!state.IsDut);
-			offset.setFOVType(type);
+			//offset.setFOVType(type);
 			offset.setColor(color.toLower().toStdString());
-			re = offset.getBoresightNineCross(img);
-			// re = offset.getBoresightGrid(img);
+			//re = offset.getBoresightNineCross(img);
+			 re = offset.getBoresightGrid(img);
 		}
 
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
@@ -272,9 +272,9 @@ QString IQTModel::calculateRotation(QString color, QString mtcName, std::vector<
 		rotation.setIsSLB(!state.IsDut);
 		rotation.setIsUpdateSLB(state.IsUpdateSLB);
 		FOVTYPE type = getFOVType();
-		rotation.setFOVType(type);
+		//rotation.setFOVType(type);
 		rotation.setColor(color.toLower().toStdString());
-		MLIQMetrics::RotationRe re = rotation.getNineCrossRotation(img);
+		MLIQMetrics::RotationRe re = rotation.getGridRotation(img);
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
 
@@ -332,11 +332,11 @@ QString IQTModel::calculateGridDistortion(QString color, QString mtcName, std::v
 		distortion.setIsSLB(!state.IsDut);
 		distortion.setIsUpdateSLB(state.IsUpdateSLB);
 		distortion.setColor(color.toLower().toStdString());
-		FOVTYPE type = getFOVType();
-		distortion.setFOVType(type);
-		if(type==BIGFOV)
-			re = distortion.GridDistortionFourCornerBigFOV(img_grid);
-		else
+		//FOVTYPE type = getFOVType();
+		//distortion.setFOVType(type);
+		//if(type==BIGFOV)
+		//	re = distortion.GridDistortionFourCornerBigFOV(img_grid);
+		//else
 		re = distortion.GridDistortionFourCorner(img_grid);
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
@@ -472,9 +472,9 @@ QString IQTModel::calculateLuminanceEfficiency(QString color, QString mtcName, s
 
 		clock_t start = clock();
 		QString colorLower = color.toLower();
-		FOVTYPE type = getFOVType();
-		efficiency.setFOVType(type);
-		MLIQMetrics::LumiEfficencyRe re = efficiency.getLuminanceEfficiency(lumImage, colorLower.toStdString());
+		//FOVTYPE type = getFOVType();
+		//efficiency.setFOVType(type);
+		MLIQMetrics::LumiEfficencyRe re = efficiency.GetLuminanceEfficiency(lumImage, colorLower.toStdString());
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
 
@@ -535,7 +535,11 @@ QString IQTModel::calculateFlareC(QString color, QString mtcName, std::vector<cv
 		// FOVCenter inform = MetricsDataCache::getInstance()->getFOVCenter(color);
 		 //float degree = MetricsDataCache::getInstance()->getRotationDeg(color);
 		clock_t start = clock();
-		FlareRe re = flare.getFlare(imgAuto, imgOver);
+		MLUtils::TestState state = MetricsData::instance()->GetTestState();
+		flare.setIsSLB(!state.IsDut);
+		//FlareRe re = flare.getFlare(imgAuto, imgOver);
+		FlareRe re = flare.getFlareNew(imgAuto, imgOver);
+
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
 
@@ -599,7 +603,7 @@ QString IQTModel::calculateFlareHDRC(QString color, QString mtcName, std::vector
 			// FOVCenter inform = MetricsDataCache::getInstance()->getFOVCenter(color);
 			 //float degree = MetricsDataCache::getInstance()->getRotationDeg(color);
 			clock_t start = clock();
-			FlareRe re = flare.getFlare(imgHDR);
+			FlareRe re;// = flare.getFlare(imgHDR);
 			double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 			LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
 
@@ -721,8 +725,8 @@ QString IQTModel::calculatePupilSwimC(QString color, QString mtcName, std::vecto
 		// FOVCenter inform = MetricsDataCache::getInstance()->getFOVCenter(color);
 		 //float degree = MetricsDataCache::getInstance()->getRotationDeg(color);
 		clock_t start = clock();
-		FOVTYPE type = getFOVType();
-		pupilswim.setFOVType(type);
+		//FOVTYPE type = getFOVType();
+		//pupilswim.setFOVType(type);
 		PupilSwimRe reLocal = pupilswim.getPupilSwim(img, imgNeg);
 		PupilSwimRe reGlobal = pupilswim.getPupilSwim(imgNeg, imgPos);
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
@@ -790,9 +794,9 @@ QString IQTModel::calculateGridDenseMTF(QString color, QString mtcName, std::vec
 	  //  GhostRe re = ghost.getGhostSquares(img);
 		clock_t start = clock();
 		MLIQMetrics::MLdenseMTF denseMTF;
-		denseMTF.setCheckerDegree(0);
+		//denseMTF.setCheckerDegree(0);
 		FOVTYPE type = getFOVType();
-		denseMTF.setFOVType(type);
+		//denseMTF.setFOVType(type);
 		DenseMTFGridRe re = denseMTF.getDenseMTFGrid(img);
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
@@ -869,8 +873,8 @@ QString IQTModel::calculate2degCheckerDenseMTF(QString color, QString mtcName, s
 		MLIQMetrics::MLdenseMTF denseMTF;
 		//denseMTF.setCheckerDegree(1);
 		FOVTYPE type = getFOVType();
-		denseMTF.setFOVType(type);
-		DenseMTFRe re = denseMTF.getDenseMTFChecker(img,1);
+		//denseMTF.setFOVType(type);
+		DenseMTFRe re = denseMTF.getDenseMTFChecker(img);
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
 
@@ -882,12 +886,12 @@ QString IQTModel::calculate2degCheckerDenseMTF(QString color, QString mtcName, s
 		vector<double> rolloff;
 		rolloff.push_back(cv::mean(re.mtfMapH)(0));
 		rolloff.push_back(cv::mean(re.mtfMapV)(0));
-		rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapH2));
-		rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapV2));
-		rolloff.push_back(cv::mean(re.mtfMapH2)(0));
-		rolloff.push_back(cv::mean(re.mtfMapV2)(0));
-		rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapH2));
-		rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapV2));
+		//rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapH2));
+		//rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapV2));
+		//rolloff.push_back(cv::mean(re.mtfMapH2)(0));
+		//rolloff.push_back(cv::mean(re.mtfMapV2)(0));
+		//rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapH2));
+		//rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapV2));
 
 		if (isDebug)
 		{
@@ -904,12 +908,12 @@ QString IQTModel::calculate2degCheckerDenseMTF(QString color, QString mtcName, s
 			vector<cv::Mat>matvec; vector<string>strvec;
 			matvec.push_back(re.mtfMapH);
 			matvec.push_back(re.mtfMapV);
-			matvec.push_back(re.mtfMapH2);
-			matvec.push_back(re.mtfMapV2);
+		//	matvec.push_back(re.mtfMapH2);
+		//	matvec.push_back(re.mtfMapV2);
 			strvec.push_back("mtfH_10.625");
 			strvec.push_back("mtfV_10.625");
-			strvec.push_back("mtfH_21.25");
-			strvec.push_back("mtfV_21.25");
+			//strvec.push_back("mtfH_21.25");
+		//	strvec.push_back("mtfV_21.25");
 			writeMatTOCSV(csvNameX, matvec, strvec);
 		}
 		cv::Mat rollmat;
@@ -948,9 +952,9 @@ QString IQTModel::calculate5degCheckerDenseMTF(QString color, QString mtcName, s
 		clock_t start = clock();
 		MLIQMetrics::MLdenseMTF denseMTF;
 		//denseMTF.setCheckerDegree(2);
-		FOVTYPE type = getFOVType();
-		denseMTF.setFOVType(type);
-		DenseMTFRe re = denseMTF.getDenseMTFChecker(img,2);
+		//FOVTYPE type = getFOVType();
+		//denseMTF.setFOVType(type);
+		DenseMTFRe re = denseMTF.getDenseMTFChecker(img);
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
 
@@ -962,12 +966,12 @@ QString IQTModel::calculate5degCheckerDenseMTF(QString color, QString mtcName, s
 		vector<double> rolloff;
 		rolloff.push_back(cv::mean(re.mtfMapH)(0));
 		rolloff.push_back(cv::mean(re.mtfMapV)(0));
-		rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapH2));
-		rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapV2));
-		rolloff.push_back(cv::mean(re.mtfMapH2)(0));
-		rolloff.push_back(cv::mean(re.mtfMapV2)(0));
-		rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapH2));
-		rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapV2));
+	//	rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapH2));
+		//rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapV2));
+	//	rolloff.push_back(cv::mean(re.mtfMapH2)(0));
+	//	rolloff.push_back(cv::mean(re.mtfMapV2)(0));
+	//	rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapH2));
+	//	rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapV2));
 
 		if (isDebug)
 		{
@@ -984,12 +988,12 @@ QString IQTModel::calculate5degCheckerDenseMTF(QString color, QString mtcName, s
 			vector<cv::Mat>matvec; vector<string>strvec;
 			matvec.push_back(re.mtfMapH);
 			matvec.push_back(re.mtfMapV);
-			matvec.push_back(re.mtfMapH2);
-			matvec.push_back(re.mtfMapV2);
+			//matvec.push_back(re.mtfMapH2);
+			//matvec.push_back(re.mtfMapV2);
 			strvec.push_back("mtfH_10.625");
 			strvec.push_back("mtfV_10.625");
-			strvec.push_back("mtfH_21.25");
-			strvec.push_back("mtfV_21.25");
+			//strvec.push_back("mtfH_21.25");
+			//strvec.push_back("mtfV_21.25");
 			writeMatTOCSV(csvNameX, matvec, strvec);
 		}
 		cv::Mat rollmat;
@@ -1029,8 +1033,8 @@ QString IQTModel::calculateCrossMTF(QString color, QString mtcName, std::vector<
 	  //  GhostRe re = ghost.getGhostSquares(img);
 		clock_t start = clock();
 		FOVTYPE type = getFOVType();
-		crossMTF.setFOVType(type);
-		CrossMTFRe re = crossMTF.getCrossMTF(img, type);
+		//crossMTF.setFOVType(type);
+		CrossMTFRe re = crossMTF.getCrossMTF(img);
 		// DenseMTFGridRe re = denseMTF.getDenseMTFGrid(img);
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
@@ -1041,14 +1045,14 @@ QString IQTModel::calculateCrossMTF(QString color, QString mtcName, std::vector<
 			return "";
 		}
 		vector<double> rolloff;
-		rolloff.push_back(re.meanH);
-		rolloff.push_back(re.meanV);
-		rolloff.push_back(re.minH);
-		rolloff.push_back(re.minV);
-		rolloff.push_back(re.meanH2);
-		rolloff.push_back(re.meanV2);
-		rolloff.push_back(re.minH2);
-		rolloff.push_back(re.minV2);
+		//rolloff.push_back(re.meanH);
+		//rolloff.push_back(re.meanV);
+		//rolloff.push_back(re.minH);
+		//rolloff.push_back(re.minV);
+		//rolloff.push_back(re.meanH2);
+		//rolloff.push_back(re.meanV2);
+		//rolloff.push_back(re.minH2);
+		//rolloff.push_back(re.minV2);
 		if (isDebug)
 		{
 			QString qTempPath = MetricsData::instance()->getMTFImgsDir() + "Result_" + id;
@@ -1061,14 +1065,14 @@ QString IQTModel::calculateCrossMTF(QString color, QString mtcName, std::vector<
 				imwrite((qTempPath + "\\" + mtcName + "_" + color + "_eb" + id + ".jpg").toStdString(), outImg);
 			string csvNameX = (qTempPath + "\\" + mtcName + "map_" + color + "_eb" + id + ".csv").toStdString();
 			vector<cv::Mat>matvec; vector<string>strvec;
-			matvec.push_back(re.mtfMapH);
-			matvec.push_back(re.mtfMapV);
-			matvec.push_back(re.mtfMapH2);
-			matvec.push_back(re.mtfMapV2);
-			strvec.push_back("mtfH_6.25");
-			strvec.push_back("mtfV_6.25");
-			strvec.push_back("mtfH_12.5");
-			strvec.push_back("mtfV_12.5");
+			//matvec.push_back(re.mtfMapH);
+			//matvec.push_back(re.mtfMapV);
+			//matvec.push_back(re.mtfMapH2);
+			//matvec.push_back(re.mtfMapV2);
+			//strvec.push_back("mtfH_6.25");
+			//strvec.push_back("mtfV_6.25");
+			//strvec.push_back("mtfH_12.5");
+			//strvec.push_back("mtfV_12.5");
 			writeMatTOCSV(csvNameX, matvec, strvec);
 		}
 		cv::Mat rollmat;
@@ -1108,10 +1112,12 @@ QString IQTModel::calculateLateralColor(QString color, QString mtcName, std::vec
 		//MLIQMetrics::MLLateralColor lateralColor;
 		lateralColor.setIsSLB(!state.IsDut);
 		lateralColor.setIsUpdateSLB(state.IsUpdateSLB);
-		FOVTYPE type = getFOVType();
-		lateralColor.setFOVType(type);
-		// LateralColorRe re=lateralColor.getLateralColorGrid(imgR, imgG, imgB);
-		LateralColorRe re = lateralColor.getLateralColorCrossPreLoc(imgR, imgG, imgB);
+		//FOVTYPE type = getFOVType();
+		//lateralColor.setFOVType(type);
+		//LateralColorRe re=lateralColor.getLateralColorGrid(imgR, imgG, imgB);
+		LateralColorRe re = lateralColor.getLateralColorGridCenter(imgR, imgG, imgB);
+
+		//LateralColorRe re = lateralColor.getLateralColorCrossPreLoc(imgR, imgG, imgB);
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
 
@@ -1123,12 +1129,16 @@ QString IQTModel::calculateLateralColor(QString color, QString mtcName, std::vec
 		vector<double> rolloff;
 		rolloff.push_back(re.maxdis);
 		rolloff.push_back(re.meandis);
-		rolloff.push_back(mean(re.subXRGArcmin)(0));
-		rolloff.push_back(mean(re.subYRGArcmin)(0));
-		rolloff.push_back(mean(re.subXGBArcmin)(0));
-		rolloff.push_back(mean(re.subYGBArcmin)(0));
-		rolloff.push_back(mean(re.subXRBArcmin)(0));
-		rolloff.push_back(mean(re.subYRBArcmin)(0));
+		rolloff.push_back(re.disRGArcmin);
+		rolloff.push_back(re.disRBArcmin);
+		rolloff.push_back(re.disGBArcmin);
+
+		//rolloff.push_back(mean(re.subXRGArcmin)(0));
+		//rolloff.push_back(mean(re.subYRGArcmin)(0));
+		//rolloff.push_back(mean(re.subXGBArcmin)(0));
+		//rolloff.push_back(mean(re.subYGBArcmin)(0));
+		//rolloff.push_back(mean(re.subXRBArcmin)(0));
+		//rolloff.push_back(mean(re.subYRBArcmin)(0));
 
 		if (isDebug)
 		{
@@ -1143,6 +1153,7 @@ QString IQTModel::calculateLateralColor(QString color, QString mtcName, std::vec
 			imwrite((qTempPath + "\\" + mtcName + "_G_eb" + id + ".jpg").toStdString(), re.imgdrawG);
 			imwrite((qTempPath + "\\" + mtcName + "_B_eb" + id + ".jpg").toStdString(), re.imgdrawB);
 			//imwrite((qTempPath + "\\" + "lateralColorRGB.jpg").toStdString(), re.imgdraw);
+			imwrite((qTempPath + "\\" + "lateralColorRGB.jpg").toStdString(), re.imgdraw);
 
 			vector<cv::Mat>submat;
 			vector<string>substrvec;
@@ -1268,8 +1279,8 @@ QString IQTModel::calculateSmallContrastChessboard(QString color, QString mtcNam
 		clock_t start = clock();
 		MLUtils::TestState state = MetricsData::instance()->GetTestState();
 		checkerCR.setColor(color.toLower().toStdString());
-		FOVTYPE type = getFOVType();
-		checkerCR.setFOVType(type);
+		//FOVTYPE type = getFOVType();
+		//checkerCR.setFOVType(type);
 		checkerCR.setIsUpdateSLB(state.IsUpdateSLB);
 		checkerCR.setEyeboxLocation(id.toStdString()); // Left or Right
 		MLIQMetrics::ContrastRatioRe re = checkerCR.getContrastRatio(imgP, imgN, !state.IsDut);
@@ -1348,10 +1359,10 @@ QString IQTModel::calculateLuminanceRolloff(QString color, QString mtcName, std:
 		MLUtils::TestState state = MetricsData::instance()->GetTestState();
 		rollOff.setIsSLB(!state.IsDut);
 		FOVTYPE type = getFOVType();
-		rollOff.setFOVType(type);
-		rollOff.setIsUpdateSLB(state.IsUpdateSLB);
-		rollOff.setColor(color.toLower().toStdString());
-		MLIQMetrics::RolloffJiaXingRe re = rollOff.getRelativeBrightness(img);
+		//rollOff.setFOVType(type);
+	//	rollOff.setIsUpdateSLB(state.IsUpdateSLB);
+	//	rollOff.setColor(color.toLower().toStdString());
+		MLIQMetrics::RolloffRe re = rollOff.getRelativeBrightness(img);
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
 
@@ -1361,8 +1372,8 @@ QString IQTModel::calculateLuminanceRolloff(QString color, QString mtcName, std:
 			return "";
 		}
 		vector<double> rolloff;
-		rolloff.push_back(re.meanLumi);
-		rolloff.push_back(re.CV);
+		//rolloff.push_back(re.meanLumi);
+		rolloff.push_back(re.p5/re.p95*100);
 		rolloff.push_back(re.p5);
 		rolloff.push_back(re.p50);
 		rolloff.push_back(re.p95);

@@ -1,40 +1,49 @@
 #pragma once
-#ifdef ALGORITHM_EXPORTS
+#ifdef MLALGORITHM_EXPORTS
 #define ALGORITHM_API __declspec(dllexport)
 #else
 #define ALGORITHM_API __declspec(dllimport)
 #endif
+
 #include <opencv2/core/base.hpp>
 #include <opencv2/core/mat.hpp>
+#include <Eigen/Dense>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 #include<vector>
-#include"ml_image_public.h"
+#include<string>
+#include<iostream>
+using namespace std;
 namespace MLImageDetection
 {
-	struct FeatureLoc
+	struct RigidTrans2D
 	{
-		cv::Point3f ACSLoc;
-		cv::Point3f WGLoc;
+		double rotationAngle=0;//radian
+		cv::Point2f offset;
 		bool flag = true;
-		string message = "";
+		std::string errMsg = "";
 	};
-	struct PlaneInfo
+	struct RigidTrans3D
 	{
-		double thetaX=0;
-		double thetaY = 0;
-		double thetaZ = 0;
-
-        bool isAdd = true;
+		cv::Mat matR;
+		Eigen::Matrix3d R;
+		Eigen::Vector3d eulerAngle;
+		Eigen::Vector3d displacement;
+		bool flag = true;
+		std::string errMsg = "";
 	};
-	class ALGORITHM_API ML_CoordinateTransformation
+	
+	class ALGORITHM_API MLCoordinateTransformation
 	{
 	public:
-		ML_CoordinateTransformation();
-		~ML_CoordinateTransformation();
+		MLCoordinateTransformation();  
+		~MLCoordinateTransformation();
 	public:
-		void getFeatureACSLoc(FeatureLoc fiducialLoc, PlaneInfo plane, FeatureLoc &eyeboxLoc);
-	    void getFeatureACSLoc(FeatureLoc fiducialLoc, PlaneInfo plane, vector<FeatureLoc> &eyeboxLoc);
-		cv::Mat calculateRotationMatrix(PlaneInfo plane);
-		cv::Point3f calcuatePlaneLoc(cv::Mat R, cv::Point3f wgLoc);				
+		RigidTrans2D getRigidTrans2D(std::vector<cv::Point2f>srcPts, std::vector<cv::Point2f>dstPts);
+		RigidTrans3D getRigidTrans3D(std::vector<cv::Point3f> srcPoints, std::vector<cv::Point3f> dstPoints);
+		vector<cv::Point2f>getPointsAfterTrans2D(vector<cv::Point2f>srcPts, RigidTrans2D trans);
+	    cv::Point2f getPointAfterTrans2D(cv::Point2f srcPts, RigidTrans2D trans);	
+	private:
 	};
-
 }
+

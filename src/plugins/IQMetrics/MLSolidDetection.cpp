@@ -69,7 +69,7 @@ SolidDetectionRe MLIQMetrics::MLSolidDetection::getSolidDtectionRe(cv::Mat img8)
 	cv::Mat imgRe;
 	cv::resize(img8, imgRe, img8.size() / resizeNum);
 	RectangleDetection rd;
-	rd.setBinNum(4);
+	//rd.setBinNum(4);
 	cv::RotatedRect rectR = rd.getRectangleBorder(imgRe);
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Solid Border detection successfully");
 	cv::Rect rectAf;
@@ -90,7 +90,7 @@ SolidDetectionRe MLIQMetrics::MLSolidDetection::getSolidDtectionRe(cv::Mat img8)
 cv::Rect MLIQMetrics::MLSolidDetection::getSolidExactRect(cv::Mat img8, cv::Rect rect)
 {
 	RectangleDetection rd;
-	rd.setBinNum(m_binNum);
+	//rd.setBinNum(m_binNum);
 	return rd.getSolidExactRect(img8, rect);
 }
 

@@ -39,17 +39,29 @@ namespace MLIQMetrics
 	public:
 		MLFlare();
 		~MLFlare();
-		FlareRe getFlare(const cv::Mat imgHDR);
+		void setIsSLB(bool flag);
+		void setPatternCenter(cv::Point2f cen);
 		FlareRe getFlare(const cv::Mat imgAuto, const cv::Mat imgOver);
+		FlareRe getFlareNew(const cv::Mat imgAuto, const cv::Mat imgOver);
+
 		vector<cv::Rect>detectFlareROI(cv::Mat img);
 		vector<cv::Rect> detectCenterFlareROI(cv::Mat img);
+		vector<cv::Rect> detectCenterFlareROI(cv::Mat img,cv::Rect rect);
+
 		vector<cv::Rect>getSortedRect(vector<cv::Rect>rectVec);
 	
 		XSECRe straightXsec(cv::Mat imgOver, double pix2deg, cv::Point2f center,double xSecDist,cv::Mat &imgdraw);
 		StrightXsecRe processStrightXsec(cv::Mat xSec,vector<double>flarePeaks, int baselineBuffer);
 		cv::Mat calculateHDRImage(cv::Mat imgAuto, cv::Mat imgOver, vector<cv::Rect>rectVec);
+	private:
+		cv::Mat getFlareRotationImg(cv::Mat img, double angle);
+		void writeFlareInfo(vector<cv::Rect> rectVec);
+		void readFlareInfo(vector<cv::Rect> &rectVec);
 
 	private:
 		vector<cv::Scalar>m_color;
+		cv::Point2f m_center;
+		int m_len = 1600;
+		bool m_IsSLB = false;
 	};
 }

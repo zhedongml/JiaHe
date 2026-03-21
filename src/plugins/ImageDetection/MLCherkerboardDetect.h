@@ -46,9 +46,10 @@ namespace MLImageDetection
         CheckerboardRe detectChessboardTemplate1(cv::Mat img, double crRatio, int binNum = 1);
         CheckerboardRe detectChessboardHist(cv::Mat img, double crRatio);
 
-
 		vector<cv::Point2f> matchTemplateMaxLocs(cv::Mat img, cv::Mat templ, double score = 0.7, int bin = 1);
 		vector<cv::Rect> getCRROI(vector<cv::Point2f>corners, cv::Mat indexMap, vector<cv::Point2f>& centerVec);
+        vector<cv::Rect> getCRROI(cv::Mat xloc, cv::Mat yloc, vector<cv::Point2f>& centerVec);
+
     private:
         bool getNewROIRect(vector<cv::Rect> roiVecP, vector<cv::Rect> roiVecN, vector<cv::Rect>& NewroiVecP, vector<cv::Rect>& NewroiVecN);
         bool ReoderROIVec(vector<cv::Rect> roiVecP, vector<cv::Rect> roiVecN, vector<cv::Rect>& NewroiVecP,
@@ -62,6 +63,8 @@ namespace MLImageDetection
     public:
         cv::Mat updateIndexMapKL(cv::Mat indexMap, vector<cv::Point2f> cornersPoint,
             vector<cv::Point2f>& cornersPointNew);
+        cv::Mat updateIndexMapKLRectangle(cv::Mat indexMap, vector<cv::Point2f> cornersPoint, vector<cv::Point2f>& cornersPointNew);
+
         cv::RotatedRect getCherkerBorder(cv::Mat img, cv::Rect& rect);
 
     private:
@@ -76,7 +79,7 @@ namespace MLImageDetection
 
     private:
         cv::Rect m_rect = cv::Rect(0, 0, -1, -1);
-        double m_CRAreaPercent = 0.25;
+        double m_CRAreaPercent = 0.5;
         int m_chessAlgortithm = 1;
         int m_pointsClusters = 50;
         int m_xyClassification = 150;

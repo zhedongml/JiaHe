@@ -3,7 +3,6 @@
 #include"CrossCenter.h"
 #include"ml_multiCrossHairDetection.h"
 #include"ml_gridDetect.h"
-#include"ML_NineCrossDetection.h"
 #include"LogPlus.h"
 using namespace cv;
 using namespace MLIQMetrics;
@@ -18,19 +17,9 @@ MLIQMetrics::MLFOVOffset::~MLFOVOffset()
 }
 
 
-void MLIQMetrics::MLFOVOffset::setIsUpdateSLB(bool flag)
-{
-	m_IsUpdateSLB = flag;
-}
-
 void MLIQMetrics::MLFOVOffset::setIsSLB(bool flag)
 {
 	m_IsSLB = flag;
-}
-
-void MLIQMetrics::MLFOVOffset::setFOVType(FOVTYPE type)
-{
-	m_FOVType = type;
 }
 
 void MLIQMetrics::MLFOVOffset::setColor(string color)
@@ -38,22 +27,27 @@ void MLIQMetrics::MLFOVOffset::setColor(string color)
 	m_color = color;
 }
 
-FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(cv::Mat img)
+void MLIQMetrics::MLFOVOffset::setIsUpdateSLB(bool flag)
+{
+	m_updateSLB = flag;
+}
+
+FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(const cv::Mat imgRaw)  
 {
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Boresight calculation start");
 
 	string  info = "------getBoresightGrid------";
 	FovOffsetRe re;
 
-	if (img.empty())
+	if (imgRaw.empty())
 	{
 		re.flag = false;
 		re.errMsg = info + "Input image is null";
 		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
 		return re;
 	}
+	int binNum = IQMetricUtl::instance()->getBinNum(imgRaw.size());
 	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
-	int binNum = IQMetricUtl::instance()->getBinNum(img.size());
 	m_binNum = binNum;
 	if (binNum <= 0)
 	{
@@ -61,22 +55,30 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(cv::Mat img)
 		re.errMsg = info + "the image size is not right, please check the input image";
 		return re;
 	}
-	double pixel2Arcmin = IQMetricUtl::instance()->getPix2Arcmin(img.size());
+	double pixel2Arcmin = IQMetricUtl::instance()->getPix2Arcmin(imgRaw.size());
 	cv::Point2f opticalCenter = IQMetricsParameters::opticalCenter / binNum;
 	updateRectByRatio1(ROIRect, 1.0 / binNum);
-	img = GetROIMat(img, ROIRect);
-	opticalCenter = opticalCenter - Point2f(ROIRect.tl());
+	cv::Mat img = GetROIMat(imgRaw, ROIRect);
+	opticalCenter = opticalCenter - Point2f(ROIRect.tl());    // 全局坐标系切换到ROI内的坐标系，因为realcenter是在roi内求的
 	cv::Mat img8 = convertToUint8(img);
 	cv::Mat imgdraw = convertTo3Channels(img8);
 
-	int resizeNum = IQMetricsParameters::ResizeNum / binNum;
+	int resizeNum = IQMetricsParameters::GridResizeNum / binNum;
 	cv::Mat imgResize;
 	cv::resize(img8, imgResize, img8.size() / resizeNum);
 
 	MLGridDetect grid;
 	grid.setAccurateDetectionFlag(false);
 	grid.SetbinNum(resizeNum);
-	GridRe gridRe = grid.getGridContour(imgResize);
+	//GridRe gridRe = grid.getGridContour(imgResize);
+	GridRe gridRe = grid.getGridCenter(imgResize);
+	if (gridRe.flag)
+	{
+		writeFOVOffsetGridCenter(gridRe);
+	}
+	else
+		readFOVOffsetGridCenter(gridRe);
+
 	if (gridRe.flag == false)
 	{
 		re.flag = false;
@@ -85,16 +87,12 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(cv::Mat img)
 		return re;
 	}
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Cross detection sucessfully");
-	cv::Point2f realcenter;
-	int rows = gridRe.xLocMat.rows-1;
-	int cols= gridRe.xLocMat.cols-1;
-	realcenter.x = gridRe.xLocMat.at<float>(rows / 2, cols / 2)*resizeNum;
-	realcenter.y = gridRe.yLocMat.at<float>(rows / 2, cols / 2) * resizeNum;
+	cv::Point2f realcenter=gridRe.center*resizeNum;
+
 	if (accurateFlag)
 	{
 		realcenter=getExactLoc(realcenter, img8);
 	}
-
 	double deltaPx = realcenter.x - opticalCenter.x;
 	double deltaPy = realcenter.y - opticalCenter.y;
 	re.V = deltaPy * pixel2Arcmin;
@@ -103,27 +101,11 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(cv::Mat img)
 	re.D = sqrt(re.H*re.H+re.V*re.V);
 	re.deltxPixel = deltaPx;
 	re.deltyPixel = deltaPy;
-
-	if (m_IsSLB == true)
-	{
-		vector<double> rovec;
-		rovec.push_back(re.H);
-		rovec.push_back(re.V);
-		cv::Mat romat(rovec);
-		writeMatTOCSV("./config/ALGConfig/offset.csv", romat);
-	}
-	else if (m_IsSLB == false)
-	{
-		cv::Mat romat = readCSVToMat("./config/ALGConfig/offset.csv");
-		re.H = re.H - romat.at<float>(0, 0)-3.02*60;
-		re.V = re.V - romat.at<float>(1, 0)+6.03*60;
-		re.D = sqrt(re.H * re.H + re.V * re.V);
-	}
-
-	updateImgdraw(imgdraw, realcenter, binNum);
+	upateFOVOffset(re,m_IsSLB);
+	updateImgdraw(imgdraw, realcenter, binNum,Scalar(255,0,255));
 	//updateImgdraw(imgdraw, opticalCenter, binNum);
 	string strOpt = numToString(opticalCenter.x) + "," + numToString(opticalCenter.y);
-	circle(imgdraw, opticalCenter, 24 / binNum, Scalar(255, 0, 0), -1);
+	circle(imgdraw, opticalCenter, 24 / binNum, Scalar(0, 255, 0), -1);
 	updateImgdraw(imgdraw, opticalCenter + cv::Point2f(0, -400 / binNum), strOpt, binNum);
 	string strx = "Deltx(pixel):" + to_string(deltaPx);
 	string stry = "Delty(pixel):" + to_string(deltaPy);
@@ -134,6 +116,7 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(cv::Mat img)
 	updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 1200 / binNum), strxArcmin, binNum);
 	updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 1600 / binNum), stryArcmin, binNum);
 	re.imgdraw = imgdraw.clone();
+	re.crossCenter.clear();
 	re.crossCenter.push_back(realcenter);
 	re.crossCenter.push_back(opticalCenter);
 	return re;
@@ -152,8 +135,8 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGuSu(cv::Mat img)
 		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
 		return re;
 	}
-	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
 	int binNum = IQMetricUtl::instance()->getBinNum(img.size());
+	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
 	if (binNum <= 0)
 	{
 		re.flag = false;
@@ -210,8 +193,8 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGuSu(cv::Mat img)
 			re.D = deltaP * pixel2Arcmin;
 			re.deltxPixel = deltaPx;
 			re.deltyPixel = deltaPy;
-			updateImgdraw(img_draw, realcenter, binNum);
-			updateImgdraw(img_draw, opticalCenter, binNum);
+			updateImgdraw(img_draw, realcenter, binNum,Scalar(255,0,255));
+			updateImgdraw(img_draw, opticalCenter, binNum, Scalar(255, 0, 0));
 			string strx = "Deltx(pixel):" + to_string(deltaPx);
 			string stry = "Delty(pixel):" + to_string(deltaPy);
 			string strxArcmin = "Delty(Arcmin):" + to_string(re.H);
@@ -233,79 +216,6 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGuSu(cv::Mat img)
 		}
 	}
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Boresight calculation successfully");
-
-	return re;
-}
-FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightNineCross(const cv::Mat img)
-{
-	FovOffsetRe re;
-	if (img.data != NULL)
-	{
-
-		int binNum = IQMetricUtl::instance()->getBinNum(img.size());
-		double pixel2deg = IQMetricUtl::instance()->getPix2Degree(img.size());
-		cv::Rect ROIRect = IQMetricsParameters::ROIRect;
-		updateRectByRatio1(ROIRect, 1.0 / binNum);
-		if (m_FOVType == BIGFOV)
-			ROIRect = cv::Rect(0, 0, -1, -1);
-		cv::Mat roi1 = getRectROIImg(img, ROIRect);
-		cv::Mat img8 = convertToUint8(roi1);
-		cv::Mat img_draw = convertTo3Channels(img8);
-		cv::Point2f opticalCenter = IQMetricsParameters::opticalCenter / binNum;
-		opticalCenter = opticalCenter - cv::Point2f(ROIRect.tl())/binNum;
-
-		MLNineCrossDetection cross;
-		cross.setBinNum(binNum);
-		map<string, cv::Point2f> cenMap=cross.getNineCrosshairLocation(roi1, m_FOVType);
-		map<string, cv::Rect> cenRectMap = cross.getNineCrossRect();
-		if (cenMap.size()==9)
-		{
-			cv::Rect rect = cenRectMap["5"];
-			cv::Mat cenMat = roi1(rect).clone();
-			CrossCenter cc;
-			cv::Point2f center;
-			//center = cc.find_centerGaussian(cenMat,false);
-			if(m_IsSLB)
-			  center=cc.find_centerLINES(cenMat);
-			else
-				center = cc.find_centerGaussian(cenMat, false);
-			cv::Point2f realcenter;
-			if (center.x > 1e-6 && center.y > 1e-6)
-			{
-				realcenter.x = center.x  + rect.x;
-				realcenter.y = center.y + rect.y;
-				double deltaPx = realcenter.x - opticalCenter.x ;
-				double deltaPy = realcenter.y - opticalCenter.y ;
-				re.V = deltaPy * pixel2deg;
-				re.H = deltaPx * pixel2deg;
-				double deltaP = sqrt(pow(deltaPx, 2) + pow(deltaPy, 2));
-				re.D = deltaP * pixel2deg;
-				re.deltxPixel = deltaPx;
-				re.deltyPixel = deltaPy;
-				cv::circle(img_draw, realcenter, 16 / binNum, cv::Scalar(255, 0, 0), -1);
-				cv::circle(img_draw, opticalCenter , 16 / binNum, cv::Scalar(255, 0, 255), -1);
-				//string xstr = to_string(realcenter.x);
-				//string ystr = to_string(realcenter.y);
-				//string text = xstr.substr(0, xstr.size() - 4) + "," + ystr.substr(0, ystr.size() - 4);
-				//cv::putText(img_draw, text, realcenter, FONT_HERSHEY_PLAIN, 2, Scalar(255, 0, 255), 2);
-				updateImgdraw(img_draw, realcenter, binNum);
-				updateImgdraw(img_draw, opticalCenter, binNum);
-				string strx = "Deltx(pixel):" + to_string(deltaPx);
-				string stry = "Delty(pixel):" + to_string(deltaPy);
-				string strxArcmin = "Deltx(Deg):" + to_string(re.H);
-				string stryArcmin = "Delty(Deg):" + to_string(re.V);
-				updateImgdraw(img_draw, realcenter + cv::Point2f(0, 200 / binNum), strx, binNum);
-				updateImgdraw(img_draw, realcenter + cv::Point2f(0, 400 / binNum), stry, binNum);
-				updateImgdraw(img_draw, realcenter + cv::Point2f(0, 600 / binNum), strxArcmin, binNum);
-				updateImgdraw(img_draw, realcenter + cv::Point2f(0, 800 / binNum), stryArcmin, binNum);				
-				upateFOVOffset(re,m_IsSLB);
-				re.imgdraw = img_draw.clone();
-				re.crossCenter.push_back(realcenter);
-				re.crossCenter.push_back(opticalCenter);
-			}
-		}
-	}
-	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "FOV offset calculation successfully");
 
 	return re;
 }
@@ -338,8 +248,8 @@ MLIQMetrics::FovOffsetRe MLIQMetrics::MLFOVOffset::BoresightNoBorder(cv::Mat img
 			{
 				realcenter.x = center.x + ROIRect.x + centerRe.rectCenter.x;
 				realcenter.y = center.y + ROIRect.y + centerRe.rectCenter.y;
-				double deltaPx = realcenter.x - opticalCenter.x / binNum;
-				double deltaPy = realcenter.y - opticalCenter.y / binNum;
+				int deltaPx = realcenter.x - opticalCenter.x / binNum;
+				int deltaPy = realcenter.y - opticalCenter.y / binNum;
 				re.V = deltaPy * pixel2deg;
 				re.H = deltaPx * pixel2deg;
 				double deltaP = sqrt(pow(deltaPx, 2) + pow(deltaPy, 2));
@@ -372,9 +282,9 @@ MLIQMetrics::FovOffsetRe MLIQMetrics::MLFOVOffset::BoresightNoBorder(cv::Mat img
 		// celeConfig.GetNewPara(img);
 		cv::Mat img8 = convertToUint8(img);
 		cv::Mat img_draw = convertTo3Channels(img8);
+		int binNum = IQMetricUtl::instance()->getBinNum(img.size());
 		cv::Rect ROIRect = IQMetricsParameters::ROIRect;
 		cv::Mat roi1 = getRectROIImg(img, ROIRect).clone();
-		int binNum = IQMetricUtl::instance()->getBinNum(img.size());
 		cv::Point2f opticalCenter = IQMetricsParameters::opticalCenter;
 		double pixel2deg = IQMetricUtl::instance()->getPix2Degree(img.size());
 		MultiCrossHairDetection md;
@@ -399,8 +309,8 @@ MLIQMetrics::FovOffsetRe MLIQMetrics::MLFOVOffset::BoresightNoBorder(cv::Mat img
 
 				cv::Point2f basePoint =
 					updateOpticalCenter(opticalCenter / binNum, img.size(), roationAngle, mirror);
-				double deltaPx = realcenter.x - basePoint.x;
-				double deltaPy = realcenter.y - basePoint.y;
+				int deltaPx = realcenter.x - basePoint.x;
+				int deltaPy = realcenter.y - basePoint.y;
 				re.V = deltaPy * pixel2deg;
 				re.H = deltaPx * pixel2deg;
 				double deltaP = sqrt(pow(deltaPx, 2) + pow(deltaPy, 2));
@@ -424,9 +334,9 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getMultiCrossBoresight(cv::Mat img, int ro
 		// celeConfig.GetNewPara(img);
 		cv::Mat img8 = convertToUint8(img);
 		cv::Mat img_draw = convertTo3Channels(img8);
+		int binNum = IQMetricUtl::instance()->getBinNum(img.size());
 		cv::Rect ROIRect = IQMetricsParameters::ROIRect;
 		cv::Mat roi1 = getRectROIImg(img8, ROIRect);
-		int binNum = IQMetricUtl::instance()->getBinNum(img.size());
 		cv::Point2f opticalCenter = IQMetricsParameters::opticalCenter;
 		double pixel2deg = IQMetricUtl::instance()->getPix2Degree(img.size());
 		MultiCrossHairDetection md;
@@ -449,17 +359,18 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getMultiCrossBoresight(cv::Mat img, int ro
 			{
 				realcenter.x = center.x + ROIRect.x + centerRe.rectMap["9"].x;
 				realcenter.y = center.y + ROIRect.y + centerRe.rectMap["9"].y;
+
 				cv::Point2f basePoint = updateOpticalCenter(opticalCenter / binNum, img.size(), roationAngle, mirror);
-				double deltaPx = realcenter.x - basePoint.x;
-				double deltaPy = realcenter.y - basePoint.y;
+				int deltaPx = realcenter.x - basePoint.x;
+				int deltaPy = realcenter.y - basePoint.y;
 				re.V = deltaPy * pixel2deg;
 				re.H = deltaPx * pixel2deg;
 				double deltaP = sqrt(pow(deltaPx, 2) + pow(deltaPy, 2));
 				re.D = deltaP * pixel2deg;
 				re.deltxPixel = deltaPx;
 				re.deltyPixel = deltaPy;
-				updateImgdraw(img_draw, realcenter, binNum);
-				updateImgdraw(img_draw, basePoint, binNum);
+				updateImgdraw(img_draw, realcenter, binNum,Scalar(255,0,255));
+				updateImgdraw(img_draw, basePoint, binNum, Scalar(255, 0, 0));
 				putTextOnImage(img_draw, "deltX:(pixel)" + numToString(deltaPx), basePoint + cv::Point2f(0, 300 / binNum), 24 / binNum);
 				putTextOnImage(img_draw, "deltY:(pixel)" + numToString(deltaPy), basePoint + cv::Point2f(0, 600 / binNum), 24 / binNum);
 				putTextOnImage(img_draw, "deltX:(degree)" + numToString(re.H),
@@ -473,22 +384,20 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getMultiCrossBoresight(cv::Mat img, int ro
 	return re;
 }
 
-void MLIQMetrics::MLFOVOffset::updateImgdraw(cv::Mat& imgdraw, cv::Point2f h1, int binNum)
+void MLIQMetrics::MLFOVOffset::updateImgdraw(cv::Mat& imgdraw, cv::Point2f h1, int binNum,cv::Scalar color)
 {
-	circle(imgdraw, h1, 24 / binNum, Scalar(0, 0, 255), -1);
+	circle(imgdraw, h1, 24 / binNum, color, -1);
 	string xstr = to_string(h1.x);
 	string ystr = to_string(h1.y);
 	string text = xstr.substr(0, xstr.size() - 4) + "," + ystr.substr(0, ystr.size() - 4);
 	//putTextOnImage(imgdraw, text, h1, 24 / binNum);
-	cv::putText(imgdraw, text, h1, FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(0, 255, 0), 8 / binNum);
-
+	cv::putText(imgdraw, text, h1, FONT_HERSHEY_PLAIN, 16 / binNum, color, 8 / binNum);
 	//cv::putText(imgdraw, text, h1, FONT_HERSHEY_PLAIN, 24 / binNum, Scalar(0, 255, 0), 8 / binNum);
 }
 
 void MLIQMetrics::MLFOVOffset::updateImgdraw(cv::Mat& imgdraw, cv::Point2f pts1, string str, int binNum)
 {
 	cv::putText(imgdraw, str, pts1, FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(0, 255, 0), 8 / binNum);
-
 }
 
 cv::Point2f MLIQMetrics::MLFOVOffset::getExactLoc(cv::Point2f cen, cv::Mat gray)
@@ -508,30 +417,50 @@ cv::Point2f MLIQMetrics::MLFOVOffset::getExactLoc(cv::Point2f cen, cv::Mat gray)
 		return cen;
 }
 
-void MLIQMetrics::MLFOVOffset::upateFOVOffset(FovOffsetRe& re, bool m_IsSLB)
+void MLIQMetrics::MLFOVOffset::upateFOVOffset(FovOffsetRe& re, bool IsSLB)
 {
-	string fovstr = IQMetricUtl::instance()->fovTypeToString(m_FOVType);
-	string filepath = "./config/ALGConfig/" +fovstr+"_"+ m_color + "_offset.csv";
-	if (m_IsSLB == true)
+	string filepath = "./config/AlgConfig/slbInfo/offset_" + m_color + ".csv";
+
+	if (IsSLB == true)
 	{
 		vector<double> rovec;
 		rovec.push_back(re.H);
 		rovec.push_back(re.V);
-		cv::Mat romat(rovec);
-		if (m_IsUpdateSLB)
-		{
+		cv::Mat romat(rovec);	
 			std::mutex mtx;
 			mtx.lock();
 			writeMatTOCSV(filepath, romat);
-			mtx.unlock();
-		}
+			mtx.unlock();		
 	}
-	else if (m_IsSLB == false)
+	else if (IsSLB == false)
 	{
-	
+
 		cv::Mat romat = readCSVToMat(filepath);
-		re.H = re.H - romat.at<float>(0, 0) ;
+		re.H = re.H - romat.at<float>(0, 0);
 		re.V = re.V - romat.at<float>(1, 0);
 		re.D = sqrt(re.H * re.H + re.V * re.V);
 	}
+}
+
+void MLIQMetrics::MLFOVOffset::writeFOVOffsetGridCenter(GridRe re)
+{
+	string filepath = "./config/AlgConfig/slbInfo/FOVoffsetCen.csv";
+	vector<double>cenVec;
+	cenVec.push_back(re.center.x);
+	cenVec.push_back(re.center.y);
+	cv::Mat romat(cenVec);
+	std::mutex mtx;
+	mtx.lock();
+	writeMatTOCSV(filepath, romat);	
+	mtx.unlock();
+
+}
+
+void MLIQMetrics::MLFOVOffset::readFOVOffsetGridCenter(GridRe& re)
+{
+	string filepath = "./config/AlgConfig/slbInfo/FOVoffsetCen.csv";
+	cv::Mat cenmat = readCSVToMat(filepath);
+	re.center.x = cenmat.at<float>(0, 0);
+	re.center.y = cenmat.at<float>(1, 0);
+	re.flag = true;
 }

@@ -18,15 +18,15 @@ cv::Point2f CrossCenter::find_centerMTF(cv::Mat img)
     //= find_centerGrad(img);
     if (abs(c0.x) < 1e-6 || abs(c0.y) < 1e-6)
     {
-        //cv::Mat tmpl = cv::imread("E:\\project\\mtfiq1\\src\\app\\config\\ALGConfig\\template3.tif");
+        //cv::Mat tmpl = cv::imread("E:\\project\\mtfiq1\\src\\app\\config\\templateImg\\template3.tif");
         cv::Mat tmpl;
         if (DEBUG==1)
-           tmpl = cv::imread("E:\\project\\hydrus2\\mtfiq\\src\\app\\config\\ALGConfig\\template42.tif");
+           tmpl = cv::imread("E:\\project\\hydrus2\\mtfiq\\src\\app\\config\\templateImg\\template42.tif");
             else
-             tmpl = cv::imread("./config/ALGConfig/template42.tif");
+             tmpl = cv::imread("./config/AlgConfig/template42.tif");
 
 
-         //cv::Mat tmpl = cv::imread("D:\\GitProject\\mtfiq2\\src\\app\\config\\ALGConfig\\template3.tif");
+         //cv::Mat tmpl = cv::imread("D:\\GitProject\\mtfiq2\\src\\app\\config\\templateImg\\template3.tif");
         c0 = find_centerTemplate(img, tmpl);
          //cv::circle(img_draw, c0, 2, Scalar(255, 0, 255), -1);
     }
@@ -84,9 +84,9 @@ cv::Point2f CrossCenter::find_centerMTF_manual(cv::Mat img)
         {
             cv::Mat tmpl;
             if (DEBUG == 1)
-                tmpl = cv::imread("E:\\project\\hydrus3\\mtfiq\\src\\app\\config\\ALGConfig\\template42.tif");
+                tmpl = cv::imread("E:\\project\\hydrus3\\mtfiq\\src\\app\\config\\templateImg\\template42.tif");
             else
-                tmpl = cv::imread("./config/ALGConfig/template42.tif");
+                tmpl = cv::imread("./config/AlgConfig/template42.tif");
             c0 = find_centerTemplate(img, tmpl);
             // cv::circle(img_draw, c0, 2, Scalar(255, 0, 255), -1);
         }

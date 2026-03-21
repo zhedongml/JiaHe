@@ -2,7 +2,6 @@
 #include "ML_FOV.h"
 #include"CrossCenter.h"
 #include"ml_rectangleDetection.h"
-#include"MLSolidDetection.h"
 #include"LogPlus.h"
 using namespace cv;
 using namespace MLIQMetrics;
@@ -15,52 +14,84 @@ MLIQMetrics::MLFOV::~MLFOV()
 {
 }
 
-void MLIQMetrics::MLFOV::setFOVType(FOVTYPE type)
+void MLIQMetrics::MLFOV::setIsSLB(bool flag)
 {
-    m_fovType = type;
+    m_isSLB = flag;
 }
 
-FovRe MLIQMetrics::MLFOV::getFOVSolid(const cv::Mat img)
+FovRe MLIQMetrics::MLFOV::getFOVSolid(cv::Mat imgRaw)   //   -----this-----
 {
     LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Solid FOV  calculation start");
     string info = "------ getFOVSolid------";
     FovRe re;
-    if (img.data != NULL)
+    if (imgRaw.data != NULL)
     {
-        //img = getRotationImg(img, m_rotationAngle);
+        cv::Mat img = IQMetricUtl::instance()->getRotationAndFlipImg(imgRaw, m_isSLB);
+        img = getRotationImg(img, m_rotationAngle);
         int binNum = IQMetricUtl::instance()->getBinNum(img.size());
-        cv::Rect rectROI = IQMetricsParameters::ROIRect;
-        updateRectByRatio1(rectROI, 1.0 / binNum);
-        if (m_fovType == BIGFOV)
-            rectROI = cv::Rect(0, 0, -1, -1);
-        cv::Mat imgROI = GetROIMat(img, rectROI);
-        cv::Mat img8 = convertToUint8(imgROI);
+        cv::Rect ROIRect = IQMetricsParameters::ROIRect;
+        updateRectByRatio1(ROIRect, 1.0 / binNum);
+        cv::Mat roi = getRectROIImg(img, ROIRect);
+        cv::Mat img8 = convertToUint8(roi);
         cv::Mat imgdraw = convertTo3Channels(img8);
-        MLSolidDetection solid;
-        solid.setFOVType(m_fovType);
-        solid.setBinNum(binNum);
-        SolidDetectionRe solidRe = solid.getSolidLocation(img8);
-        //updateRotateImg(img, solidRe.rotationAngle);
-        updateRotateImg(imgdraw, solidRe.rotationAngle);
-        updateRotateImg(img8, solidRe.rotationAngle);
-        cv::Rect rectAf = solid.getSolidExactRect(img8, solidRe.rectAf);
-        //drawRectOnImage(imgdraw, rectR);
+        // need add 4 to config
+        int resizeNum = 4 / binNum;
+        cv::Mat imgRe;
+        cv::resize(img8, imgRe, img8.size() / resizeNum);
+        RectangleDetection rd;
+        cv::RotatedRect rectR = rd.getRectangleBorder(imgRe);
+        //if (rectR.size.area() < 1e6 || rectR.size.area() > 2.25e6)
+        if (rectR.size.area() < 1e6 || rectR.size.area() > 5.85e6)
+        {
+            rd.readSolidInfoFromCSV(rectR);
+        }
+        else
+        {
+            rd.writeSolidInfoToCSV(rectR);
+        }
         LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "SolidBorder detection successfully");
+        cv::Rect rectAf;
+        cv::Point2f center((float)(imgRe.cols / 2), (float)(imgRe.rows / 2));
+        rectAf = updateRotateRect(rectR, center); // 外接水平矩形
+        rectAf = rd.getSolidExactRect(imgRe, rectAf);  // 精确矩形rect
+        updateRectByRatio1(rectAf, resizeNum);
+
         cv::Point2f P[4];
         //rectR.points(P);
         P[0] = Point2f(rectAf.tl());
         P[1] = Point2f(rectAf.tl()) + Point2f(0, rectAf.height);
         P[2] = Point2f(rectAf.tl()) + Point2f(rectAf.width, rectAf.height);
         P[3] = Point2f(rectAf.tl()) + Point2f(rectAf.width, 0);
+
+        cv::Point2f cen = rectR.center;
         cv::Point2f h1 = (P[0] + P[1]) / 2.0;
         cv::Point2f h2 = (P[2] + P[3]) / 2.0;
         cv::Point2f v1 = (P[0] + P[3]) / 2.0;
         cv::Point2f v2 = (P[2] + P[1]) / 2.0;
+
+        if (false)
+        {
+            cv::Mat rowMat = img8(cv::Range(v1.y, v2.y), cv::Range(0, img8.cols));
+            cv::Mat colMat = img8(cv::Range(0, img8.rows), cv::Range(h1.x, h2.x));
+            cv::reduce(rowMat, rowMat, 0, REDUCE_AVG);
+            cv::reduce(colMat, colMat, 1, REDUCE_AVG);
+            if (findEdgePts1(rowMat, 0, h1, h2))
+            {
+                h1.y = cen.y;
+                h2.y = cen.y;
+            }
+            if (findEdgePts1(colMat, 1, v1, v2))
+            {
+                v1.x = cen.x;
+                v2.x = cen.x;
+            }
+        }
         re.EdgePoint.push_back(h1);
         re.EdgePoint.push_back(h2);
         re.EdgePoint.push_back(v1);
         re.EdgePoint.push_back(v2);
-        cv::Point2f cen=getPointsCenter(re.EdgePoint);
+        cen = getPointsCenter(re.EdgePoint); // 求中心点
+
         // draw the data
         updateImgdraw(imgdraw, h1, binNum);
         updateImgdraw(imgdraw, h2, binNum);
@@ -68,15 +99,15 @@ FovRe MLIQMetrics::MLFOV::getFOVSolid(const cv::Mat img)
         updateImgdraw(imgdraw, v2, binNum);
         updateImgdraw(imgdraw, cen, binNum);
 
-        double FovH = calculateFOV(h1, cen, binNum);
+        double FovH = calculateFOV(h1, cen, binNum); // 中心到左边界的半水平视场角
         double FovH1 = calculateFOV(h2, cen, binNum);
         double FovV = calculateFOV(v1, cen, binNum);
         double FovV1 = calculateFOV(v2, cen, binNum);
         re.FovH = FovH + FovH1;
         re.FovV = FovV + FovV1;
         re.FovDiag = sqrt(re.FovH * re.FovH + re.FovV * re.FovV);
-        putTextOnImage(imgdraw,"FOVH:"+ to_string(re.FovH), cen + cv::Point2f(0, 400 / binNum), 24 / binNum);
-        putTextOnImage(imgdraw, "FOVV:"+to_string(re.FovV), cen + cv::Point2f(0, 800 / binNum), 24 / binNum);
+        putTextOnImage(imgdraw, "FOVH:" + to_string(re.FovH), cen + cv::Point2f(0, 400 / binNum), 24 / binNum);
+        putTextOnImage(imgdraw, "FOVV:" + to_string(re.FovV), cen + cv::Point2f(0, 800 / binNum), 24 / binNum);
         re.imgdraw = imgdraw;
     }
     else

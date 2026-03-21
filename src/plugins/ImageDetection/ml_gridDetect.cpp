@@ -24,6 +24,80 @@ void MLImageDetection::MLGridDetect::setAccurateDetectionFlag(bool flag)
 	accurateFlag = flag;
 }
 
+GridRe MLImageDetection::MLGridDetect::getGridCenter(const cv::Mat imgRaw)
+{
+	string info = "----getGridCenter---- ";
+	GridRe re;
+	if (imgRaw.empty())
+	{
+		re.flag = false;
+		re.errMsg = info + "input image is null";
+		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
+		return re;
+	}
+	cv::Mat img8 = convertToUint8(imgRaw);
+	cv::Mat gray = convertToGrayImage(img8);
+	cv::Mat imgdraw = convertTo3Channels(img8);
+	std::vector<std::vector<cv::Point>> contours;
+	std::vector<cv::Vec4i> hierarchy;
+	cv::Mat img_process, srcbinary;
+	cv::GaussianBlur(gray, gray, cv::Size(3, 3), 0, 0);
+	cv::Mat element1 = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(10, 10));
+	//  cv::morphologyEx(roi, roi, cv::MORPH_CLOSE, element1);
+	  // cv::morphologyEx(img_gray1, img_process, cv::MORPH_GRADIENT, element1);
+	threshold(gray, srcbinary, 0, 255, THRESH_TRIANGLE);
+	// cv::Canny(srcbinary, img_canny, 50, 150);
+	cv::findContours(srcbinary, contours, hierarchy, cv::RETR_EXTERNAL, cv::CHAIN_APPROX_NONE);
+	vector<double> area_sort;
+	vector<int> list;
+	cv::Rect rect;
+	cv::RotatedRect rectR;
+	for (int i = 0; i < contours.size(); ++i)
+	{
+		double area = contourArea(contours[i], false);
+		// cout << area << endl;
+		double powbin = 2; // pow(m_para.binNum, 2);
+		 rect = cv::boundingRect(cv::Mat(contours[i]));
+		if (area > 1e5)
+		{
+			rectR = cv::minAreaRect(contours[i]);
+			cv::rectangle(imgdraw, rect, Scalar(255, 0, 255), 1);
+			break;
+		}
+	}
+	cv::Point2f p[4];
+	rectR.points(p);
+	cv::Point2f cen = (p[0] + p[1] + p[2] + p[3]) / 4.0;
+	cv::Point2f cen1 = getAccurateCenter(cen, gray);
+	drawPointOnImage(imgdraw, cen1);
+	re.center = cen1;
+	re.imgdraw = imgdraw;
+	return re;
+}
+
+GridRe MLImageDetection::MLGridDetect::getGridCenterPreLoc(const cv::Mat imgRaw, cv::Point2f cen)
+{
+	
+		string info = "----getGridCenter---- ";
+		GridRe re;
+		if (imgRaw.empty())
+		{
+			re.flag = false;
+			re.errMsg = info + "input image is null";
+			LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
+			return re;
+		}
+		cv::Mat img8 = convertToUint8(imgRaw);
+		cv::Mat gray = convertToGrayImage(img8);
+		cv::Mat imgdraw = convertTo3Channels(img8);
+		cv::Point2f cen1 = getAccurateCenter(cen, gray);
+		drawPointOnImage(imgdraw, cen1);
+		re.center = cen1;
+		re.imgdraw = imgdraw;
+		return re;
+	
+}
+
 GridRe MLImageDetection::MLGridDetect::getGridCorners(cv::Mat img)
 {
 	string info = "------getGridCorners------";
@@ -41,7 +115,6 @@ GridRe MLImageDetection::MLGridDetect::getGridCorners(cv::Mat img)
 	//img8 = rotateGridImg(img8);
 	cv::Mat img_draw = convertTo3Channels(img8);
 	Mat srcgray = convertToGrayImage(img8);
-
 	cv::GaussianBlur(srcgray, srcgray, cv::Size(3, 3), 0, 0);
 	Mat srcbinary;
 	threshold(srcgray, srcbinary, 0, 255, THRESH_OTSU);
@@ -444,13 +517,14 @@ GridRe MLImageDetection::MLGridDetect::getGridContour(cv::Mat img)
 	//img8 = rotateGridImg(img8);
 	cv::Mat img_draw = convertTo3Channels(img8);
 	Ptr<CLAHE> clahe = createCLAHE(2.0, Size(20, 20));
-	clahe->apply(img8, img8);
+	//clahe->apply(img8, img8);
 	cv::Mat srcbinary;
-	Mat element = getStructuringElement(MORPH_RECT, Size(3, 3), Point(-1, -1));
-   //  morphologyEx(img8, img8, MORPH_CLOSE, element, Point(-1, -1));
-	cv::threshold(img8, srcbinary, 0, 255, CV_THRESH_OTSU);
+	Mat element = getStructuringElement(MORPH_RECT, Size(3, 3), Point(-1, -1)); // 核
+	//morphologyEx(img8, img8, MORPH_GRADIENT, element, Point(-1, -1));
+	cv::threshold(img8, srcbinary, 0, 255, CV_THRESH_TRIANGLE);
 	// cv::threshold(roi, srcbinary, 27, 255, CV_THRESH_BINARY);
-	Mat kernel = getStructuringElement(MORPH_RECT, Size(3, 3), Point(-1, -1));
+   //cv::adaptiveThreshold(img8, srcbinary, 255, ADAPTIVE_THRESH_MEAN_C, THRESH_BINARY, 91, -6);
+	Mat kernel = getStructuringElement(MORPH_RECT, Size(10, 10), Point(-1, -1));
 	morphologyEx(srcbinary, srcbinary, MORPH_CLOSE, kernel, Point(-1, -1));
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierachy;
@@ -459,9 +533,10 @@ GridRe MLImageDetection::MLGridDetect::getGridContour(cv::Mat img)
 	for (int i = 0; i < contours.size(); i++)
 	{
 		double area = contourArea(contours[i], false);
-		if (area > 2e3 / pow(m_binNum, 2) && area < 25e4 / pow(m_binNum, 2))
+		cv::Rect rect0 = cv::boundingRect(contours[i]);
+		if (rect0.area() > 2e4 / pow(m_binNum, 2) && rect0.area() < 25e4 / pow(m_binNum, 2))
 		{
-			Rect rect = boundingRect(contours[i]);
+			Rect rect = boundingRect(contours[i]); // 外接矩形
 			Point2f P[4];
 			P[0] = cv::Point2f(rect.x, rect.y);
 			P[1] = cv::Point2f(rect.x, rect.y + rect.height);
@@ -489,21 +564,29 @@ GridRe MLImageDetection::MLGridDetect::getGridContour(cv::Mat img)
 		return re;
 	}
 
-
-	vector<cv::Point2f> ptsNew = pointsClusters(pts, m_pointsClusters / m_binNum);
+	vector<cv::Point2f> ptsNew = pointsClusters(pts, m_pointsClusters / m_binNum);    // 角点值 聚类去重
 	drawPointsOnImage(img_draw, ptsNew, 2, Scalar(0, 255, 0));
-	cv::Mat indexMap1 = generatePointsIndexMap(ptsNew, m_update, m_xyClassification / m_binNum);
+	cv::Mat indexMap1 = generatePointsIndexMap(ptsNew, m_update, m_xyClassification / m_binNum);  // 输出角点索引矩阵，可能存在缺失角点
 	MLCherkerboardDetect cb;
-	indexMap = cb.updateIndexMapKL(indexMap1, ptsNew, corners);
+	//indexMap = cb.updateIndexMapKL(indexMap1, ptsNew, corners);
+	indexMap = cb.updateIndexMapKLRectangle(indexMap1, ptsNew, corners);  // 用已知角点推算缺失角点 输出新的角点索引矩阵和新的角点值
+	if (corners.size() < indexMap.total())
+	{
+		re.flag = false;
+		re.errMsg = "detection fail,the number of corners  is less than the total of indexMap";
+		re.imgdraw = img_draw;
+		return re;
+	}
 	if (corners.size() > ptsNew.size())
 	{
 		for (int i = ptsNew.size() - 1; i < corners.size(); i++)
 		{
-			corners[i] = getAccurateCenter(corners[i], img8);
+			corners[i] = getAccurateCenter(corners[i], img8);  // 精确角点
 		}
 	}
-	if (accurateFlag)
+	if (accurateFlag)    // 是否精确所有角点
 	{
+#pragma omp parallel for  // 并行
 		for (int i = 0; i < corners.size(); i++)
 		{
 			corners[i] = getAccurateCenter(corners[i], img8);
@@ -520,13 +603,13 @@ GridRe MLImageDetection::MLGridDetect::getGridContour(cv::Mat img)
 		return re;
 	}
 
-	// draw
+	// draw point
 	for (int i = 0; i < indexMap.rows; i++)
 	{
 		for (int j = 0; j < indexMap.cols; j++)
 		{
 			int in = indexMap.at<short>(i, j);
-			if (in < corners.size())
+			if (in < corners.size() && in >= 0)
 			{
 				circle(img_draw, corners[in], 10, Scalar(255, 0, 255), -1);
 				xmat.at<float>(i, j) = corners[in].x;
@@ -534,13 +617,20 @@ GridRe MLImageDetection::MLGridDetect::getGridContour(cv::Mat img)
 			}
 		}
 	}
+
+	cv::Point2f center;
+	int rows = xmat.rows - 1; // 最后一行索引
+	int cols = xmat.cols - 1;
+	center.x = xmat.at<float>(rows / 2, cols / 2) ;
+	center.y = ymat.at<float>(rows / 2, cols / 2) ;
+	re.center= center;
 	re.xLocMat = xmat;
 	re.yLocMat = ymat;
 	re.corners = corners;
 	re.imgdraw = img_draw;
 	re.indexMap = indexMap;
 	re.boardSize = xmat.size();
-	return re;
+	return re; // 返回中心坐标 角点坐标集合 。。。
 }
 
 GridRe MLImageDetection::MLGridDetect::getGridTemplateGaussian(cv::Mat img)
@@ -563,14 +653,14 @@ GridRe MLImageDetection::MLGridDetect::getGridTemplateGaussian(cv::Mat img)
 	cv::Mat img_gray = img8;
 	cv::Mat templ;
 
-	templ =cv::imread("./config/ALGConfig/gridtemplate.tif", 0);
+	templ = cv::imread("./config/AlgConfig/gridtemplate.tif", 0);
 	if (templ.empty())
 	{
 		re.flag = false;
 		re.errMsg = "the template image is null";
 		return re;
 	}
-	    
+
 	cv::resize(templ, templ, templ.size() / m_binNum);
 	CrossCenter c0;
 	cv::Point2f templCenter = c0.find_centerGaussian(templ);
@@ -788,13 +878,84 @@ GridRe MLImageDetection::MLGridDetect::getGridHist(cv::Mat img)
 
 }
 
+GridRe MLImageDetection::MLGridDetect::getGridPreLoc(cv::Mat img, cv::Mat xlocmat, cv::Mat ylocmat)
+{
+
+	string info = "------getGridContour------";
+	GridRe re;
+	vector<cv::Point2f> corners;
+	if (img.empty())
+	{
+		re.flag = false;
+		re.errMsg = info + "input image is null";
+		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
+		return re;
+	}
+	cv::Mat img8 = convertToUint8(img);
+	cv::Mat img_draw = convertTo3Channels(img8);
+	//img8 = rotateGridImg(img8);
+
+	cv::Mat xmat(xlocmat.size(), CV_32FC1, Scalar(0));
+	cv::Mat ymat(xlocmat.size(), CV_32FC1, Scalar(0));
+	//cv::Mat indexMap1;// = generatePointsIndexMap(ptsNew, m_update, m_xyClassification / m_binNum);
+	//vector<cv::Point2f>corners;
+	cv::Mat indexMap(xlocmat.size(), CV_16SC1, Scalar(-1));
+	//cv::Mat indexMap1(xlocmat.size(), CV_16S, Scalar(-1));
+
+	int num = 0;
+#pragma omp parallel for
+	for (int i = 0; i < xlocmat.rows; i++)
+	{
+		for (int j = 0; j < xlocmat.cols; j++)
+		{
+			cv::Point2f c0;
+			c0.x = xlocmat.at<float>(i, j);
+			c0.y = ylocmat.at<float>(i, j);
+			cv::Point2f c01 = getAccurateCenter(c0, img8);
+			corners.push_back(c01);
+			xmat.at<float>(i, j) = c01.x;
+			ymat.at<float>(i, j) = c01.y;
+			circle(img_draw, c01, 10, Scalar(255, 0, 255), -1);
+			indexMap.at<short>(i, j) = num;
+			num++;
+		}
+	}
+
+	if ((indexMap.rows * indexMap.cols) > corners.size())
+	{
+		re.flag = false;
+		re.errMsg = info + "grid detection fail";
+		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
+		return re;
+	}
+
+	re.xLocMat = xmat;
+	re.yLocMat = ymat;
+	re.corners = corners;
+	re.imgdraw = img_draw;
+	re.indexMap = indexMap;
+	re.boardSize = xmat.size();
+	return re;
+
+
+}
+
+cv::Point2f MLImageDetection::MLGridDetect::getGridCenter(cv::Mat xmat, cv::Mat ymat)
+{
+	cv::Point2f center;
+	int rows = xmat.rows - 1;
+	int cols = xmat.cols - 1;
+	center.x = xmat.at<float>(rows / 2, cols / 2);
+	center.y = ymat.at<float>(rows / 2, cols / 2);
+	return center;
+}
+
 
 cv::Mat MLImageDetection::MLGridDetect::rotateGridImg(cv::Mat img)
 {
-	cv::Mat img8;
-	img8 = convertToUint8(img);
+	img = convertToUint8(img);
 	cv::Mat imgth;
-	cv::threshold(img8, imgth, 0, 255, THRESH_TRIANGLE);
+	cv::threshold(img, imgth, 0, 255, THRESH_TRIANGLE);
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierachy;
 	findContours(imgth, contours, hierachy, RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
@@ -821,6 +982,28 @@ cv::Mat MLImageDetection::MLGridDetect::rotateGridImg(cv::Mat img)
 	img = getRotationImg(img, theta);
 	return img;
 }
+void MLImageDetection::MLGridDetect::writeGridInfoToCSV(GridRe gridRe)
+{
+	string path1 = "./config/AlgConfig/slbInfo/grid_xlocMat.csv";
+	string path2 = "./config/AlgConfig/slbInfo/grid_ylocMat.csv";
+
+	writeMatTOCSV(path1, gridRe.xLocMat);
+	writeMatTOCSV(path2, gridRe.yLocMat);
+
+}
+void MLImageDetection::MLGridDetect::readGridInfoFromCSV(GridRe& gridRe)
+{
+	string path1 = "./config/AlgConfig/slbInfo/grid_xlocMat.csv";
+	string path2 = "./config/AlgConfig/slbInfo/grid_ylocMat.csv";
+	//	MLimagePublic pl;
+	cv::Mat xloc = readCSVToMat(path1);
+	cv::Mat yloc = readCSVToMat(path2);
+	gridRe.xLocMat = xloc;
+	gridRe.yLocMat = yloc;
+	gridRe.boardSize = xloc.size();
+	gridRe.center = getGridCenter(xloc,yloc);
+	gridRe.flag = true;
+}
 cv::Point2f MLImageDetection::MLGridDetect::getAccurateCenter(cv::Point2f c0, cv::Mat img)
 {
 	cv::Point2f cen;
@@ -829,8 +1012,6 @@ cv::Point2f MLImageDetection::MLGridDetect::getAccurateCenter(cv::Point2f c0, cv
 	rect.y = c0.y - m_len / 2 / m_binNum;
 	rect.width = m_len / m_binNum;
 	rect.height = m_len / m_binNum;
-	if (rect.x < 0 || rect.y<0 || rect.br().x>img.cols || rect.br().y>img.rows)
-		return c0;
 	cv::Mat roi = img(rect).clone();
 	CrossCenter cc;
 	cv::Point2f c1 = cc.find_centerLINES(roi);

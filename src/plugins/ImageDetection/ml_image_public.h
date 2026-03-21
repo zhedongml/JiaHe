@@ -75,6 +75,7 @@ class ALGORITHM_API MLimagePublic
         cv::Mat readCSVToMat(const string &filename);
         void writeMatTOCSV(std::string filename, cv::Mat m);
         vector<int> findPeaks(cv::Mat data, double minHeight, int minWidth, double minProminence);
+        static std::vector<int> findPeaks(const std::vector<float>& data, float height, int distance);
         int  findEdgePt(cv::Mat data);
 
 
@@ -114,11 +115,13 @@ class ALGORITHM_API MLimagePublic
         cv::Mat armaVecToOpenCVMat(arma::vec v);
         arma::vec openCVMatToArmaVec(cv::Mat img);
         double deg2rad(double deg);
+        cv::Point2f getPtsCenter(vector<cv::Point2f>pts);
 
 
         double calculateMatMedian(cv::Mat roi);
 
         cv::Mat getRotationImg(cv::Mat img, double angle);
+        cv::Mat flipImg(cv::Mat img, bool flipLR, bool flipUD);
 
         // need to trasnfer to math
         vector<double> line_fit(cv::Mat abs_grad, int flag);
