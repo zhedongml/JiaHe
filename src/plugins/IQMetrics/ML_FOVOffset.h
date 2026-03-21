@@ -9,6 +9,7 @@
 #include <opencv2/core/mat.hpp>
 //#include "ml_luminance.h"
 #include "IQMetricUtl.h"
+#include"ml_gridDetect.h"
 namespace MLIQMetrics
 {
 struct FovOffsetRe
@@ -29,23 +30,22 @@ class IQMETRICS_API MLFOVOffset:public MLImageDetection::MLimagePublic
     MLFOVOffset();
     ~MLFOVOffset();
   public:
-      void setIsUpdateSLB(bool flag);
       void setIsSLB(bool flag);
-      void setFOVType(FOVTYPE type);
       void setColor(string color);
-    FovOffsetRe getBoresightGrid(cv::Mat img);
+      void setIsUpdateSLB(bool flag);
+    FovOffsetRe getBoresightGrid(const cv::Mat img);
     FovOffsetRe getBoresightGuSu(cv::Mat img);
-    FovOffsetRe getBoresightNineCross(const cv::Mat img);
-
     FovOffsetRe BoresightNoBorder(cv::Mat img);
     FovOffsetRe BoresightNoBorder(cv::Mat img, int roationAngle, MLImageDetection::MirrorALG mirror);
     FovOffsetRe getMultiCrossBoresight(cv::Mat img, int roationAngle, int eyeLoc, MLImageDetection::MirrorALG mirror);
-
   private:
-    void updateImgdraw(cv::Mat &imgdraw, cv::Point2f pt1, int binNum);
+    void updateImgdraw(cv::Mat &imgdraw, cv::Point2f pt1, int binNum, cv::Scalar color);
     void updateImgdraw(cv::Mat& imgdraw, cv::Point2f pts1, string str, int binNum);
     cv::Point2f getExactLoc(cv::Point2f cen, cv::Mat gray);
-    void upateFOVOffset(FovOffsetRe &re,bool IsSLB);
+    void upateFOVOffset(FovOffsetRe& re, bool IsSLB);
+    void writeFOVOffsetGridCenter(MLImageDetection::GridRe re);
+    void readFOVOffsetGridCenter(MLImageDetection::GridRe &re);
+
 
     private:
       bool m_IsSLB = true;
@@ -53,8 +53,7 @@ class IQMETRICS_API MLFOVOffset:public MLImageDetection::MLimagePublic
       int m_crossROI = 1200;
       int m_gridROI = 300;
       bool accurateFlag = true;
-      FOVTYPE m_FOVType;
-      string m_color;
-      bool m_IsUpdateSLB = false;
+      string m_color = "";
+      bool m_updateSLB = true;
 };
 } // namespace MLIQMetrics

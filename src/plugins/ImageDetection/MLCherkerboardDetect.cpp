@@ -125,112 +125,114 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardCorner(cv
 		vector<double> x, y;
 		std::vector<cv::Point2f> cornersPoint;
 		vector<cv::Point2f> cornersPointNew;
-		
-			cbdetect::find_corners(roi, corners, params);
-			// cbdetect::plot_corners(img_draw, corners);
-			if (corners.p.size() > 0)
+
+		cbdetect::find_corners(roi, corners, params);
+		// cbdetect::plot_corners(img_draw, corners);
+		if (corners.p.size() > 0)
+		{
+			cbdetect::boards_from_corners(roi, corners, chessboard, params);
+			//   cbdetect::plot_boards(img_draw, corners, chessboard, params);
+		}
+		//cornersPoint = corners.p;
+		for (int j = 0; j < corners.p.size(); j++)
+		{
+			cv::Point2f pt;
+			pt.x = corners.p.at(j).x; // +rectGrid.x;
+			pt.y = corners.p.at(j).y; // +rectGrid.y;
+			circle(img_draw, pt, 5, cv::Scalar(0, 0, 255), -1);
+			cornersPoint.push_back(pt);
+			// cout << pt << endl;
+		}
+		if (corners.p.size() > 0 & chessboard.size() > 0)
+		{
+			cbdetect::Board board;
+			board = chessboard[0];
+			vector<std::vector<int>> index = board.idx;
+			int len = index.size();
+			int len1 = index[0].size();
+			indexMap = cv::Mat::zeros(len, len1, CV_16S);
+			// change the vector to the mat
+			for (int i = 0; i < len; i++)
 			{
-				cbdetect::boards_from_corners(roi, corners, chessboard, params);
-				//   cbdetect::plot_boards(img_draw, corners, chessboard, params);
+				for (int j = 0; j < len1; j++)
+				{
+					int a = index[i][j];
+					indexMap.at<short>(i, j) = a;
+				}
+				// cout << endl;
 			}
-			else
+			indexMap = indexMap(cv::Range(1, indexMap.rows - 1), cv::Range(1, indexMap.cols - 1));
+			int left = 0, right = 0;
+			int top = 0, bottom = 0;
+			// searchColIndex(indexMap, left, right);
+			// indexMap = indexMap(cv::Range(0, indexMap.rows), cv::Range(left, right));
+			// searchRowIndex(indexMap, top, bottom);
+
+			//   transpose(indexMap, indexMap);
+			//  rotate(indexMap, indexMap, ROTATE_90_CLOCKWISE);
+			rotate(indexMap, indexMap, ROTATE_90_COUNTERCLOCKWISE);
+
+			//vector<cv::Point2f> cornersPointNew;
+			cv::Mat indexMapUpdate;
+			indexMapUpdate = updateIndexMapKL(indexMap, cornersPoint, cornersPointNew);
+			searchColIndex(indexMapUpdate, left, right);
+			indexMapUpdate = indexMapUpdate(cv::Range(0, indexMap.rows), cv::Range(left, right));
+			searchRowIndex(indexMapUpdate, top, bottom);
+			cv::Mat indexMapNew = indexMap(Range(top, bottom), cv::Range(0, indexMap.cols));
+			// cv::Mat indexMapUpdate;
+			//  vector<cv::Point2f>cornersPointNew;
+			indexMapUpdate = updateIndexMapKL(indexMapNew, cornersPointNew, cornersPointNew);
+			
+			if (cornersPointNew.size() < indexMap.total() || countNonZero(indexMapUpdate < 0) > 0)
 			{
 				checkerRe.flag = false;
-				checkerRe.errMsg = "checker corner detection fail";
+				checkerRe.errMsg = "checker detection fail";
+				checkerRe.img_draw = img_draw;
 				return checkerRe;
 			}
-			//cornersPoint = corners.p;
-			for (int j = 0; j < corners.p.size(); j++)
+			int row = indexMapUpdate.rows;
+			int col = indexMapUpdate.cols;
+			cv::Mat xPoints = cv::Mat::zeros(row, col, CV_32F);
+			cv::Mat yPoints = cv::Mat::zeros(row, col, CV_32F);
+			cv::Mat xloc = cv::Mat(indexMap.size(), CV_32FC1);
+			cv::Mat yloc = cv::Mat(indexMap.size(), CV_32FC1);
+
+			// m_ChessboardCR.boardSize = indexMapUpdate.size();
+			m_boardsize = indexMapUpdate.size();
+			indexMap = indexMapUpdate;
+			cornersRe = cornersPointNew;
+
+			drawPointsOnImage(img_draw, cornersPointNew, 5);
+			for (int i = 0; i < indexMap.rows; i++)
 			{
-				cv::Point2f pt;
-				pt.x = corners.p.at(j).x; // +rectGrid.x;
-				pt.y = corners.p.at(j).y; // +rectGrid.y;
-				circle(img_draw, pt, 5, cv::Scalar(0, 0, 255), -1);
-				cornersPoint.push_back(pt);
-				// cout << pt << endl;
-			}
-			if (corners.p.size() > 0 & chessboard.size() > 0)
-			{
-				cbdetect::Board board;
-				board = chessboard[0];
-				vector<std::vector<int>> index = board.idx;
-				int len = index.size();
-				int len1 = index[0].size();
-				indexMap = cv::Mat::zeros(len, len1, CV_16S);
-				// change the vector to the mat
-				for (int i = 0; i < len; i++)
+				for (int j = 0; j < indexMap.cols; j++)
 				{
-					for (int j = 0; j < len1; j++)
+					int index = indexMap.at<short>(i, j);
+					cv::Point2f pt0 = cornersPointNew[index];
+
+					if (false)
 					{
-						int a = index[i][j];
-						indexMap.at<short>(i, j) = a;
-					}
-					// cout << endl;
-				}
-				indexMap = indexMap(cv::Range(1, indexMap.rows-1), cv::Range(1, indexMap.cols-1));
-				int left = 0, right = 0;
-				int top = 0, bottom = 0;
-				// searchColIndex(indexMap, left, right);
-				// indexMap = indexMap(cv::Range(0, indexMap.rows), cv::Range(left, right));
-				// searchRowIndex(indexMap, top, bottom);
-
-				//   transpose(indexMap, indexMap);
-				//  rotate(indexMap, indexMap, ROTATE_90_CLOCKWISE);
-				rotate(indexMap, indexMap, ROTATE_90_COUNTERCLOCKWISE);
-
-				//vector<cv::Point2f> cornersPointNew;
-				cv::Mat indexMapUpdate;
-				indexMapUpdate = updateIndexMapKL(indexMap, cornersPoint, cornersPointNew);
-				searchColIndex(indexMapUpdate, left, right);
-				indexMapUpdate = indexMapUpdate(cv::Range(0, indexMap.rows), cv::Range(left, right));
-				searchRowIndex(indexMapUpdate, top, bottom);
-				cv::Mat indexMapNew = indexMap(Range(top, bottom), cv::Range(0, indexMap.cols));
-				// cv::Mat indexMapUpdate;
-				//  vector<cv::Point2f>cornersPointNew;
-				indexMapUpdate = updateIndexMapKL(indexMapNew, cornersPointNew, cornersPointNew);
-				int row = indexMapUpdate.rows;
-				int col = indexMapUpdate.cols;
-				cv::Mat xPoints = cv::Mat::zeros(row, col, CV_32F);
-				cv::Mat yPoints = cv::Mat::zeros(row, col, CV_32F);
-				cv::Mat xloc = cv::Mat(indexMap.size(), CV_32FC1);
-				cv::Mat yloc = cv::Mat(indexMap.size(), CV_32FC1);
-
-				// m_ChessboardCR.boardSize = indexMapUpdate.size();
-				m_boardsize = indexMapUpdate.size();
-				indexMap = indexMapUpdate;
-				cornersRe = cornersPointNew;
-
-				drawPointsOnImage(img_draw, cornersPointNew,5);
-				for (int i = 0; i < indexMap.rows; i++)
-				{
-					for (int j = 0; j < indexMap.cols; j++)
-					{
-						int index = indexMap.at<short>(i, j);
-						cv::Point2f pt0 = cornersPointNew[index];
-						
-						if (false)
+						int len = 20;
+						cv::Rect rect(pt0.x - len / 2, pt0.y - len / 2, len, len);
+						cv::Mat pt0ROI = roi(rect).clone();
+						cv::Scalar m0, std0;
+						cv::meanStdDev(pt0ROI, m0, std0);
+						//cout << std0(0) << endl;
+						if (std0(0) < 10)
 						{
-							int len = 20;
-							cv::Rect rect(pt0.x - len / 2, pt0.y - len / 2, len, len);
-							cv::Mat pt0ROI = roi(rect).clone();
-							cv::Scalar m0, std0;
-							cv::meanStdDev(pt0ROI, m0, std0);
-							//cout << std0(0) << endl;
-							if (std0(0) < 10)
-							{
-								pt0.x = NAN;
-								pt0.y = NAN;
-							}
+							pt0.x = NAN;
+							pt0.y = NAN;
 						}
-					
-						xloc.at<float>(i, j) = pt0.x;
-						yloc.at<float>(i, j) = pt0.y;
 					}
+
+					xloc.at<float>(i, j) = pt0.x;
+					yloc.at<float>(i, j) = pt0.y;
 				}
-				checkerRe.xLocMat = xloc;
-				checkerRe.yLocMat = yloc;
 			}
-		
+			checkerRe.xLocMat = xloc;
+			checkerRe.yLocMat = yloc;
+		}
+
 		vector<cv::Point2f> centerVecP;
 		vector<cv::Rect> rectVec = getCRROI(cornersPointNew, indexMap, centerVecP);
 		//drawRectsOnImage(img_draw, rectVec,2);
@@ -387,8 +389,8 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardTemplate(
 		}
 		cv::Point2f start = cv::Point2f(rect.x, rect.y);
 		cv::Mat img_draw1 = roi.clone();
-		cv::Mat templ = cv::imread("./config/ALGConfig/chessboardtemplate1.tif", 0);
-		cv::Mat templ1 = cv::imread("./config/ALGConfig/chessboardtemplate2.tif", 0);
+		cv::Mat templ = cv::imread("./config/AlgConfig/chessboardtemplate1.tif", 0);
+		cv::Mat templ1 = cv::imread("./config/AlgConfig/chessboardtemplate2.tif", 0);
 		// 自动检测中心坐标
 		// MLBMWFiducialDetect bwm;
 		// bwm.BMWHoughLineDetect(templ);
@@ -463,7 +465,7 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardContour(c
 		// clahe->apply(roi, roi);
 		// cv::equalizeHist(roi, roi);
 		//cv::threshold(roi, srcbinary, 0, 255, CV_THRESH_TRIANGLE);
-		  cv::threshold(roi, srcbinary, 0, 255, CV_THRESH_OTSU);
+		cv::threshold(roi, srcbinary, 0, 255, CV_THRESH_OTSU);
 
 		Mat kernel = getStructuringElement(MORPH_RECT, Size(80, 80), Point(-1, -1));
 		cv::Mat element = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(16 / binNum, 16 / binNum));
@@ -499,15 +501,21 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardContour(c
 		{
 			circle(img_draw1, pts[i], 5, Scalar(0, 0, 255), -1);
 		}
-		
+
 		int thred1 = m_pointsClusters;
 		vector<cv::Point2f> ptsNew = pointsClusters(pts, m_pointsClusters);
-		
-		drawPointsOnImage(img_draw1, ptsNew,5,Scalar(0,255,0));
+
+		drawPointsOnImage(img_draw1, ptsNew, 5, Scalar(0, 255, 0));
 		cv::Mat indexMap1 = generatePointsIndexMap(ptsNew, m_update, m_xyClassification / binNum);
 		indexMap = updateIndexMapKL(indexMap1, ptsNew, corners);
-
-		cv::Mat xLocMat(indexMap1.size(),CV_32FC1,Scalar(-1)),
+		if (corners.size() < indexMap.total() || countNonZero(indexMap < 0) > 0)
+		{
+			checkerRe.flag = false;
+			checkerRe.errMsg = "checker detection fail";
+			checkerRe.img_draw = img_draw1;
+			return checkerRe;
+		}
+		cv::Mat xLocMat(indexMap1.size(), CV_32FC1, Scalar(-1)),
 			yLocMat(indexMap1.size(), CV_32FC1, Scalar(-1));
 		// draw
 		for (int i = 0; i < indexMap.rows; i++)
@@ -554,11 +562,11 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardTemplate1
 		img = convertToUint8(img);
 		img_draw = convertTo3Channels(img);
 		cv::Mat img_draw1 = convertTo3Channels(img);
-		//string filepath1 = "E:/project/IQMetric/x64/Debug/config/ALGConfig/chessboardtemplate1.tif";
-		string filepath1 = "./config/ALGConfig/chessboardtemplate1.tif";
+		//string filepath1 = "E:/project/IQMetric/x64/Debu./config/AlgConfig/chessboardtemplate1.tif";
+		string filepath1 = "./config/AlgConfig/chessboardtemplate1.tif";
 		cv::Mat templ = cv::imread(filepath1, 0);
-		if(templ.empty())
-			templ = cv::imread("../config/ALGConfig/chessboardtemplate1.tif", 0);
+		if (templ.empty())
+			templ = cv::imread("../config/AlgConfig/chessboardtemplate1.tif", 0);
 		if (templ.data == NULL)
 		{
 			checkerRe.flag = false;
@@ -566,15 +574,23 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardTemplate1
 			LOG4CPLUS_INFO(LogPlus::getInstance()->logger, checkerRe.errMsg.c_str());
 			return checkerRe;
 		}
-		cv::resize(templ,templ, templ.size() / binNum);
+		cv::resize(templ, templ, templ.size() / binNum);
 		Ptr<CLAHE> clahe = createCLAHE(2.0, Size(10, 10));
 		// clahe->apply(gray, gray);
 
-		vector<cv::Point2f> pts1 = matchTemplateMaxLocs(img, templ, 0.7, binNum);
-		drawPointsOnImage(img_draw1, pts1, 5,Scalar(0,255,0));
+		vector<cv::Point2f> pts1 = matchTemplateMaxLocs(img, templ, 0.45, binNum);
+		drawPointsOnImage(img_draw1, pts1, 5, Scalar(0, 255, 0));
 		vector<cv::Point2f> ptsNew = pointsClusters(pts1, m_pointsClusters);
 		cv::Mat indexMap1 = generatePointsIndexMap(ptsNew, m_update, m_xyClassification);
-		indexMap = updateIndexMapKL(indexMap1, ptsNew, corners);
+		indexMap = updateIndexMapKL(indexMap1, ptsNew, corners);// 补角点
+		if (corners.size() < indexMap.total()||countNonZero(indexMap<0)>0)
+		{
+			checkerRe.flag = false;
+			checkerRe.errMsg = "checker detection fail";
+			checkerRe.img_draw = img_draw1;
+			return checkerRe;
+		}
+
 		// draw
 		cv::Mat xLocMat(indexMap.size(), CV_32FC1, Scalar(-1));
 		cv::Mat yLocMat(indexMap.size(), CV_32FC1, Scalar(-1));
@@ -586,7 +602,7 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardTemplate1
 				int in = indexMap.at<short>(i, j);
 				if (in >= 0)
 				{
-					circle(img_draw, corners[in], 24/binNum, Scalar(0, 0, 255), -1);
+					circle(img_draw, corners[in], 16 / binNum, Scalar(0, 0, 255), -1);
 					xLocMat.at<float>(i, j) = corners[in].x;
 					yLocMat.at<float>(i, j) = corners[in].y;
 
@@ -601,7 +617,7 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardTemplate1
 		checkerRe.pts = corners;
 		checkerRe.rectVec = rectVec;
 		checkerRe.indexMap = indexMap;
- 		checkerRe.boardSize = indexMap.size();		
+		checkerRe.boardSize = indexMap.size();
 		checkerRe.img_draw = img_draw;
 		checkerRe.center = getPtsCenter(corners);
 	}
@@ -649,7 +665,7 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardHist(cv::
 			for (int j = 0; j < yvec.size(); j++)
 			{
 				cv::Point2f  c0(xvec[i], yvec[j]);
-		
+
 				corners.push_back(c0);
 				xLocMat.at<float>(i, j) = c0.x;
 				yLocMat.at<float>(i, j) = c0.y;
@@ -674,7 +690,7 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardHist(cv::
 	return checkerRe;
 }
 vector<cv::Point2f> MLImageDetection::MLCherkerboardDetect::matchTemplateMaxLocs(cv::Mat img, cv::Mat templ, double score,
-	int bin)
+	int bin) //模版匹配，候选角点
 {
 	cv::Point2f c0 = cv::Point(templ.rows / 2, templ.cols / 2);
 	vector<cv::Point2f> pts;
@@ -708,11 +724,11 @@ vector<cv::Point2f> MLImageDetection::MLCherkerboardDetect::matchTemplateMaxLocs
 			rectangle(img_draw, rect1, Scalar(0, 0, 255), 2);
 			cv::Mat roi = img(rect1).clone();
 			Scalar m, std;
-			cv::meanStdDev(roi, m, std);
-			if (std(0) >5 )
+			cv::meanStdDev(roi, m, std); //roi区域内 像素变化，std↑，变化明显
+			if (std(0) > 5)
 			{
-				pts.push_back(loc+c0);
-				circle(img_draw, loc+c0, 5, Scalar(255, 0, 255), -1);
+				pts.push_back(loc + c0);
+				circle(img_draw, loc + c0, 5, Scalar(255, 0, 255), -1);
 			}
 		}
 	}
@@ -720,6 +736,7 @@ vector<cv::Point2f> MLImageDetection::MLCherkerboardDetect::matchTemplateMaxLocs
 }
 vector<cv::Rect> MLImageDetection::MLCherkerboardDetect::getCRROI(vector<cv::Point2f> corners, cv::Mat indexMap,
 	vector<cv::Point2f>& centerVec)
+	// 给每个棋盘格生成一个居中、比格子本体更小的测量框，用来算该格的灰度和 CR。
 {
 	vector<cv::Rect> pos;
 	if (corners.size() > 0 & indexMap.data != NULL)
@@ -781,6 +798,64 @@ vector<cv::Rect> MLImageDetection::MLCherkerboardDetect::getCRROI(vector<cv::Poi
 		// m_img_drawP = img_draw.clone();
 	}
 	return pos;
+}
+vector<cv::Rect> MLImageDetection::MLCherkerboardDetect::getCRROI(cv::Mat xloc, cv::Mat yloc, vector<cv::Point2f>& centerVec)
+{
+	vector<cv::Rect> pos;
+	cv::Mat xPoints = xloc;
+	cv::Mat yPoints = yloc;
+	// draw  test the function result
+	for (int i = 0; i < xPoints.rows; i++)
+	{
+		for (int j = 0; j < xPoints.cols; j++)
+		{
+			float x = xPoints.at<float>(i, j);
+			float y = yPoints.at<float>(i, j);
+			// cv::circle(m_img_drawP, Point2f(x, y), 2, cv::Scalar(255, 255, 0), -1);
+		}
+	}
+	cv::Mat xcenter, ycenter;
+	cv::Mat px1, px2, px3, px4, py1, py2, py3, py4;
+	getCenter(xPoints, xcenter, px1, px2, px3, px4);
+	getCenter(yPoints, ycenter, py1, py2, py3, py4);
+	// for (int i = 0; i < xcenter.rows; i++)
+	//{
+	//    for (int j = 0; j < xcenter.cols; j++)
+	//    {
+	//        float x = xcenter.at<float>(i, j);
+	//        float y = ycenter.at<float>(i, j);
+	//        cv::circle(m_img_drawP, cv::Point2f(x, y), 1, cv::Scalar(255, 255, 0), -1);
+	//    }
+	//}
+	cv::Mat boardArea = getArea(px1, px2, px3, px4, py1, py2, py3, py4);
+	cv::Mat boardRadius;
+	// double percent = HydrusParameters::crArea; // 0.8;//crAreaPercent;
+	double percent = m_CRAreaPercent; // 0.8;//crAreaPercent;
+
+	cv::sqrt(boardArea * percent, boardRadius);
+	for (int i = 0; i < xcenter.rows; i++)
+	{
+		for (int j = 0; j < xcenter.cols; j++)
+		{
+			float x = xcenter.at<float>(i, j) - boardRadius.at<float>(i, j) / 2;
+			float y = ycenter.at<float>(i, j) - boardRadius.at<float>(i, j) / 2;
+			Point2f center;
+			center.x = xcenter.at<float>(i, j);
+			center.y = ycenter.at<float>(i, j);
+			cv::Point2f start = cv::Point2f(x, y);
+			cv::Point2f end = cv::Point2f(x + boardRadius.at<float>(i, j), y + boardRadius.at<float>(i, j));
+			// cv::Rect temp = cv::Rect(x, y, boardRadius.at<float>(i, j), boardRadius.at<float>(i, j));
+			cv::Rect temp = cv::Rect(start, end);
+			//cv::rectangle(m_img_drawP, temp, cv::Scalar(255, 0, 255), 1);
+			//cv::circle(m_img_drawP, center, 5, Scalar(0, 0, 255), -1);
+			pos.push_back(temp);
+			centerVec.push_back(center);
+		}
+	}
+	// m_img_drawP = img_draw.clone();
+
+	return pos;
+
 }
 bool MLImageDetection::MLCherkerboardDetect::getNewROIRect(vector<Rect> roiVecP, vector<Rect> roiVecN, vector<Rect>& NewroiVecP,
 	vector<Rect>& NewroiVecN)
@@ -1258,6 +1333,101 @@ cv::Mat MLImageDetection::MLCherkerboardDetect::updateIndexMapKL(cv::Mat indexMa
 
 	return indexMap;
 }
+int countNegtiveNum(cv::Mat indexMap)
+{
+	cv::Mat a = indexMap.clone();
+	a.setTo(0, a < 0);
+	int num = cv::countNonZero(a);
+	int numNeg = indexMap.total() - num;
+	return numNeg;
+}
+cv::Mat MLImageDetection::MLCherkerboardDetect::updateIndexMapKLRectangle(cv::Mat indexMap, vector<cv::Point2f> cornersPoint, vector<cv::Point2f>& cornersPointNew)
+{
+
+	cv::Mat a = indexMap.clone();
+	a.setTo(0, a < 0);
+	int num = cv::countNonZero(a);
+	if (num == a.total() - 1 && cornersPoint.size() == a.total())
+	{
+		cornersPointNew = cornersPoint;
+		return indexMap;
+	}
+	int row = indexMap.rows;
+	int col = indexMap.cols;
+	cornersPointNew = cornersPoint;
+
+	if (cornersPoint.size() < indexMap.total() / 2)
+	{
+		cornersPointNew = cornersPoint;
+		return indexMap;
+	}
+	int cycleNum = 0;
+	int threshNum = indexMap.total() - cornersPoint.size();
+	while (countNegtiveNum(indexMap) > 1)
+	{
+		for (int i = 0; i < indexMap.rows; i++)
+		{
+			for (int j = 0; j < indexMap.cols; j++)
+			{
+				int temp = indexMap.at<short>(i, j);
+				if (temp < 0)
+				{
+					int left = -1, right = -1, top = -1, bottom = -1;
+					if (i > 0)
+						top = indexMap.at<short>(i - 1, j);
+					if (i < row - 1)
+						bottom = indexMap.at<short>(i + 1, j);
+					if (j > 0)
+						left = indexMap.at<short>(i, j - 1);
+					if (j < col - 1)
+						right = indexMap.at<short>(i, j + 1);
+					if ((top + bottom) > -2 && (left + right) > -2)
+
+					{
+						cv::Point2f pt;
+
+						if (top >= 0 && left >= 0)
+						{
+							pt.x = cornersPointNew[top].x;
+							pt.y = cornersPointNew[left].y;
+							cornersPointNew.push_back(pt);
+							indexMap.at<short>(i, j) = cornersPointNew.size() - 1;
+						}
+						else if (top >= 0 && right >= 0)
+						{
+							pt.x = cornersPointNew[top].x;
+							pt.y = cornersPointNew[right].y;
+							cornersPointNew.push_back(pt);
+							indexMap.at<short>(i, j) = cornersPointNew.size() - 1;
+						}
+						else if (bottom >= 0 && left >= 0)
+						{
+							pt.x = cornersPointNew[bottom].x;
+							pt.y = cornersPointNew[left].y;
+							cornersPointNew.push_back(pt);
+							indexMap.at<short>(i, j) = cornersPointNew.size() - 1;
+						}
+						else if (bottom >= 0 && right >= 0)
+						{
+							pt.x = cornersPointNew[bottom].x;
+							pt.y = cornersPointNew[right].y;
+							cornersPointNew.push_back(pt);
+							indexMap.at<short>(i, j) = cornersPointNew.size() - 1;
+						}
+
+					}
+
+				}
+			}
+		}
+
+		cycleNum++;
+		if (cycleNum > threshNum)
+			break;
+	}
+	return indexMap;
+}
+
 cv::RotatedRect MLImageDetection::MLCherkerboardDetect::getCherkerBorder(cv::Mat img, cv::Rect& rect)
 {
 	cv::RotatedRect rectR;

@@ -81,13 +81,13 @@
     <ClInclude Include="ML_CTF.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="ML_distortionCompensation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
     <ClInclude Include="ML_NineCrossDetection.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="MLSolidDetection.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ML_gridPatternDetection.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -158,13 +158,13 @@
     <ClCompile Include="ML_CTF.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="ML_distortionCompensation.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
     <ClCompile Include="ML_NineCrossDetection.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="MLSolidDetection.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ML_gridPatternDetection.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

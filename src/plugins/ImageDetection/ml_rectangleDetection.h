@@ -11,24 +11,19 @@ namespace MLImageDetection
 {
 class ALGORITHM_API RectangleDetection:public MLimagePublic
 {
-    struct SolidRect
-    {
-        cv::Rect rect;
-        cv::Point2f h1, h2;
-        cv::Point2f v1, v2;
-    };
   public:
     RectangleDetection();
     ~RectangleDetection();
 
   public:
-      void setBinNum(int num);
+    cv::Rect getSquareRect(cv::Mat img, int buffer = 0, float height = 0.2f);
     cv::RotatedRect getRectangleBorder(cv::Mat img);
     cv::Rect getSolidExactRect(cv::Mat img8, cv::Rect rect);
     cv::Mat getImgdraw();
+    void writeSolidInfoToCSV(cv::RotatedRect rectR);
+    void readSolidInfoFromCSV(cv::RotatedRect &rectR);
+
   private:
-      int m_len = 300;
     cv::Mat m_img_draw;
-    int m_binNum = 1;
 };
 } // namespace MLImageDetection

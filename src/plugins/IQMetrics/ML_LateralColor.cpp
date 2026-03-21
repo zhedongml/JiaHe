@@ -4,7 +4,6 @@
 #include"LogPlus.h"
 #include"ml_gridDetect.h"
 #include<armadillo>
-#include"ML_NineCrossDetection.h"
 using namespace MLImageDetection;
 using namespace MLIQMetrics;
 using namespace cv;
@@ -22,14 +21,14 @@ void MLIQMetrics::MLLateralColor::setIsSLB(bool flag)
 	m_IsSLB = flag;
 }
 
-void MLIQMetrics::MLLateralColor::setFOVType(FOVTYPE type)
+void MLIQMetrics::MLLateralColor::setPatternCenter(cv::Point2f cen)
 {
-	m_FOVType = type;
+	m_center = cen;
 }
 
 void MLIQMetrics::MLLateralColor::setIsUpdateSLB(bool flag)
 {
-	m_IsUpdateSLB = flag;
+	m_updateSLB = flag;
 }
 
 LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGrid(cv::Mat rImg, cv::Mat gImg, cv::Mat bImg)
@@ -46,8 +45,8 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGrid(cv::Mat rImg, cv
 		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
 		return re;
 	}
-	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
 	int binNum = IQMetricUtl::instance()->getBinNum(rImg.size());
+	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
 	double pixel2Arcmin = IQMetricUtl::instance()->getPix2Arcmin(rImg.size());
 	updateRectByRatio1(ROIRect, 1.0 / binNum);
 	bImg = GetROIMat(bImg, ROIRect);
@@ -60,12 +59,11 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGrid(cv::Mat rImg, cv
 	cv::Mat bImg8 = convertToUint8(bImg);
 	cv::Mat bImgdraw = convertTo3Channels(bImg8);
 	cv::Mat imgdraw = rImgdraw * 0.5 + gImgdraw * 0.5 + bImgdraw * 0.5;
+
 	MLGridDetect grid;
-	grid.setAccurateDetectionFlag(true);
+	grid.setAccurateDetectionFlag(false);
 	grid.SetbinNum(binNum);
 	GridRe gridR = grid.getGridContour(rImg);
-	//if (gridR.flag == false)
-	//	gridR = grid.getGridContour(rImg);
 	if (gridR.flag == false)
 	{
 		re.flag = false;
@@ -75,6 +73,8 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGrid(cv::Mat rImg, cv
 	}
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Red grid image detection successfully");
 	GridRe gridG = grid.getGridContour(gImg);
+	//GridRe gridG = grid.getGridPreLoc(gImg,gridR.xLocMat,gridR.yLocMat);
+
 	//if (gridG.flag == false)
 	//	gridG = grid.getGridContour(gImg);
 	if (gridG.flag == false)
@@ -86,6 +86,8 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGrid(cv::Mat rImg, cv
 	}
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Green grid image detection successfully");
 	GridRe gridB = grid.getGridContour(bImg);
+	//GridRe gridB = grid.getGridPreLoc(bImg,gridR.xLocMat,gridR.yLocMat);
+
 	//if(gridB.flag==false)
 	//	gridB = grid.getGridContour(bImg);
 	if (gridB.flag == false)
@@ -120,21 +122,24 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGrid(cv::Mat rImg, cv
 
 	if (m_IsSLB == true)
 	{
-		writeMatTOCSV("./config/ALGConfig/lateralColor_subXRG.csv", subXRG);
-		writeMatTOCSV("./config/ALGConfig/lateralColor_subYRG.csv", subYRG);
-		writeMatTOCSV("./config/ALGConfig/lateralColor_subXRB.csv", subXRB);
-		writeMatTOCSV("./config/ALGConfig/lateralColor_subYRB.csv", subYRB);
-		writeMatTOCSV("./config/ALGConfig/lateralColor_subXGB.csv", subXGB);
-		writeMatTOCSV("./config/ALGConfig/lateralColor_subYGB.csv", subXGB);
+		std::mutex mtx;
+		mtx.lock();
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXRG.csv", subXRG);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYRG.csv", subYRG);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXRB.csv", subXRB);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYRB.csv", subYRB);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXGB.csv", subXGB);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYGB.csv", subXGB);
+		mtx.unlock();
 	}
 	else
 	{
-		cv::Mat subXRGSLB = readCSVToMat("./config/ALGConfig/lateralColor_subXRG.csv");
-		cv::Mat subYRGSLB = readCSVToMat("./config/ALGConfig/lateralColor_subYRG.csv");
-		cv::Mat subXRBSLB = readCSVToMat("./config/ALGConfig/lateralColor_subXRB.csv");
-		cv::Mat subYRBSLB = readCSVToMat("./config/ALGConfig/lateralColor_subYRB.csv");
-		cv::Mat subXGBSLB = readCSVToMat("./config/ALGConfig/lateralColor_subXGB.csv");
-		cv::Mat subYGBSLB = readCSVToMat("./config/ALGConfig/lateralColor_subYGB.csv");
+		cv::Mat subXRGSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXRG.csv");
+		cv::Mat subYRGSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYRG.csv");
+		cv::Mat subXRBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXRB.csv");
+		cv::Mat subYRBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYRB.csv");
+		cv::Mat subXGBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXGB.csv");
+		cv::Mat subYGBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYGB.csv");
 		subXRG = subXRG - subXRGSLB;
 		subYRG = subYRG - subYRGSLB;
 		subXRB = subXRB - subXRBSLB;
@@ -200,6 +205,189 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGrid(cv::Mat rImg, cv
 
 }
 
+LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGridNew(cv::Mat rImg, cv::Mat gImg, cv::Mat bImg)
+{
+	string info = "--getLateralColorGrid---";
+	LateralColorRe re;
+	double rotation = -1;
+	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "LateralColor calculate start");
+	if (rImg.empty() || gImg.empty() || bImg.empty())
+	{
+		re.flag = false;
+		re.errMsg = info + "Input image is NULL!";
+		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
+		return re;
+	}
+	rImg = IQMetricUtl::instance()->getRotationAndFlipImg(rImg, m_IsSLB);
+	gImg = IQMetricUtl::instance()->getRotationAndFlipImg(gImg, m_IsSLB);
+	bImg = IQMetricUtl::instance()->getRotationAndFlipImg(bImg, m_IsSLB);
+	int binNum = IQMetricUtl::instance()->getBinNum(rImg.size());
+	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
+	double pixel2Arcmin = IQMetricUtl::instance()->getPix2Arcmin(rImg.size());
+	//updateRectByRatio1(ROIRect, 1.0 / binNum);
+	//bImg = GetROIMat(bImg, ROIRect);
+	//rImg = GetROIMat(rImg, ROIRect);
+	//gImg = GetROIMat(gImg, ROIRect);
+
+
+	int binNumCen = IQMetricUtl::instance()->getBinNum(cv::Size(m_center.x * 2, m_center.y * 2));
+	double ratio = double(binNumCen) / double(binNum);
+	cv::Point2f cen = m_center * ratio;
+	int len = m_len / binNum;
+	cv::Rect rect0(cen.x - len / 2, cen.y - len / 2, len, len);
+	bImg = GetROIMat(bImg, rect0);
+	rImg = GetROIMat(rImg, rect0);
+	gImg = GetROIMat(gImg, rect0);
+
+
+	cv::Mat rImg8 = convertToUint8(rImg);
+	cv::Mat rImgdraw = convertTo3Channels(rImg8);
+	cv::Mat gImg8 = convertToUint8(gImg);
+	cv::Mat gImgdraw = convertTo3Channels(gImg8);
+	cv::Mat bImg8 = convertToUint8(bImg);
+	cv::Mat bImgdraw = convertTo3Channels(bImg8);
+	cv::Mat imgdraw = rImgdraw * 0.5 + gImgdraw * 0.5 + bImgdraw * 0.5;
+
+	MLGridDetect grid;
+	grid.setAccurateDetectionFlag(false);
+	grid.SetbinNum(binNum);
+	GridRe gridR = grid.getGridContour(rImg);
+	if (gridR.flag == false)
+	{
+		re.flag = false;
+		re.errMsg = info + "Red grid image detection fail" + gridR.errMsg;
+		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
+		return re;
+	}
+	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Red grid image detection successfully");
+	//GridRe gridG = grid.getGridContour(gImg);
+	GridRe gridG = grid.getGridPreLoc(gImg, gridR.xLocMat, gridR.yLocMat);
+
+	if (gridG.flag == false)
+	{
+		re.flag = false;
+		re.errMsg = info + "Green grid image detection fail" + gridG.errMsg;
+		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
+		return re;
+	}
+	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Green grid image detection successfully");
+	//GridRe gridB = grid.getGridContour(bImg);
+	GridRe gridB = grid.getGridPreLoc(bImg, gridR.xLocMat, gridR.yLocMat);
+
+	if (gridB.flag == false)
+	{
+		re.flag = false;
+		re.errMsg = info + "Blue grid image detection fail" + gridB.errMsg;
+		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
+		return re;
+	}
+	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Blue grid image detection successfully");
+
+	int row = gridR.xLocMat.rows;
+	int col = gridR.xLocMat.cols;
+	re.locxR = gridR.xLocMat(cv::Range(1, row - 1), Range(1, col - 1));
+	re.locyR = gridR.yLocMat(cv::Range(1, row - 1), Range(1, col - 1));;
+	re.locxG = gridG.xLocMat(cv::Range(1, row - 1), Range(1, col - 1));
+	re.locyG = gridG.yLocMat(cv::Range(1, row - 1), Range(1, col - 1));
+	re.locxB = gridB.xLocMat(cv::Range(1, row - 1), Range(1, col - 1));
+	re.locyB = gridB.yLocMat(cv::Range(1, row - 1), Range(1, col - 1));
+	cv::Mat xlocMatR = gridR.xLocMat(cv::Range(1, row - 1), Range(1, col - 1));
+	cv::Mat ylocMatR = gridR.yLocMat(cv::Range(1, row - 1), Range(1, col - 1));
+	cv::Mat xlocMatG = gridG.xLocMat(cv::Range(1, row - 1), Range(1, col - 1));
+	cv::Mat ylocMatG = gridG.yLocMat(cv::Range(1, row - 1), Range(1, col - 1));
+	cv::Mat xlocMatB = gridB.xLocMat(cv::Range(1, row - 1), Range(1, col - 1));
+	cv::Mat ylocMatB = gridB.yLocMat(cv::Range(1, row - 1), Range(1, col - 1));
+
+	cv::Mat subXRG = xlocMatR - xlocMatG;
+	cv::Mat subYRG = ylocMatR - ylocMatG;
+	cv::Mat subXRB = xlocMatR - xlocMatB;
+	cv::Mat subYRB = ylocMatR - ylocMatB;
+	cv::Mat subXGB = xlocMatG - xlocMatB;
+	cv::Mat subYGB = ylocMatG - ylocMatB;
+
+	if (m_IsSLB == true)
+	{
+		std::mutex mtx;
+		mtx.lock();
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXRG.csv", subXRG);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYRG.csv", subYRG);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXRB.csv", subXRB);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYRB.csv", subYRB);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXGB.csv", subXGB);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYGB.csv", subXGB);
+		mtx.unlock();
+	}
+	else
+	{
+		cv::Mat subXRGSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXRG.csv");
+		cv::Mat subYRGSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYRG.csv");
+		cv::Mat subXRBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXRB.csv");
+		cv::Mat subYRBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYRB.csv");
+		cv::Mat subXGBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXGB.csv");
+		cv::Mat subYGBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYGB.csv");
+
+		int row = subXRGSLB.rows;
+		int col = subXRGSLB.cols;
+		if (subXRGSLB.size() == cv::Size(15, 11))
+		{
+			subXRGSLB = subXRGSLB(cv::Range(1, row - 1), Range(1, col - 1));
+			subYRGSLB = subYRGSLB(cv::Range(1, row - 1), Range(1, col - 1));
+			subXRBSLB = subXRBSLB(cv::Range(1, row - 1), Range(1, col - 1));
+			subYRBSLB = subYRBSLB(cv::Range(1, row - 1), Range(1, col - 1));
+			subXGBSLB = subXGBSLB(cv::Range(1, row - 1), Range(1, col - 1));
+			subYGBSLB = subYGBSLB(cv::Range(1, row - 1), Range(1, col - 1));
+		}
+		subXRG = subXRG - subXRGSLB;
+		subYRG = subYRG - subYRGSLB;
+		subXRB = subXRB - subXRBSLB;
+		subYRB = subYRB - subYRBSLB;
+		subXGB = subXGB - subXGBSLB;
+		subYGB = subYGB - subYGBSLB;
+	}
+
+
+
+	vector<double>disVec;
+	for (int i = 0; i < re.locxR.rows; i++)
+	{
+		for (int j = 0; j < re.locxR.cols; j++)
+		{
+
+			cv::Point2f ptRB(subXRB.at<float>(i, j), subYRB.at<float>(i, j));
+			cv::Point2f ptRG(subXRG.at<float>(i, j), subYRG.at<float>(i, j));
+			cv::Point2f ptGB(subXGB.at<float>(i, j), subYGB.at<float>(i, j));
+			double disRB = sqrt(ptRB.x * ptRB.x + ptRB.y * ptRB.y);
+			double disGB = sqrt(ptGB.x * ptGB.x + ptGB.y * ptGB.y);
+			double disRG = sqrt(ptRG.x * ptRG.x + ptRG.y * ptRG.y);
+			disVec.push_back(disRB);
+			disVec.push_back(disGB);
+			disVec.push_back(disRG);
+		}
+	}
+
+	double max = *max_element(disVec.begin(), disVec.end());
+	double mean = accumulate(disVec.begin(), disVec.end(), 0.0) / disVec.size();
+	re.subXRGArcmin = subXRG * pixel2Arcmin;
+	re.subYRGArcmin = subYRG * pixel2Arcmin;
+	re.subXRBArcmin = subXRB * pixel2Arcmin;
+	re.subYRBArcmin = subYRB * pixel2Arcmin;
+	re.subXGBArcmin = subXGB * pixel2Arcmin;
+	re.subYGBArcmin = subYGB * pixel2Arcmin;
+
+	re.maxdis = max * pixel2Arcmin;
+	re.meandis = mean * pixel2Arcmin;
+	re.imgdrawR = gridR.imgdraw;
+	re.imgdrawG = gridG.imgdraw;
+	re.imgdrawB = gridB.imgdraw;
+	re.imgdraw = imgdraw;
+	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Lateral color calculation successfully");
+	return re;
+
+
+
+
+}
+
 LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorCross(cv::Mat rImg, cv::Mat gImg, cv::Mat bImg)
 {
 	string info = "--getLateralColor---";
@@ -213,8 +401,8 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorCross(cv::Mat rImg, c
 		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
 		return re;
 	}
-	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
 	int binNum = IQMetricUtl::instance()->getBinNum(rImg.size());
+	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
 	double pixel2Arcmin = IQMetricUtl::instance()->getPix2Arcmin(rImg.size());
 	bImg = GetROIMat(bImg, ROIRect);
 	rImg = GetROIMat(rImg, ROIRect);
@@ -295,123 +483,141 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorCross(cv::Mat rImg, c
 	return re;
 }
 
-LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorCrossPreLoc(const cv::Mat rImg, const cv::Mat gImg, const cv::Mat bImg)
+LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGridCenter(const cv::Mat rImgRaw, const cv::Mat gImgRaw, const cv::Mat bImgRaw)
 {
-	string info = "--getLateralColor---";
+
+	string info = "--getLateralColorGridCenter---";
 	LateralColorRe re;
 	double rotation = -1;
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "LateralColor calculate start");
-	if (rImg.empty() || gImg.empty() || bImg.empty())
+	if (rImgRaw.empty() || gImgRaw.empty() || bImgRaw.empty())
 	{
 		re.flag = false;
 		re.errMsg = info + "Input image is NULL!";
 		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
 		return re;
 	}
+	cv::Mat rImg = IQMetricUtl::instance()->getRotationAndFlipImg(rImgRaw, m_IsSLB);
+	cv::Mat gImg = IQMetricUtl::instance()->getRotationAndFlipImg(gImgRaw, m_IsSLB);
+	cv::Mat bImg = IQMetricUtl::instance()->getRotationAndFlipImg(bImgRaw, m_IsSLB);
 	int binNum = IQMetricUtl::instance()->getBinNum(rImg.size());
 	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
 	double pixel2Arcmin = IQMetricUtl::instance()->getPix2Arcmin(rImg.size());
-	if (m_FOVType == BIGFOV)
-		ROIRect = cv::Rect(0, 0, -1, -1);
-	cv::Mat bImgROI = GetROIMat(bImg, ROIRect);
-	cv::Mat rImgROI = GetROIMat(rImg, ROIRect);
-	cv::Mat gImgROI = GetROIMat(gImg, ROIRect);
+	updateRectByRatio1(ROIRect, 1.0 / binNum);
+	bImg = GetROIMat(bImg, ROIRect);
+	rImg = GetROIMat(rImg, ROIRect);
+	gImg = GetROIMat(gImg, ROIRect);
+	cv::Mat rImg8 = convertToUint8(rImg);
+	cv::Mat rImgdraw = convertTo3Channels(rImg8);
+	cv::Mat gImg8 = convertToUint8(gImg);
+	cv::Mat gImgdraw = convertTo3Channels(gImg8);
+	cv::Mat bImg8 = convertToUint8(bImg);
+	cv::Mat bImgdraw = convertTo3Channels(bImg8);
+	cv::Mat imgdraw = rImgdraw * 0.5 + gImgdraw * 0.5 + bImgdraw * 0.5;
 
-	cv::Mat rimgdraw = convertToUint8(rImgROI);
-	rimgdraw = convertTo3Channels(rimgdraw);
-	cv::Mat gimgdraw = convertToUint8(gImgROI);
-	gimgdraw = convertTo3Channels(gimgdraw);
-	cv::Mat bimgdraw = convertToUint8(bImgROI);
-	bimgdraw = convertTo3Channels(bimgdraw);
+	int resizeNum = IQMetricsParameters::GridResizeNum / binNum;
+	cv::Mat imgResize;
+	cv::resize(rImg8, imgResize, rImg8.size() / resizeNum);
+	MLGridDetect grid;
+	grid.SetbinNum(binNum);
+	GridRe gridR = grid.getGridCenter(imgResize);
+	if (gridR.flag)
+	{
+		writeLateralGridCenter(gridR);
+	}
+	else
+	{
+		readLateralGridCenter(gridR);
+	}
 
-	MLNineCrossDetection cross;
-	cross.setBinNum(binNum);
-	map<string, cv::Point2f>cenMap = cross.getNineCrosshairLocation(rImgROI, m_FOVType);
-	map<string, cv::Point2f>cenMapR =cross.getNineCrossLocationPreLoc(rImgROI, cenMap);
-	map<string, cv::Point2f>cenMapG = cross.getNineCrossLocationPreLoc(gImgROI, cenMap);
-	map<string, cv::Point2f>cenMapB = cross.getNineCrossLocationPreLoc(bImgROI, cenMap);
-	if (cenMapB.size() != 9)
+
+	grid.setAccurateDetectionFlag(true);
+	gridR = grid.getGridCenterPreLoc(rImg8, gridR.center * resizeNum);
+	if (gridR.flag == false)
 	{
 		re.flag = false;
-		re.errMsg = info + "Blue crosshair detection fail" ;
+		re.errMsg = info + "Red grid image detection fail" + gridR.errMsg;
 		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
 		return re;
 	}
-	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Blue crosshair detection successfully");
 
-	if (cenMapR.size() != 9)
+	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Red grid image detection successfully");
+	//GridRe gridG = grid.getGridContour(gImg);
+	GridRe gridG = grid.getGridCenterPreLoc(gImg8, gridR.center);
+	if (gridG.flag == false)
 	{
 		re.flag = false;
-		re.errMsg = info + "Red crosshair detection fail" ;
+		re.errMsg = info + "Green grid image detection fail" + gridG.errMsg;
 		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
 		return re;
 	}
-	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Red crosshair detection successfully");
-	if (cenMapG.size() != 9)
+	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Green grid image detection successfully");
+	//GridRe gridB = grid.getGridContour(bImg);
+	GridRe gridB = grid.getGridCenterPreLoc(bImg8, gridR.center);
+	if (gridB.flag == false)
 	{
 		re.flag = false;
-		re.errMsg = info + "Green crosshair detection fail" ;
+		re.errMsg = info + "Blue grid image detection fail" + gridB.errMsg;
 		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
 		return re;
 	}
-	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Green crosshair detection successfully");
-	map<string, cv::Point2f>rg, rb, bg;
-	//map<string, cv::Point2f>* it;
-	vector<double>locxR, locyR, locxG, locyG, locxB, locyB;
-	vector<double>subXRG, subYRG, subXRB, subYRB, subXGB, subYGB;
-	vector<double>disVec;
-	for (auto it = cenMapR.begin(); it != cenMapR.end(); ++it)
+	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Blue grid image detection successfully");
+
+	cv::Mat subRG = (cv::Mat_<float>(1, 2) << gridR.center.x - gridG.center.x, gridR.center.y - gridG.center.y);
+	cv::Mat subRB = (cv::Mat_<float>(1, 2) << gridR.center.x - gridB.center.x, gridR.center.y - gridB.center.y);
+	cv::Mat subGB = (cv::Mat_<float>(1, 2) << gridG.center.x - gridB.center.x, gridG.center.y - gridB.center.y);
+
+	if (m_IsSLB == true && m_updateSLB == true)
 	{
-		string str = it->first;
-		cv::Point2f cenr = it->second;
-		cv::Point2f ceng = cenMapG[str];
-		cv::Point2f cenb = cenMapB[str];
-		double disRB = Getdistance(cenr,cenb);
-		double disGB = Getdistance(ceng, cenb);
-		double disRG = Getdistance(cenr, ceng);
-
-		disVec.push_back(disRB);
-		disVec.push_back(disGB);
-		disVec.push_back(disRG);
-		locxR.push_back(cenr.x);
-		locyR.push_back(cenr.y);
-		locxG.push_back(ceng.x);
-		locyG.push_back(ceng.y);
-		locxB.push_back(cenb.x);
-		locyB.push_back(cenb.y);
-		subXRG.push_back((cenr.x - ceng.x));
-		subYRG.push_back((cenr.y - ceng.y));
-		subXRB.push_back((cenr.x - cenb.x));
-		subYRB.push_back((cenr.y - cenb.y));
-		subXGB.push_back((ceng.x - cenb.x));
-		subYGB.push_back((ceng.y - cenb.y));
-
-		//draw
-		drawPointOnImage(rimgdraw, cenr);
-		drawPointOnImage(gimgdraw, ceng);
-		drawPointOnImage(bimgdraw, cenb);
-		updateImgdraw(cenr + cv::Point2f(-1100 / binNum, 400 / binNum), rimgdraw, binNum);
-		updateImgdraw(ceng + cv::Point2f(-1100 / binNum, 400 / binNum), gimgdraw, binNum);
-		updateImgdraw(cenb + cv::Point2f(-1100 / binNum, 400 / binNum), bimgdraw, binNum);
+		std::mutex mtx;
+		mtx.lock();
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subRG.csv", subRG);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subRB.csv", subRB);
+		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subGB.csv", subGB);
+		mtx.unlock();
 	}
-	re.subXRGArcmin = convertVecToMat(subXRB)* pixel2Arcmin;
-	re.subYRGArcmin = convertVecToMat(subXRB) * pixel2Arcmin;
-	re.subXRBArcmin = convertVecToMat(subXRB) * pixel2Arcmin;
-	re.subYRBArcmin = convertVecToMat(subYRB) * pixel2Arcmin;
-	re.subXGBArcmin = convertVecToMat(subXGB) * pixel2Arcmin;
-	re.subYGBArcmin = convertVecToMat(subYGB) * pixel2Arcmin;
-	re.locxB = convertVecToMat(locxB);
-	re.locyB = convertVecToMat(locyB);
-	re.locxR = convertVecToMat(locxR);
-	re.locyR = convertVecToMat(locyR);
-	re.locxG = convertVecToMat(locxG);
-	re.locyG = convertVecToMat(locyG);
-	re.maxdis = *max_element(disVec.begin(), disVec.end()) * pixel2Arcmin;
-	re.meandis= accumulate(disVec.begin(), disVec.end(), 0.0) / disVec.size()*pixel2Arcmin;
-	updateLateralColorRe(re, m_IsSLB, m_FOVType);
-	re.imgdrawR = rimgdraw;
-	re.imgdrawG = gimgdraw;
-	re.imgdrawB = bimgdraw;
+	else
+	{
+		cv::Mat subRGSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subRG.csv");
+		cv::Mat subRBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subRB.csv");
+		cv::Mat subGBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subGB.csv");
+		subRG = subRG - subRGSLB;
+		subRB = subRB - subRBSLB;
+		subGB = subGB - subGBSLB;
+	}
+	double disRG = sqrt(subRG.at<float>(0, 0) * subRG.at<float>(0, 0) + subRG.at<float>(0, 1) * subRG.at<float>(0, 1));
+	double disRB = sqrt(subRB.at<float>(0, 0) * subRB.at<float>(0, 0) + subRB.at<float>(0, 1) * subRB.at<float>(0, 1));
+	double disGB = sqrt(subGB.at<float>(0, 0) * subGB.at<float>(0, 0) + subGB.at<float>(0, 1) * subGB.at<float>(0, 1));
+	vector<double>disvec;
+	disvec.push_back(disRG);
+	disvec.push_back(disRB);
+	disvec.push_back(disGB);
+	double max = *max_element(disvec.begin(), disvec.end());  // 求最大值
+	double mean = (disRG + disRB + disGB) / 3.0;  // 均值
+	re.maxdis = max * pixel2Arcmin;   
+	re.meandis = mean * pixel2Arcmin;
+	re.disRGArcmin = disRG * pixel2Arcmin;
+	re.disRBArcmin = disRB * pixel2Arcmin;
+	re.disGBArcmin = disGB * pixel2Arcmin;
+
+	circle(imgdraw, gridR.center, 5, Scalar(0, 0, 255), -1);
+	circle(imgdraw, gridG.center, 5, Scalar(0, 255, 0), -1);
+	circle(imgdraw, gridB.center, 5, Scalar(255, 0, 0), -1);
+	string strR = numToString(gridR.center.x) + "," + numToString(gridR.center.y);
+	cv::putText(imgdraw, strR, gridR.center, FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(0, 0, 255), 8 / binNum);
+	string strG = numToString(gridG.center.x) + "," + numToString(gridG.center.y);
+	cv::putText(imgdraw, strG, gridG.center+cv::Point2f(0,400/binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(0, 255, 0), 8 / binNum);
+	string strB = numToString(gridB.center.x) + "," + numToString(gridB.center.y);
+	cv::putText(imgdraw, strB, gridB.center + cv::Point2f(0, 800 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 0), 8 / binNum);
+	cv::putText(imgdraw, "disRG(Arcmin):"+to_string(re.disRGArcmin), gridB.center + cv::Point2f(0, 1200 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
+	cv::putText(imgdraw, "disRB(Arcmin):" + to_string(re.disRGArcmin), gridB.center + cv::Point2f(0, 1400 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
+	cv::putText(imgdraw, "disGB(Arcmin):" + to_string(re.disRGArcmin), gridB.center + cv::Point2f(0, 1600 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
+	cv::putText(imgdraw, "maxdis(Arcmin):" + to_string(re.maxdis), gridB.center + cv::Point2f(0, 1800 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
+	cv::putText(imgdraw, "meandis(Arcmin):" + to_string(re.meandis), gridB.center + cv::Point2f(0, 2000 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
+	re.imgdrawR = gridR.imgdraw;
+	re.imgdrawG = gridG.imgdraw;
+	re.imgdrawB = gridB.imgdraw;
+	re.imgdraw = imgdraw;
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Lateral color calculation successfully");
 	return re;
 }
@@ -419,93 +625,27 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorCrossPreLoc(const cv:
 void MLIQMetrics::MLLateralColor::updateImgdraw(cv::Point2f cen, cv::Mat& imgdraw, int binNum)
 {
 	string str = numToString(cen.x) + "," + numToString(cen.y);
-	putTextOnImage(imgdraw, str, cen, 12 / binNum);
+	putTextOnImage(imgdraw, str, cen, 24 / binNum);
 }
 
-cv::Mat MLIQMetrics::MLLateralColor::convertVecToMat(vector<double> subvec)
+void MLIQMetrics::MLLateralColor::writeLateralGridCenter(GridRe re)
 {
-	cv::Mat mtfmat = cv::Mat(3, 3, CV_64FC1, subvec.data()).clone();
-	mtfmat.convertTo(mtfmat, CV_32FC1);
-	return mtfmat;
+	string filepath = "./config/AlgConfig/slbInfo/LateralCen.csv";
+	vector<double>cenVec;
+	cenVec.push_back(re.center.x);
+	cenVec.push_back(re.center.y);
+	cv::Mat romat(cenVec);
+	std::mutex mtx;
+	mtx.lock();
+	writeMatTOCSV(filepath, romat);
+	mtx.unlock();
 }
 
-void MLIQMetrics::MLLateralColor::updateLateralColorRe(LateralColorRe& re, bool isSLB, FOVTYPE type)
+void MLIQMetrics::MLLateralColor::readLateralGridCenter(GridRe& re)
 {
-
-	if (isSLB)
-	{
-		if (type == BIGFOV&& m_IsUpdateSLB)
-		{
-			std::mutex mtx;
-			mtx.lock();
-			writeMatTOCSV("./config/ALGConfig/BIGFOV_lateralColor_subXRG.csv", re.subXRGArcmin);
-			writeMatTOCSV("./config/ALGConfig/BIGFOV_lateralColor_subYRG.csv", re.subYRGArcmin);
-			writeMatTOCSV("./config/ALGConfig/BIGFOV_lateralColor_subXRB.csv", re.subXRBArcmin);
-			writeMatTOCSV("./config/ALGConfig/BIGFOV_lateralColor_subYRB.csv", re.subYRBArcmin);
-			writeMatTOCSV("./config/ALGConfig/BIGFOV_lateralColor_subXGB.csv", re.subXGBArcmin);
-			writeMatTOCSV("./config/ALGConfig/BIGFOV_lateralColor_subYGB.csv", re.subXGBArcmin);
-			mtx.unlock();
-		}
-		else if (type == SMALLFOV&&m_IsUpdateSLB)
-		{
-			std::mutex mtx;
-			mtx.lock();
-			writeMatTOCSV("./config/ALGConfig/SMALLFOV_lateralColor_subXRG.csv", re.subXRGArcmin);
-			writeMatTOCSV("./config/ALGConfig/SMALLFOV_lateralColor_subYRG.csv", re.subYRGArcmin);
-			writeMatTOCSV("./config/ALGConfig/SMALLFOV_lateralColor_subXRB.csv", re.subXRBArcmin);
-			writeMatTOCSV("./config/ALGConfig/SMALLFOV_lateralColor_subYRB.csv",re.subYRBArcmin);
-			writeMatTOCSV("./config/ALGConfig/SMALLFOV_lateralColor_subXGB.csv", re.subXGBArcmin);
-			writeMatTOCSV("./config/ALGConfig/SMALLFOV_lateralColor_subYGB.csv", re.subXGBArcmin);
-			mtx.unlock();
-		}
-
-	}
-	else
-	{
-		cv::Mat subXRGSLB, subYRGSLB, subXRBSLB, subYRBSLB, subXGBSLB, subYGBSLB;
-		if (type == BIGFOV)
-		{
-			std::mutex mtx;
-			mtx.lock();
-			 subXRGSLB = readCSVToMat("./config/ALGConfig/BIGFOV_lateralColor_subXRG.csv");
-			 subYRGSLB = readCSVToMat("./config/ALGConfig/BIGFOV_lateralColor_subYRG.csv");
-			 subXRBSLB = readCSVToMat("./config/ALGConfig/BIGFOV_lateralColor_subXRB.csv");
-			 subYRBSLB = readCSVToMat("./config/ALGConfig/BIGFOV_lateralColor_subYRB.csv");
-			 subXGBSLB = readCSVToMat("./config/ALGConfig/BIGFOV_lateralColor_subXGB.csv");
-			 subYGBSLB = readCSVToMat("./config/ALGConfig/BIGFOV_lateralColor_subYGB.csv");
-			 mtx.unlock();
-		}
-		else if (type == SMALLFOV)
-		{
-			std::mutex mtx;
-			mtx.lock();
-			 subXRGSLB = readCSVToMat("./config/ALGConfig/SMALLFOV_lateralColor_subXRG.csv");
-			 subYRGSLB = readCSVToMat("./config/ALGConfig/SMALLFOV_lateralColor_subYRG.csv");
-			 subXRBSLB = readCSVToMat("./config/ALGConfig/SMALLFOV_lateralColor_subXRB.csv");
-			 subYRBSLB = readCSVToMat("./config/ALGConfig/SMALLFOV_lateralColor_subYRB.csv");
-			 subXGBSLB = readCSVToMat("./config/ALGConfig/SMALLFOV_lateralColor_subXGB.csv");
-			 subYGBSLB = readCSVToMat("./config/ALGConfig/SMALLFOV_lateralColor_subYGB.csv");
-			 mtx.unlock();
-		}
-		re.subXRGArcmin = re.subXRGArcmin - subXRGSLB;
-		re.subYRGArcmin = re.subYRGArcmin - subYRGSLB;
-		re.subXRBArcmin = re.subXRBArcmin - subXRBSLB;
-		re.subYRBArcmin = re.subYRBArcmin - subYRBSLB;
-		re.subXGBArcmin = re.subXGBArcmin - subXGBSLB;
-		re.subYGBArcmin = re.subYGBArcmin - subYGBSLB;
-		cv::Mat disRG, disRB, disGB;
-		disRG = re.subXRGArcmin * re.subXRGArcmin + re.subYRGArcmin * re.subYRGArcmin;
-		cv::sqrt(disRG, disRG);
-		disRB = re.subXRBArcmin * re.subXRBArcmin + re.subYRBArcmin * re.subYRBArcmin;
-		cv::sqrt(disRB, disRB);
-		disGB = re.subXGBArcmin * re.subXGBArcmin + re.subYGBArcmin * re.subYGBArcmin;
-		cv::sqrt(disGB, disGB);
-		cv::Mat dism;
-		cv::hconcat(disRG, disRB, dism);
-		cv::hconcat(dism, disGB, dism);
-		re.meandis = cv::mean(dism)(0);
-		double maxV;
-		cv::minMaxLoc(dism, NULL, &maxV);
-		re.maxdis = maxV;
-	}
+	string filepath = "./config/AlgConfig/slbInfo/LateralCen.csv";
+	cv::Mat cenmat = readCSVToMat(filepath);
+	re.center.x = cenmat.at<float>(0, 0);
+	re.center.y = cenmat.at<float>(1, 0);
+	re.flag = true;
 }

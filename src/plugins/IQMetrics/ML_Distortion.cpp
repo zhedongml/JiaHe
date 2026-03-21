@@ -17,21 +17,17 @@ MLIQMetrics::MLDistortion::MLDistortion()
 MLIQMetrics::MLDistortion::~MLDistortion()
 {
 }
-void MLIQMetrics::MLDistortion::setIsUpdateSLB(bool flag)
-{
-	m_IsUpdateSLB = flag;
-}
 void MLIQMetrics::MLDistortion::setIsSLB(bool flag)
 {
 	m_isSLB = flag;
 }
-void MLIQMetrics::MLDistortion::setFOVType(FOVTYPE type)
-{
-	m_fovType = type;
-}
 void MLIQMetrics::MLDistortion::setColor(string color)
 {
-	m_color = color;
+	m_color=color;
+}
+void MLIQMetrics::MLDistortion::setIsUpdateSLB(bool flag)
+{
+	m_updateSLB = flag;
 }
 DistortionRe MLIQMetrics::MLDistortion::GridDistortion(cv::Mat img, cv::Rect rect)
 {
@@ -46,7 +42,7 @@ DistortionRe MLIQMetrics::MLDistortion::GridDistortion(cv::Mat img, cv::Rect rec
 		cv::Mat roi1 = convertToUint8(roi);
 		cv::Mat img_draw = convertTo3Channels(roi1);
 		cv::RotatedRect rectR;
-		MLGridDetect grid;
+		MLGridDetect grid; 
 		roi1 = grid.rotateGridImg(roi1);
 		grid.SetbinNum(binNum);
 		GridRe gridRe = grid.getGridContour(roi1);
@@ -82,7 +78,7 @@ DistortionRe MLIQMetrics::MLDistortion::GridDistortion(cv::Mat img, cv::Rect rec
 				circle(img_draw, corners[i], 16 / binNum, cv::Scalar(0, 255, 0), -1);
 				double val = getCornerDistortionVal(corners[i], center, binNum);
 				disCorner.push_back(abs(val));
-				putTextOnImage(img_draw, to_string(val) + "%", corners[i], 20 / binNum);
+				putTextOnImage(img_draw, to_string(val) + "%", corners[i],20/binNum);
 				if (abs(val) > abs(maxdis))
 					maxdis = val;
 
@@ -109,7 +105,7 @@ DistortionRe MLIQMetrics::MLDistortion::GridDistortion(cv::Mat img, cv::Rect rec
 					xPosDis.at<float>(i, j) = deltx;
 					yPosDis.at<float>(i, j) = delty;
 					double m_FocalLength = IQMetricsParameters::FocalLength;
-					double m_pixel_size = IQMetricsParameters::pixel_size * binNum;
+					double m_pixel_size = IQMetricsParameters::pixel_size*binNum;
 					xPos.at<float>(i, j) = atan(deltx * m_pixel_size / m_FocalLength) * 180 / CV_PI;
 					yPos.at<float>(i, j) = atan(delty * m_pixel_size / m_FocalLength) * 180 / CV_PI;
 					cv::Point2f pt = cv::Point2f(x, y);
@@ -121,8 +117,8 @@ DistortionRe MLIQMetrics::MLDistortion::GridDistortion(cv::Mat img, cv::Rect rec
 			re.disCorner = disCorner;
 			re.disAvg = disAvg;
 			re.disMax = maxdis;
-			re.xPos = gridRe.xLocMat + ROIRect.x;
-			re.yPos = gridRe.yLocMat + ROIRect.y;
+			re.xPos = gridRe.xLocMat+ ROIRect.x;
+			re.yPos = gridRe.yLocMat+ ROIRect.y;
 			re.imgdraw = img_draw;
 		}
 	}
@@ -130,12 +126,24 @@ DistortionRe MLIQMetrics::MLDistortion::GridDistortion(cv::Mat img, cv::Rect rec
 
 
 }
-DistortionRe MLIQMetrics::MLDistortion::GridDistortionFourCorner(const cv::Mat img, cv::Rect rect)
+double getMaxDistortion(vector<double>disVec)
+{
+	if (disVec.size() < 0)
+		return 0;
+	double maxdis = disVec[0];
+	for (int i = 1; i < disVec.size(); i++)
+	{
+		if (abs(disVec[i]) > abs(maxdis))
+			maxdis = disVec[i];
+	}
+}
+DistortionRe MLIQMetrics::MLDistortion::GridDistortionFourCorner(const cv::Mat imgRaw, cv::Rect rect) // -----this----
 {
 	DistortionRe re;
-	if (img.data != NULL)
+	if (imgRaw.data != NULL)
 	{
-		cv::Mat disMat(cv::Size(1, 4), CV_32FC1, Scalar(0));
+		cv::Mat disMat(cv::Size(1,4),CV_32FC1,Scalar(0));
+		cv::Mat img = IQMetricUtl::instance()->getRotationAndFlipImg(imgRaw, m_isSLB);
 		int binNum = IQMetricUtl::instance()->getBinNum(img.size());
 		m_binNum = binNum;
 		double m_FocalLength = IQMetricsParameters::FocalLength;
@@ -143,19 +151,28 @@ DistortionRe MLIQMetrics::MLDistortion::GridDistortionFourCorner(const cv::Mat i
 		double pix2deg = IQMetricUtl::instance()->getPix2Degree(img.size());
 		cv::Rect ROIRect = IQMetricsParameters::ROIRect;
 		updateRectByRatio1(ROIRect, 1.0 / binNum);
-		if (m_fovType == BIGFOV)
-			ROIRect = cv::Rect(0, 0, -1, -1);
 		cv::Mat roi = GetROIMat(img, ROIRect);
 		cv::Mat roi1 = convertToUint8(roi);
 		// cv::Mat roi1 = convert12bitTo8bit(roi);
-		cv::Rect rectAfterRotation;
-
 		cv::RotatedRect rectR;
 		cv::Rect rectGrid = getGridRect(roi1, rectR, binNum);
-		cv::Point2f center0((float)(roi1.cols / 2.0), (float)(roi1.rows / 2.0));
-		updateRotateImg(roi1, rectR.angle);
-		rectAfterRotation = updateRotateRect(rectR, center0);
+		if (rectGrid.area() <1e6)
+		{
+			MLGridDetect grid;
+			GridRe gridRe;
+			grid.readGridInfoFromCSV(gridRe);
+			float startx = gridRe.xLocMat.at<float>(0, 0)*IQMetricsParameters::GridResizeNum;
+			float starty = gridRe.yLocMat.at<float>(0, 0) * IQMetricsParameters::GridResizeNum;
+			float width = gridRe.xLocMat.at<float>(0, gridRe.xLocMat.cols - 1) - gridRe.xLocMat.at<float>(0, 0);
+			float height = gridRe.yLocMat.at<float>(gridRe.yLocMat.rows - 1,0) - gridRe.yLocMat.at<float>(0, 0);
+			rectGrid = cv::Rect(startx, starty, width*IQMetricsParameters::GridResizeNum, height * IQMetricsParameters::GridResizeNum);
+		}
 
+		cv::Rect rectAfterRotation;
+		cv::Point2f center0((float)(roi1.cols / 2.0), (float)(roi1.rows / 2.0));
+		//updateRotateImg(roi1, rectR.angle);
+		//rectAfterRotation = updateRotateRect(rectR, center0);
+		rectAfterRotation = rectR.boundingRect();  // 外接矩形定位四个角点大致区域
 		cv::Mat img_draw = convertTo3Channels(roi1);
 		//drawRectOnImage(img_draw, rectAfterRotation,8/binNum);
 		int len = m_len / binNum;
@@ -167,12 +184,6 @@ DistortionRe MLIQMetrics::MLDistortion::GridDistortionFourCorner(const cv::Mat i
 		cv::Rect rectTR(startX + width - len / 2, startY - len / 2, len, len);
 		cv::Rect rectBL(startX - len / 2, startY + height - len / 2, len, len);
 		cv::Rect rectBR(startX + width - len / 2, startY + height - len / 2, len, len);
-		cv::Rect rectAll(0, 0, roi.cols, roi.rows);
-		rectTL = rectTL & rectAll;
-		rectTR = rectTR & rectAll;
-		rectBR = rectBR & rectAll;
-		rectBL = rectBL & rectAll;
-
 		drawRectOnImage(img_draw, rectTL, 8 / binNum);
 		drawRectOnImage(img_draw, rectTR, 8 / binNum);
 		drawRectOnImage(img_draw, rectBL, 8 / binNum);
@@ -181,28 +192,27 @@ DistortionRe MLIQMetrics::MLDistortion::GridDistortionFourCorner(const cv::Mat i
 		cv::Point2f ptBR = getCornerByHist(roi1(rectBR).clone(), binNum) /*- cv::Point2f(3, 3)*/;
 		cv::Point2f ptTL = getCornerByHist(roi1(rectTL).clone(), binNum) /*+ cv::Point2f(3, 3)*/;
 		cv::Point2f ptTR = getCornerByHist(roi1(rectTR).clone(), binNum) /*- cv::Point2f(3, -3)*/;
-
-		cv::Point2f center = Point2f(rectAfterRotation.tl()) + Point2f(width / 2.0, height / 2.0);
+		cv::Point2f center = Point2f(rectAfterRotation.tl()) + Point2f(width / 2.0, height / 2.0);  //300*300区域中心点坐标
 		vector<cv::Point2f> corners;
 		std::vector<double> disCorner;
-		corners.push_back(ptBL + Point2f(rectBL.tl()));
+		corners.push_back(ptBL + Point2f(rectBL.tl()));  // 300*300区域得到点坐标+这个区域在ROI中的左上角坐标=该点在ROI坐标
 		corners.push_back(ptBR + Point2f(rectBR.tl()));
 		corners.push_back(ptTL + Point2f(rectTL.tl()));
 		corners.push_back(ptTR + Point2f(rectTR.tl()));
-		center = getPointsCenter(corners);
+		center = getPointsCenter(corners); // ROI 内中心坐标粗略
 		if (accurateFlag)
 		{
-			center = getAccucateCenter(center, roi1);
+			center = getAccucateCenter(center, roi1);  //精确
 		}
-		circle(img_draw, center, 16 / binNum, cv::Scalar(255, 0, 255), -1);
+		circle(img_draw, center, 16 / binNum, cv::Scalar(255, 0, 255), -1);  
 		double maxdis = 0;
 		for (int i = 0; i < corners.size(); i++)
 		{
 			circle(img_draw, corners[i], 16 / binNum, cv::Scalar(255, 0, 255), -1);
 
-			double val = getCornerDistortionVal(corners[i], center, binNum);
+			double val = getCornerDistortionVal(corners[i], center, binNum); // 公式
 			// double val = getCornerDistortionVal(corners[i], center, pix2deg);
-			putTextOnImage(img_draw, to_string(val) + "%", corners[i], 24 / binNum);
+			putTextOnImage(img_draw, to_string(val) + "%", corners[i],24/binNum);
 			disMat.at<float>(i, 0) = val;
 			disCorner.push_back(abs(val));
 			if (abs(val) > abs(maxdis))
@@ -211,92 +221,7 @@ DistortionRe MLIQMetrics::MLDistortion::GridDistortionFourCorner(const cv::Mat i
 		double disAvg = -1;
 		updateDistortionBySLB(disCorner, m_isSLB);
 		disAvg = accumulate(disCorner.begin(), disCorner.end(), 0.0) / disCorner.size();
-		maxdis = 0;
-		for (int i = 0; i < disCorner.size(); i++)
-		{
-			if (abs(disCorner[i]) > maxdis)
-				maxdis = disCorner[i];
-		}
-		re.disCorner.clear();
-		re.disCorner = disCorner;
-		re.disAvg = disAvg;
-		re.disMax = maxdis;
-		re.imgdraw = img_draw;
-	}
-	return re;
-}
-DistortionRe MLIQMetrics::MLDistortion::GridDistortionFourCornerBigFOV(const cv::Mat img)
-{
-		DistortionRe re;
-	if (img.data != NULL)
-	{
-		cv::Mat disMat(cv::Size(1, 4), CV_32FC1, Scalar(0));
-		int binNum = IQMetricUtl::instance()->getBinNum(img.size());
-		m_binNum = binNum;
-		double m_FocalLength = IQMetricsParameters::FocalLength;
-		double m_pixel_size = IQMetricsParameters::pixel_size;
-		double pix2deg = IQMetricUtl::instance()->getPix2Degree(img.size());
-		cv::Mat roi1 = convertToUint8(img);
-		cv::Mat img_draw = convertTo3Channels(roi1);
-		//drawRectOnImage(img_draw, rectAfterRotation,8/binNum);
-		//int len = m_len / binNum;
-		int w = 500 / binNum;
-		int h = 300 / binNum;
-		cv::Rect rectTL(0, 0, w ,h);
-		cv::Rect rectTR(roi1.cols-w, 0, w, h);
-		cv::Rect rectBL(0,roi1.rows-h,w, h);
-		cv::Rect rectBR(roi1.cols - w, roi1.rows - h, w, h);
-		cv::Rect rectAll(0, 0, roi1.cols, roi1.rows);
-		drawRectOnImage(img_draw, rectTL, 8 / binNum);
-		drawRectOnImage(img_draw, rectTR, 8 / binNum);
-		drawRectOnImage(img_draw, rectBL, 8 / binNum);
-		drawRectOnImage(img_draw, rectBR, 8 / binNum);
-		cv::Point2f ptBL = getCornerByHist(roi1(rectBL).clone(), binNum)/*+cv::Point2f(3,-3)*/;
-		cv::Point2f ptBR = getCornerByHist(roi1(rectBR).clone(), binNum) /*- cv::Point2f(3, 3)*/;
-		cv::Point2f ptTL = getCornerByHist(roi1(rectTL).clone(), binNum) /*+ cv::Point2f(3, 3)*/;
-		cv::Point2f ptTR = getCornerByHist(roi1(rectTR).clone(), binNum) /*- cv::Point2f(3, -3)*/;
-
-		vector<cv::Point2f> corners;
-		std::vector<double> disCorner;
-		corners.push_back(ptBL + Point2f(rectBL.tl()));
-		corners.push_back(ptBR + Point2f(rectBR.tl()));
-		corners.push_back(ptTL + Point2f(rectTL.tl()));
-		corners.push_back(ptTR + Point2f(rectTR.tl()));
-		cv::Point2f center = getPointsCenter(corners);
-		if (accurateFlag)
-		{
-			center = getAccucateCenter(center, roi1);
-		}
-		circle(img_draw, center, 16 / binNum, cv::Scalar(255, 0, 255), -1);
-		double maxdis = 0;
-		for (int i = 0; i < corners.size(); i++)
-		{
-			circle(img_draw, corners[i], 16 / binNum, cv::Scalar(255, 0, 255), -1);
-
-			double val = getCornerDistortionVal(corners[i], center, binNum);
-			// double val = getCornerDistortionVal(corners[i], center, pix2deg);
-			if(i==0)
-			putTextOnImage(img_draw, to_string(val) + "%", corners[i], 24 / binNum);
-			else if(i==1)
-				putTextOnImage(img_draw, to_string(val) + "%", corners[i]-cv::Point2f(1800/binNum,0), 24 / binNum);
-			else if (i == 2)
-				putTextOnImage(img_draw, to_string(val) + "%", corners[i] - cv::Point2f(0 / binNum, -300/binNum), 24 / binNum);
-			else if (i == 3)
-				putTextOnImage(img_draw, to_string(val) + "%", corners[i] - cv::Point2f(1800 / binNum, -300/binNum), 24 / binNum);
-			disMat.at<float>(i, 0) = val;
-			disCorner.push_back(abs(val));
-			if (abs(val) > abs(maxdis))
-				maxdis = val;
-		}
-		double disAvg = -1;
-		updateDistortionBySLB(disCorner, m_isSLB);
-		disAvg = accumulate(disCorner.begin(), disCorner.end(), 0.0) / disCorner.size();
-		maxdis = 0;
-		for (int i = 0; i < disCorner.size(); i++)
-		{
-			if (abs(disCorner[i]) > maxdis)
-				maxdis = disCorner[i];
-		}
+		maxdis = getMaxDistortion(disCorner);
 		re.disCorner.clear();
 		re.disCorner = disCorner;
 		re.disAvg = disAvg;
@@ -370,8 +295,7 @@ DistortionRe MLIQMetrics::MLDistortion::CheckerDistortion(cv::Mat img)
 	c4.x = checkerRe.xLocMat.at<float>(row / 2 - 1, col / 2);
 	c4.y = checkerRe.yLocMat.at<float>(row / 2 - 1, col / 2);
 
-	//center = (c1 + c2 + c3 + c4) / 4.0;
-	center = c4;
+	center = (c1 + c2 + c3 + c4) / 4.0;
 	cv::Mat imgdraw = checkerRe.img_draw;
 
 	putTextOnImage(imgdraw, "A", ptA, 24 / binNum);
@@ -380,10 +304,10 @@ DistortionRe MLIQMetrics::MLDistortion::CheckerDistortion(cv::Mat img)
 	putTextOnImage(imgdraw, "D", ptD, 24 / binNum);
 	putTextOnImage(imgdraw, "O", center, 24 / binNum);
 	circle(imgdraw, center, 10, Scalar(255, 0, 255), -1);
-	//circle(imgdraw, c1, 24 / binNum, Scalar(255, 0, 255), -1);
-	//circle(imgdraw, c2, 24 / binNum, Scalar(255, 0, 255), -1);
-	//circle(imgdraw, c3, 24 / binNum, Scalar(255, 0, 255), -1);
-	//circle(imgdraw, c4, 24 / binNum, Scalar(255, 0, 255), -1);
+	circle(imgdraw, c1, 24 / binNum, Scalar(255, 0, 255), -1);
+	circle(imgdraw, c2, 24 / binNum, Scalar(255, 0, 255), -1);
+	circle(imgdraw, c3, 24 / binNum, Scalar(255, 0, 255), -1);
+	circle(imgdraw, c4, 24 / binNum, Scalar(255, 0, 255), -1);
 	circle(imgdraw, ptA, 24 / binNum, Scalar(255, 0, 255), -1);
 	circle(imgdraw, ptB, 24 / binNum, Scalar(255, 0, 255), -1);
 	circle(imgdraw, ptC, 24 / binNum, Scalar(255, 0, 255), -1);
@@ -482,36 +406,37 @@ cv::Point2f MLIQMetrics::MLDistortion::getCornerByHist(cv::Mat img, int binNum)
 	cv::Mat imgdraw = convertTo3Channels(img);
 	cv::Mat imgth;
 	cv::threshold(img, imgth, 0, 255, THRESH_OTSU);
+	NaiveRemoveNoise(imgth, 100);
 	cv::Mat rowMat, colMat;
-	cv::reduce(imgth, rowMat, 0, REDUCE_MAX);
+	cv::reduce(imgth, rowMat, 0, REDUCE_MAX); // 矩阵维度缩减，对imgth按列（0）取最大值，变成n列1行的矩阵
 	cv::reduce(imgth, colMat, 1, REDUCE_MAX);
 	cv::Mat kernel1 = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(3, 1));
 	cv::Mat kernel2 = cv::getStructuringElement(cv::MORPH_RECT, cv::Size(1, 3));
 	cv::morphologyEx(rowMat, rowMat, MORPH_GRADIENT, kernel1);
-	cv::morphologyEx(colMat, colMat, MORPH_GRADIENT, kernel2);
+	cv::morphologyEx(colMat, colMat, MORPH_GRADIENT, kernel2);  // 形态学梯度变化更明显，
 	cv::Scalar m0, m1, std0, std1;
 	double max1, max2;
 	cv::Point maxLoc1, maxLoc2;
-	cv::minMaxLoc(rowMat, NULL, &max1, NULL, &maxLoc1);
+	cv::minMaxLoc(rowMat, NULL, &max1, NULL, &maxLoc1);  // 梯度变化最大的点（边界点） 即矩阵的最大值和最大值坐标
 	cv::minMaxLoc(colMat, NULL, &max2, NULL, &maxLoc2);
 	cv::Point2f c0;
 	c0.x = maxLoc1.x;
 	c0.y = maxLoc2.y;
 	drawPointOnImage(imgdraw, c0, 1);
 
-	// get the exact loc
+	// get the exact loc  精细定位
 	int len = 80 / binNum;
 	cv::Rect rect0(c0.x - len / 2, c0.y - len / 2, len, len);
 	cv::Rect rectAnd = rect0 & cv::Rect(0, 0, img.rows, img.cols);
 	cv::Mat roi = img(rectAnd);
-	cv::reduce(roi, rowMat, 0, REDUCE_AVG);
+	cv::reduce(roi, rowMat, 0, REDUCE_AVG); // 矩阵维度缩减，对imgth按列（0）取平均值，变成n列1行的矩阵
 	cv::reduce(roi, colMat, 1, REDUCE_AVG);
 	cv::minMaxLoc(rowMat, NULL, &max1, NULL, &maxLoc1);
 	cv::minMaxLoc(colMat, NULL, &max2, NULL, &maxLoc2);
 
 	cv::Point2f center;
-	center.x = maxLoc1.x + rectAnd.x;
-	center.y = maxLoc2.y + rectAnd.y;
+	center.x = maxLoc1.x + rect0.x; // 将80*80区域的横坐标还原到300*300上
+	center.y = maxLoc2.y + rect0.y;
 	drawPointOnImage(imgdraw, center, 1);
 
 	return center;
@@ -521,6 +446,7 @@ cv::Point2f MLIQMetrics::MLDistortion::getCornerByHist(cv::Mat img, int binNum)
 
 cv::Point2f MLIQMetrics::MLDistortion::getCorner(cv::Mat img)
 {
+
 	cv::Mat imgdraw = convertTo3Channels(img);
 	cv::Mat imgth;
 	cv::threshold(img, imgth, 0, 255, THRESH_OTSU);
@@ -545,24 +471,20 @@ double MLIQMetrics::MLDistortion::getCornerDistortionVal(cv::Point2f corner, cv:
 {
 
 	double val = -1;
-	double fovH = 0, fovV = 0;
-	double m_FocalLength = IQMetricsParameters::FocalLength;
+	double fovH, fovV;
+	double m_FocalLength = IQMetricsParameters::FocalLength;  //40
 	double m_pixel_size = IQMetricsParameters::pixel_size * binNum;
 	// double pix2deg = IQMetricUtl::instance()->getPix2Degree();
-	if (m_fovType == SMALLFOV)
-	{
-		fovH = IQMetricsParameters::distortonTheHor;
-		fovV = IQMetricsParameters::distortonTheVer;
-	}
-	else if (m_fovType == BIGFOV)
-	{
-		fovH = IQMetricsParameters::distortonTheHorBig;
-		fovV = IQMetricsParameters::distortonTheVerBig;
-	}
-	double degx = tan(fovH / 2.0 / 180 * CV_PI) * m_FocalLength / m_pixel_size;
+
+	double deg = 14.0;
+	fovH = IQMetricsParameters::distortonTheHor;  // 21  水平视场角
+	fovV = IQMetricsParameters::distortonTheVer;  //27
+	//fovH = 14.8408;
+	//fovV = 19.7679;
+	double degx = tan(fovH / 2.0 / 180 * CV_PI) * m_FocalLength / m_pixel_size;  // 从图像中心到左右边缘（水平半视场）对应的像素数
 	double degy = tan(fovV / 2.0 / 180 * CV_PI) * m_FocalLength / m_pixel_size;
-	double disThe = sqrt(degx * degx + degy * degy);
-	double d = Getdistance(corner, center);
+	double disThe = sqrt(degx * degx + degy * degy); // 从中心到视场角落（对角方向）的理论距离（像素）
+	double d = Getdistance(corner, center);  // 测得的中心到角点距离
 	double medVar = m_FocalLength * tan(sqrt(pow((fovH / 2), 2) + pow((fovV / 2), 2)) / 180.0 * CV_PI);
 	//d = d * m_pixel_size;
 	// cout << d << "," << medVar << endl;
@@ -598,16 +520,16 @@ double MLIQMetrics::MLDistortion::getCornerDistortionVal(cv::Point2f corner, cv:
 cv::Point2f MLIQMetrics::MLDistortion::getAccucateCenter(cv::Point2f cen, cv::Mat img)
 {
 	cv::Rect rect;
-	int len = m_len / m_binNum;
+	int len = m_len / m_binNum;  // 300
 	rect.x = cen.x - len / 2;
 	rect.y = cen.y - len / 2;
 	rect.width = len;
-	rect.height = len;
-	cv::Mat roi = img(rect).clone();
+	rect.height = len;  
+	cv::Mat roi = img(rect).clone();  // 在中心点周围创建一个300*300小窗口
 	CrossCenter cc;
-	cv::Point2f c0 = cc.find_centerLINES(roi);
+	cv::Point2f c0 = cc.find_centerLINES(roi);  // roi内检测十字线
 	if (c0.x > 0 && c0.y > 0)
-		return c0 + Point2f(rect.tl());
+		return c0 + Point2f(rect.tl());  // 将小窗口的中心点坐标还原到整个ROI上
 	else
 		return cen;
 	return cv::Point2f();
@@ -633,13 +555,13 @@ cv::Point2f MLIQMetrics::MLDistortion::getCenter(vector<cv::Point2f> corns, cv::
 	else if ((row / 2) % 2 == 0 && (col / 2) % 2 == 1)
 	{
 		cv::Point2f cor1 = corns[indexMap.at<short>(row / 2, (col - 1) / 2)];
-		cv::Point2f cor2 = corns[indexMap.at<short>(row / 2, (col - 1) / 2 + 1)];
+		cv::Point2f cor2 = corns[indexMap.at<short>(row / 2, (col - 1) / 2+1)];
 		center = (cor1 + cor2) / 2.0;
 	}
 	else if ((row / 2) % 2 == 1 && (col / 2) % 2 == 0)
 	{
-		cv::Point2f cor1 = corns[indexMap.at<short>((row - 1) / 2, col / 2)];
-		cv::Point2f cor2 = corns[indexMap.at<short>((row - 1) / 2 + 1, col / 2)];
+		cv::Point2f cor1 = corns[indexMap.at<short>((row - 1) / 2, col / 2 )];
+		cv::Point2f cor2 = corns[indexMap.at<short>((row - 1) / 2+1, col / 2)];
 		center = (cor1 + cor2) / 2.0;
 	}
 	return center;
@@ -647,23 +569,20 @@ cv::Point2f MLIQMetrics::MLDistortion::getCenter(vector<cv::Point2f> corns, cv::
 
 void MLIQMetrics::MLDistortion::updateDistortionBySLB(vector<double>& disvec, bool isSLB)
 {
-	string fovstr = IQMetricUtl::instance()->fovTypeToString(m_fovType);
-	string filepath = "./config/ALGConfig/" + fovstr + "_" + m_color + "_distortion.csv";
+	string path = "./config/AlgConfig/slbInfo/distortion_" + m_color + ".csv";
 	cv::Mat disMat = cv::Mat(disvec.size(), 1, CV_64F, disvec.data()).clone();
 	disMat.convertTo(disMat, CV_32FC1);
-	if (isSLB)
+	if (m_isSLB)
 	{
-		if(m_IsUpdateSLB)
-		writeMatTOCSV(filepath, disMat);
+		writeMatTOCSV(path, disMat);
 	}
-	else
+	else if (m_isSLB == false)
 	{
-		cv::Mat dismatSLB = readCSVToMat(filepath);
+		cv::Mat dismatSLB = readCSVToMat(path);
 		cv::Mat dismatCali = disMat - dismatSLB;
-		dismatCali.convertTo(dismatCali, CV_64FC1);
-		std::vector<double> vec((double*)dismatCali.data, (double*)dismatCali.data + dismatCali.total());
+		cv::Mat dismatCaliAbs = cv::abs(dismatCali);
 		disvec.clear();
-		disvec = vec;
+		dismatCali.copyTo(disvec);
 	}
 }
 

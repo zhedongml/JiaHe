@@ -13,6 +13,7 @@ namespace MLImageDetection
 {
     struct  GridRe
     {
+        cv::Point2f center;
         vector<cv::Point2f>corners;
         cv::Mat indexMap;
         cv::Mat xLocMat;
@@ -30,12 +31,16 @@ class ALGORITHM_API MLGridDetect : public MLimagePublic
     ~MLGridDetect();
   public:
     void setAccurateDetectionFlag(bool flag);
+    GridRe getGridCenter(const cv::Mat img);
+    GridRe getGridCenterPreLoc(const cv::Mat img,cv::Point2f cen);
     GridRe getGridCorners(cv::Mat img);
     GridRe getGridHoughLine(cv::Mat img);
     GridRe getGridHoughLine1(cv::Mat img);
     GridRe getGridContour(cv::Mat img);
     GridRe getGridTemplateGaussian(cv::Mat img);
     GridRe getGridHist(cv::Mat img);
+    GridRe getGridPreLoc(cv::Mat img,cv::Mat xlocmat,cv::Mat ylocmat);
+    cv::Point2f getGridCenter(cv::Mat xmat, cv::Mat ymat);
 
     void SetbinNum(int bin);
     void SetGridPointsClusters(double thresh);
@@ -43,18 +48,18 @@ class ALGORITHM_API MLGridDetect : public MLimagePublic
     void SetGridWidth(double w);
     void SetChessboardUpdateFlag(bool flag);
     cv::Mat rotateGridImg(cv::Mat img);
+    void writeGridInfoToCSV(GridRe gridRe);
+    void readGridInfoFromCSV(GridRe& gridRe);
 private:
     cv::Point2f getAccurateCenter(cv::Point2f c0, cv::Mat img);
   private:
     int m_binNum=1;
-    int m_pointsClusters = 200;
-    int m_xyClassification = 200;
+    int m_pointsClusters = 100;
+    int m_xyClassification = 150;
     int m_gridWidth = 290;
     int m_len = 300;
     bool m_update = false;
-    bool accurateFlag = false;
-   
-
+    bool accurateFlag = false; 
 };
 
 } // namespace MLImageDetection

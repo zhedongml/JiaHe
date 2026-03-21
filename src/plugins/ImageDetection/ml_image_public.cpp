@@ -254,6 +254,8 @@ void MLImageDetection::MLimagePublic::writePointsFile(string fileName, vector<cv
 
 }
 
+
+
 void MLImageDetection::MLimagePublic::writeROIFile(string fileName, vector<cv::Rect> roiVec)
 {
 	if (roiVec.size() > 0)
@@ -373,6 +375,34 @@ vector<int> MLImageDetection::MLimagePublic::findPeaks(cv::Mat data, double minH
 	}
 	return xVec;
 }
+std::vector<int> MLImageDetection::MLimagePublic::findPeaks(const std::vector<float>& data, float height, int distance)
+{
+	std::vector<int> cand;
+	int n = (int)data.size();
+	for (int i = 1; i < n - 1; ++i) {
+		if (data[i] >= height && data[i] >= data[i - 1] && data[i] >= data[i + 1]) {
+			cand.push_back(i);
+		}
+	}
+	std::sort(cand.begin(), cand.end(), [&](int a, int b) {
+		return data[a] > data[b];
+		});
+	std::vector<int> peaks;
+	for (int idx : cand) {
+		bool ok = true;
+		for (int p : peaks) {
+			if (std::abs(p - idx) < distance) {
+				ok = false; break;
+			}
+		}
+		if (ok) {
+			peaks.push_back(idx);
+			if (peaks.size() == 2) break;
+		}
+	}
+	std::sort(peaks.begin(), peaks.end());
+	return peaks;
+}
 
 int MLImageDetection::MLimagePublic::findEdgePt(cv::Mat data)
 {
@@ -460,7 +490,7 @@ cv::Mat MLImageDetection::MLimagePublic::convertTo3Channels(const cv::Mat binImg
 		cvtColor(tmp, img3, CV_GRAY2BGR);
 	}
 	else
-		img3 = binImg;
+		img3 = binImg.clone();
 	return img3;
 }
 
@@ -561,8 +591,8 @@ cv::RotatedRect MLImageDetection::MLimagePublic::getMaxAreaContourRect(cv::Mat i
 
 cv::RotatedRect MLImageDetection::MLimagePublic::getClosestContourRect(cv::Mat imgth, cv::Point2f c0, cv::Rect& rect)
 {
-	//NaiveRemoveNoise(imgth, 1000);
-	//ContoursRemoveNoise(imgth, 1000);
+	NaiveRemoveNoise(imgth, 1000);
+	ContoursRemoveNoise(imgth, 1000);
 	cv::RotatedRect rectR;
 	vector<vector<Point>> contours;
 	vector<Vec4i> hierachy;
@@ -579,7 +609,7 @@ cv::RotatedRect MLImageDetection::MLimagePublic::getClosestContourRect(cv::Mat i
 		double area = cv::contourArea(contours[i]);
 		cv::RotatedRect rectR0 = cv::minAreaRect(contours[i]);
 		// double dis0 = Getdistance(rectR0.center, c0);
-		if (rect0.area() > 1e3)
+		if (rect0.area() > 2e3)
 		{
 			sumx = sumx + rectR0.center.x;
 			sumy = sumy + rectR0.center.y;
@@ -871,10 +901,14 @@ cv::Mat MLImageDetection::MLimagePublic::linspace(double begin, double finish, i
 }
 double MLImageDetection::MLimagePublic::percentile(cv::Mat img, double p)
 {
-	cv::Mat rowMat = img.reshape(0, 1);
+	img.convertTo(img, CV_32FC1);
+	bool flag = img.isContinuous();
+	if(flag==false)
+	img = img.clone();
+	cv::Mat rowMat = img.reshape(0, 1); // reshape成一行
 	rowMat.convertTo(rowMat, CV_32FC1);
 	cv::Mat rowMatSort;
-	cv::sort(rowMat, rowMatSort, SORT_ASCENDING);
+	cv::sort(rowMat, rowMatSort, SORT_ASCENDING); // 像素值从小到大排序
 	double position = 1 + (rowMatSort.total() - 1) * p / 100.0 - 1; // -1 the index different with python
 	double posV = rowMatSort.at<float>(0, int(position));
 	double posVNext = rowMatSort.at<float>(0, int(position) + 1);
@@ -954,6 +988,21 @@ double MLImageDetection::MLimagePublic::deg2rad(double deg)
 	return deg / 180 * CV_PI;
 }
 
+cv::Point2f MLImageDetection::MLimagePublic::getPtsCenter(vector<cv::Point2f> pts)
+{
+	cv::Point2f c0;
+	arma::vec xv(pts.size());
+	arma::vec yv(pts.size());
+	for (int i = 0; i < pts.size(); i++)
+	{
+		xv[i] = pts[i].x;
+		yv[i] = pts[i].y;
+	}
+	c0.x = arma::mean(xv);
+	c0.y = arma::mean(yv);
+	return c0;
+}
+
 
 double MLImageDetection::MLimagePublic::calculateMatMedian(cv::Mat roi)
 {
@@ -974,6 +1023,18 @@ cv::Mat MLImageDetection::MLimagePublic::getRotationImg(cv::Mat img, double angl
 	cv::Mat affine_matrix = getRotationMatrix2D(center, angle, 1.0);
 	warpAffine(img, rotatedImg, affine_matrix, img.size());
 	return rotatedImg;
+}
+
+cv::Mat MLImageDetection::MLimagePublic::flipImg(cv::Mat img, bool flipLR, bool flipUD)
+{
+	cv::Mat imgflip;
+	if (flipLR)
+		cv::flip(img, imgflip, 1);
+	else
+		imgflip = img.clone();
+	if (flipUD)
+		cv::flip(imgflip, imgflip, 0);
+	return imgflip;
 }
 
 vector<double> MLImageDetection::MLimagePublic::line_fit(Mat abs_grad, int flag)
@@ -1138,22 +1199,20 @@ int MLImageDetection::MLimagePublic::findNeighborNum(vector<double> xVec, double
 	return num;
 }
 
-vector<cv::Point2f> MLImageDetection::MLimagePublic::pointsClusters(vector<cv::Point2f> pts, double thresh)
+vector<cv::Point2f> MLImageDetection::MLimagePublic::pointsClusters(vector<cv::Point2f> pts, double thresh) 
 {
 	vector<double> dis1;
-	 int num = pts.size();
-//	double k[num] = { 0 };
-	std::vector<double> k(num, 0.0);  // 
-	cv::Mat kMat = cv::Mat::ones(cv::Size(1, num), CV_16UC1);
+	double k[11000] = { 0 };
+	cv::Mat kMat = cv::Mat::ones(cv::Size(1, 11000), CV_16UC1);
 	kMat = -kMat;
 	//   cv::Mat dis = cv::Mat::zeros(cv::Size(100, 100), CV_32FC1);
-	cv::Mat index = cv::Mat::ones(cv::Size(15000, 15000), CV_16UC1);
-	cv::Mat xValue = cv::Mat::ones(cv::Size(15000, 15000), CV_32FC1);
-	cv::Mat yValue = cv::Mat::ones(cv::Size(15000, 15000), CV_32FC1);
+	cv::Mat index = cv::Mat::ones(cv::Size(11000, 11000), CV_16UC1);
+	cv::Mat xValue = cv::Mat::ones(cv::Size(11000, 11000), CV_32FC1);
+	cv::Mat yValue = cv::Mat::ones(cv::Size(11000, 11000), CV_32FC1);
 	index = -index;
 	xValue = -xValue;
 	yValue = -yValue;
-	if (pts.size() > 0 & pts.size() < 15000)
+	if (pts.size() > 0 & pts.size() < 11000)
 	{
 		//  double tmp = Getdistance(pts[0], cv::Point2f(0, 0));
 		 // dis.at<float>(0, k[0]) = tmp;
@@ -1360,10 +1419,10 @@ cv::Mat MLImageDetection::MLimagePublic::generatePointsIndexMap(vector<cv::Point
 			yVec1.push_back(ptsNew[i].y);
 	}
 	// x dian fenlei
-	vector<double> xUniq = unique(xVec1, thresh); //棋盘格分割阈值
+	vector<double> xUniq = unique(xVec, thresh); //棋盘格分割阈值
 	int xNum = xUniq.size();
 	// y dian fenlei
-	vector<double> yUniq = unique(yVec1, thresh); // 棋盘格分割阈值
+	vector<double> yUniq = unique(yVec, thresh); // 棋盘格分割阈值
 	int yNum = yUniq.size();
 	double xW = 0;
 	for (int i = 0; i < xUniq.size() - 1; i++)

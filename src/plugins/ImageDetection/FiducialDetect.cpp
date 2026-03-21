@@ -2,6 +2,7 @@
 #include <opencv2/imgproc/types_c.h>
 #include"ml_matchTemplate.h"
 #include"CrossCenter.h"
+#include "ml_coordinateTransformation.h"
 
 using namespace MLImageDetection;
 using namespace cv;
@@ -10,6 +11,315 @@ MLImageDetection::FiducialDetect::FiducialDetect()
 }
 MLImageDetection::FiducialDetect::~FiducialDetect()
 {
+}
+arma::uvec sortPointsByX(vector<cv::Point2f>& ptVec)
+{
+	arma::vec xvec(ptVec.size());
+	for (int i = 0; i < ptVec.size(); i++)
+	{
+		xvec[i] = ptVec[i].x;
+	}
+	arma::uvec index = arma::sort_index(xvec);
+	return index;
+}
+
+FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinateJiaDing(cv::Mat img)
+{
+	FiducialRe re;
+	if (img.empty())
+	{
+		re.flag = false;
+		re.errMsg = "Input image is null";
+		return re;
+	}
+	cv::Mat gray = convertToGrayImage(img);
+	cv::Mat imgdraw = convertTo3Channels(img);
+	cv::GaussianBlur(gray, gray, cv::Size(3, 3), 0, 0);
+	cv::Mat kernel = cv::getStructuringElement(MORPH_RECT, cv::Size(3, 3));
+	cv::morphologyEx(gray, gray, MORPH_CLOSE, kernel);
+
+	cv::Mat grad;
+	cv::morphologyEx(gray, grad, MORPH_GRADIENT, kernel);
+	cv::Mat imgth;
+	cv::threshold(grad, imgth, 0, 255, THRESH_OTSU);
+	cv::morphologyEx(imgth, imgth, MORPH_CLOSE, kernel);
+	NaiveRemoveNoise(imgth, 1000);
+	cv::Mat can;
+	cv::Canny(imgth, can, 30, 90);
+	cv::Mat kernel1 = cv::getStructuringElement(MORPH_RECT, cv::Size(10, 10));
+	cv::morphologyEx(can, can, MORPH_CLOSE, kernel1);
+	vector<vector<Point>> contours;
+	vector<Vec4i> hierachy;
+	findContours(can, contours, hierachy, RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(-1, -1));
+	NaiveRemoveNoise(imgth, 100);
+	vector<cv::Rect>rectVec;
+	vector<cv::Point2f>ptVec;
+	vector<int> xVec;
+	for (int i = 0; i < contours.size(); i++)
+	{
+		cv::Rect rect = cv::boundingRect(contours[i]);
+		cv::RotatedRect rectR = cv::minAreaRect(contours[i]);
+		double area = cv::contourArea(contours[i]);
+		double w = max(rectR.size.width, rectR.size.height);
+		double h = min(rectR.size.width, rectR.size.height);
+		double ratio = h / w;
+		double areaRatio = area / rect.area();
+		cv::Point2f cen;
+		float r = 0;
+		cv::minEnclosingCircle(contours[i], cen, r);
+		bool areaFlag = (rect.area() > 1e4 && rect.area() < 2e4) || CV_PI * r * r > 20e4;
+		bool wFlag = h < 200 || 2 * r > 500;
+		drawContours(imgdraw, contours, i, Scalar(0, 255, 0), 1);
+		/*	if (rect.x < 0 || rect.y < 0)
+				continue;*/
+
+		if (areaFlag/*&& ratio>0.7*/ && wFlag && 2 * r < 800/*&& circularity > 0.85*/)
+		{
+			cv::Moments m = cv::moments(contours[i]);
+			cv::Mat roi = img(rect & cv::Rect(0, 0, img.cols, img.rows)).clone();
+			cv::Point2f cen = cv::Point2f(m.m10 / m.m00, m.m01 / m.m00);
+			double r;
+			circleLeastFit(contours[i], cen, r);
+			if (mean(roi)(0) > 220)
+			{
+				ptVec.push_back(cen);
+				rectVec.push_back(rect);
+
+				//drawContours(imgdraw, contours, i, Scalar(0, 255, 0), 1);
+				rectangle(imgdraw, rect, Scalar(0, 0, 255), 1);
+			}
+		}
+	}
+	vector<cv::Point2f>ptVec1 = mergerPoints(ptVec);
+	vector<cv::Rect>rectVec1 = mergerRects(rectVec);
+	if (ptVec1.size() != 3)
+	{
+		re.flag = false;
+		re.errMsg = "fiducial detection fail";
+		return re;
+	}
+	arma::uvec index = sortPointsByX(ptVec1);
+
+	if (false)
+	{
+		for (int i = 0; i < ptVec1.size(); i++)
+		{
+			cv::Vec3f cirf(ptVec1[i].x, ptVec1[i].y, rectVec1[i].width / 2);
+			int len = rectVec1[i].width / 5.0;
+			ptVec1[i] = circleExactDetection(grad, cirf, imgdraw, len);
+		}
+	}
+
+	re.fidLeft = ptVec1[index[0]];
+	re.fidRight = ptVec1[index[1]];
+	//re.input = re.fidRight+cv::Point2f(601,-388);
+	re.input = ptVec1[index[2]];
+
+	circle(imgdraw, re.fidLeft, 2, Scalar(0, 0, 255), -1);
+	circle(imgdraw, re.fidRight, 2, Scalar(255, 0, 255), -1);
+	circle(imgdraw, re.input, 2, Scalar(255, 0, 255), -1);
+	re.imgdraw = imgdraw;
+	return re;
+
+}
+FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinateJiaDingLeft(cv::Mat img)
+{
+	FiducialRe re;
+	if (img.empty())
+	{
+		re.flag = false;
+		re.errMsg = "Input image is null";
+		return re;
+	}
+	cv::Mat gray = convertToGrayImage(img);
+	cv::Mat imgdraw = convertTo3Channels(img);
+	cv::GaussianBlur(gray, gray, cv::Size(3, 3), 0, 0);
+	//cv::Mat templ = cv::imread("H:\\jiading\\fid\\templ.tif", 0);
+	string filepath1 = "./config/AlgConfig/template/qrtemplate.tif";
+	cv::Mat templ = cv::imread(filepath1, 0);
+	if (templ.empty())
+		templ = cv::imread("../config/AlgConfig/template/qrtemplate.tif", 0);
+	cv::Mat img_result;
+	matchTemplate(gray, templ, img_result, TM_CCOEFF_NORMED);
+	cv::Point maxloc;
+	double maxval;
+	cv::minMaxLoc(img_result, NULL, &maxval, NULL, &maxloc);
+	cv::Rect rect(0, 0, templ.cols, templ.rows);
+	rect = rect + maxloc;
+	//	cv::rectangle(imgdraw, rect, Scalar(0, 0, 255), 1);
+	//cout << maxval << " _ ";
+	cv::Point2f  qrCen = rect.tl() + Point(rect.size() / 2);
+	circle(imgdraw, qrCen, 5, Scalar(0, 0, 255), -1);
+	cv::Rect rectAll(0, 0, img.cols, img.rows);
+	cv::Rect rectfidL(qrCen.x - 1000, qrCen.y - 150, 350, 350);
+	cv::Rect rectfidR(qrCen.x - 300, qrCen.y - 600, 350, 350);
+	cv::Rect rectInput(qrCen.x + 10, qrCen.y - 1300, 1100, 1100);
+	rectfidL = rectfidL & rectAll;
+	rectfidR = rectfidR & rectAll;
+	rectInput = rectInput & rectAll;
+	cv::rectangle(imgdraw, rectfidL, Scalar(0, 0, 255), 1);
+	cv::rectangle(imgdraw, rectfidR, Scalar(0, 0, 255), 1);
+	cv::rectangle(imgdraw, rectInput, Scalar(0, 0, 255), 1);
+	cv::Point2f fidLeft = littleCircleDetect(gray, rectfidL, imgdraw);
+	cv::Point2f fidRight = littleCircleDetect(gray, rectfidR, imgdraw);
+	cv::Point2f input = bigCircleDetect(gray, rectInput, imgdraw);
+	if (fidLeft.x > 1e-6 && fidLeft.y > 1e-6 && fidRight.x > 1e-6 && fidRight.y > 1e-6 && input.x > 1e-6 && input.y > 1e-6)
+	{
+
+		double dis1 = Getdistance(fidLeft, fidRight);
+		double dis2 = Getdistance(fidLeft, input);
+		double dis3 = Getdistance(fidRight, input);
+		if (dis1 < 700 || dis2 < 1400 || dis3 < 600)
+		{
+			re.flag = false;
+		}
+		re.fidLeft = fidLeft;
+		re.fidRight = fidRight;
+		re.input = input;
+		re.imgdraw = imgdraw;
+	}
+	else if (fidLeft.x > 1e-6 && fidRight.x > 1e-6 && fidLeft.y > 1e-6 && fidRight.y > 1e-6)
+	{
+		vector<cv::Point2f>srcVec, dstVec;
+		srcVec.push_back(m_fidL);
+		srcVec.push_back(m_fidR);
+		dstVec.push_back(fidLeft);
+		dstVec.push_back(fidRight);
+		MLCoordinateTransformation tran;
+		RigidTrans2D trans = tran.getRigidTrans2D(srcVec, dstVec);
+		cv::Point2f c1 = tran.getPointAfterTrans2D(m_fidL, trans);
+		cv::Point2f c2 = tran.getPointAfterTrans2D(m_fidR, trans);
+		input = tran.getPointAfterTrans2D(m_input, trans);
+		re.fidLeft = fidLeft;
+		re.fidRight = fidRight;
+		re.input = input;
+		re.imgdraw = imgdraw;
+		re.isBeyondImg = true;
+	}
+	else if (fidRight.x > 1e-6 && input.x > 1e-6 && fidRight.y > 1e-6 && input.y > 1e-6)
+	{
+
+		vector<cv::Point2f>srcVec, dstVec;
+		srcVec.push_back(m_fidR);
+		srcVec.push_back(m_input);
+		dstVec.push_back(fidRight);
+		dstVec.push_back(input);
+		MLCoordinateTransformation tran;
+		RigidTrans2D trans = tran.getRigidTrans2D(srcVec, dstVec);
+		fidLeft = tran.getPointAfterTrans2D(m_fidL, trans);
+		re.fidLeft = fidLeft;
+		re.fidRight = fidRight;
+		re.input = input;
+		re.imgdraw = imgdraw;
+		re.isBeyondImg = true;
+	}
+	else
+	{
+		re.flag = false;
+		re.errMsg = "fiducial detection fail";
+	}
+	return re;
+}
+FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinateJiaDingRight(cv::Mat img)
+{
+
+	FiducialRe re;
+	if (img.empty())
+	{
+		re.flag = false;
+		re.errMsg = "Input image is null";
+		return re;
+	}
+	cv::Mat gray = convertToGrayImage(img);
+	cv::Mat imgdraw = convertTo3Channels(img);
+	cv::GaussianBlur(gray, gray, cv::Size(3, 3), 0, 0);
+	//cv::Mat templ = cv::imread("H:\\jiading\\fid\\templ.tif", 0);
+	string filepath1 = "./config/AlgConfig/template/circletemplR.tif";
+	cv::Mat templ = cv::imread(filepath1, 0);
+	if (templ.empty())
+		templ = cv::imread("../config/AlgConfig/template/circletemplR.tif", 0);
+	cv::Mat img_result;
+	matchTemplate(gray, templ, img_result, TM_CCOEFF_NORMED);
+	cv::Point maxloc;
+	double maxval;
+	cv::minMaxLoc(img_result, NULL, &maxval, NULL, &maxloc);
+	cv::Rect rect(0, 0, templ.cols, templ.rows);
+	rect = rect + maxloc;
+	//	cv::rectangle(imgdraw, rect, Scalar(0, 0, 255), 1);
+	//cout << maxval << " _ ";
+	cv::Point2f  qrCen = rect.tl() + Point(rect.size() / 2);
+	circle(imgdraw, qrCen, 5, Scalar(0, 0, 255), -1);
+	cv::Rect rectAll(0, 0, img.cols, img.rows);
+	cv::Rect rectfidL(qrCen.x - 1000, qrCen.y - 200, 400, 400);
+	cv::Rect rectfidR(qrCen.x - 300, qrCen.y + 120, 350, 350);
+	cv::Rect rectInput(qrCen.x + 50, qrCen.y + 100, 1100, 1100);
+	rectfidL = rectfidL & rectAll;
+	rectfidR = rectfidR & rectAll;
+	rectInput = rectInput & rectAll;
+	cv::rectangle(imgdraw, rectfidL, Scalar(0, 0, 255), 1);
+	cv::rectangle(imgdraw, rectfidR, Scalar(0, 0, 255), 1);
+	cv::rectangle(imgdraw, rectInput, Scalar(0, 0, 255), 1);
+	cv::Point2f fidLeft = littleCircleDetect(gray, rectfidL, imgdraw);
+	cv::Point2f fidRight = littleCircleDetect(gray, rectfidR, imgdraw);
+	cv::Point2f input = bigCircleDetect(gray, rectInput, imgdraw);
+	if (fidLeft.x > 1e-6 && fidLeft.y > 1e-6 && fidRight.x > 1e-6 && fidRight.y > 1e-6 && input.x > 1e-6 && input.y > 1e-6)
+	{
+
+		double dis1 = Getdistance(fidLeft, fidRight);
+		double dis2 = Getdistance(fidLeft, input);
+		double dis3 = Getdistance(fidRight, input);
+		if (dis1 < 700 || dis2 < 1400 || dis3 < 600)
+		{
+			re.flag = false;
+		}
+		re.fidLeft = fidLeft;
+		re.fidRight = fidRight;
+		re.input = input;
+		re.imgdraw = imgdraw;
+	}
+	else if (fidLeft.x > 1e-6 && fidRight.x > 1e-6 && fidLeft.y > 1e-6 && fidRight.y > 1e-6)
+	{
+		vector<cv::Point2f>srcVec, dstVec;
+		srcVec.push_back(m_fidL);
+		srcVec.push_back(m_fidR);
+		dstVec.push_back(fidLeft);
+		dstVec.push_back(fidRight);
+		MLCoordinateTransformation tran;
+		RigidTrans2D trans = tran.getRigidTrans2D(srcVec, dstVec);
+		cv::Point2f c1 = tran.getPointAfterTrans2D(m_fidL, trans);
+		cv::Point2f c2 = tran.getPointAfterTrans2D(m_fidR, trans);
+		input = tran.getPointAfterTrans2D(m_input, trans);
+		re.fidLeft = fidLeft;
+		re.fidRight = fidRight;
+		re.input = input;
+		re.imgdraw = imgdraw;
+		re.isBeyondImg = true;
+	}
+	else if (fidRight.x > 1e-6 && input.x > 1e-6 && fidRight.y > 1e-6 && input.y > 1e-6)
+	{
+
+		vector<cv::Point2f>srcVec, dstVec;
+		srcVec.push_back(m_fidR);
+		srcVec.push_back(m_input);
+		dstVec.push_back(fidRight);
+		dstVec.push_back(input);
+		MLCoordinateTransformation tran;
+		RigidTrans2D trans = tran.getRigidTrans2D(srcVec, dstVec);
+		fidLeft = tran.getPointAfterTrans2D(m_fidL, trans);
+		re.fidLeft = fidLeft;
+		re.fidRight = fidRight;
+		re.input = input;
+		re.imgdraw = imgdraw;
+		re.isBeyondImg = true;
+	}
+	else
+	{
+		re.flag = false;
+		re.errMsg = "fiducial detection fail";
+	}
+	return re;
+
+
 }
 FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinate(cv::Mat img, cv::Rect rect)
 {
@@ -25,7 +335,7 @@ FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinate(cv::Mat img, 
 	cv::Mat imgdraw = convertTo3Channels(gray);
 	cv::Point2f loc = getFiducialCoordinateByContour(gray, imgdraw);
 	if (loc.x < 1e-6 || loc.y < 1e-6)
-	   loc = getFiducialCoordinateByHough(gray, imgdraw);
+		loc = getFiducialCoordinateByHough(gray, imgdraw);
 	if (loc.x < 1e-6 || loc.y < 1e-6)
 	{
 		re.flag = false;
@@ -71,9 +381,9 @@ std::vector<cv::Point2f> MLImageDetection::FiducialDetect::FiducialCoordinate(cv
 	//    if (!re.success)
 	//    {
 	//        cv::Mat templ;
-	//        templ = cv::imread("./config/ALGConfig/picoTemplate.tif", 0);
+	//        templ = cv::imread("./config/AlgConfig/picoTemplate.tif", 0);
 	//        if (!templ.data)
-	//            templ = cv::imread("../../app/config/ALGConfig/picoTemplate.tif", 0);
+	//            templ = cv::imread("../../ap./config/AlgConfig/picoTemplate.tif", 0);
 	//        MatchTemplate mt;
 	//        re = mt.getMatchTemplateResult(img, templ, 80, center);
 	//        m_img_draw = mt.getImgDraw();
@@ -98,7 +408,7 @@ ALGResult MLImageDetection::FiducialDetect::FiducialCoordinate(cv::Mat img, Fidu
 		}
 		else
 		{
-			templ = cv::imread("./config/ALGConfig/circletemplate1.tiff", 0);
+			templ = cv::imread("./config/AlgConfig/template/circletemplate1.tiff", 0);
 		}
 		MatchTemplate mt;
 		re = mt.getMatchTemplateResult(img, templ, 90, center);
@@ -118,7 +428,7 @@ ALGResult MLImageDetection::FiducialDetect::FiducialCoordinate(cv::Mat img, Fidu
 		}
 		else
 		{
-			templ = cv::imread("./config/ALGConfig/crosshairTemplate.tiff", 0);
+			templ = cv::imread("./config/AlgConfig/template/crosshairTemplate.tiff", 0);
 		}
 		MatchTemplate mt;
 		re = mt.getMatchTemplateResult(img, templ, 90, center);
@@ -138,7 +448,7 @@ ALGResult MLImageDetection::FiducialDetect::FiducialCoordinate(cv::Mat img, Fidu
 		}
 		else
 		{
-			templ = cv::imread("./config/ALGConfig/crosshairTemplate.tiff", 0);
+			templ = cv::imread("./config/AlgConfig/template/crosshairTemplate.tiff", 0);
 		}
 		MatchTemplate mt;
 		re = mt.getMatchTemplateResult(img, templ, 90, center);
@@ -337,7 +647,7 @@ cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByHough(cv::M
 	for (int i = 0; i < circles.size(); i++)
 	{
 		cv::Point2f c0(circles[i][0], circles[i][1]);
-		 r = circles[i][2];
+		r = circles[i][2];
 		if (r > 50 & r < 70)
 		{
 			loc = c0;
@@ -345,13 +655,13 @@ cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByHough(cv::M
 			circle(imgdraw, c0, 1, Scalar(0, 255, 0), -1);
 			break;
 		}
-	}	
+	}
 	return loc;
 }
 cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByTemplate(cv::Mat gray, cv::Mat& imgdraw)
 {
-	// string templatePath = "./config/ALGConfig/fiducial/temple.tif";
-	string templatePath = "E:\\project\\JiAn\\src\\RealityQ+\\config\\ALGConfig\\fiducial\\temple.tif";
+	 string templatePath = "./config/AlgConfig/template/temple.tif";
+	//string templatePath = "E:\\project\\JiAn\\src\\RealityQ+\\config\\ALGConfig\\fiducial\\temple.tif";
 	cv::Mat templ = cv::imread(templatePath, 0);
 	if (templ.empty())
 		return cv::Point(0, 0);
@@ -373,7 +683,7 @@ cv::Point2f MLImageDetection::FiducialDetect::getExactLocation(cv::Mat gray, cv:
 	cv::Rect rect(c0.x - len / 2, c0.y - len / 2, len, len);
 	cv::Mat roi = gray(rect).clone();
 	CrossCenter cc;
-	cc.setROILength(10);
+	//cc.setROILength(10);
 	cv::bitwise_not(roi, roi);
 	cv::Point2f center = cc.find_centerGaussian(roi);
 	if (center.x > 1e-6 || center.y > 1e-6)
@@ -395,16 +705,16 @@ int findMaxMag(cv::Mat mag, arma::vec xvec, arma::vec yvec)
 		float mag0 = mag.at<float>(iy, ix);
 		magvec.push_back(mag0);
 	}
-	int index = min_element(magvec.begin(), magvec.end()) - magvec.begin();
+	int index = max_element(magvec.begin(), magvec.end()) - magvec.begin();
 	return index;
 }
 
-vector<cv::Point2f> MLImageDetection::FiducialDetect::findCircleExactPoints(cv::Mat mag, int step, cv::Vec3f cir, cv::Mat& imgdraw)
+vector<cv::Point2f> MLImageDetection::FiducialDetect::findCircleExactPoints(cv::Mat mag, int step, cv::Vec3f cir, cv::Mat& imgdraw, int len)
 {
 	double r = cir[2];
 	double xc = cir[0];
 	double yc = cir[1];
-	int len = 20;
+	//int len = 20;
 	double gap = 1;
 	vector<cv::Point2f>fitPts;
 	for (int i = 0; i < 360; i = i + step)
@@ -470,6 +780,178 @@ vector<cv::Point2f> MLImageDetection::FiducialDetect::findCircleExactPoints(cv::
 	}
 	return fitPts;
 
+}
+cv::Point2f MLImageDetection::FiducialDetect::circleExactDetection(cv::Mat grad, cv::Vec3f cen, cv::Mat& imgdraw, int len)
+{
+	vector<cv::Point2f>fitPts = findCircleExactPoints(grad, 2, cen, imgdraw, len);
+	cv::Point2f c2;
+	double r1;
+	circleLeastFit(fitPts, c2, r1);
+	cv::circle(imgdraw, c2, r1, Scalar(0, 255, 255), 1);
+	cv::circle(imgdraw, c2, 2, Scalar(0, 255, 0), -1);
+	return c2;
+
+}
+vector<cv::Point2f> MLImageDetection::FiducialDetect::mergerPoints(vector<cv::Point2f> pts)
+{
+	if (pts.size() < 1)
+		return pts;
+	vector<cv::Point2f>ptsm;
+	ptsm.push_back(pts[0]);
+	for (int i = 1; i < pts.size(); i++)
+	{
+		bool flag = true;
+		for (int j = 0; j < ptsm.size(); j++)
+		{
+			double dis = Getdistance(pts[i], ptsm[j]);
+			if (dis < 20)
+			{
+				flag = false;
+				break;
+			}
+			else
+				continue;
+
+		}
+		if (flag == true)
+			ptsm.push_back(pts[i]);
+
+	}
+	return ptsm;
+}
+vector<cv::Rect> MLImageDetection::FiducialDetect::mergerRects(vector<cv::Rect> pts)
+{
+	if (pts.size() < 1)
+		return pts;
+	vector<cv::Rect>ptsm;
+	ptsm.push_back(pts[0]);
+	for (int i = 1; i < pts.size(); i++)
+	{
+		bool flag = true;
+		for (int j = 0; j < ptsm.size(); j++)
+		{
+			double dis = Getdistance(pts[i].tl(), ptsm[j].tl());
+			if (dis < 20)
+			{
+				flag = false;
+				break;
+			}
+			else
+				continue;
+
+		}
+		if (flag == true)
+			ptsm.push_back(pts[i]);
+
+	}
+	return ptsm;
+}
+cv::Point2f MLImageDetection::FiducialDetect::littleCircleDetect(cv::Mat img, cv::Rect rect, cv::Mat& imgdraw)
+{
+	if (rect.area() < 1e2)
+		return cv::Point2f(0, 0);
+
+	cv::Point2f c0;
+	cv::Mat roi = img(rect).clone();
+	cv::Mat roidraw = imgdraw(rect);
+	string filepath1 = "./config/AlgConfig/template/circletempl.tif";
+	cv::Mat templ = cv::imread(filepath1, 0);
+	if (templ.empty())
+		templ = cv::imread("../config/AlgConfig/template/circletempl.tif", 0);
+
+	cv::Mat img_result;
+	matchTemplate(roi, templ, img_result, TM_CCOEFF_NORMED);
+	cv::Point maxloc;
+	double maxval;
+	cv::minMaxLoc(img_result, NULL, &maxval, NULL, &maxloc);
+	c0 = maxloc + rect.tl() + Point(templ.size() / 2);
+	circle(imgdraw, c0, 5, Scalar(0, 0, 255), -1);
+	return c0;
+
+
+
+
+
+
+
+	cv::Mat kernel = cv::getStructuringElement(MORPH_RECT, cv::Size(3, 3));
+	cv::morphologyEx(roi, roi, MORPH_GRADIENT, kernel);
+	cv::Mat roith;
+	cv::threshold(roi, roith, 0, 255, THRESH_TRIANGLE);
+	//NaiveRemoveNoise(roith, 5);
+	cv::Mat kernel1 = cv::getStructuringElement(MORPH_RECT, cv::Size(50, 20));
+	cv::morphologyEx(roith, roith, MORPH_CLOSE, kernel1);
+	NaiveRemoveNoise(roith, 400);
+	vector<vector<Point>> contours;
+	vector<Vec4i> hierachy;
+	findContours(roith, contours, hierachy, RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(-1, -1));
+	for (int i = 0; i < contours.size(); i++)
+	{
+		cv::Rect rect0 = cv::boundingRect(contours[i]);
+		cv::RotatedRect rectR = cv::minAreaRect(contours[i]);
+		double area = cv::contourArea(contours[i]);
+		double w = max(rectR.size.width, rectR.size.height);
+		double h = min(rectR.size.width, rectR.size.height);
+		double ratio = h / w;
+		cv::Point2f cen;
+		float r = 0;
+		cv::minEnclosingCircle(contours[i], cen, r);
+		bool areaFlag = (rect0.area() > 25e2) && r * r > 25e2 && r * r < 80e2;
+		bool wFlag = h < 180 && h >100 && (r > 50 && r < 90);
+		//	drawContours(imgdraw, contours, i, Scalar(0, 255, 0), 1);
+		if (areaFlag/*&& ratio>0.7*/ && wFlag)
+		{
+			cv::RotatedRect rectR0 = cv::fitEllipse(contours[i]);
+			c0 = rectR0.center;
+			ellipse(roidraw, rectR0, Scalar(0, 0, 255), 1);
+			circle(roidraw, c0, 5, Scalar(0, 0, 255), -1);
+			c0 = c0 + cv::Point2f(rect.tl());
+			break;
+		}
+	}
+	return c0;
+}
+cv::Point2f MLImageDetection::FiducialDetect::bigCircleDetect(cv::Mat img, cv::Rect rect, cv::Mat& imgdraw)
+{
+	int minLen = min(rect.width, rect.height);
+	if (rect.area() < 1e2 || minLen < 300)
+		return cv::Point2f(0, 0);
+	cv::Point2f c0;
+	cv::Mat roi = img(rect).clone();
+	cv::Mat roidraw = imgdraw(rect);
+	cv::Mat kernel = cv::getStructuringElement(MORPH_RECT, cv::Size(3, 3));
+	cv::morphologyEx(roi, roi, MORPH_GRADIENT, kernel);
+	cv::Mat roith;
+	cv::threshold(roi, roith, 0, 255, THRESH_OTSU);
+	NaiveRemoveNoise(roith, 500);
+	vector<vector<Point>> contours;
+	vector<Vec4i> hierachy;
+	findContours(roith, contours, hierachy, RETR_TREE, CV_CHAIN_APPROX_SIMPLE, Point(-1, -1));
+	for (int i = 0; i < contours.size(); i++)
+	{
+		cv::Rect rect0 = cv::boundingRect(contours[i]);
+		cv::RotatedRect rectR = cv::minAreaRect(contours[i]);
+		double area = cv::contourArea(contours[i]);
+		double w = max(rectR.size.width, rectR.size.height);
+		double h = min(rectR.size.width, rectR.size.height);
+		double ratio = h / w;
+		cv::Point2f cen;
+		float r = 0;
+		cv::minEnclosingCircle(contours[i], cen, r);
+		bool areaFlag = (rect.area() > 9e4) && r * r > 9e4 && r * r < 16e4;
+		bool wFlag = h > 400 && h < 800 && (r > 300 && r < 400);
+		//drawContours(imgdraw, contours, i, Scalar(0, 255, 0), 1);
+		if (areaFlag/*&& ratio>0.7*/ && wFlag)
+		{
+			cv::RotatedRect rectR0 = cv::fitEllipse(contours[i]);
+			c0 = rectR0.center;
+			ellipse(roidraw, rectR0, Scalar(0, 0, 255), 1);
+			circle(roidraw, c0, 5, Scalar(0, 0, 255), -1);
+			c0 = c0 + cv::Point2f(rect.tl());
+			break;
+		}
+	}
+	return c0;
 }
 cv::Mat MLImageDetection::FiducialDetect::getImgDraw()
 {

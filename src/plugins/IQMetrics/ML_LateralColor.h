@@ -3,11 +3,15 @@
 #include<opencv2/opencv.hpp>
 #include<iostream>
 #include"IQMetricUtl.h"
+#include"ml_gridDetect.h"
 namespace MLIQMetrics {
 	struct LateralColorRe
 	{
 		double meandis=0;
 		double maxdis = 0;
+		double disRGArcmin = 0;
+		double disRBArcmin = 0;
+		double disGBArcmin = 0;
 		cv::Mat subXRGArcmin;
 		cv::Mat subYRGArcmin;
 		cv::Mat subXRBArcmin;
@@ -40,22 +44,24 @@ namespace MLIQMetrics {
 		~MLLateralColor();
 	public:
 		void setIsSLB(bool flag);
-		void setFOVType(FOVTYPE type);
+		void setPatternCenter(cv::Point2f cen);
 		void setIsUpdateSLB(bool flag);
 		LateralColorRe getLateralColorGrid(cv::Mat rImg, cv::Mat gImg, cv::Mat bImg);
+		LateralColorRe getLateralColorGridNew(cv::Mat rImg, cv::Mat gImg, cv::Mat bImg);
 		LateralColorRe getLateralColorCross(cv::Mat rImg, cv::Mat gImg, cv::Mat bImg);
-		LateralColorRe getLateralColorCrossPreLoc(const cv::Mat rImg, const cv::Mat gImg, const cv::Mat bImg);
+		LateralColorRe getLateralColorGridCenter(const cv::Mat rImg, const cv::Mat gImg, const cv::Mat bImg);
 		void updateImgdraw(cv::Point2f cen, cv::Mat &imgdraw,int binNum);
 	private:
-		cv::Mat convertVecToMat(vector<double>subvec);
-		void updateLateralColorRe(LateralColorRe& re, bool isSLB, FOVTYPE type);
+		void writeLateralGridCenter(MLImageDetection::GridRe re);
+		void readLateralGridCenter(MLImageDetection::GridRe &re);
 
 	private:
 		int m_resizeNum = 4;
 		vector<string> m_str = { "2","4" ,"5" ,"6" ,"8" };
 		bool m_IsSLB = true;
-		FOVTYPE m_FOVType;
-		bool m_IsUpdateSLB = false;
+		cv::Point2f m_center;
+		int m_len = 7000;
+		bool m_updateSLB = true;
 	};
 }
 

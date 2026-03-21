@@ -61,7 +61,7 @@ namespace MLIQMetrics {
         MLContrastRatio();
         ~MLContrastRatio();
     public:
-        void setFOVType(FOVTYPE type);
+        void setIsDisparityEyebox(bool flag);
         void setIsUpdateSLB(bool flag);
         ContrastRatioRe getContrastRatio(const cv::Mat imgP, const cv::Mat imgN,bool isSLB=true, MaskType type=NOMASK);
         ContrastRatioReGuSu getContrastRatioGuSu(cv::Mat imgP, cv::Mat imgN);
@@ -88,25 +88,25 @@ namespace MLIQMetrics {
         void setColor(string color);
         void setEyeboxLocation(string eyebox);
         void readCRMatFromCSV(cv::Mat& crmat, string color, string id);
-        void readCRMatFromCSV(cv::Mat& crmat, string color, string id,FOVTYPE type);
-        void saveSLBCRMatToCSV(const cv::Mat crmat, string color, string id, FOVTYPE type);
-
         void readCRMatFromCSV(cv::Mat& crmat, string color);
+        void writeCRMatToCSV(const cv::Mat& crmat, string color);
 
         void readROICRFromCSV(vector<double>& crVec, string color, string id);
         cv::Mat updateDutCRBySlbCR(cv::Mat dutcr, cv::Mat slbcr);
         vector<double> updateDutCRBySlbCR(vector<double>dutcr, vector<double>slbcr);
         cv::RotatedRect getCherkerBorder(cv::Mat img, cv::Rect &rect); 
         cv::Mat preProcess(cv::Mat img);
-        
+        void writeCheckerInfoToCSV(MLImageDetection::CheckerboardRe re);
+        void readCheckerInfoToCSV(MLImageDetection::CheckerboardRe&Re);
+
 
     public:
         int m_binNum = 1;
         string m_slbCRDir = "//JsonFile//AlgJson//SLBCR//";
         string m_color="w";
         string m_eyebox="Left";
-        FOVTYPE m_fovType;
-        bool m_IsUpdateSLB = false;
+        bool m_isDisparityEyebox = false;
+        bool m_updateSLB = true;
     };
 }
 

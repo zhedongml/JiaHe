@@ -8,11 +8,11 @@ using namespace std;
 using namespace cv;
 using namespace MLImageDetection;
 using Json = nlohmann::json;
-int CrossCenterParameter::roilength = 200;
-int CrossCenterParameter::iterationInterval = 1;
+int CrossCenterParameter::roilength = 20;
+int CrossCenterParameter::iterationInterval = 10;
 int CrossCenterParameter::asfilterROI = 20;
 int CrossCenterParameter::searchlength = 25;
-int CrossCenterParameter::dataFilterVer = 60;
+int CrossCenterParameter::dataFilterVer = 30;
 int CrossCenterParameter::dataFilterHor = 50;
 int CrossCenterParameter::pointdistance = 20;
 float CrossCenterParameter::anglediff = 30;
@@ -145,7 +145,7 @@ Point2f CrossCenter::get_crossCenter(int flag)
         cv::Mat templa;
         if (DEBUG==1)
         {
-            templa = cv::imread( "E:\\project\\hydrus3\\mtfiq\\src\\app\\config\\ALGConfig\\template4.tif");        
+            templa = cv::imread( "E:\\project\\hydrus3\\mtfiq\\src\\app\\config\\templateImg\\template4.tif");        
         }
         else
         {
@@ -189,8 +189,6 @@ vector<Point> CrossCenter::find_roi_center(Point2f center, float a1, float b1, f
 
         float anglev = atan(kv);
         float angleh = atan(kh);
-        m_hAngle = angleh * 180 / CV_PI;
-        m_vAngle = anglev * 180 / CV_PI;
 
         if (anglev > 0)
         {
@@ -333,16 +331,7 @@ cv::Point2f CrossCenter::getRotationAngle()
         return cv::Point2f(0, 0);
     }
 }
-double CrossCenter::getHorizontalLineAngle()
-{
-    return m_hAngle;
-}
 void CrossCenter::SetbinNum(int bin)
 {
     m_binNum = bin;
-}
-
-void MLImageDetection::CrossCenter::setROILength(int len)
-{
-    CrossCenterParameter::roilength = len;
 }

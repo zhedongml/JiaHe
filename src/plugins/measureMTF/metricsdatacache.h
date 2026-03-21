@@ -25,8 +25,9 @@ class MetricsDataCache : public QObject
     MetricsDataCache(QObject *parent = nullptr);
     ~MetricsDataCache();
     static MetricsDataCache *getInstance(QObject *parent = nullptr);
-    void updateFOVCenter(QString color, float centerX, float centerY, std::vector<double> rotateH,
-                         std::vector<double> rotateV);
+    //void updateFOVCenter(QString color, float centerX, float centerY, std::vector<double> rotateH,
+                        // std::vector<double> rotateV);
+    void updateFOVCenter(QString color, float centerX, float centerY);
     void updateFOVAngle(QString color, float h, float v, float d);
     void updateRotation(QString color, float degree);
     FOVAngle getFOVAngle(QString color);

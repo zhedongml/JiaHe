@@ -27,9 +27,10 @@ class IQMETRICS_API MLFOV:public MLImageDetection::MLimagePublic
     ~MLFOV();
 
   public:
-      void setFOVType(FOVTYPE type);
-      FovRe getFOVSolid(const cv::Mat img);
+      void setIsSLB(bool flag);
+      FovRe getFOVSolid(cv::Mat img);
     void setRotaionxAngle(double angle);
+
 
   private:
     double calculateFOV(cv::Point2f pt1, cv::Point2f pt2,int binNum);
@@ -41,6 +42,7 @@ class IQMETRICS_API MLFOV:public MLImageDetection::MLimagePublic
   private:
     double m_rotationAngle = 0;
     int m_len = 200;
-    FOVTYPE m_fovType;
+    bool m_isSLB = true;
+    
 };
 } // namespace MLIQMetrics

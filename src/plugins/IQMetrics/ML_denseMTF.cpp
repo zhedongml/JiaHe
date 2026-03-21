@@ -6,7 +6,9 @@
 #include"MLContrastRatio.h"
 #include"LogPlus.h"
 #include"ml_gridDetect.h"
-#include"ML_gridPatternDetection.h"
+#include <omp.h>
+#include <shared_mutex>
+#include <thread>
 using namespace MLImageDetection;
 using namespace cv;
 using namespace MLIQMetrics;
@@ -19,15 +21,19 @@ MLIQMetrics::MLdenseMTF::MLdenseMTF()
 MLIQMetrics::MLdenseMTF::~MLdenseMTF()
 {
 }
-void MLIQMetrics::MLdenseMTF::setCheckerDegree(int deg)
+void MLIQMetrics::MLdenseMTF::setIsSLB(bool flag)
 {
-	//m_flag = deg;
+	m_IsSLB = flag;
 }
-void MLIQMetrics::MLdenseMTF::setFOVType(FOVTYPE type)
+void MLIQMetrics::MLdenseMTF::setIsDisparityEyebox(bool flag)
 {
-	m_fovType = type;
+	m_isDisparityEyebox = flag;
 }
-DenseMTFRe MLIQMetrics::MLdenseMTF::getDenseMTFChecker(cv::Mat img, int flag)
+void MLIQMetrics::MLdenseMTF::setPatternCenter(cv::Point2f cen)
+{
+	m_center = cen;
+}
+DenseMTFRe MLIQMetrics::MLdenseMTF::getDenseMTFChecker(cv::Mat img)  
 {
 	string info = "------getDenseMTF------";
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "DenseMTF calculation start");
@@ -47,44 +53,24 @@ DenseMTFRe MLIQMetrics::MLdenseMTF::getDenseMTFChecker(cv::Mat img, int flag)
 		return re;
 	}
 	m_binNum = binNum;
-	cv::Rect rectROI = IQMetricsParameters::ROIRect;
-	updateRectByRatio1(rectROI, 1.0 / binNum);
-	if (m_fovType == BIGFOV)
-		rectROI = cv::Rect(0, 0, -1, -1);
-	cv::Mat imgROI = GetROIMat(img, rectROI);
-	cv::Mat img8 = convertToUint8(imgROI);
+	cv::Mat img8 = convertToUint8(img);  
 	cv::Mat imgdraw = convertTo3Channels(img8);
 	MLContrastRatio cr;
 	cv::Rect rect;
-	if (m_fovType != BIGFOV)
-	{
-		cv::RotatedRect rectR = cr.getCherkerBorder(img8, rect);
-		updateRotateImg(imgROI, rectR.angle);
-		updateRotateImg(img8, rectR.angle);
-		updateRotateImg(imgdraw, rectR.angle);
-	}
-	
-	cv::Mat imgResize;
-	int reiseNum = 4 / binNum;
-	cv::resize(img8, imgResize, imgROI.size() / reiseNum);
-	MLCherkerboardDetect cb;
-	if (flag == 2)
-	{
-		cb.SetChecssboardPointsClusters(15*4/ 4);
-		cb.SetChessboardxyClassification(15*4/ 4);
-	}
-	else if (flag==1)
+	cv::RotatedRect rectR = cr.getCherkerBorder(img8, rect);
+	updateRotateImg(img, rectR.angle);
+	updateRotateImg(img8, rectR.angle);
+	updateRotateImg(imgdraw, rectR.angle);
 
-	{
-		cb.SetChecssboardPointsClusters(200/ 4);
-		cb.SetChessboardxyClassification(200/ 4);
-	}
-	cb.SetChessboardUpdateFlag(true);
+	//cv::Mat imgResize;
+	int reiseNum =1;
+	//cv::resize(img8, imgResize, img.size() / reiseNum);
+	MLCherkerboardDetect cb;
+	cb.SetChecssboardPointsClusters(15);
+	cb.SetChessboardxyClassification(20);
+	cb.SetChessboardUpdateFlag(false);
 	CheckerboardRe checkerRe;
-	if(flag==2)
-	  checkerRe = cb.detectChessboardCorner(imgResize, 0.25, binNum);
-	else 
-	 checkerRe = cb.detectChessboardTemplate1(imgResize, 0.25, 4);
+	checkerRe = cb.detectChessboardCorner(img8, 0.25, binNum);
 	if (checkerRe.flag == false)
 	{
 		re.flag = false;
@@ -93,24 +79,18 @@ DenseMTFRe MLIQMetrics::MLdenseMTF::getDenseMTFChecker(cv::Mat img, int flag)
 		return re;
 	}
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "DenseMTF calculation: corners detection successfully");
+
 	m_center = checkerRe.center * reiseNum;
 	m_center = IQMetricsParameters::opticalCenter / binNum;
 	cv::Mat xlocMat = checkerRe.xLocMat * reiseNum;
 	cv::Mat ylocMat = checkerRe.yLocMat * reiseNum;
 
-	cv::Mat mtfmapH = getMtfMat(xlocMat, ylocMat, imgdraw, imgROI, 0, SLANT,flag);
-	cv::Mat mtfmapV = getMtfMat(xlocMat, ylocMat, imgdraw, imgROI, 1, SLANT, flag);
-	//getDenseMTFData(mtfmapH, m_maskH, re, 0);
-	//getDenseMTFData(mtfmapV, m_maskV, re, 1);
-	mtfmapH = mtfmapH(cv::Range(0, mtfmapH.rows), cv::Range(1, mtfmapH.cols-1));
-	m_mtfmapH2 = m_mtfmapH2(cv::Range(0, m_mtfmapH2.rows), cv::Range(1, m_mtfmapH2.cols - 1));
-	mtfmapV = mtfmapV(cv::Range(1, mtfmapV.rows-1), cv::Range(0, mtfmapV.cols));
-	m_mtfmapV2 = m_mtfmapV2(cv::Range(1, m_mtfmapV2.rows - 1), cv::Range(0, m_mtfmapV2.cols));
-
+	cv::Mat mtfmapH = getMtfMat(xlocMat, ylocMat, imgdraw, img, 0, SLANT);
+	cv::Mat mtfmapV = getMtfMat(xlocMat, ylocMat, imgdraw, img, 1, SLANT);
+	getDenseMTFData(mtfmapH, m_maskH, re, 0);
+	getDenseMTFData(mtfmapV, m_maskV, re, 1);
 	re.mtfMapH = mtfmapH;
 	re.mtfMapV = mtfmapV;
-	re.mtfMapH2 = m_mtfmapH2;
-	re.mtfMapV2 = m_mtfmapV2;
 	re.imgdraw = imgdraw;
 	re.xPos = xlocMat;
 	re.yPos = ylocMat;
@@ -118,19 +98,20 @@ DenseMTFRe MLIQMetrics::MLdenseMTF::getDenseMTFChecker(cv::Mat img, int flag)
 	return re;
 }
 
-DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid(const cv::Mat img)
+DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid(const cv::Mat imgRaw) // -----this---
 {
 	string info = "------getDenseMTFGrid------";
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "DenseMTF calculation start");
 	DenseMTFGridRe re;
-	if (img.empty())
+	if (imgRaw.empty())
 	{
 		re.flag = false;
 		re.errMsg = info + "Input image is NULL";
 		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
 		return re;
 	}
-	int binNum = IQMetricUtl::instance()->getBinNum(img.size());
+	cv::Mat img = IQMetricUtl::instance()->getRotationAndFlipImg(imgRaw, m_IsSLB); // 11240*9200
+	int binNum = IQMetricUtl::instance()->getBinNum(img.size());  // 缩放 
 	if (binNum <= 0)
 	{
 		re.flag = false;
@@ -138,29 +119,41 @@ DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid(const cv::Mat img)
 		return re;
 	}
 	m_binNum = binNum;
-	cv::Rect ROIRect = IQMetricsParameters::ROIRect;
-	updateRectByRatio1(ROIRect, 1.0 / binNum);
-	if (m_fovType == BIGFOV)
-		ROIRect = cv::Rect(0, 0, -1, -1);
-	cv::Mat imgROI = GetROIMat(img, ROIRect);
+	//cv::Rect ROIRect = IQMetricsParameters::ROIRect;
+	//updateRectByRatio1(ROIRect, 1.0 / binNum);
+	//img = GetROIMat(img, ROIRect);
+
+	int binNumCen = IQMetricUtl::instance()->getBinNum(cv::Size(m_center.x * 2, m_center.y * 2)); 
+	double ratio = double(binNumCen) / double(binNum);
+	cv::Point2f cen = m_center * ratio;
+	int len = m_len / binNum;
+	cv::Rect rect0(cen.x - len / 2, cen.y - len / 2, len, len);
+	//img = GetROIMat(img, rect0);
+
 	MLGridDetect grid;
 	grid.setAccurateDetectionFlag(false);
-	imgROI = grid.rotateGridImg(imgROI);
-	cv::Mat img8 = convertToUint8(imgROI);
+	//img = grid.rotateGridImg(img);
+	cv::Mat img8 = convertToUint8(img);
 	cv::Mat imgdraw = convertTo3Channels(img8);
 	cv::Mat imgResize;
-	int resizeNum = IQMetricsParameters::ResizeNum / binNum;
+	int resizeNum = IQMetricsParameters::GridResizeNum / binNum;  // 4
 	int reiseNum = resizeNum / binNum;
-	cv::resize(img8, imgResize, img8.size() / reiseNum);
-	grid.SetbinNum(resizeNum);
+	cv::resize(img8, imgResize, img.size() / reiseNum);   // img/4
+	grid.SetbinNum(reiseNum);
 	grid.SetChessboardUpdateFlag(false);
 	GridRe gridRe = grid.getGridContour(imgResize);
-	//MLGridPatternDetection grid;
-	//grid.setBinNum(binNum);
-	//grid.setFOVType(SMALLFOV);
-	//GridRe gridRe = grid.getGridLoc(img);
-	//int reiseNum = 1;
-
+	std::shared_mutex rw_mutex;
+	std::mutex mtx;  
+	if (gridRe.xLocMat.size() == IQMetricsParameters::GridSize) // 检测到的角点横坐标矩阵和{15,19}
+	{
+		mtx.lock();  
+		grid.writeGridInfoToCSV(gridRe);
+		mtx.unlock();
+	}
+	else
+	{
+		grid.readGridInfoFromCSV(gridRe);
+	}
 	if (gridRe.flag == false)
 	{
 		re.flag = false;
@@ -169,7 +162,8 @@ DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid(const cv::Mat img)
 		return re;
 	}
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "DenseMTF calculation: corners detection successfully");
-	m_center = IQMetricsParameters::opticalCenter / binNum;
+
+	//m_center = IQMetricsParameters::opticalCenter / binNum;
 	cv::Mat xlocMat = gridRe.xLocMat * reiseNum;
 	cv::Mat ylocMat = gridRe.yLocMat * reiseNum;
 	//xlocMat = xlocMat(cv::Range(1,xlocMat.rows-1),cv::Range(1,xlocMat.cols-1));
@@ -177,16 +171,14 @@ DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid(const cv::Mat img)
 
 	cv::Mat mtfmapH, mtfmapV;
 	//getMtfMat(xlocMat, ylocMat, imgdraw, img, CROSS, mtfmapH0, mtfmapV0);
-	mtfmapH = getMtfMat(xlocMat, ylocMat, imgdraw, imgROI, 0, CROSS);
-	cv::Mat mtfmapH0 = calculateMTFHor(mtfmapH);
+	mtfmapH = getMtfMat(xlocMat, ylocMat, imgdraw, img, 0, CROSS);
+	cv::Mat mtfmapH0 = calculateMTFHor(mtfmapH); // 上下相邻行做平均
 	cv::Mat mtfmapH2 = calculateMTFHor(m_mtfmapH2);
-
-	mtfmapV = getMtfMat(xlocMat, ylocMat, imgdraw, imgROI, 1, CROSS);
+	mtfmapV = getMtfMat(xlocMat, ylocMat, imgdraw,img, 1, CROSS);
 	cv::Mat mtfmapV0 = calculateMTFVer(mtfmapV);
 	cv::Mat mtfmapV2= calculateMTFVer(m_mtfmapV2);
 
-
-	Scalar meanH = cv::mean(mtfmapH0); 
+	Scalar meanH = cv::mean(mtfmapH0); // 6.25频率的meanMTFH
 	Scalar meanV = cv::mean(mtfmapV0);
 	double minH, minV;
 	cv::minMaxLoc(mtfmapH0, &minH,NULL,NULL,NULL);
@@ -195,6 +187,29 @@ DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid(const cv::Mat img)
 	re.meanV = meanV(0);
 	re.minH = minH;
 	re.minV = minV;
+	if (m_isDisparityEyebox)
+	{
+		cv::Mat xloc0 = xlocMat(cv::Range(1, xlocMat.rows - 1), cv::Range(1, xlocMat.cols - 1));
+		cv::Mat yloc0 = ylocMat(cv::Range(1, xlocMat.rows - 1), cv::Range(1, xlocMat.cols - 1));
+		cv::Point2f cen = gridRe.center;
+		cv::Rect2f rect2fB = IQMetricsParameters::zoneBRect;
+		cv::Rect rectB = IQMetricUtl::instance()->getZoneRect(rect2fB, cen, binNum);
+		rectangle(imgdraw, rectB, Scalar(255, 0, 255), 10);
+		vector < double >mtfOutMask;
+		vector < double>mtfHInMask0 = getMTFRect(mtfmapH0,xloc0, yloc0, rectB,mtfOutMask);
+		vector < double>mtfVInMask0 = getMTFRect(mtfmapV0, xloc0, yloc0, rectB, mtfOutMask);
+		vector < double>mtfHInMask2 = getMTFRect(mtfmapH2, xloc0, yloc0, rectB, mtfOutMask);
+		vector < double>mtfVInMask2 = getMTFRect(mtfmapV2, xloc0, yloc0, rectB, mtfOutMask);
+		re.minH = *min_element(mtfHInMask0.begin(), mtfHInMask0.end());
+		re.minH_freq2 = *min_element(mtfHInMask2.begin(), mtfHInMask2.end());
+		re.minV = *min_element(mtfVInMask0.begin(), mtfVInMask0.end());
+		re.minV_freq2 = *min_element(mtfVInMask2.begin(), mtfVInMask2.end());
+		re.meanH = accumulate(mtfHInMask0.begin(), mtfHInMask0.end(),0.0)/ mtfHInMask0.size();
+		re.meanH_freq2 = accumulate(mtfHInMask2.begin(), mtfHInMask2.end(),0.0) / mtfHInMask0.size();
+		re.meanV = accumulate(mtfVInMask0.begin(), mtfVInMask0.end(), 0.0) / mtfHInMask0.size();
+		re.meanV_freq2 = accumulate(mtfVInMask2.begin(), mtfVInMask2.end(), 0.0) / mtfHInMask0.size();
+	}
+
 	re.mtfMapH = mtfmapH0;
 	re.mtfMapV = mtfmapV0;
 	re.mtfMapH2 = mtfmapH2;
@@ -230,7 +245,7 @@ CenterRects MLIQMetrics::MLdenseMTF::getGridCenterRects(cv::Mat img)
 	cv::Mat img8 = convertToUint8(img);
 	cv::Mat imgdraw = convertTo3Channels(img8);
 	cv::Mat imgResize;
-	int reiseNum = 4 / binNum;
+	int reiseNum = IQMetricsParameters::GridResizeNum / binNum;
 	cv::resize(img8, imgResize, img.size() / reiseNum);
 	grid.SetbinNum(4);
 	grid.SetChessboardUpdateFlag(false);
@@ -276,11 +291,122 @@ CenterRects MLIQMetrics::MLdenseMTF::getGridCenterRects(cv::Mat img)
 	return re;
 }
 
-cv::Mat MLIQMetrics::MLdenseMTF::getMtfMat(cv::Mat xlocMat, cv::Mat ylocMat, cv::Mat& imgdraw, cv::Mat rawImg, int flag, MTF_TYPE type, int typeFlag)
+DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid_CSV(cv::Mat img)
+{
+	string info = "------getDenseMTFGrid------";
+	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "DenseMTF calculation start");
+	DenseMTFGridRe re;
+	if (img.empty())
+	{
+		re.flag = false;
+		re.errMsg = info + "Input image is NULL";
+		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
+		return re;
+	}
+	int binNum = IQMetricUtl::instance()->getBinNum(img.size());
+	//if (binNum <= 0)
+	//{
+	//	re.flag = false;
+	//	re.errMsg = info + "the image size is not right, please check the input image";
+	//	return re;
+	//}
+	//m_binNum = binNum;
+
+	//int binNumCen = IQMetricUtl::instance()->getBinNum(cv::Size(m_center.x * 2, m_center.y * 2));
+	//double ratio = double(binNumCen) / double(binNum);
+	//cv::Point2f cen = m_center * ratio;
+	//int len = m_len / binNum;
+	//cv::Rect rect0(cen.x - len / 2, cen.y - len / 2, len, len);
+	//img = GetROIMat(img, rect0);
+
+	MLGridDetect grid;
+	grid.setAccurateDetectionFlag(false);
+	cv::Mat img8 = convertToUint8(img);
+	cv::Mat imgdraw = convertTo3Channels(img8);
+	cv::Mat imgResize;
+
+	grid.SetbinNum(binNum);
+	grid.SetChessboardUpdateFlag(false);
+	GridRe gridRe = grid.getGridContour(img);
+	std::shared_mutex rw_mutex;
+	std::mutex mtx;
+	if (gridRe.xLocMat.size() == cv::Size(15, 19))
+	{
+		//std::shared_lock lock(rw_mutex);
+		mtx.lock();
+		writeMatTOCSV(m_filepathx, gridRe.xLocMat);
+		writeMatTOCSV(m_filepathy, gridRe.yLocMat);
+		mtx.unlock();
+
+	}
+	if (gridRe.xLocMat.size() != cv::Size(15, 19))
+	{
+		//std::shared_lock lock(rw_mutex);  
+		mtx.lock();
+		cv::Mat xLocMat = readCSVToMat(m_filepathx);
+		cv::Mat yLocMat = readCSVToMat(m_filepathy);
+		mtx.unlock();
+
+		gridRe = grid.getGridPreLoc(img, xLocMat, yLocMat);
+	}
+	if (gridRe.flag == false)
+	{
+		re.flag = false;
+		re.errMsg = info + gridRe.errMsg;
+		LOG4CPLUS_ERROR(LogPlus::getInstance()->logger, re.errMsg.c_str());
+		return re;
+	}
+	return re;
+}
+
+CenterRects MLIQMetrics::MLdenseMTF::getGridRects(cv::Mat img, Point rowCol)
+{
+	cv::Mat xlocMat = readCSVToMat(m_filepathx);
+	cv::Mat ylocMat = readCSVToMat(m_filepathy);
+
+	CenterRects re = getRectMat(xlocMat, ylocMat, 0, rowCol);
+
+	//TODO: 
+	//if (rowCol.y == 1) {
+	//	re.rectLeft.x += 60;
+	//}
+	//if (rowCol.y == 13) {
+	//	re.rectRight.x -= 60;
+	//}
+
+	cv::Mat imgdraw = convertTo3Channels(img);
+	cv::rectangle(imgdraw, re.rectTop, Scalar(0, 255, 0), 3);
+	cv::rectangle(imgdraw, re.rectBottom, Scalar(0, 255, 0), 3);
+	cv::rectangle(imgdraw, re.rectLeft, Scalar(0, 0, 255), 3);
+	cv::rectangle(imgdraw, re.rectRight, Scalar(0, 0, 255), 3);
+	return re;
+}
+
+CenterRects MLIQMetrics::MLdenseMTF::getRectMat(cv::Mat xlocMat, cv::Mat ylocMat, int flag, Point rowCol)
+{
+	CenterRects re;
+	int w = IQMetricsParameters::gridMTFWidth / m_binNum;
+	int h = IQMetricsParameters::gridMTFHeight / m_binNum;
+	cv::Point2f center(xlocMat.at<float>(rowCol.x, rowCol.y), ylocMat.at<float>(rowCol.x, rowCol.y));
+	{
+		cv::Rect rectT(center.x - w / 2, center.y - h * 2, w, h);
+		cv::Rect rectB(center.x - w / 2, center.y + h, w, h);
+		cv::Rect rectL(center.x - h * 2, center.y - w / 2, h, w);
+		cv::Rect rectR(center.x + h, center.y - w / 2, h, w);
+
+		re.rectTop = rectT;
+		re.rectBottom = rectB;
+		re.rectLeft = rectL;
+		re.rectRight = rectR;
+	}
+	return re;
+}
+
+cv::Mat MLIQMetrics::MLdenseMTF::getMtfMat(cv::Mat xlocMat, cv::Mat ylocMat, cv::Mat& imgdraw, cv::Mat rawImg, int flag, MTF_TYPE type)
 {
 	cv::Mat xl, xr, yl, yr;
 	Scalar color(0, 0, 255);
-	if (flag == 1)
+	if (flag == 1) // 取每一行左右相邻的点
 	{
 		xl = xlocMat(cv::Range(0, xlocMat.rows), cv::Range(0, xlocMat.cols - 1));
 		xr = xlocMat(cv::Range(0, xlocMat.rows), cv::Range(1, xlocMat.cols));
@@ -289,7 +415,7 @@ cv::Mat MLIQMetrics::MLdenseMTF::getMtfMat(cv::Mat xlocMat, cv::Mat ylocMat, cv:
 
 		//m_maskV = cv::Mat(xl.size(), CV_8UC1, Scalar(0));
 	}
-	else
+	else // 取每一列上下相邻的点
 	{
 		xl = xlocMat(cv::Range(0, xlocMat.rows - 1), cv::Range(0, xlocMat.cols));
 		xr = xlocMat(cv::Range(1, xlocMat.rows), cv::Range(0, xlocMat.cols));
@@ -298,25 +424,14 @@ cv::Mat MLIQMetrics::MLdenseMTF::getMtfMat(cv::Mat xlocMat, cv::Mat ylocMat, cv:
 		color = Scalar(0, 255, 0);
 		//m_maskH = cv::Mat(xl.size(), CV_8UC1, Scalar(0));
 	}
-	int roiW = IQMetricsParameters::gridMTFWidth / m_binNum;
-	int roiH = IQMetricsParameters::gridMTFHeight / m_binNum;
-	if (typeFlag == 1)
-	{
-		roiW = IQMetricsParameters::checkerMTFWidth_2 / m_binNum;
-		roiH = IQMetricsParameters::checkerMTFHeight_2 / m_binNum;
-	}
-	else if (typeFlag == 2)
-	{
-		roiW = IQMetricsParameters::checkerMTFWidth_05 / m_binNum;
-		roiH = IQMetricsParameters::checkerMTFHeight_05 / m_binNum;
-	}
-
-	cv::Mat xlocMapROI = xl + (xr - xl) / 2.0;
+	int roiW = IQMetricsParameters::denseMTFWidth / m_binNum;  // 330/1
+	int roiH = IQMetricsParameters::denseMTFHeight / m_binNum; //110/1
+	cv::Mat xlocMapROI = xl + (xr - xl) / 2.0; // 计算相邻点中点
 	cv::Mat ylocMapROI = yl + (yr - yl) / 2.0;
 	cv::Mat mtfmat(xlocMapROI.size(), CV_32FC1, Scalar(-1));
 	if (flag == 0)
 	{
-		m_mtfmapH2 = cv::Mat(xlocMapROI.size(), CV_32FC1, Scalar(-1));
+		m_mtfmapH2 = cv::Mat(xlocMapROI.size(), CV_32FC1, Scalar(-1)); // 初始化
 
 	}
 	else
@@ -332,7 +447,9 @@ cv::Mat MLIQMetrics::MLdenseMTF::getMtfMat(cv::Mat xlocMat, cv::Mat ylocMat, cv:
 //	double r = tan(zoneAR / 180 * CV_PI) * focallengh / pixel;
 	//circle(imgdraw, c0, r, Scalar(0, 0, 255), 5);
 
-#pragma omp parallel for
+	omp_lock_t lock;
+	omp_init_lock(&lock);
+#pragma omp parallel for 
 	for (int i = 0; i < xlocMapROI.rows; i++)
 	{
 		for (int j = 0; j < xlocMapROI.cols; j++)
@@ -342,20 +459,21 @@ cv::Mat MLIQMetrics::MLdenseMTF::getMtfMat(cv::Mat xlocMat, cv::Mat ylocMat, cv:
 
 			if (x0 > 1e-6 && y0 > 1e-6)
 			{
-				cv::Point2f c0(x0, y0);
+				cv::Point2f c0(x0, y0); // 取中点坐标
 				//circle(imgdraw, c0, 5, color, -1);
 				cv::Rect rectT;
 				if (flag == 0)
-					rectT = cv::Rect(c0.x - roiW / 2, c0.y - roiH / 2, roiW, roiH);
+					rectT = cv::Rect(c0.x - roiW / 2, c0.y - roiH / 2, roiW, roiH); // 创建ROI 横向
 				else
 					rectT = cv::Rect(c0.x - roiH / 2, c0.y - roiW / 2, roiH, roiW);
 
 				//if((flag==0&&i!=0||i!= xlocMapROI.rows-1)||(flag==1 && i!= 0 || i != xlocMapROI.cols - 1))
 
-				if ((flag == 0 && j != 0 && j != xlocMapROI.cols - 1) || (flag == 1 && i != 0 && i != xlocMapROI.rows - 1))
+				if ((flag == 0 && j != 0 && j != xlocMapROI.cols - 1) || (flag == 1 && i != 0 && i != xlocMapROI.rows - 1)) // 去掉最左右最上下
 
 				{
-					cv::rectangle(imgdraw, rectT, color, 3);
+					cv::rectangle(imgdraw, rectT, color, 3); // 画图
+
 					//if (flag == 1 && i != 0 && i != xlocMapROI.rows - 1)
 					//	cv::rectangle(imgdraw, rectT, color, 3);
 					//double fov = calculateFOV(c0);
@@ -366,18 +484,24 @@ cv::Mat MLIQMetrics::MLdenseMTF::getMtfMat(cv::Mat xlocMat, cv::Mat ylocMat, cv:
 					//	m_maskH.at<uchar>(i, j) = maskvalue;
 					//else
 					//	m_maskV.at<uchar>(i, j) = maskvalue;
-					cv::Mat roi = rawImg(rectT&cv::Rect(0,0,rawImg.cols,rawImg.rows));
+					cv::Mat roi = rawImg(rectT).clone();
 					double mtf0 = -1;
 					cv::Scalar m0, std0;
-					cv::meanStdDev(roi, m0, std0);
+					cv::meanStdDev(roi, m0, std0); // 计算roi内的灰度均值和灰度标准差
 					vector<double>mtfvec;
 					if (std0(0) < 0)
 						mtf0 = -1;
 					else
 					{
 						//mtf0 = calculateMtf(roi, type);
-						mtfvec = calculateMtf1(roi, type);
-						//mtfvec = calculateMtf2(roi,type, rectT.tl());
+                   // #pragma omp critical
+						omp_set_lock(&lock);
+						
+							mtfvec = calculateMtf1(roi, type);  // 输出两个频率的mtf
+						
+						omp_unset_lock(&lock);
+
+						
 
 					}
 					mtfmat.at<float>(i, j) = mtfvec[0];
@@ -391,8 +515,8 @@ cv::Mat MLIQMetrics::MLdenseMTF::getMtfMat(cv::Mat xlocMat, cv::Mat ylocMat, cv:
 			}
 		}
 	}
+	omp_destroy_lock(&lock);
 
-	
 	return mtfmat;
 }
 
@@ -414,6 +538,7 @@ void MLIQMetrics::MLdenseMTF::getMtfMat(cv::Mat xlocmat, cv::Mat ylocmat, cv::Ma
 			//circle(imgdraw, cr, 5, Scalar(255, 0, 255), -1);
 			//circle(imgdraw, ct, 5, Scalar(0, 255, 0), -1);
 			//circle(imgdraw, cb, 5, Scalar(255, 0, 0), -1);
+
 			int w = IQMetricsParameters::gridMTFWidth/m_binNum;
 			int h = IQMetricsParameters::gridMTFHeight/m_binNum;
 			cv::Point2f c0T = (c0 + ct)/2.0;
@@ -494,10 +619,12 @@ double MLIQMetrics::MLdenseMTF::calculateMtf(cv::Mat roi, MTF_TYPE type)
 	mtfPipeline->set_freq_unit(FREQ_UNIT::lp_deg, focalLenght);
 	int ret = mtfPipeline->culc_mtf(roi, type);
 	double mtfH = mtfPipeline->getMtfByFreq(freq);
+	
 	if (ret >= 0)
 	{
 		return mtfH;
 	}
+	delete mtfPipeline;
 	return -1;
 }
 
@@ -506,16 +633,17 @@ vector<double> MLIQMetrics::MLdenseMTF::calculateMtf1(cv::Mat roi, MTF_TYPE type
 	vector<double>mtfvec;
 	double pixle = IQMetricsParameters::pixel_size * m_binNum;
 	double focalLenght = IQMetricsParameters::FocalLength;
-	double freq1 = IQMetricsParameters::mtfFreq;
-	double freq2 = IQMetricsParameters::mtfFreq2;
+	double freq1 = IQMetricsParameters::mtfFreq;  // 6.25
+	double freq2 = IQMetricsParameters::mtfFreq2; // 12.5
 	PipeLine* mtfPipeline = new PipeLine();
-	mtfPipeline->SetPixelValue(pixle);
+	mtfPipeline->SetPixelValue(pixle); // 图像大小
 	mtfPipeline->SetBinning(1);
-	mtfPipeline->set_freq_unit(FREQ_UNIT::lp_deg, focalLenght);
-	int ret = mtfPipeline->culc_mtf(roi, type);
-	double mtfH = mtfPipeline->getMtfByFreq(freq1);
+	mtfPipeline->set_freq_unit(FREQ_UNIT::lp_deg, focalLenght); 
+
+	int ret = mtfPipeline->culc_mtf(roi, type);  // 计算MTF
+
+	double mtfH = mtfPipeline->getMtfByFreq(freq1);  // 读取数值
 	double mtfH2 = mtfPipeline->getMtfByFreq(freq2);
-	delete mtfPipeline;
 	if (ret >= 0)
 	{
 		 mtfvec.push_back(mtfH);
@@ -526,40 +654,7 @@ vector<double> MLIQMetrics::MLdenseMTF::calculateMtf1(cv::Mat roi, MTF_TYPE type
 		mtfvec.push_back(-1);
 		mtfvec.push_back(-1);
 	}
-	return mtfvec;
-}
-
-vector<double> MLIQMetrics::MLdenseMTF::calculateMtf2(cv::Mat roi, MTF_TYPE type, cv::Point2f c1)
-{
-	cv::Point2f opc = IQMetricsParameters::opticalCenter;
-
-	double pixle = IQMetricsParameters::pixel_size * m_binNum;
-	double focalLenght = IQMetricsParameters::FocalLength;
-	double freq1 = IQMetricsParameters::mtfFreq;
-	double freq2 = IQMetricsParameters::mtfFreq2;
-
-	double dis = Getdistance(opc, c1);
-	double theta = atan(dis * pixle / focalLenght);
-	focalLenght = focalLenght / cos(theta);
-		vector<double>mtfvec;
-	PipeLine* mtfPipeline = new PipeLine();
-	mtfPipeline->SetPixelValue(pixle);
-	mtfPipeline->SetBinning(1);
-	mtfPipeline->set_freq_unit(FREQ_UNIT::lp_deg, focalLenght);
-	int ret = mtfPipeline->culc_mtf(roi, type);
-	double mtfH = mtfPipeline->getMtfByFreq(freq1);
-	double mtfH2 = mtfPipeline->getMtfByFreq(freq2);
 	delete mtfPipeline;
-	if (ret >= 0)
-	{
-		mtfvec.push_back(mtfH);
-		mtfvec.push_back(mtfH2);
-	}
-	else
-	{
-		mtfvec.push_back(-1);
-		mtfvec.push_back(-1);
-	}
 	return mtfvec;
 }
 
@@ -627,4 +722,26 @@ cv::Mat MLIQMetrics::MLdenseMTF::calculateMTFVer(cv::Mat mtfmapV)
 	cv::Mat mtfmapV_right = mtfmapV(cv::Range(1, mtfmapV.rows - 1), cv::Range(1, mtfmapV.cols));
 	cv::Mat mtfmapV0 = (mtfmapV_left + mtfmapV_left) / 2.0;
 	return mtfmapV0;
+}
+
+vector<double> MLIQMetrics::MLdenseMTF::getMTFRect(cv::Mat mtfMap,cv::Mat xloc, cv::Mat yloc, cv::Rect rect, vector<double>& mtfOutMask)
+{
+	vector<double> mtfInMask;
+	if(mtfMap.size()!=xloc.size())
+		return vector<double>();
+
+	for (int i = 0; i < xloc.rows; i++)
+	{
+		for (int j = 0; j < xloc.cols; j++)
+		{
+			double x = xloc.at<float>(i, j);
+			double y = yloc.at<float>(i, j);
+			double mtf0 = mtfMap.at<float>(i, j);
+			if (rect.contains(cv::Point2f(x, y)))
+				mtfInMask.push_back(mtf0);
+			else
+				mtfOutMask.push_back(mtf0);
+		}
+	}
+	return mtfInMask;
 }

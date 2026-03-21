@@ -31,7 +31,7 @@ class ALGORITHM_API MatchTemplate:public MLimagePublic
     cv::Mat m_template;
     double m_score = 60;
     double m_angleStep = 180;
-    string prefix = "./config/ALGConfig/";
+    string prefix = "./config/AlgConfig/";
 };
 } // namespace MLImageDetection
 

@@ -37,7 +37,8 @@ ColorUniformityRe MLIQMetrics::MLColorUniformity::getColorUniformity(cv::Mat X, 
 	cv::Mat imgdraw = convertTo3Channels(img8);
 	//map<string, cv::Point2f>cenMap = get13RectCenterSort(img8,imgdraw);
 	vector<cv::Point2f>cenVec = get13RectCenter(img8, imgdraw, binNum);
-	cv::Mat x = (X) / (X + Y + Z);
+
+	cv::Mat x = (X) / (X + Y + Z); // CIE 1931 色品坐标公式,计算 xy 色度坐标
 	cv::Mat y = (Y) / (X + Y + Z);
 	vector<double>xVec;
 	vector<double>yVec;
@@ -45,8 +46,8 @@ ColorUniformityRe MLIQMetrics::MLColorUniformity::getColorUniformity(cv::Mat X, 
 	int len = 200;
 	for (int i = 0; i < cenVec.size(); i++)
 	{
-		cv::Rect rect0(cenVec[i].x - len / 2, cenVec[i].y - len / 2, len, len);
-		double x0 = cv::mean(x(rect0).clone())(0);
+		cv::Rect rect0(cenVec[i].x - len / 2, cenVec[i].y - len / 2, len, len); // 以每个采样点的为中心 取ROI做均值
+		double x0 = cv::mean(x(rect0).clone())(0);// 计算 rect0 区域内 x 色度值的平均值
 		double y0 = cv::mean(y(rect0).clone())(0);
 		xVec.push_back(x0);
 		yVec.push_back(y0);
@@ -58,7 +59,7 @@ ColorUniformityRe MLIQMetrics::MLColorUniformity::getColorUniformity(cv::Mat X, 
 	double ymax = *max_element(yVec.begin(), yVec.end());
 	double ymin = *min_element(yVec.begin(), yVec.end());
 	double deltx = xmax - xmin;
-	double delty = ymax - ymin;
+	double delty = ymax - ymin; // 所有采样块里，Y 色度坐标的最大差值
 	re.deltx = deltx;
 	re.delty = delty;
 	re.imgdraw = imgdraw;
@@ -70,7 +71,8 @@ map<string, cv::Point2f> MLIQMetrics::MLColorUniformity::get13RectCenterSort(cv:
 	return map<string, cv::Point2f>();
 }
 
-vector<cv::Point2f> MLIQMetrics::MLColorUniformity::get13RectCenter(cv::Mat img, cv::Mat& imgdraw, int binNum)
+vector<cv::Point2f> MLIQMetrics::MLColorUniformity::get13RectCenter(cv::Mat img, cv::Mat& imgdraw, int binNum) 
+// 自动定位测试图中的9个矩形块，生成用于颜色均匀性计算的标准采样点坐标  返回采样点坐标
 {
 	cv::GaussianBlur(img, img, cv::Size(5, 5), 0, 0);
 	Mat kernel = getStructuringElement(MORPH_RECT, Size(10, 10), Point(-1, -1));

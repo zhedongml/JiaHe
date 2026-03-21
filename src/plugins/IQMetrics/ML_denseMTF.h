@@ -21,8 +21,6 @@ namespace MLIQMetrics
 		double p75_25V = 0;				
 		cv::Mat mtfMapH;
 		cv::Mat mtfMapV;
-		cv::Mat mtfMapH2;
-		cv::Mat mtfMapV2;
 		cv::Mat imgdraw;
 		cv::Mat xPos;
 		cv::Mat yPos;
@@ -35,6 +33,11 @@ namespace MLIQMetrics
 		double meanV = 0;
 		double minH = 0;
 		double minV = 0;
+		double meanH_freq2 = 0;
+		double meanV_freq2 = 0;
+		double minH_freq2 = 0;
+		double minV_freq2 = 0;
+
 		cv::Mat mtfMapH;
 		cv::Mat mtfMapV;
 		cv::Mat mtfMapH2;
@@ -63,16 +66,23 @@ namespace MLIQMetrics
 		MLdenseMTF();
 		~MLdenseMTF();
 	public:
-		void setCheckerDegree(int deg);
-		void setFOVType(FOVTYPE type);
-		DenseMTFRe getDenseMTFChecker(cv::Mat img,int flag);
+		void setIsSLB(bool flag);
+		void setIsDisparityEyebox(bool flag);
+		void setPatternCenter(cv::Point2f cen);
+		DenseMTFRe getDenseMTFChecker(cv::Mat img);
 		DenseMTFGridRe getDenseMTFGrid(const cv::Mat img);
 		CenterRects getGridCenterRects(cv::Mat img);
-		cv::Mat getMtfMat(cv::Mat xlocmat, cv::Mat ylocmat, cv::Mat& img_draw,cv::Mat rawImg,int flag, MTF_TYPE type,int typeFlag=0);
+
+		//TODO: test
+		DenseMTFGridRe getDenseMTFGrid_CSV(cv::Mat img);
+		CenterRects getGridRects(cv::Mat img, Point rowCol);
+		CenterRects getRectMat(cv::Mat xlocMat, cv::Mat ylocMat, int flag, Point rowCol);
+
+		cv::Mat getMtfMat(cv::Mat xlocmat, cv::Mat ylocmat, cv::Mat& img_draw,cv::Mat rawImg,int flag, MTF_TYPE type);
 		void getMtfMat(cv::Mat xlocmat, cv::Mat ylocmat, cv::Mat&imgdraw, cv::Mat rawImg, MTF_TYPE type,cv::Mat &mtfH,cv::Mat &mtfV);
 		double calculateMtf(cv::Mat roi, MTF_TYPE type=SLANT);
 		vector<double>calculateMtf1(cv::Mat roi, MTF_TYPE type);
-		vector<double>calculateMtf2(cv::Mat roi, MTF_TYPE type,cv::Point2f c1);
+
 		double calculateFOV(cv::Point2f pt);
 		void getDenseMTFData(cv::Mat mtfH, cv::Mat mask, DenseMTFRe&re,int flag);
 		double calculateMatMean(cv::Mat mat);
@@ -81,16 +91,21 @@ namespace MLIQMetrics
 	private:
 		cv::Mat calculateMTFHor(cv::Mat mtfh);
 		cv::Mat calculateMTFVer(cv::Mat mtfv);
+		vector<double> getMTFRect(cv::Mat mtfMap,cv::Mat xloc, cv::Mat yloc, cv::Rect rect,vector<double>&mtfOutMask);
 
 	private:
+		//PipeLine* mtfPipeline = new PipeLine();
 		cv::Mat m_maskH;
 		cv::Mat m_maskV;
 		cv::Mat m_mtfmapH2;
 		cv::Mat m_mtfmapV2;
 		cv::Point2f m_center;
 		int m_binNum = 1;
-		FOVTYPE m_fovType;
-		//int  m_flag = 0;//0 grid, 1 2deg checker, 2 0.5deg checker
+		int m_len = 6000;
+		string m_filepathx = "./config/AlgConfig/slbInfo/gridXLocMat.csv";
+		string m_filepathy = "./config/AlgConfig/slbInfo/gridYLocMat.csv";
+		bool m_IsSLB = true;
+		bool m_isDisparityEyebox = false;
 	};
 }
 

@@ -35,7 +35,7 @@ namespace MLImageDetection {
 		void updateRectsAndPoints(cv::Mat xmat,cv::Mat ymat,vector<cv::Rect>&rectVec,vector<cv::Point2f>&ptsVec);
 		void updateRectMap(vector<cv::Rect>rectVec, map<string, cv::Rect>&rectMap);
 	private:
-		string m_filePath = "./config/ALGConfig/RectangleTempl.tif";
+		string m_filePath = "./config/AlgConfig/RectangleTempl.tif";
 		cv::Rect m_rect = cv::Rect(0,0,-1,-1);
 		int m_ROILen = 1000;
 		cv::Mat m_dotsAImg;

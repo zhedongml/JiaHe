@@ -39,11 +39,11 @@ ALGResult MatchTemplate::getMatchTemplateResult(cv::Mat src, cv::Mat templ, doub
     m_template = templ;
     m_score = score;
 
-   // matchImageProcess(m_src);
-   // matchImageProcess(m_template);
+    matchImageProcess(m_src);
+    matchImageProcess(m_template);
     // TODO:
-     prefix = "./config/ALGConfig/fiducial/";
-   // prefix = "E:\\project\\JiAn\\src\\RealityQ+\\config\\ALGConfig\\fiducial\\";
+     prefix = "./config/AlgConfig/";
+   // prefix = "../../ap./config/AlgConfig/";
     if (!m_src.data)
     {
         re.success = false;
@@ -74,8 +74,8 @@ ALGResult MatchTemplate::getMatchTemplateResult(cv::Mat src, cv::Mat templ, doub
     for (int i = 0; i < loc.size(); i++)
     {
         // Point2f(62,61)
-        loc1.push_back(loc[0] +cv::Point2f(templ.size()/2));
-        circle(img_draw, loc1[i], 5, Scalar(0, 0, 255), 1);
+        loc1.push_back(loc[0] + Point2f(117, 106));
+        circle(img_draw, loc[i] + Point2f(117, 106), 5, Scalar(0, 0, 255), 1);
         // break;
     }
    // m_img_draw = img_draw.clone();

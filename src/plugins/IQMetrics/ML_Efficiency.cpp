@@ -1,8 +1,7 @@
 #include "pch.h"
 #include "ML_Efficiency.h"
 #include "CrossCenter.h"
-#include"MLSolidDetection.h"
-#include"LogPlus.h"
+#include"ml_rectangleDetection.h"
 using namespace MLImageDetection;
 using namespace MLIQMetrics;
 using namespace cv;
@@ -25,9 +24,9 @@ MLEfficiency *MLIQMetrics::MLEfficiency::instance()
     }
     return effSelf;
 }
-void MLIQMetrics::MLEfficiency::setFOVType(FOVTYPE type)
+void MLIQMetrics::MLEfficiency::setIsDisparityEyebox(bool flag)
 {
-    m_fovType = type;
+    m_isDisparityEyebox = flag;
 }
 LumiEfficencyRe MLIQMetrics::MLEfficiency::GetLuminanceEfficiency(cv::Mat img, string color, float angle, int eyeLoc)
 {
@@ -86,30 +85,36 @@ LumiEfficencyRe MLIQMetrics::MLEfficiency::GetLuminanceEfficiency(cv::Mat img, s
     return re;
 }
 
-LumiEfficencyRe MLIQMetrics::MLEfficiency::GetLuminanceEfficiency(cv::Mat img, string color)
+LumiEfficencyRe MLIQMetrics::MLEfficiency::GetLuminanceEfficiency(const cv::Mat imgRaw, string color)
 {
     LumiEfficencyRe re;
     double efficiency = -1;
     string str = "ALG Error-----[getLuminanceEfficiency]-----";
-    string slbpath = "./config/slbImgs/ND3_" + color + "_solid_5_Y.tif";
-    cv::Mat slb = cv::imread(slbpath, -1);
-    if (img.data != NULL && slb.data != NULL)
+    string slbpath = "./config/slbImgs/ND3_" + color + "_solid_3_Y.tif";
+    cv::Mat slbRaw = cv::imread(slbpath, -1);
+    double dutr = 0;
+    if (color == "r")
+        dutr = 3.3975 / 2.0;
+    else if (color == "g")
+        dutr = 3.438/2.0;
+    else if (color == "b")
+        dutr = 3.4875/2.0;
+    double slbr = 3.0441 / 2.0;
+    if (imgRaw.data != NULL && slbRaw.data != NULL)
     {
+       cv::Mat slb = IQMetricUtl::instance()->getRotationAndFlipImg(slbRaw, true);
+       cv::Mat  img = IQMetricUtl::instance()->getRotationAndFlipImg(imgRaw, false);
         // m_img_draw.release();
         if (slb.size() != img.size())
             cv::resize(slb, slb, img.size());
         cv::Rect rectDUT, rectSLB;
         img = getSolidImgRotated(img, rectDUT);
         slb = getSolidImgRotated(slb, rectSLB);
+
         double ratio = IQMetricsParameters::LuminaceActive;
         int binNum = IQMetricUtl::instance()->getBinNum(img.size());
-        rectDUT = updateRectByRatio(rectDUT, ratio);
-        rectSLB = updateRectByRatio(rectSLB, ratio);
-       // cv::Mat efficiencyMat = img / slb;
-       // re.efficiencyMat = efficiencyMat;
-        //cv::Rect rectDUT = getLumiEfficiencyROI(img, angle);
-       // cv::Rect rectSLB = getLumiEfficiencyROI(slb, angle);
-
+        rectDUT = updateRectByRatio(rectDUT, sqrt(ratio));
+        rectSLB = updateRectByRatio(rectSLB, sqrt(ratio));
         if (rectDUT.x != 0 && rectDUT.y != 0)
         {
             cv::Mat dutROI = img(rectDUT).clone();
@@ -120,31 +125,67 @@ LumiEfficencyRe MLIQMetrics::MLEfficiency::GetLuminanceEfficiency(cv::Mat img, s
             slb_draw = convertTo3Channels(slb_draw);
 
             cv::rectangle(img_draw, rectDUT, Scalar(255, 0, 255), 16 / binNum);
-            cv::rectangle(slb_draw, rectSLB, Scalar(255, 0, 255), 16 / binNum);
-            
+            cv::rectangle(slb_draw, rectSLB, Scalar(255, 0, 255), 16 / binNum);          
             if (dutROI.size() != slbROI.size())
                 cv::resize(slbROI, slbROI, dutROI.size());
             dutROI.convertTo(dutROI,CV_32F);
             slbROI.convertTo(slbROI, CV_32F);
-
             cv::Mat effmat = dutROI / slbROI * 100;
+            cv::Mat effmatLum = dutROI / slbROI * 100* (dutr * dutr) / (slbr * slbr);
             re.efficiencyMat = effmat;
-            double p5 = percentile(effmat, 5);
-            double p50 = percentile(effmat, 50);
-            double p95 = percentile(effmat, 95);
-            re.p5 = p5;
-            re.p50 = p50;
-            re.p95 = p95;
-            //m_img_draw = img_draw.clone();
-            cv::Scalar dutMean = cv::mean(dutROI);
-            cv::Scalar slbMean = cv::mean(slbROI);
-           // re.efficicncy = dutMean(0) / slbMean(0) * 100;
-            re.efficicncy = mean(effmat)(0);
-            putTextOnImage(slb_draw, to_string(slbMean(0)), rectSLB.tl(), 20 / binNum);
-            putTextOnImage(img_draw, to_string(dutMean(0)), rectDUT.tl(), 20 / binNum);
-            putTextOnImage(img_draw, to_string(re.efficicncy), rectDUT.tl()+cv::Point(0,400/binNum), 20 / binNum);
-            re.imgdraw = img_draw;
-            re.slb_draw = slb_draw.clone();
+            re.efficiencyMatLum = effmatLum;
+            if (m_isDisparityEyebox == false)
+            {
+                double p5 = percentile(effmat, 5);
+                double p50 = percentile(effmat, 50);
+                double p95 = percentile(effmat, 95);
+                double p5Lum = p5 * (dutr * dutr) / (slbr * slbr);
+                double p50Lum = p50 * (dutr * dutr) / (slbr * slbr);
+                double p95Lum = p95 * (dutr * dutr) / (slbr * slbr);
+                re.p5 = p5;
+                re.p50 = p50;
+                re.p95 = p95;
+                re.p5Lum = p5Lum;
+                re.p50Lum = p50Lum;
+                re.p95Lum = p95Lum;
+                //m_img_draw = img_draw.clone();
+                cv::Scalar dutMean = cv::mean(dutROI);
+                cv::Scalar slbMean = cv::mean(slbROI);
+                // re.efficicncy = dutMean(0) / slbMean(0) * 100;
+                re.efficicncy = mean(effmat)(0);
+                re.efficicncyLum = mean(effmat)(0) * (dutr * dutr) / (slbr * slbr);
+                putTextOnImage(slb_draw, to_string(slbMean(0)), rectSLB.tl(), 20 / binNum);
+                putTextOnImage(img_draw, to_string(dutMean(0)), rectDUT.tl(), 20 / binNum);
+                putTextOnImage(img_draw, to_string(re.efficicncy), rectDUT.tl() + cv::Point(0, 400 / binNum), 20 / binNum);
+                re.imgdraw = img_draw;
+                re.slb_draw = slb_draw.clone();
+            }
+            if (m_isDisparityEyebox)
+            {
+                cv::Point2f cen =cv::Point2f(rectDUT.tl()) + cv::Point2f(rectDUT.width / 2.0, rectDUT.height / 2.0);             
+                cv::Rect2f rect2fB = IQMetricsParameters::zoneBRect;
+                cv::Rect rectB = IQMetricUtl::instance()->getZoneRect(rect2fB, cen, binNum);             
+                cv::Rect rectBRa = updateRectByRatio(rectB, sqrt(ratio));
+                drawRectOnImage(img_draw, rectBRa);
+                drawRectOnImage(slb_draw, rectBRa);
+
+                 cen = cv::Point2f(effmat.cols/2.0,effmat.rows/2.0) ;
+                cv::Rect rectB1 = IQMetricUtl::instance()->getZoneRect(rect2fB, cen, binNum);
+                cv::Rect rectB1R = updateRectByRatio(rectB1, sqrt(ratio));
+
+                cv::Mat draw;
+                effmat.convertTo(draw, CV_8UC3);
+                rectangle(draw, rectB1R, Scalar(255, 255, 255), 5);
+                cv::Mat effmatB = effmat(rectB1R);
+               // cv::Mat effmatB = effmat(rectTrans);
+                re.p5 = percentile(effmatB, 5);
+                re.p95 = percentile(effmatB, 95);
+                re.p50 = percentile(effmatB, 50);
+                re.efficicncy = cv::mean(effmatB)(0);
+                re.imgdraw = img_draw;
+                re.slb_draw = slb_draw.clone();
+            
+            }
 
         }
     }
@@ -156,57 +197,53 @@ LumiEfficencyRe MLIQMetrics::MLEfficiency::GetLuminanceEfficiency(cv::Mat img, s
         // LOG4CPLUS_INFO(LogPlus::getInstance()->logger, errorMessage.c_str());
         re.errMsg = sMsg;
     }
-
     return re;
 }
 
-LumiEfficencyRe MLIQMetrics::MLEfficiency::getLuminanceEfficiency(cv::Mat img, string color)
-{
-    LumiEfficencyRe effRe;
-    if (img.empty())
-    {
-        effRe.flag = false;
-        effRe.errMsg = "Input image is NULL";
-        return effRe;
-    }
-    int binNum = IQMetricUtl::instance()->getBinNum(img.size());
-    cv::Rect rectROI = IQMetricsParameters::ROIRect;
-    updateRectByRatio1(rectROI, 1.0 / binNum);
-    cv::Mat imgROI = GetROIMat(img, rectROI);
-    Mat img8 = convertToUint8(imgROI);
-    cv::Mat img_draw = convertTo3Channels(img8);
-    MLSolidDetection solid;
-    solid.setBinNum(binNum);
-    solid.setFOVType(m_fovType);
-    SolidDetectionRe solidRe = solid.getSolidLocation(img8);
-    updateRotateImg(img, solidRe.rotationAngle);
-    updateRotateImg(img_draw, solidRe.rotationAngle);
-    updateRotateImg(img8, solidRe.rotationAngle);
-    cv::Rect rectR = solid.getSolidExactRect(img8, solidRe.rectAf);
-    double ratio = IQMetricsParameters::RolloffAreaRatio;
-    cv::Rect rectRatio = updateRectByRatio(rectR, sqrt(ratio));
-    rectangle(img_draw, rectRatio, Scalar(0, 255, 0), 4);
-    cv::Mat lumiROI = imgROI(rectRatio).clone();
-    double lumiSLB = readSLBLuminance(color);
-    double eff = cv::mean(lumiROI)(0) / lumiSLB * 100;
-    effRe.efficicncy = eff;
-    effRe.imgdraw = img_draw;
-    LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "efficiency calculation successfully");
-    return effRe;
-}
-
- cv::Mat MLIQMetrics::MLEfficiency::getSolidImgRotated(cv::Mat img, cv::Rect &rectAfR)
-{
+ cv::Mat MLIQMetrics::MLEfficiency::getSolidImgRotated(cv::Mat img, cv::Rect& rectAfR, bool isSLB)
+ {
      cv::Mat imgR;
      if (img.data != NULL)
      {
          cv::Rect rect;
          cv::Mat img8 = convertToUint8(img);
-         cv::RotatedRect rectR = getSolidBorder(img8, rect);
+         RectangleDetection rd;
+         cv::RotatedRect rectR = rd.getRectangleBorder(img8);
+         if (rectR.boundingRect().area() > 16e5 && isSLB == false)
+         {
+             rd.writeSolidInfoToCSV(rectR);
+         }
+         else if (rectR.boundingRect().area() < 16e5 && isSLB == false)
+         {
+             rd.readSolidInfoFromCSV(rectR);
+         }
+         //if (rectR.boundingRect().area() >16e5&& rectR.boundingRect().area() < 40e5&&isSLB==false)
+         //{
+         //    cv::Mat dutInfo(cv::Mat::zeros(cv::Size(5, 1), CV_32FC1));
+         //    string filePath = "./config/templateImg/solidInfo.csv";
+         //    dutInfo.at<float>(0, 0) = rectR.angle;
+         //    dutInfo.at<float>(0, 1) = rectR.center.x;
+         //    dutInfo.at<float>(0, 2) = rectR.center.y;
+         //    dutInfo.at<float>(0, 3) = rectR.size.width;
+         //    dutInfo.at<float>(0, 4) = rectR.size.height;
+         //    writeMatTOCSV(filePath, dutInfo);
+         //}
+         //else if(rectR.boundingRect().area() < 16e5 && isSLB == false)
+         //{
+         //    cv::Mat dutInfo(cv::Mat::zeros(cv::Size(5, 1), CV_32FC1));
+         //    string filePath = "./config/templateImg/solidInfo.csv";
+         //    dutInfo = readCSVToMat(filePath);
+         //    rectR.angle = dutInfo.at<float>(0, 0);
+         //    rectR.center.x= dutInfo.at<float>(0, 1);
+         //    rectR.center.y = dutInfo.at<float>(0, 2);
+         //    rectR.size.width = dutInfo.at<float>(0, 3);
+         //    rectR.size.height = dutInfo.at<float>(0, 4);        
+         //}
+         //cv::RotatedRect rectR = getSolidBorder(img8, rect);
          cv::Point2f center((float)(img.cols / 2), (float)(img.rows / 2));
-
          updateRotateImg(img, rectR.angle);
          rectAfR = updateRotateRect(rectR, center);
+         rectAfR = rd.getSolidExactRect(img8, rectAfR);
      }
      return img;
  }
@@ -257,8 +294,8 @@ LumiEfficencyRe MLIQMetrics::MLEfficiency::getLuminanceEfficiency(cv::Mat img, s
     if (img.data != NULL)
     {
         //Newpara para = hydrusConfig.GetNewPara(img);
-        cv::Rect ROIRect = IQMetricsParameters::ROIRect;
         int binNum = IQMetricUtl::instance()->getBinNum(img.size());
+        cv::Rect ROIRect = IQMetricsParameters::ROIRect;
         cv::Point2f opticalCenter = IQMetricsParameters::opticalCenter;
         cv::Mat roi = GetROIMat(img, ROIRect).clone();
         cv::Mat roi1 = convertToUint8(roi);
@@ -303,19 +340,11 @@ cv::Mat MLIQMetrics::MLEfficiency::preProcess(cv::Mat gray)
 {
     cv::medianBlur(gray, gray, 3);
     //  cv::GaussianBlur(gray, gray, Size(3, 3), 1, 0);
-    Ptr<CLAHE> clahe = createCLAHE(2.0, Size(10, 10));
+    Ptr<CLAHE> clahe = createCLAHE(2.0, Size(20, 20));
     clahe->apply(gray, gray);
     Mat kernel = getStructuringElement(MORPH_RECT, Size(10, 10), Point(-1, -1));
      //morphologyEx(gray, gray, MORPH_GRADIENT, kernel, Point(-1, -1));
     return gray;
-}
-
-double MLIQMetrics::MLEfficiency::readSLBLuminance(string color)
-{
-    string fovstr = IQMetricUtl::instance()->fovTypeToString(m_fovType);
-    string filepath = "./config/ALGConfig/" + fovstr+ "_slbLumi_" + color + ".csv";
-    cv::Mat lumimat=readCSVToMat(filepath);
-    return lumimat.at<float>(0,0);
 }
 
 // algorithm::ALGResult MLIQMetrics::MLEfficiency::getSLBFilePath(string &filePath, string color)

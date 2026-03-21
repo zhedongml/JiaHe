@@ -25,13 +25,12 @@ class IQMETRICS_API MLRotation:public MLImageDetection::MLimagePublic
     ~MLRotation();
 
   public:
-      void setIsUpdateSLB(bool flag);
-      void setIsSLB(bool flag);
-    void setFOVType(FOVTYPE type);
+    void setIsSLB(bool flag);
     void setColor(string color);
-    RotationRe getGridRotation(cv::Mat img);
+    void setIsUpdateSLB(bool flag);
+    RotationRe getGridRotation(const cv::Mat img);
     RotationRe getCrossRotationGusu(cv::Mat img);
-    RotationRe getNineCrossRotation(const cv::Mat img);
+    RotationRe getCrossRotationNoBorder(cv::Mat img);
     RotationRe getMultiCrossRotation(cv::Mat img, int eyeLoc);
 
   private:
@@ -47,8 +46,7 @@ class IQMETRICS_API MLRotation:public MLImageDetection::MLimagePublic
     int m_gridROI = 200;
     bool accurateFlag = true;
     int m_binNum = 1;
-    FOVTYPE m_FOVType;
     string m_color;
-    bool m_IsUpdateSLB = false;
+    bool m_updateSLB = true;
 };
 } // namespace MLIQMetrics
