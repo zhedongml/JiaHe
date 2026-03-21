@@ -297,15 +297,16 @@ Result MesMode::loadAndRunAdpTask()
 
 Result MesMode::runAdpTask(DutMeasureInfo info)
 {
-	bool checkEnabled = info.CheckEnabled;
-	QString modelName = info.ModelName;
-	bool liveRefresh  = info.LiveRefresh;
+	Result ret;
+	//bool checkEnabled = info.CheckEnabled;
+	//QString modelName = info.ModelName;
+	//bool liveRefresh  = info.LiveRefresh;
 
-	//AutoDP_WG
-	MetricsCheck::instance().setCheckEnabled_autoDP(checkEnabled);
-	Result ret = MetricsCheck::instance().setModelName_autoDP(modelName, liveRefresh);
-	if (!ret.success)
-		return Result(false, "set model name autoDP error.");
+	////AutoDP_WG
+	//MetricsCheck::instance().setCheckEnabled_autoDP(checkEnabled);
+	//ret = MetricsCheck::instance().setModelName_autoDP(modelName, liveRefresh);
+	//if (!ret.success)
+	//	return Result(false, "set model name autoDP error.");
 
 	QString sourceImageDir = info.DutDir;
 	QString resultSaveDir = info.AdpResultDir;

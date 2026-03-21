@@ -48,6 +48,7 @@ Result TaskQdp::execute()
     }
     int takeTime = QDateTime::currentMSecsSinceEpoch() - startTime;
     qWarning() << QString("### QDP ###: end AUtoDP. time is %1 ms...").arg(takeTime);
+    MetricsData::instance()->updateDutAutoDPResult("");
 
 #if 0
 

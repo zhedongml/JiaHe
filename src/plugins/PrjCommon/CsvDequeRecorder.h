@@ -34,20 +34,21 @@ private:
 		//if constexpr (std::is_same_v<T, DutMeasureInfo>) 
 		{
 			oss << "\"" << item.SN.toStdString() << "\"" << delimiter
-				<< "\"" << item.StartTime.toString("yyyy-MM-dd HH:mm:ss").toStdString() << "\"" << delimiter
-				<< "\"" << item.EndTime.toString("yyyy-MM-dd HH:mm:ss").toStdString() << "\"" << delimiter
+				//<< "\"" << item.StartTime.toString("yyyy-MM-dd HH:mm:ss").toStdString() << "\"" << delimiter
+				//<< "\"" << item.EndTime.toString("yyyy-MM-dd HH:mm:ss").toStdString() << "\"" << delimiter
 				<< "\"" << item.DutDir.toStdString() << "\"" << delimiter
-				<< "\"" << item.AdpResultDir.toStdString() << "\"" << delimiter
-				<< "\"" << item.ErrorMsg.toStdString() << "\"" << delimiter
-				<< item.DutIndex << delimiter
-				<< item.LayerIndex << delimiter
-				<< item.Barcode_OK << delimiter
-				<< item.AA_OK << delimiter
-				<< item.Capture_OK << delimiter
-				<< item.Metrics_OK << delimiter
-				<< "\"" << item.ModelName.toStdString() << "\"" << delimiter
-				<< item.CheckEnabled << delimiter
-				<< item.LiveRefresh;
+				<< "\"" << item.AdpResultDir.toStdString() << "\"" << delimiter;
+				//<< "\"" << item.ErrorMsg.toStdString() << "\"" << delimiter
+				//<< item.DutIndex << delimiter
+				//<< item.LayerIndex << delimiter
+				//<< item.Barcode_OK << delimiter
+				//<< item.AA_OK << delimiter
+				//<< item.Capture_OK << delimiter
+				//<< item.Metrics_OK << delimiter
+				//<< "\"" << item.ModelName.toStdString() << "\"" << delimiter
+				//<< item.CheckEnabled << delimiter
+				//<< item.LiveRefresh;
+
 				/*<< "\"" << item.name << "\"" << delimiter
 				<< item.score << delimiter
 				<< "\"" << item.timestamp << "\"";*/
@@ -91,26 +92,27 @@ private:
 
 		//if constexpr (std::is_same_v<T, DutMeasureInfo>) 
 		{
-			if (tokens.size() >= 15) {
+			if (tokens.size() >= 3) {
 				DutMeasureInfo data;
 				data.SN = QString::fromStdString(tokens[0]);
-				data.StartTime = QDateTime::fromString(QString::fromStdString(tokens[1]), "yyyy-MM-dd HH:mm:ss");
-				data.EndTime = QDateTime::fromString(QString::fromStdString(tokens[2]), "yyyy-MM-dd HH:mm:ss");
-				//data.ParentDir = QString::fromStdString(tokens[3]);
-				data.DutDir = QString::fromStdString(tokens[3]);
-				data.AdpResultDir = QString::fromStdString(tokens[4]);
-				data.ErrorMsg = QString::fromStdString(tokens[5]);
+				//data.StartTime = QDateTime::fromString(QString::fromStdString(tokens[1]), "yyyy-MM-dd HH:mm:ss");
+				//data.EndTime = QDateTime::fromString(QString::fromStdString(tokens[2]), "yyyy-MM-dd HH:mm:ss");
+				////data.ParentDir = QString::fromStdString(tokens[3]);
+				data.DutDir = QString::fromStdString(tokens[1]);
+				data.AdpResultDir = QString::fromStdString(tokens[2]);
 
-				data.DutIndex = std::stoi(tokens[6]);
-				data.LayerIndex = std::stoi(tokens[7]);
-				data.Barcode_OK = std::stoi(tokens[8]);
-				data.AA_OK = std::stoi(tokens[9]);
-				data.Capture_OK = std::stoi(tokens[10]);
-				data.Metrics_OK = std::stoi(tokens[11]);
+				//data.ErrorMsg = QString::fromStdString(tokens[5]);
 
-				data.ModelName = QString::fromStdString(tokens[12]);
-				data.CheckEnabled = std::stoi(tokens[13]);
-				data.LiveRefresh = std::stoi(tokens[14]);
+				//data.DutIndex = std::stoi(tokens[6]);
+				//data.LayerIndex = std::stoi(tokens[7]);
+				//data.Barcode_OK = std::stoi(tokens[8]);
+				//data.AA_OK = std::stoi(tokens[9]);
+				//data.Capture_OK = std::stoi(tokens[10]);
+				//data.Metrics_OK = std::stoi(tokens[11]);
+
+				//data.ModelName = QString::fromStdString(tokens[12]);
+				//data.CheckEnabled = std::stoi(tokens[13]);
+				//data.LiveRefresh = std::stoi(tokens[14]);
 
 				/*data.id = std::stoi(tokens[0]);
 				data.name = tokens[1];
@@ -133,7 +135,8 @@ private:
 		// 添加 CSV 表头
 		//if constexpr (std::is_same_v<T, DutMeasureInfo>) 
 		{
-			file << "SN,StartTime,EndTime,DutDir,AdpResultDir,ErrorMsg,DutIndex,TrayIndex,Barcode_OK,AA_OK,Capture_OK,Metrics_OK,ModelName,CheckEnab,LiveRefresh\n";
+			//file << "SN,StartTime,EndTime,DutDir,AdpResultDir,ErrorMsg,DutIndex,TrayIndex,Barcode_OK,AA_OK,Capture_OK,Metrics_OK,ModelName,CheckEnab,LiveRefresh\n";
+			file << "SN,DutDir,AdpResultDir\n";
 		}
 
 		// 保存数据
@@ -346,7 +349,8 @@ public:
 		// 如果是新文件，添加表头
 		if (fs::file_size(filename) == 0)// && std::is_same_v<T, DutMeasureInfo>) {
 		{
-			file << "SN,StartTime,EndTime,DutDir,AdpResultDir,ErrorMsg,DutIndex,TrayIndex,Barcode_OK,AA_OK,Capture_OK,Metrics_OK,ModelName,CheckEnab,LiveRefresh\n";
+			//file << "SN,StartTime,EndTime,DutDir,AdpResultDir,ErrorMsg,DutIndex,TrayIndex,Barcode_OK,AA_OK,Capture_OK,Metrics_OK,ModelName,CheckEnab,LiveRefresh\n";
+			file << "SN,DutDir,AdpResultDir\n";
 		}
 
 		file << serializeToCSV(item) << "\n";
