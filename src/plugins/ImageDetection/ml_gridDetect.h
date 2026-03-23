@@ -52,12 +52,13 @@ class ALGORITHM_API MLGridDetect : public MLimagePublic
     void readGridInfoFromCSV(GridRe& gridRe);
 private:
     cv::Point2f getAccurateCenter(cv::Point2f c0, cv::Mat img);
+    cv::Point2f getCenLoc(cv::Mat xloc, cv::Mat yloc);
   private:
     int m_binNum=1;
     int m_pointsClusters = 100;
     int m_xyClassification = 150;
     int m_gridWidth = 290;
-    int m_len = 300;
+    int m_len = 560;
     bool m_update = false;
     bool accurateFlag = false; 
 };

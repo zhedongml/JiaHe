@@ -618,11 +618,12 @@ GridRe MLImageDetection::MLGridDetect::getGridContour(cv::Mat img)
 		}
 	}
 
-	cv::Point2f center;
+	cv::Point2f center=getCenLoc(xmat,ymat);
+	circle(img_draw, center, 10, Scalar(0, 0, 255), -1);
 	int rows = xmat.rows - 1; // 最后一行索引
 	int cols = xmat.cols - 1;
-	center.x = xmat.at<float>(rows / 2, cols / 2) ;
-	center.y = ymat.at<float>(rows / 2, cols / 2) ;
+	//center.x = xmat.at<float>(rows / 2, cols / 2) ;
+	//center.y = ymat.at<float>(rows / 2, cols / 2) ;
 	re.center= center;
 	re.xLocMat = xmat;
 	re.yLocMat = ymat;
@@ -1020,6 +1021,40 @@ cv::Point2f MLImageDetection::MLGridDetect::getAccurateCenter(cv::Point2f c0, cv
 	else
 		cen = c0;
 	return cen;
+}
+
+cv::Point2f MLImageDetection::MLGridDetect::getCenLoc(cv::Mat xloc, cv::Mat yloc)
+{
+	cv::Point2f center;
+	int row = xloc.rows;
+	int col = xloc.cols;
+	if (row % 2 == 0 && col % 2 != 0)
+	{
+		center.x = (xloc.at<float>(row / 2 - 1, col / 2) + xloc.at<float>(row / 2, col / 2)) / 2.0;
+		center.y = (yloc.at<float>(row / 2 - 1, col / 2) + yloc.at<float>(row / 2, col / 2)) / 2.0;
+
+
+	}
+	else if (row % 2 != 0 && col % 2 == 0)
+	{
+		center.x = (xloc.at<float>(row / 2, col / 2 - 1) + xloc.at<float>(row / 2, col / 2)) / 2.0;
+		center.y = (yloc.at<float>(row / 2, col / 2 - 1) + yloc.at<float>(row / 2, col / 2 )) / 2.0;
+
+	}
+	else if (row % 2 != 0 && col % 2 != 0)
+	{
+		center.x = xloc.at<float>(row / 2, col / 2);
+		center.y = yloc.at<float>(row / 2, col / 2);
+	}
+	else if (row % 2 == 0 && col % 2 == 0)
+	{
+		center.x = (xloc.at<float>(row / 2 - 1, col / 2 - 1) + xloc.at<float>(row / 2 , col / 2 - 1)
+			+ xloc.at<float>(row / 2 - 1, col / 2) + xloc.at<float>(row / 2 , col / 2 )) / 4.0;
+		center.y = (yloc.at<float>(row / 2 - 1, col / 2 - 1) + yloc.at<float>(row / 2, col / 2 - 1)
+			+ yloc.at<float>(row / 2 - 1, col / 2) + yloc.at<float>(row / 2, col / 2)) / 4.0;
+	}
+
+	return center;
 }
 
 

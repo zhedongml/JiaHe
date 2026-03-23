@@ -1283,8 +1283,10 @@ QString IQTModel::calculateSmallContrastChessboard(QString color, QString mtcNam
 		//checkerCR.setFOVType(type);
 		checkerCR.setIsUpdateSLB(state.IsUpdateSLB);
 		checkerCR.setEyeboxLocation(id.toStdString()); // Left or Right
-		MLIQMetrics::ContrastRatioRe re = checkerCR.getContrastRatio(imgP, imgN, !state.IsDut);
-		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
+	//	MLIQMetrics::ContrastRatioRe re = checkerCR.getContrastRatio(imgP, imgN, !state.IsDut);
+		MLIQMetrics::SingleCheckerCRRe re = checkerCR.getSingleCheckerCR(imgP, imgN, !state.IsDut);
+
+   double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
 
 		if (re.flag == false)
@@ -1295,16 +1297,18 @@ QString IQTModel::calculateSmallContrastChessboard(QString color, QString mtcNam
 
 		if (isDebug)
 		{
-			cv::Mat outImgP = re.imgdrawP;
-			cv::Mat outImgN = re.imgdrawN;
-			if (outImgP.data != NULL && outImgN.data != NULL)
+			//cv::Mat outImgP = re.imgdrawP;
+			//cv::Mat outImgN = re.imgdrawN;
+			cv::Mat outImgN = re.imgdraw;
+
+			if (outImgN.data != NULL/* && outImgN.data != NULL*/)
 			{
 				QString qTempPath = MetricsData::instance()->getMTFImgsDir() + "Result_" + id;
 				if (!createDir(qTempPath))
 				{
 					LoggingWrapper::instance()->error("new dirctory error:" + qTempPath);
 				}
-				imwrite((qTempPath + "\\" + mtcName + "_" + color + "_eb" + id + "_ImgP.jpg").toStdString(), outImgP);
+				//imwrite((qTempPath + "\\" + mtcName + "_" + color + "_eb" + id + "_ImgP.jpg").toStdString(), outImgP);
 				imwrite((qTempPath + "\\" + mtcName + "_" + color + "_eb" + id + "_ImgN.jpg").toStdString(), outImgN);
 				//string name1 = (qTempPath + "\\" + color + "_greyLevelP.csv").toStdString();
 				//string name2 = (qTempPath + "\\" + color + "_greyLevelN.csv").toStdString();
@@ -1312,18 +1316,20 @@ QString IQTModel::calculateSmallContrastChessboard(QString color, QString mtcNam
 				// writeMatTOCSV(name1, re.greyLevelP);
 				 //writeMatTOCSV(name2, re.greyLevelN);
 				vector<cv::Mat>crVec;
-				crVec.push_back(re.greyLevelP);
-				crVec.push_back(re.greyLevelN);
-				crVec.push_back(re.crMat);
+				crVec.push_back(re.grayMat);
+				//crVec.push_back(re.greyLevelN);
+				//crVec.push_back(re.crMat);
 				vector<string>infoVec;
 				infoVec.push_back("luminance of positive checker");
-				infoVec.push_back("luminance of negitive checker");
-				infoVec.push_back("CR");
+				//infoVec.push_back("luminance of negitive checker");
+				//infoVec.push_back("CR");
 				writeMatTOCSV(name3, crVec, infoVec);
 			}
 		}
 
-		Mat src1 = (Mat_<double>(2, 1) << re.meanCR, re.minCR);
+		//Mat src1 = (Mat_<double>(2, 1) << re.meanCR, re.minCR);
+		Mat src1 = (Mat_<double>(1, 1) << re.cr);
+
 		cv::Mat b;
 		src1.convertTo(b, CV_32FC1);
 		if (id != "")
