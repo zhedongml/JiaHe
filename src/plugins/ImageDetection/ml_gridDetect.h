@@ -57,7 +57,7 @@ private:
     int m_pointsClusters = 100;
     int m_xyClassification = 150;
     int m_gridWidth = 290;
-    int m_len = 300;
+    int m_len = 420;
     bool m_update = false;
     bool accurateFlag = false; 
 };

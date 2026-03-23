@@ -142,7 +142,7 @@ cv::Rect IQMetricUtl::getRect(ROIParaNew para, cv::Point2f center)
 
 int MLIQMetrics::IQMetricUtl::getBinNum(cv::Size s)
 {
-    int num = round (sqrt((13312*9528.0/(s.area()))));   
+    int num = round (sqrt((13376*9528.0/(s.area()))));   
     return num;
 }
 
