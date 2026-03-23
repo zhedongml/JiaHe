@@ -629,9 +629,12 @@ SingleCheckerCRRe MLIQMetrics::MLContrastRatio::getSingleCheckerCR(cv::Mat img)
 		//updateRotateImg(img_drawP, rectR.angle);
 
 		MLCherkerboardDetect cd;
+		cd.SetChessboardxyClassification(350/binNum);
+		cd.SetChecssboardPointsClusters(350 / binNum);
+		cd.SetChessboardUpdateFlag(false);
 		double crRation = IQMetricsParameters::crArea;
 
-		CheckerboardRe checkerRe = cd.detectChessboardTemplate1(img_draw, crRation, binNum);
+		CheckerboardRe checkerRe = cd.detectChessboardTemplate1(img8, crRation, binNum);
 		//checkerRe = cd.detectChessboardCorner1(imgP8, crRation, 4);
 	   // checkerRe = cd.detectChessboardContour(imgP8, crRation, 4);
 		if (checkerRe.flag)

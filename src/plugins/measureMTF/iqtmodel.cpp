@@ -1273,8 +1273,8 @@ QString IQTModel::calculateSmallContrastChessboard(QString color, QString mtcNam
 		return "";
 	}
 	cv::Mat imgP = params[0];
-	cv::Mat imgN = params[1];
-	if (imgP.data != NULL && imgN.data != NULL)
+	//cv::Mat imgN = params[1];
+	if (imgP.data != NULL /*&& imgN.data != NULL*/)
 	{
 		clock_t start = clock();
 		MLUtils::TestState state = MetricsData::instance()->GetTestState();
@@ -1284,7 +1284,7 @@ QString IQTModel::calculateSmallContrastChessboard(QString color, QString mtcNam
 		checkerCR.setIsUpdateSLB(state.IsUpdateSLB);
 		checkerCR.setEyeboxLocation(id.toStdString()); // Left or Right
 	//	MLIQMetrics::ContrastRatioRe re = checkerCR.getContrastRatio(imgP, imgN, !state.IsDut);
-		MLIQMetrics::SingleCheckerCRRe re = checkerCR.getSingleCheckerCR(imgP, imgN, !state.IsDut);
+		MLIQMetrics::SingleCheckerCRRe re = checkerCR.getSingleCheckerCR(imgP);
 
    double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));
