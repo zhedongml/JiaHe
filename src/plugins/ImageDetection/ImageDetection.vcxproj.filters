@@ -90,6 +90,18 @@
     <ClCompile Include="FiducialDetect.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="CrossCenterPro.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_cross_center.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="ml_two_cross.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="qlog.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CrossCenter.h">
@@ -147,6 +159,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="FiducialDetect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossCenterPro.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_cross_center.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ml_two_cross.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="qlog.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

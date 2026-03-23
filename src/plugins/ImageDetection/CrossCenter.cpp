@@ -331,7 +331,16 @@ cv::Point2f CrossCenter::getRotationAngle()
         return cv::Point2f(0, 0);
     }
 }
+double CrossCenter::getHorizontalLineAngle()
+{
+    return m_hAngle;
+}
 void CrossCenter::SetbinNum(int bin)
 {
     m_binNum = bin;
+}
+
+void MLImageDetection::CrossCenter::setROILength(int len)
+{
+    CrossCenterParameter::roilength = len;
 }

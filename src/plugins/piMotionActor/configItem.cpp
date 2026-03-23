@@ -452,7 +452,18 @@ CoordinateLimit ConfigItem::getMotion3DLimit(int type)
 		limit.max.x = json["MeasureCameraControl"]["Limits"]["Max"]["X"].get<float>();
 		limit.max.y = json["MeasureCameraControl"]["Limits"]["Max"]["Y"].get<float>();
 		limit.max.z = json["MeasureCameraControl"]["Limits"]["Max"]["Z"].get<float>();
+		
 	}
+	else if(withDUT == type)
+	{
+		limit.min.x = json["DUTControl"]["Limits"]["Min"]["X"].get<float>();
+		limit.min.y = json["DUTControl"]["Limits"]["Min"]["Y"].get<float>();
+		limit.min.z = json["DUTControl"]["Limits"]["Min"]["Z"].get<float>();
+		limit.max.x = json["DUTControl"]["Limits"]["Max"]["X"].get<float>();
+		limit.max.y = json["DUTControl"]["Limits"]["Max"]["Y"].get<float>();
+		limit.max.z = json["DUTControl"]["Limits"]["Max"]["Z"].get<float>();
+	}
+
 	return limit;
 }
 
