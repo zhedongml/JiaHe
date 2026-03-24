@@ -1557,7 +1557,7 @@ QString IQTModel::calculateColorUniformity(QString color, QString mtcName, std::
 	{
 		degree = 22.5;
 	}
-
+	degree = 0;
 	string ndstr;
 	ndstr = MetricsData::instance()->getImageNDFilter().toStdString();
 	QMutexLocker locker(&mutex);
