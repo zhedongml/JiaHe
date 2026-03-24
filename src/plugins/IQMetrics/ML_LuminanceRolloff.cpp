@@ -100,8 +100,9 @@ RolloffRe MLIQMetrics::MLLuminanceRolloff::getRelativeBrightness(cv::Mat imgRaw)
 		string strv = "P95:" + to_string(p95);
 		string strv1 = "P50:" + to_string(p50);
 		putTextOnImage(img_draw, strh, center, 20 / binNum);
-		putTextOnImage(img_draw, strv, center + cv::Point2f(0, 300 / binNum), 20 / binNum);
-		putTextOnImage(img_draw, strv1, center + cv::Point2f(0, 600 / binNum), 20 / binNum);
+		putTextOnImage(img_draw, strv1, center + cv::Point2f(0, 300 / binNum), 20 / binNum);
+		putTextOnImage(img_draw, strv, center + cv::Point2f(0, 600 / binNum), 20 / binNum);
+
 		rollRe.p50 = p50;
 		rollRe.p5 = p5;
 		rollRe.p95 = p95;

@@ -1,7 +1,7 @@
 import os,sys
 root_path = os.path.dirname(__file__)
-sys.path.append(root_path+r"\.venv\Lib\site-packages")
-sys.path.append(root_path+r"\.venv\Scripts")
+sys.path.append(root_path+r"\venv\Lib\site-packages")
+sys.path.append(root_path+r"\venv\Scripts")
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 # print("path: " + os.getcwd())
@@ -27,6 +27,8 @@ from mlo import IQConfig
 import matplotlib.patches as patches
 from StrayLightCalc import cropSquareOffcenter
 from StrayLightCalc import cropSquare
+from scipy.ndimage import rotate
+import scipy
 
 
 class IQMetricsSDKCall:
@@ -257,10 +259,10 @@ class IQMetricsSDKCall:
 
 
 if __name__ == '__main__':
-    config_json = r'E:\project\JiAn\src\RealityQ+\config'
+    config_json = r'E:\MLproject\JiaHe\src\RealityQ+\config'
     IQClass = IQMetricsSDKCall(config_json)
 
-    folder = r'H:\jian\image\20250910_MetricsTest\SLB_20250910T010540\IQ'
+    folder = r'E:\Imgs\jiaheTest\IQ'
     # folder = r'D:\project\Hydrus2\111\IQ'
     # IQClass.distortion_cal(folder,'W',5)
 

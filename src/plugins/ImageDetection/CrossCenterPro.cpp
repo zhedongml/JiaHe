@@ -99,7 +99,7 @@ bool CrossCenterPro::Execute(Mat mlframe, int average, CrossMode crossMode)
 		MLImageDetection::CrossCenter c;
 
 		if (crossMode == CrossMode::Gaussian)
-			center = c.find_centerGaussian(mlframe.clone(), true);//c.get_crossCenterLINES();
+			center = c.find_centerGaussian(mlframe.clone(), false);//c.get_crossCenterLINES();
 		else if (crossMode == CrossMode::HoffLine)
 			center = c.get_crossCenterLINES();
 		//else if (crossMode == CrossMode::GaussianEnhance)

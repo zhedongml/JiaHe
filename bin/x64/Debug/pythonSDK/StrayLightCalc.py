@@ -170,16 +170,13 @@ def cropSquareOffcenter(powerVals, buffer = 0, plot = False,dist = 30):
         return peaksX, peaksY
 
 def cropSquare(powerVals, buffer = 0, plot = False, height = 0.2):
-
-
+    powerVals=np.pad(powerVals,pad_width=((10,10),(10,10)),mode='constant',constant_values=0)
     crossX = np.average(powerVals[int(powerVals.shape[0]/2)-50:int(powerVals.shape[0]/2)+50,:],axis = 0)
     crossY = np.average(powerVals[:,int(powerVals.shape[1]/2)-50:int(powerVals.shape[1]/2)+50],axis = 1)
     gradX = (np.gradient(crossX)/np.nanmax(np.gradient(crossX)))**2
     gradY = (np.gradient(crossY)/np.nanmax(np.gradient(crossY)))**2
-
     gradX /= max(gradX)
     gradY /= max(gradY)
-
     peaksX = find_peaks(gradX, height = height, distance = int(powerVals.shape[1]/8))[0]
     peaksY = find_peaks(gradY, height = height, distance = int(powerVals.shape[0]/8))[0]
     height0=height
@@ -212,7 +209,8 @@ def cropSquare(powerVals, buffer = 0, plot = False, height = 0.2):
     peaksX[1] -= buffer
     peaksY[0] += buffer
     peaksY[1] -= buffer
-
+    peaksX=peaksX-10
+    peaksY=peaksY-10
     return peaksX, peaksY
 
 def stray_light_calc(lumMap, 
