@@ -124,6 +124,7 @@ cv::Vec4f CrossCenter::verticalLineFit(cv::Mat img_gray,bool fitflag)
 		//x = linespace(0, img_gray.cols, 1);
 		if (rec.x < 0 || rec.y < 1e-6)
 			continue;
+		rec = rec & cv::Rect(0, 0, img_gray.cols, img_gray.rows);
 		cv::Mat roi = img_gray(rec);
 		cv::Scalar meanRoi = cv::mean(roi);
 		cv::Mat meanMat, stdMat;
@@ -136,7 +137,7 @@ cv::Vec4f CrossCenter::verticalLineFit(cv::Mat img_gray,bool fitflag)
 			cv::Point maxLoc;
 			cv::minMaxLoc(rowMat, NULL, NULL, NULL, &maxLoc);
 
-			double index;
+			double index=-1;
             if (fitflag==false)
             {
                 index = maxLoc.x;
@@ -189,10 +190,12 @@ cv::Vec4f CrossCenter::verticalLineFit(cv::Mat img_gray,bool fitflag)
 				}
 
 			}
-
-		    fitLineData.push_back(cv::Point2f(index, i0));
-            rawData.push_back(index);
-            circle(m_img_draw, cv::Point2f(index, i0), 1, cv::Scalar(255, 0, 0), -1);
+			if (index >= 0)
+			{
+				fitLineData.push_back(cv::Point2f(index, i0));
+				rawData.push_back(index);
+				circle(m_img_draw, cv::Point2f(index, i0), 1, cv::Scalar(255, 0, 0), -1);
+			}
 
 		}
 	}
@@ -530,6 +533,7 @@ cv::Vec4f CrossCenter::horizontalLineFit(cv::Mat img_gray, bool fitflag)
 		x = linespace(0, img_gray.rows, 1);
 		if (rec.x < 0 || rec.y < 1e-6)
 			continue;
+		rec = rec & cv::Rect(0, 0, img_gray.cols, img_gray.rows);
 		cv::Mat roi = img_gray(rec);
 		cv::Scalar meanRoi = cv::mean(roi);
 		double corr = corrlateMat180(roi);
@@ -540,7 +544,7 @@ cv::Vec4f CrossCenter::horizontalLineFit(cv::Mat img_gray, bool fitflag)
 			vector<cv::Point2f>gaussFitdata;
 			cv::Point maxLoc;
 			cv::minMaxLoc(rowMat, NULL, NULL, NULL, &maxLoc);
-            double index;
+            double index=-1;
             if (fitflag == false)
             {
                 index = maxLoc.y;
@@ -590,9 +594,12 @@ cv::Vec4f CrossCenter::horizontalLineFit(cv::Mat img_gray, bool fitflag)
                 }
 				}
 			}
-            fitLineData.push_back(cv::Point2f(j0, index));
-            rawData.push_back(index);
-            circle(m_img_draw, cv::Point2f(j0, index), 1, cv::Scalar(0, 0, 255), -1);
+			if (index >= 0)
+			{
+				fitLineData.push_back(cv::Point2f(j0, index));
+				rawData.push_back(index);
+				circle(m_img_draw, cv::Point2f(j0, index), 1, cv::Scalar(0, 0, 255), -1);
+			}
 
 		}
 	}
