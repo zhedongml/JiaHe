@@ -39,6 +39,7 @@ namespace Core {
         const char TOGGLE_DUT_CONFIG[] = "ToggleDutConfig";
         const char TOGGLE_INIT_CALIBRATE_CFG[] = "InitialCalibrateConfig";
         const char TOGGLE_DEVICES_MOVE_INIT_POS_DUT[] = "Load DUT Position";
+        const char TOGGLE_DEVICES_MOVE_LOAD_POS_SLB[] = "Load SLB Position";
         const char TOGGLE_DEVICES_MOVE_INIT_POS_SLB[] = "Load and Align SLB Position";
         const char TOGGLE_HISTORY_IMAGE_DATA[] = "History Image Data";
         const char TOGGLE_WEB_CAMERA[] = "ToggleWebCamera";

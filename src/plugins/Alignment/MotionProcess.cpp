@@ -463,6 +463,55 @@ namespace AAProcess
 		if (!msg.empty())
 			return msg;
 
+		//-------- pre dut tilt ----------//
+		cv::Point3f dutPreTilt;
+		dutPreTilt.x = m_processConfigInfo.offsetRoatate.dutPreTiptilt[currentDutName].x;
+		dutPreTilt.y = m_processConfigInfo.offsetRoatate.dutPreTiptilt[currentDutName].y;
+		dutPreTilt.z = 0;
+
+		double safeDXMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDxMax;
+		double safeDXMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDxMin;
+		double safeDYMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDyMax;
+		double safeDYMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDyMin;
+
+		if (dutPreTilt.x > safeDXMax ||
+			dutPreTilt.x < safeDXMin ||
+			dutPreTilt.y > safeDYMax ||
+			dutPreTilt.y < safeDYMin)
+		{
+			msg = QString(
+				"Pre-tilt angle out of safe range. "
+				"DUT=%1, X=%2 (limit %3~%4), "
+				"Y=%5 (limit %6~%7)")
+				.arg(QString::fromStdString(currentDutName))
+				.arg(dutPreTilt.x)
+				.arg(safeDXMin)
+				.arg(safeDXMax)
+				.arg(dutPreTilt.y)
+				.arg(safeDYMin)
+				.arg(safeDYMax).toStdString();
+
+			return PrintLog(LogType::Error, msg);
+		}
+
+		msg = LimitMove::getInstance()->orientalMoveAbs(dutPreTilt);
+		if (!msg.empty())
+			return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
+
+		while (CheckModuleIsMoving(ModuleName::DutModuleDxDyDz))
+		{
+			if (m_isStopTreeSystem.load())
+			{
+				StopModuleMove(ModuleName::DutModuleDxDyDz);
+				m_isStopTreeSystem.store(false);
+				return "Operation is force stopped by user.";
+			}
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
+		Sleep(500);
+		//-------- pre dut tilt end ----------//
+
 		Result res = PLCController::instance()->collimatorLight(true);
 		if (!res.success)
 			return PrintLog(LogType::Error, res.errorMsg, !m_isTreeSystemRun);

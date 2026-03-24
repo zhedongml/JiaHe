@@ -56,7 +56,8 @@ private slots:
     void UpdateConfigSlot();
     QPointF onSlotgetFiducialPos(QImage& image);
     void deviceMoveInitDUTPosition();
-    void deviceMoveInitSLBPosition();
+    void deviceMoveLoadSLBPosition();
+    void deviceMoveAlignSLBPosition();
 
   signals:
     void addFiducialSignal(QPointF scenePos);
