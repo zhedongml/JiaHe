@@ -73,6 +73,25 @@ bool gaussiantCurveFit(const vector<cv::Point2f>& cvRawPointVec, int n, cv::Mat&
 	}
 	return true;
 }
+double findCurveMaxValue(const vector<cv::Point2f>pts, int fitOrder)
+{
+	arma::vec xvec(pts.size()), yvec(pts.size());
+	for (int i = 0; i < pts.size(); i++)
+	{
+		xvec[i] = pts[i].x;
+		yvec[i] = pts[i].y;
+	}
+	arma::vec p = arma::polyfit(xvec, yvec, fitOrder);
+	double max = arma::max(xvec);
+	double min = arma::min(xvec);
+	int num = round((max - min) / 0.1);
+	arma::vec x0=arma::linspace(min, max, num);
+	arma::vec y0 = arma::polyval(p, x0);
+	//arma::uvec indexvec = arma::find(y0 ==y0.max());
+	arma::uword index = arma::index_max(y0);
+	double xfit = x0[index];
+	return xfit;
+}
 vector<int> dataFilter(vector<double> rawdata, double thresh)
 {
 	vector<int>vecList;
@@ -152,42 +171,44 @@ cv::Vec4f CrossCenter::verticalLineFit(cv::Mat img_gray,bool fitflag)
 			{
 				gaussFitdata.push_back(cv::Point2f(j, rowMat.at<uchar>(0, j)));
 			}
-			//if (findGaussianFitRawData(x, y, gaussFitdata))
-			{
-				cv::Mat A(3, 1, CV_32FC1, cv::Scalar(0));
-				gaussiantCurveFit(gaussFitdata, 2, A);
-				float a0 = A.at<float>(0, 0);
-				float a1 = A.at<float>(1, 0);
-				float a2 = A.at<float>(2, 0);
-				double total = NAN;
-                if (abs(a1) > 1e-6)
-                {
-                    float fParmB = -1 / (a2);
-                    float fParmC = -a1 / (2 * a2);
-                    float fParmA = std::exp(a0 + fParmC * fParmC / fParmB);
-                    //  cout << fParmA << ',' << fParmC << ',' << fParmB << endl;
-                    vector<double> xfit, yfit;
-                    double dMaxYValue = -1.0;
-                    for (int i = 0; i < gaussFitdata.size(); i++)
-                    {
-                        double x = gaussFitdata[i].x;
-                        double y = 0;
-                        if (int(fParmA) != 0)
-                        {
-                            y = fParmA * exp(-pow(x - fParmC, 2) / fParmB);
-                        }
-                        if (y >= dMaxYValue)
-                        {
-                            dMaxYValue = y;
-                        }
-                        xfit.push_back(x);
-                        yfit.push_back(y);
-                    }
-                   int listLineFit = max_element(yfit.begin(), yfit.end()) - yfit.begin();
-                    index = xfit[listLineFit];
-				}
 
-				}
+			index=findCurveMaxValue(gaussFitdata, 2);
+			//if (findGaussianFitRawData(x, y, gaussFitdata))
+			//{
+			//	cv::Mat A(3, 1, CV_32FC1, cv::Scalar(0));
+			//	gaussiantCurveFit(gaussFitdata, 2, A);
+			//	float a0 = A.at<float>(0, 0);
+			//	float a1 = A.at<float>(1, 0);
+			//	float a2 = A.at<float>(2, 0);
+			//	double total = NAN;
+   //             if (abs(a1) > 1e-6)
+   //             {
+   //                 float fParmB = -1 / (a2);
+   //                 float fParmC = -a1 / (2 * a2);
+   //                 float fParmA = std::exp(a0 + fParmC * fParmC / fParmB);
+   //                 //  cout << fParmA << ',' << fParmC << ',' << fParmB << endl;
+   //                 vector<double> xfit, yfit;
+   //                 double dMaxYValue = -1.0;
+   //                 for (int i = 0; i < gaussFitdata.size(); i++)
+   //                 {
+   //                     double x = gaussFitdata[i].x;
+   //                     double y = 0;
+   //                     if (int(fParmA) != 0)
+   //                     {
+   //                         y = fParmA * exp(-pow(x - fParmC, 2) / fParmB);
+   //                     }
+   //                     if (y >= dMaxYValue)
+   //                     {
+   //                         dMaxYValue = y;
+   //                     }
+   //                     xfit.push_back(x);
+   //                     yfit.push_back(y);
+   //                 }
+   //                int listLineFit = max_element(yfit.begin(), yfit.end()) - yfit.begin();
+   //                 index = xfit[listLineFit];
+			//	}
+
+			//	}
 
 			}
 			if (index >= 0)
@@ -558,41 +579,42 @@ cv::Vec4f CrossCenter::horizontalLineFit(cv::Mat img_gray, bool fitflag)
 			{
 				gaussFitdata.push_back(cv::Point2f(j, rowMat.at<uchar>(j, 0)));
 			}
+			index = findCurveMaxValue(gaussFitdata, 2);
 
 			//if (findGaussianFitRawData(x, y, gaussFitdata))
-			{
-				cv::Mat A(3, 1, CV_32FC1, cv::Scalar(0));
-				gaussiantCurveFit(gaussFitdata, 2, A);
-				float a0 = A.at<float>(0, 0);
-				float a1 = A.at<float>(1, 0);
-				float a2 = A.at<float>(2, 0);
-                if (abs(a1) > 1e-6)
-                {
-                    float fParmB = -1 / (a2);
-                    float fParmC = -a1 / (2 * a2);
-                    float fParmA = std::exp(a0 + fParmC * fParmC / fParmB);
-                    // cout << fParmA << ',' << fParmC << ',' << fParmB << endl;
-                    vector<double> xfit, yfit;
-                    double dMaxYValue = -1.0;
-                    for (int i = 0; i < gaussFitdata.size(); i++)
-                    {
-                        double x = gaussFitdata[i].x;
-                        double y = 0;
-                        if (int(fParmA) != 0)
-                        {
-                            y = fParmA * exp(-pow(x - fParmC, 2) / fParmB);
-                        }
-                        if (y >= dMaxYValue)
-                        {
-                            dMaxYValue = y;
-                        }
-                        xfit.push_back(x);
-                        yfit.push_back(y);
-                    }
-                    int listLineFit = max_element(yfit.begin(), yfit.end()) - yfit.begin();
-                    index=xfit[listLineFit];
-                }
-				}
+			//{
+			//	cv::Mat A(3, 1, CV_32FC1, cv::Scalar(0));
+			//	gaussiantCurveFit(gaussFitdata, 2, A);
+			//	float a0 = A.at<float>(0, 0);
+			//	float a1 = A.at<float>(1, 0);
+			//	float a2 = A.at<float>(2, 0);
+   //             if (abs(a1) > 1e-6)
+   //             {
+   //                 float fParmB = -1 / (a2);
+   //                 float fParmC = -a1 / (2 * a2);
+   //                 float fParmA = std::exp(a0 + fParmC * fParmC / fParmB);
+   //                 // cout << fParmA << ',' << fParmC << ',' << fParmB << endl;
+   //                 vector<double> xfit, yfit;
+   //                 double dMaxYValue = -1.0;
+   //                 for (int i = 0; i < gaussFitdata.size(); i++)
+   //                 {
+   //                     double x = gaussFitdata[i].x;
+   //                     double y = 0;
+   //                     if (int(fParmA) != 0)
+   //                     {
+   //                         y = fParmA * exp(-pow(x - fParmC, 2) / fParmB);
+   //                     }
+   //                     if (y >= dMaxYValue)
+   //                     {
+   //                         dMaxYValue = y;
+   //                     }
+   //                     xfit.push_back(x);
+   //                     yfit.push_back(y);
+   //                 }
+   //                 int listLineFit = max_element(yfit.begin(), yfit.end()) - yfit.begin();
+   //                 index=xfit[listLineFit];
+   //             }
+			//	}
 			}
 			if (index >= 0)
 			{

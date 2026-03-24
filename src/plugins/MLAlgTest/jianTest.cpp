@@ -111,8 +111,16 @@ void rectangleDetection()
 
 
 }
+void crossTest()
+{
+	cv::Mat img = cv::imread("G:\\IMGS\\jiahe\\cross\\teset.png",-1);
+	CrossCenter cc;
+	cv::Point2f cen=cc.find_centerGaussian(img, false);
+
+}
 void main()
 {
+	crossTest();
 	//rectangleDetection();
 	fiducialTest();
 	//crosstest();
