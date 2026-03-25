@@ -330,12 +330,14 @@ FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinate(cv::Mat img, 
 		re.errMsg = "Input image is null";
 		return re;
 	}
-	cv::Mat roi1 = GetROIMat(img, rect0);
-	cv::Mat gray = convertToGrayImage(roi1);
+	//cv::Mat roi1 = GetROIMat(img, rect0);
+	cv::Mat gray = convertToGrayImage(img);
+	cv::Mat roi1 = GetROIMat(gray, rect0);
 	cv::Mat imgdraw = convertTo3Channels(gray);
-	cv::Rect rect = getFiducialRectByTemplate(gray, imgdraw);
-	cv::Mat roi = gray(rect).clone();
-	cv::Mat roidraw = GetROIMat(imgdraw, rect);
+	cv::Mat roi1draw = imgdraw(rect0);
+	cv::Rect rect = getFiducialRectByTemplate(roi1, roi1draw);
+	cv::Mat roi = roi1(rect).clone();
+	cv::Mat roidraw = GetROIMat(roi1draw, rect);
 	cv::Point2f loc = getFiducialCoordinateByContour(roi, roidraw);
 	if (loc.x < 1e-6 || loc.y < 1e-6)
 		loc = getFiducialCoordinateByHough(roi, roidraw);
@@ -345,7 +347,7 @@ FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinate(cv::Mat img, 
 		re.errMsg = "Fiducial Detection fail";
 		return re;
 	}
-	re.loc = loc+cv::Point2f(rect.tl());
+	re.loc = loc+cv::Point2f(rect.tl())+cv::Point2f(rect0.tl());
 	circle(imgdraw, re.loc, 5, Scalar(255, 0, 255), -1);
 	re.imgdraw = imgdraw;
 
@@ -686,8 +688,8 @@ cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByTemplate(cv
 cv::Rect MLImageDetection::FiducialDetect::getFiducialRectByTemplate(cv::Mat gray, cv::Mat& imgdraw)
 {
 	cv::Rect rect;
-	string templatePath = "./config/ALGConfig/templ.tif";
-	//string templatePath = "E:\\MLproject\\JiaHe\\src\\RealityQ+\\config\\ALGConfig\\templ.tif";
+	//string templatePath = "./config/ALGConfig/templ.tif";
+	string templatePath = "E:\\MLproject\\JiaHe\\src\\RealityQ+\\config\\ALGConfig\\templ.tif";
 	cv::Mat templ = cv::imread(templatePath, 0);
 	if (templ.empty())
 		return cv::Rect(0,0,-1,-1);
