@@ -516,6 +516,7 @@ GridRe MLImageDetection::MLGridDetect::getGridContour(cv::Mat img)
 	cv::Mat img8 = convertToUint8(img);
 	//img8 = rotateGridImg(img8);
 	cv::Mat img_draw = convertTo3Channels(img8);
+	cv::Mat imgdrawTest = img_draw.clone();
 	Ptr<CLAHE> clahe = createCLAHE(2.0, Size(20, 20));
 	//clahe->apply(img8, img8);
 	cv::Mat srcbinary;
@@ -566,7 +567,7 @@ GridRe MLImageDetection::MLGridDetect::getGridContour(cv::Mat img)
 
 	vector<cv::Point2f> ptsNew = pointsClusters(pts, m_pointsClusters / m_binNum);    // 角点值 聚类去重
 	drawPointsOnImage(img_draw, ptsNew, 2, Scalar(0, 255, 0));
-	cv::Mat indexMap1 = generatePointsIndexMap(ptsNew, m_update, m_xyClassification / m_binNum);  // 输出角点索引矩阵，可能存在缺失角点
+	cv::Mat indexMap1 = generatePointsIndexMap(ptsNew, imgdrawTest,m_update, m_xyClassification / m_binNum);  // 输出角点索引矩阵，可能存在缺失角点
 	MLCherkerboardDetect cb;
 	//indexMap = cb.updateIndexMapKL(indexMap1, ptsNew, corners);
 	indexMap = cb.updateIndexMapKLRectangle(indexMap1, ptsNew, corners);  // 用已知角点推算缺失角点 输出新的角点索引矩阵和新的角点值

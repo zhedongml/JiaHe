@@ -139,6 +139,7 @@ class ALGORITHM_API MLimagePublic
         cv::Mat generatePointsIndexMap1(vector<cv::Point2f>pts,bool extendFlag=false,double thresh=50);
        
         cv::Mat generatePointsIndexMap(vector<cv::Point2f> pts, bool extendFlag = false, double thresh = 50);
+        cv::Mat generatePointsIndexMap(vector<cv::Point2f> pts, cv::Mat& imgdraw, bool extendFlag = false, double thresh = 50);
 
         std::vector<cv::Point> convecHull(std::vector<cv::Point> &points); 
         double getDistancePL(cv::Point a, cv::Point b, cv::Point c);

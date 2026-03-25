@@ -50,6 +50,15 @@ processConfigInfo processConfig::GetProcessConfigInfo()
 		m_processConfigInfo.offsetRoatate.imagingFixedPos[dutName].y = it.value()["imaging"]["fixedPos"]["Y"].get<double>();
 		m_processConfigInfo.offsetRoatate.imagingFixedPos[dutName].z = it.value()["imaging"]["fixedPos"]["Z"].get<double>();
 
+		m_processConfigInfo.offsetRoatate.dutPreTiptilt[dutName].x = it.value()["dut"]["preTipiltAngle"]["dX"].get<double>();
+		m_processConfigInfo.offsetRoatate.dutPreTiptilt[dutName].y = it.value()["dut"]["preTipiltAngle"]["dY"].get<double>();
+
+
+		m_processConfigInfo.offsetRoatate.anticollision[dutName].dutPreTipiltDxMax = it.value()["Anticollision"]["dutPreTipiltDxMax"].get<double>();
+		m_processConfigInfo.offsetRoatate.anticollision[dutName].dutPreTipiltDxMin = it.value()["Anticollision"]["dutPreTipiltDxMin"].get<double>();
+		m_processConfigInfo.offsetRoatate.anticollision[dutName].dutPreTipiltDyMax = it.value()["Anticollision"]["dutPreTipiltDyMax"].get<double>();
+		m_processConfigInfo.offsetRoatate.anticollision[dutName].dutPreTipiltDyMin = it.value()["Anticollision"]["dutPreTipiltDyMin"].get<double>();
+
 		m_processConfigInfo.offsetRoatate.anticollision[dutName].dutMotorAngleMax = it.value()["Anticollision"]["dutMotorAngleMax"].get<double>();
 		m_processConfigInfo.offsetRoatate.anticollision[dutName].dutMotorAngleMin = it.value()["Anticollision"]["dutMotorAngleMin"].get<double>();
 		m_processConfigInfo.offsetRoatate.anticollision[dutName].inputAlignmentMotorPosXMax = it.value()["Anticollision"]["inputAlignmentMotorPosXMax"].get<double>();

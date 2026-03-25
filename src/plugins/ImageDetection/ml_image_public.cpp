@@ -1473,6 +1473,109 @@ cv::Mat MLImageDetection::MLimagePublic::generatePointsIndexMap(vector<cv::Point
 	return indexMap1;
 }
 
+cv::Mat MLImageDetection::MLimagePublic::generatePointsIndexMap(vector<cv::Point2f> ptsNew, cv::Mat& imgdraw, bool extendFlag, double thresh)
+{	
+		if (ptsNew.size() < 1)
+			return Mat();
+		vector<double> xVec, yVec;
+		for (int i = 0; i < ptsNew.size(); i++)
+		{
+			// circle(img_draw1, ptsNew[i], 10, Scalar(0, 0, 255), -1);
+			xVec.push_back(ptsNew[i].x);
+			yVec.push_back(ptsNew[i].y);
+			//  cout << ptsNew[i] << endl;
+		}
+		double minX = *min_element(xVec.begin(), xVec.end());
+		double maxX = *max_element(xVec.begin(), xVec.end());
+		double minY = *min_element(yVec.begin(), yVec.end());
+		double maxY = *max_element(yVec.begin(), yVec.end());
+		double xm = (minX + maxX) / 2.0;
+		double ym = (minY + maxY) / 2.0;
+		vector<double> xVec1, yVec1;
+		circle(imgdraw, cv::Point2f(xm, ym), 10, Scalar(0, 0, 255), -1);
+		for (int i = 0; i < ptsNew.size(); i++)
+		{
+			double suby = ptsNew[i].y - ym;
+			double subx = ptsNew[i].x - xm;
+			if (abs(suby) < thresh)
+			{
+				xVec1.push_back(ptsNew[i].x);
+				//circle(imgdraw, ptsNew[i], 10, Scalar(0, 0, 255), -1);
+
+			}
+			if (abs(subx) < thresh)
+			{
+				yVec1.push_back(ptsNew[i].y);
+				//circle(imgdraw, ptsNew[i], 10, Scalar(0, 0, 255), -1);
+
+			}
+		}
+		// x dian fenlei
+		vector<double> xUniq = unique(xVec, thresh); //棋盘格分割阈值
+		int xNum = xUniq.size();
+		// y dian fenlei
+		vector<double> yUniq = unique(yVec, thresh); // 棋盘格分割阈值
+		int yNum = yUniq.size();
+		double xW = 0;
+		for (int i = 0; i < xUniq.size() - 1; i++)
+		{
+			xW = xW + xUniq[i + 1] - xUniq[i];
+		}
+		xW = xW / (xUniq.size() - 1);
+		int num = 0;
+		cv::Size s;
+		if (extendFlag == true)
+		{
+			s = cv::Size(xNum + 2, yNum + 2);
+			num = 1;
+		}
+		else
+		{
+			s = cv::Size(xNum, yNum);
+		}
+		cv::Mat indexMap1(s, CV_16S, Scalar(-1));
+
+		for (int i = 0; i < yNum; i++)
+		{
+			for (int j = 0; j < xNum; j++)
+			{
+				cv::Point2f pt0;
+				if (j + num - 1 >= 0 & j + num - 1 < xNum - 1)
+				{
+					int indexLast = indexMap1.at<short>(i + num, j + num - 1);
+					if (indexLast >= 0)
+					{
+						pt0 = ptsNew[indexLast];
+						pt0.x = pt0.x + xW;
+					}
+					//else
+					//	pt0 = cv::Point2f(xUniq[j], yUniq[i]);
+
+				}
+				else if ((j + num == 0 || j + num == xNum - 1)&&(i+num-1>=0))
+				{
+					int indexLast = indexMap1.at<short>(i + num-1, j + num);
+					if (indexLast >= 0)
+					{
+						pt0.x = ptsNew[indexLast].x;
+						pt0.y = ptsNew[indexLast].y + xW;
+					}
+				}
+				else
+					pt0 = cv::Point2f(xUniq[j], yUniq[i]);
+
+				//circle(imgdraw, pt0, 10, Scalar(0,255, 0), -1);
+				int index = -1;
+				index = findIndex(ptsNew, pt0, thresh); // 50 棋盘格点直接距离阈值
+				indexMap1.at<short>(i + num, j + num) = index;
+				//circle(imgdraw, ptsNew[index], 10, Scalar(255, 0, 0), -1);
+
+				//ptsNew.erase(ptsNew.begin()+index);
+			}
+		}
+		return indexMap1;
+}
+
 // convexhull
 // return the cos value of the polar angle
 float calPolarAngle(const Point& base, const Point& another)

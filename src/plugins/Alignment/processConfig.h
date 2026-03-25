@@ -43,6 +43,10 @@ struct RangingPos
 
 struct Anticollision
 {
+	double dutPreTipiltDxMax;
+	double dutPreTipiltDxMin;
+	double dutPreTipiltDyMax;
+	double dutPreTipiltDyMin;
 	double dutMotorAngleMax;
 	double dutMotorAngleMin;
 	double inputAlignmentMotorPosXMax;
@@ -61,6 +65,7 @@ struct OffsetRoatate
 	//std::map<std::string, pos3D> initImagingMeasurePos;
 	std::map<std::string, pos2D> imagingTiptilt;
 	std::map<std::string, pos2D> imagingOffsetRelativeToMV;
+	std::map<std::string, pos2D> dutPreTiptilt;
 	std::map<std::string, double> eyeBoxCenterKeyenceValue;
 	std::map<std::string, pos3D> imagingFixedPos;
 	std::map<std::string, Anticollision> anticollision;
