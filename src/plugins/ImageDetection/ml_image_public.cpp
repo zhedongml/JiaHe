@@ -1510,11 +1510,20 @@ cv::Mat MLImageDetection::MLimagePublic::generatePointsIndexMap(vector<cv::Point
 
 			}
 		}
+		arma::vec xvec(xVec);
+		arma::vec yvec(yVec);
+		arma::vec subx = xvec - xm;
+		arma::vec suby = yvec - ym;
+		arma::vec sum = subx + suby;
+		arma::uword idx = arma::index_min(sum);
+		double xmin0 = xvec(idx);
+		double ymin0 = yvec(idx);
+
 		// x dian fenlei
-		vector<double> xUniq = unique(xVec, thresh); //棋盘格分割阈值
+		vector<double> xUniq = unique(xVec1, thresh); //棋盘格分割阈值
 		int xNum = xUniq.size();
 		// y dian fenlei
-		vector<double> yUniq = unique(yVec, thresh); // 棋盘格分割阈值
+		vector<double> yUniq = unique(yVec1, thresh); // 棋盘格分割阈值
 		int yNum = yUniq.size();
 		double xW = 0;
 		for (int i = 0; i < xUniq.size() - 1; i++)
@@ -1560,6 +1569,10 @@ cv::Mat MLImageDetection::MLimagePublic::generatePointsIndexMap(vector<cv::Point
 						pt0.x = ptsNew[indexLast].x;
 						pt0.y = ptsNew[indexLast].y + xW;
 					}
+				}
+				else if (i == 0 && j == 0)
+				{
+					pt0 = cv::Point2f(xmin0,ymin0);
 				}
 				else
 					pt0 = cv::Point2f(xUniq[j], yUniq[i]);
