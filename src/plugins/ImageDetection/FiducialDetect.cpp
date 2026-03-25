@@ -321,7 +321,7 @@ FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinateJiaDingRight(c
 
 
 }
-FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinate(cv::Mat img, cv::Rect rect)
+FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinate(cv::Mat img, cv::Rect rect0)
 {
 	FiducialRe re;
 	if (img.empty())
@@ -330,19 +330,23 @@ FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinate(cv::Mat img, 
 		re.errMsg = "Input image is null";
 		return re;
 	}
-	cv::Mat roi = GetROIMat(img, rect);
-	cv::Mat gray = convertToGrayImage(roi);
+	cv::Mat roi1 = GetROIMat(img, rect0);
+	cv::Mat gray = convertToGrayImage(roi1);
 	cv::Mat imgdraw = convertTo3Channels(gray);
-	cv::Point2f loc = getFiducialCoordinateByContour(gray, imgdraw);
+	cv::Rect rect = getFiducialRectByTemplate(gray, imgdraw);
+	cv::Mat roi = gray(rect).clone();
+	cv::Mat roidraw = GetROIMat(imgdraw, rect);
+	cv::Point2f loc = getFiducialCoordinateByContour(roi, roidraw);
 	if (loc.x < 1e-6 || loc.y < 1e-6)
-		loc = getFiducialCoordinateByHough(gray, imgdraw);
+		loc = getFiducialCoordinateByHough(roi, roidraw);
 	if (loc.x < 1e-6 || loc.y < 1e-6)
 	{
 		re.flag = false;
 		re.errMsg = "Fiducial Detection fail";
 		return re;
 	}
-	re.loc = loc;
+	re.loc = loc+cv::Point2f(rect.tl());
+	circle(imgdraw, re.loc, 5, Scalar(255, 0, 255), -1);
 	re.imgdraw = imgdraw;
 
 	return re;
@@ -566,7 +570,7 @@ cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByContour(cv:
 	cv::Mat grad;
 	cv::morphologyEx(blur, grad, MORPH_GRADIENT, element1);
 	cv::Mat imgth;
-	cv::threshold(grad, imgth, 0, 255, THRESH_OTSU);
+	cv::threshold(grad, imgth, 0, 255, THRESH_TRIANGLE);
 	cv::morphologyEx(imgth, imgth, MORPH_CLOSE, element);
 
 	NaiveRemoveNoise(imgth, 500);
@@ -594,7 +598,7 @@ cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByContour(cv:
 		cv::minEnclosingCircle(contours[i], c0, r);
 		d = 2 * CV_PI * r;
 		double roundness = (4 * CV_PI * A) / (d * d);
-		if (area > 1e4 & area < 5e4 && ratio>0.75 & ratio < 1.2 && roundness>0.6 && r > 50 && r < 70)
+		if (area > 1e3 & area < 1e4 && ratio>0.75 & ratio < 1.2 && roundness>0.6 && r > 30 && r < 50)
 		{
 			// cout << area << "," << roundness << endl;
 			drawContours(imgdraw, contours, i, Scalar(0, 255, 0), 1);
@@ -630,17 +634,19 @@ cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByContour(cv:
 }
 cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByHough(cv::Mat gray, cv::Mat& imgdraw)
 {
-
-	cv::Mat kernel = cv::getStructuringElement(MORPH_RECT, cv::Size(5, 5));
+	cv::Mat blur;
+	cv::GaussianBlur(gray, blur, Size(3, 3), 0, 0);
+	cv::Mat kernel = cv::getStructuringElement(MORPH_RECT, cv::Size(3, 3));
 	cv::Mat grad;
-	cv::morphologyEx(gray, grad, MORPH_GRADIENT, kernel);
+	cv::morphologyEx(blur, grad, MORPH_GRADIENT, kernel);
 	cv::Mat imgth;
-	cv::threshold(grad, imgth, 0, 255, THRESH_OTSU);
+	cv::threshold(grad, imgth, 0, 255, THRESH_TRIANGLE);
+	NaiveRemoveNoise(imgth, 500);
 	cv::Mat can;
 	cv::Canny(imgth, can, 30, 90);
 	cv::Point2f loc;
 	vector<cv::Vec3f>circles;
-	cv::HoughCircles(can, circles, HOUGH_GRADIENT, 2, 100, 30, 90, 50, 80);
+	cv::HoughCircles(can, circles, HOUGH_GRADIENT, 2, 100, 30, 90, 30, 50);
 	if (circles.size() < 0)
 		return cv::Point2f(0, 0);
 	double r;
@@ -648,7 +654,7 @@ cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByHough(cv::M
 	{
 		cv::Point2f c0(circles[i][0], circles[i][1]);
 		r = circles[i][2];
-		if (r > 50 & r < 70)
+		if (r > 30 & r < 50)
 		{
 			loc = c0;
 			circle(imgdraw, c0, r, Scalar(0, 0, 255), 1);
@@ -676,6 +682,26 @@ cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByTemplate(cv
 		return locVec[0];
 	else
 		return cv::Point2f(0, 0);
+}
+cv::Rect MLImageDetection::FiducialDetect::getFiducialRectByTemplate(cv::Mat gray, cv::Mat& imgdraw)
+{
+	cv::Rect rect;
+	string templatePath = "./config/ALGConfig/templ.tif";
+	//string templatePath = "E:\\MLproject\\JiaHe\\src\\RealityQ+\\config\\ALGConfig\\templ.tif";
+	cv::Mat templ = cv::imread(templatePath, 0);
+	if (templ.empty())
+		return cv::Rect(0,0,-1,-1);
+	cv::Mat img_result;
+	matchTemplate(gray, templ, img_result, TM_CCOEFF_NORMED);
+	cv::Point maxLoc;
+	double maxV;
+	cv::minMaxLoc(img_result, NULL, &maxV, NULL,&maxLoc);
+	if (maxV < 0.5)
+		return cv::Rect(0, 0, -1, -1);
+	rect = cv::Rect(maxLoc.x, maxLoc.y, templ.cols, templ.rows);
+	rect=updateRectByRatio(rect, 1.3);
+	cv::rectangle(imgdraw, rect, Scalar(0, 255, 0), 2);
+	return rect;
 }
 cv::Point2f MLImageDetection::FiducialDetect::getExactLocation(cv::Mat gray, cv::Point2f c0)
 {
