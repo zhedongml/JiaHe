@@ -82,6 +82,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -135,12 +136,15 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)src\plugins\ImageDetection;$(SolutionDir)src\extlib\MIPP;$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\extlib\color-util\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\extlib\libdmtx-0.7.2\src;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\mlcolorimeter\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)src\extlib\armadillo\lib_win64;$(SolutionDir)src\extlib\logplus\lib\x64\bin.Release_Unicode;$(SolutionDir)src\extlib\libcbdetect\lib\x64\Release;$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\Release;$(OPENCV_DIR)\x64\vc15\lib;$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>opencv_world451.lib;log4cplusU.lib;cbdetect.lib;libdmtx.lib;libopenblas.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
