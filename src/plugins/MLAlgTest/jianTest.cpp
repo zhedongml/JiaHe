@@ -61,15 +61,16 @@ void fiducialTest()
 		//cout << num + 1 << "=" << basename << endl;
 		string dir1 = dir + basename;
 		cv::Mat img = cv::imread(dir1, -1);
+		int row = img.rows;
+		int col = img.cols;
+		int len = 600;
+		cv::Rect rect(col / 2 - len / 2, row / 2 - len / 2, len, len);
 		FiducialDetect fd;
-		FiducialRe re = fd.getFiducialCoordinate(img);
+		FiducialRe re = fd.getFiducialCoordinate(img,rect);
 		string savepath = dir1 + "Re.png";
 		cv::imwrite(savepath, re.imgdraw);
 		cout << re.loc << endl;
-
 	}
-
-
 }
 void rectangleDetection()
 {
