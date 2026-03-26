@@ -813,10 +813,10 @@ QString IQTModel::calculateGridDenseMTF(QString color, QString mtcName, std::vec
 		rolloff.push_back(re.meanV);
 		rolloff.push_back(re.minH);
 		rolloff.push_back(re.minV);
-		rolloff.push_back(cv::mean(re.mtfMapH2)(0));
-		rolloff.push_back(cv::mean(re.mtfMapV2)(0));
-		rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapH2));
-		rolloff.push_back(denseMTF.calculateMatMin(re.mtfMapV2));
+		rolloff.push_back(re.meanH_freq2);
+		rolloff.push_back(re.meanV_freq2);
+		rolloff.push_back(re.minH_freq2);
+		rolloff.push_back(re.minV_freq2);
 
 		if (isDebug)
 		{
@@ -2351,8 +2351,17 @@ Result IQTModel::calulateOneMetricsByRecipe(QString metricName, QString eyeboxID
 						if (imgFileName.find("$eyeboxId$") != std::string::npos)
 						{
 							imgFileName = imgFileName.replace(imgFileName.find("$eyeboxId$"), 10, eyeboxId);
+							
+							 
 							IC(imgFileName);
 						}
+						MLUtils::TestState state = MetricsData::instance()->GetTestState();
+						imgFileName = imgFileName.substr(0, imgFileName.size() - 4);
+						if (state.IsDut)
+							imgFileName = imgFileName + "_ND0.tif";
+						else
+							imgFileName = imgFileName + "_ND3.tif";
+
 						if (!std::filesystem::exists(imgFileName))
 						{
 							LoggingWrapper::instance()->error("error filename:" + QString::fromStdString(imgFileName) + "is not exist");

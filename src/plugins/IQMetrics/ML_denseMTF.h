@@ -92,7 +92,7 @@ namespace MLIQMetrics
 		cv::Mat calculateMTFHor(cv::Mat mtfh);
 		cv::Mat calculateMTFVer(cv::Mat mtfv);
 		vector<double> getMTFRect(cv::Mat mtfMap,cv::Mat xloc, cv::Mat yloc, cv::Rect rect,vector<double>&mtfOutMask);
-
+		void calculateMtfValue(cv::Mat mtfmapH, double &min, double &mean);
 	private:
 		//PipeLine* mtfPipeline = new PipeLine();
 		cv::Mat m_maskH;

@@ -168,7 +168,7 @@ DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid(const cv::Mat imgRaw) //
 		center.x = cenmat.at<float>(0, 0)/4.0;
 		center.y = cenmat.at<float>(1, 0)/4.0;
 		cv::Point2f offset = center - gridRe.center;
-		gridRe.xLocMat = gridRe.xLocMat + offset.x-10;
+		gridRe.xLocMat = gridRe.xLocMat -offset.x;
 		gridRe.yLocMat = gridRe.yLocMat - offset.y;
 
 	}
@@ -196,15 +196,23 @@ DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid(const cv::Mat imgRaw) //
 	cv::Mat mtfmapV0 = calculateMTFVer(mtfmapV);
 	cv::Mat mtfmapV2= calculateMTFVer(m_mtfmapV2);
 
-	Scalar meanH = cv::mean(mtfmapH0); // 6.25频率的meanMTFH
-	Scalar meanV = cv::mean(mtfmapV0);
-	double minH, minV;
-	cv::minMaxLoc(mtfmapH0, &minH,NULL,NULL,NULL);
-	cv::minMaxLoc(mtfmapV0, &minV, NULL, NULL, NULL);
-	re.meanH = meanH(0);
-	re.meanV = meanV(0);
-	re.minH = minH;
-	re.minV = minV;
+	calculateMtfValue(mtfmapH0, re.minH,re.meanH);
+	calculateMtfValue(mtfmapV0, re.minV, re.meanV);
+	calculateMtfValue(mtfmapH2, re.minH_freq2, re.meanH_freq2);
+	calculateMtfValue(mtfmapV2, re.minH_freq2, re.meanH_freq2);
+
+	//cv::Mat mtfH0,mtfV0;
+	//mtfmapH0.copyTo(mtfH0, mtfmapH0 > 20);
+	//mtfmapV0.copyTo(mtfV0, mtfmapV0 > 20);
+	//Scalar meanH = cv::mean(mtfH0); // 6.25频率的meanMTFH
+	//Scalar meanV = cv::mean(mtfV0);
+	//double minH, minV;
+	//cv::minMaxLoc(mtfH0, &minH,NULL,NULL,NULL);
+	//cv::minMaxLoc(mtfV0, &minV, NULL, NULL, NULL);
+	//re.meanH = meanH(0);
+	//re.meanV = meanV(0);
+	//re.minH = minH;
+	//re.minV = minV;
 	if (m_isDisparityEyebox)
 	{
 		cv::Mat xloc0 = xlocMat(cv::Range(1, xlocMat.rows - 1), cv::Range(1, xlocMat.cols - 1));
@@ -762,4 +770,15 @@ vector<double> MLIQMetrics::MLdenseMTF::getMTFRect(cv::Mat mtfMap,cv::Mat xloc, 
 		}
 	}
 	return mtfInMask;
+}
+
+void MLIQMetrics::MLdenseMTF::calculateMtfValue(cv::Mat mtfmapH, double& min, double& mean)
+{
+	cv::Mat mtfH0;
+	mtfmapH.copyTo(mtfH0, mtfmapH > 20);
+	Scalar meanH = cv::mean(mtfH0); // 6.25频率的meanMTFH
+	double minH, minV;
+	cv::minMaxLoc(mtfH0, &minH, NULL, NULL, NULL);
+	mean = meanH(0);
+	min=minH;
 }
