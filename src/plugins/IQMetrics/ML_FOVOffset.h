@@ -51,8 +51,8 @@ class IQMETRICS_API MLFOVOffset:public MLImageDetection::MLimagePublic
       bool m_IsSLB = true;
       int m_binNum = 1;
       int m_crossROI = 1200;
-      int m_gridROI = 300;
-      bool accurateFlag = false;
+      int m_gridROI = 560;
+      bool accurateFlag = true;
       string m_color = "";
       bool m_updateSLB = true;
 };

@@ -797,6 +797,8 @@ QString IQTModel::calculateGridDenseMTF(QString color, QString mtcName, std::vec
 		//denseMTF.setCheckerDegree(0);
 		FOVTYPE type = getFOVType();
 		//denseMTF.setFOVType(type);
+		MLUtils::TestState state = MetricsData::instance()->GetTestState();
+		denseMTF.setIsSLB(!state.IsDut);
 		DenseMTFGridRe re = denseMTF.getDenseMTFGrid(img);
 		double duration = double(clock() - start) / CLOCKS_PER_SEC * 1000;
 		LoggingWrapper::instance()->debug(QString("%1 calculation takes time :%2 ms").arg(test_info).arg(QString::number(duration)));

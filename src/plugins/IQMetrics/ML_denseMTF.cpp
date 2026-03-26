@@ -141,18 +141,36 @@ DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid(const cv::Mat imgRaw) //
 	cv::resize(img8, imgResize, img.size() / reiseNum);   // img/4
 	grid.SetbinNum(reiseNum);
 	grid.SetChessboardUpdateFlag(false);
-	GridRe gridRe = grid.getGridContour(imgResize);
+	GridRe gridRe;
+	if(m_IsSLB)
+	gridRe = grid.getGridContour(imgResize);
 	std::shared_mutex rw_mutex;
 	std::mutex mtx;  
-	if (gridRe.xLocMat.size() == IQMetricsParameters::GridSize) // 检测到的角点横坐标矩阵和{15,19}
+	if (m_IsSLB)
 	{
-		mtx.lock();  
-		grid.writeGridInfoToCSV(gridRe);
-		mtx.unlock();
+		if (gridRe.xLocMat.size() == IQMetricsParameters::GridSize) // 检测到的角点横坐标矩阵和{15,19}
+		{
+			mtx.lock();
+			grid.writeGridInfoToCSV(gridRe);
+			mtx.unlock();
+		}
+		else
+		{
+			grid.readGridInfoFromCSV(gridRe);
+		}
 	}
 	else
 	{
 		grid.readGridInfoFromCSV(gridRe);
+		string filepath = "./config/ALGConfig/slbInfo/DUTCenter.csv";
+		cv::Mat cenmat = readCSVToMat(filepath);
+		cv::Point2f center;
+		center.x = cenmat.at<float>(0, 0)/4.0;
+		center.y = cenmat.at<float>(1, 0)/4.0;
+		cv::Point2f offset = center - gridRe.center;
+		gridRe.xLocMat = gridRe.xLocMat + offset.x-10;
+		gridRe.yLocMat = gridRe.yLocMat - offset.y;
+
 	}
 	if (gridRe.flag == false)
 	{

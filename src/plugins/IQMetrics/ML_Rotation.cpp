@@ -386,7 +386,7 @@ void MLIQMetrics::MLRotation::updateImgdraw(cv::Mat& imgdraw, cv::Point2f pts1, 
 
 void MLIQMetrics::MLRotation::updateRotationRe(double& rotation, bool isSLB)
 {
-	string path = "./config/AlgConfig/slbInfo/rotation_" + m_color + ".csv";
+	string path = "./config/ALGConfig/slbInfo/rotation_" + m_color + ".csv";
 	if (isSLB)
 	{
 		std::mutex mtx;

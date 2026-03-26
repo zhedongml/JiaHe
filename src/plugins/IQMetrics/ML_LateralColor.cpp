@@ -124,22 +124,22 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGrid(cv::Mat rImg, cv
 	{
 		std::mutex mtx;
 		mtx.lock();
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXRG.csv", subXRG);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYRG.csv", subYRG);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXRB.csv", subXRB);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYRB.csv", subYRB);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXGB.csv", subXGB);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYGB.csv", subXGB);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subXRG.csv", subXRG);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subYRG.csv", subYRG);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subXRB.csv", subXRB);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subYRB.csv", subYRB);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subXGB.csv", subXGB);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subYGB.csv", subXGB);
 		mtx.unlock();
 	}
 	else
 	{
-		cv::Mat subXRGSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXRG.csv");
-		cv::Mat subYRGSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYRG.csv");
-		cv::Mat subXRBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXRB.csv");
-		cv::Mat subYRBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYRB.csv");
-		cv::Mat subXGBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXGB.csv");
-		cv::Mat subYGBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYGB.csv");
+		cv::Mat subXRGSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subXRG.csv");
+		cv::Mat subYRGSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subYRG.csv");
+		cv::Mat subXRBSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subXRB.csv");
+		cv::Mat subYRBSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subYRB.csv");
+		cv::Mat subXGBSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subXGB.csv");
+		cv::Mat subYGBSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subYGB.csv");
 		subXRG = subXRG - subXRGSLB;
 		subYRG = subYRG - subYRGSLB;
 		subXRB = subXRB - subXRBSLB;
@@ -309,22 +309,22 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGridNew(cv::Mat rImg,
 	{
 		std::mutex mtx;
 		mtx.lock();
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXRG.csv", subXRG);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYRG.csv", subYRG);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXRB.csv", subXRB);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYRB.csv", subYRB);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subXGB.csv", subXGB);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subYGB.csv", subXGB);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subXRG.csv", subXRG);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subYRG.csv", subYRG);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subXRB.csv", subXRB);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subYRB.csv", subYRB);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subXGB.csv", subXGB);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subYGB.csv", subXGB);
 		mtx.unlock();
 	}
 	else
 	{
-		cv::Mat subXRGSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXRG.csv");
-		cv::Mat subYRGSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYRG.csv");
-		cv::Mat subXRBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXRB.csv");
-		cv::Mat subYRBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYRB.csv");
-		cv::Mat subXGBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subXGB.csv");
-		cv::Mat subYGBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subYGB.csv");
+		cv::Mat subXRGSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subXRG.csv");
+		cv::Mat subYRGSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subYRG.csv");
+		cv::Mat subXRBSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subXRB.csv");
+		cv::Mat subYRBSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subYRB.csv");
+		cv::Mat subXGBSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subXGB.csv");
+		cv::Mat subYGBSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subYGB.csv");
 
 		int row = subXRGSLB.rows;
 		int col = subXRGSLB.cols;
@@ -522,13 +522,21 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGridCenter(const cv::
 	cv::resize(bImg8, imgResizeB, bImg8.size() / resizeNum);
 
 	MLGridDetect grid;
-	grid.SetbinNum(resizeNum);
-	GridRe gridR = grid.getGridCenter(imgResizeR);
+	grid.SetbinNum(resizeNum);;
+	GridRe gridR;
+	if(m_IsSLB)
+	 gridR = grid.getGridCenter(imgResizeR);
 	//GridRe gridR = grid.getGridContour(imgResizeR);
-
-	if (gridR.flag)
+	if (m_IsSLB)
 	{
-		writeLateralGridCenter(gridR);
+		if (gridR.flag)
+		{
+			writeLateralGridCenter(gridR);
+		}
+		else
+		{
+			readLateralGridCenter(gridR);
+		}
 	}
 	else
 	{
@@ -580,16 +588,16 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGridCenter(const cv::
 	{
 		std::mutex mtx;
 		mtx.lock();
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subRG.csv", subRG);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subRB.csv", subRB);
-		writeMatTOCSV("./config/AlgConfig/slbInfo/lateralColor_subGB.csv", subGB);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subRG.csv", subRG);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subRB.csv", subRB);
+		writeMatTOCSV("./config/ALGConfig/slbInfo/lateralColor_subGB.csv", subGB);
 		mtx.unlock();
 	}
 	else
 	{
-		cv::Mat subRGSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subRG.csv");
-		cv::Mat subRBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subRB.csv");
-		cv::Mat subGBSLB = readCSVToMat("./config/AlgConfig/slbInfo/lateralColor_subGB.csv");
+		cv::Mat subRGSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subRG.csv");
+		cv::Mat subRBSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subRB.csv");
+		cv::Mat subGBSLB = readCSVToMat("./config/ALGConfig/slbInfo/lateralColor_subGB.csv");
 		subRG = subRG - subRGSLB;
 		subRB = subRB - subRBSLB;
 		subGB = subGB - subGBSLB;
@@ -639,7 +647,7 @@ void MLIQMetrics::MLLateralColor::updateImgdraw(cv::Point2f cen, cv::Mat& imgdra
 
 void MLIQMetrics::MLLateralColor::writeLateralGridCenter(GridRe re)
 {
-	string filepath = "./config/AlgConfig/slbInfo/LateralCen.csv";
+	string filepath = "./config/ALGConfig/slbInfo/LateralCen.csv";
 	vector<double>cenVec;
 	cenVec.push_back(re.center.x);
 	cenVec.push_back(re.center.y);
@@ -652,7 +660,7 @@ void MLIQMetrics::MLLateralColor::writeLateralGridCenter(GridRe re)
 
 void MLIQMetrics::MLLateralColor::readLateralGridCenter(GridRe& re)
 {
-	string filepath = "./config/AlgConfig/slbInfo/LateralCen.csv";
+	string filepath = "./config/ALGConfig/slbInfo/LateralCen.csv";
 	cv::Mat cenmat = readCSVToMat(filepath);
 	re.center.x = cenmat.at<float>(0, 0);
 	re.center.y = cenmat.at<float>(1, 0);

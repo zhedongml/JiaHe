@@ -102,8 +102,8 @@ namespace MLIQMetrics
 		cv::Point2f m_center;
 		int m_binNum = 1;
 		int m_len = 6000;
-		string m_filepathx = "./config/AlgConfig/slbInfo/gridXLocMat.csv";
-		string m_filepathy = "./config/AlgConfig/slbInfo/gridYLocMat.csv";
+		string m_filepathx = "./config/ALGConfig/slbInfo/gridXLocMat.csv";
+		string m_filepathy = "./config/ALGConfig/slbInfo/gridYLocMat.csv";
 		bool m_IsSLB = true;
 		bool m_isDisparityEyebox = false;
 	};
