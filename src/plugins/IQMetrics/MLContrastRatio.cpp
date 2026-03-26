@@ -159,8 +159,8 @@ void MLIQMetrics::MLContrastRatio::updateImgdraw(vector<cv::Rect> rectVec, vecto
 		cv::rectangle(imgdraw, rectVec[i], cv::Scalar(0, 0, 255), 5);
 		string strP = numToString(posV[i]);//to_string(posV[i]);
 		cv::Point posP = rectVec[i].tl() - cv::Point(60 / m_binNum, 0);
-		putText(imgdraw, strP, posP, FONT_HERSHEY_PLAIN, 20 / m_binNum,
-			Scalar(0, 255, 0), 20 / m_binNum);
+		//putText(imgdraw, strP, posP, FONT_HERSHEY_PLAIN, 20 / m_binNum,
+			//Scalar(0, 255, 0), 20 / m_binNum);
 	}
 }
 
@@ -645,7 +645,7 @@ SingleCheckerCRRe MLIQMetrics::MLContrastRatio::getSingleCheckerCR(cv::Mat img)
 			cv::Size boardSize = checkerRe.boardSize - cv::Size(1, 1);
 			cv::Mat graylevelmat = updateMatValue(posValue, boardSize);
 			updateImgdraw(checkerRe.rectVec, posValue, img_draw);
-			putTextOnImage(img_draw, "CR:" + numToString(cr), cv::Point2f(200, 400), 24 / binNum);
+			//putTextOnImage(img_draw, "CR:" + numToString(cr), cv::Point2f(200, 400), 24 / binNum);
 			re.grayMat = graylevelmat;
 			//re.ROIcr = crVecROI;
 			re.cr = cr;

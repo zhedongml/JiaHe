@@ -363,8 +363,8 @@ QString IQTModel::calculateGridDistortion(QString color, QString mtcName, std::v
 			cv::Mat outImg = re.imgdraw;
 			if (outImg.data != NULL)
 				imwrite((qTempPath + "\\" + mtcName + "_" + color + "_eb" + id + ".jpg").toStdString(), outImg);
-			string csvNameX = (qTempPath + "\\" + mtcName + "XPosition_" + color + "_eb" + id + ".csv").toStdString();
-			string csvNameY = (qTempPath + "\\" + mtcName + "YPosition_" + color + "_eb" + id + ".csv").toStdString();
+			//string csvNameX = (qTempPath + "\\" + mtcName + "XPosition_" + color + "_eb" + id + ".csv").toStdString();
+			//string csvNameY = (qTempPath + "\\" + mtcName + "YPosition_" + color + "_eb" + id + ".csv").toStdString();
 			//writeMatTOCSV(csvNameX, re.xPos);
 			//writeMatTOCSV(csvNameY, re.yPos);
 		}
@@ -1169,21 +1169,21 @@ QString IQTModel::calculateLateralColor(QString color, QString mtcName, std::vec
 			substrvec.push_back("subYRBArcmin");
 			substrvec.push_back("subXGBArcmin");
 			substrvec.push_back("subYGBArcmin");
-			string csvName = (qTempPath + "\\" + mtcName + "_eb" + id + "subMapAcmin.csv").toStdString();
+			//string csvName = (qTempPath + "\\" + mtcName + "_eb" + id + "subMapAcmin.csv").toStdString();
 			//writeMatTOCSV(csvName, submat, substrvec);
 
-			string csvNameXR = (qTempPath + "\\" + mtcName + "_eb" + id + "locxR.csv").toStdString();
-			string csvNameYR = (qTempPath + "\\" + mtcName + "_eb" + id + "locyR.csv").toStdString();
+			//string csvNameXR = (qTempPath + "\\" + mtcName + "_eb" + id + "locxR.csv").toStdString();
+			//string csvNameYR = (qTempPath + "\\" + mtcName + "_eb" + id + "locyR.csv").toStdString();
 			//writeMatTOCSV(csvNameXR, re.locxR);
 			//writeMatTOCSV(csvNameYR, re.locyR);
 
-			string csvNameXG = (qTempPath + "\\" + mtcName + "_eb" + id + "locxG.csv").toStdString();
-			string csvNameYG = (qTempPath + "\\" + mtcName + "_eb" + id + "locyG.csv").toStdString();
+			//string csvNameXG = (qTempPath + "\\" + mtcName + "_eb" + id + "locxG.csv").toStdString();
+			//string csvNameYG = (qTempPath + "\\" + mtcName + "_eb" + id + "locyG.csv").toStdString();
 			//writeMatTOCSV(csvNameXG, re.locxG);
 			//writeMatTOCSV(csvNameYG, re.locyG);
 
-			string csvNameXB = (qTempPath + "\\" + mtcName + "_eb" + id + "locxB.csv").toStdString();
-			string csvNameYB = (qTempPath + "\\" + mtcName + "_eb" + id + "locyB.csv").toStdString();
+			//string csvNameXB = (qTempPath + "\\" + mtcName + "_eb" + id + "locxB.csv").toStdString();
+			//string csvNameYB = (qTempPath + "\\" + mtcName + "_eb" + id + "locyB.csv").toStdString();
 			//writeMatTOCSV(csvNameXB, re.locxB);
 			//writeMatTOCSV(csvNameYB, re.locyB);
 
