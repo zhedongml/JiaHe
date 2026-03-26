@@ -102,6 +102,7 @@ namespace IQT
 		static IQT4Recipe* self;
 		std::string m_configPath = "./config/Algorithmconfig.json";
 		Json settingJsonObj;
+		QStringList m_IQImageDirList;
 	};
 
 	inline void RegisterNodes(BT::BehaviorTreeFactory& factory)

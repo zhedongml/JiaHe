@@ -133,6 +133,8 @@ public:
     //Fix Exposure
     Result GetFixExposureTime(std::string name, std::string eyebox, double& time);
     Result UpdateFixExposureTimeConfig(const QString& inputFilePath, bool isReplace = true);
+    Result UpdateFixExposureTimeConfig(const QStringList& inputFilePaths, bool isReplace = true);
+
     bool ReadFixExposureTime();
     QString AnalyzeImageName(QString imageNameRule, QString nd, QString lightSource, QString imageType, QString eyeboxID, QString colorFilter);
     Result ClearFixExposureTimeConfig();
