@@ -1,4 +1,4 @@
-#include "MLColorimeterMode.h"
+﻿#include "MLColorimeterMode.h"
 #include "MLColorimeterHelp.h"
 #include "IQMetrics/ML_CrossMTF.h"
 #include "ml_multiCrossHairDetection.h"
@@ -1450,6 +1450,96 @@ Result MLColorimeterMode::UpdateFixExposureTimeConfig(const QString& inputFilePa
     return Result();
 }
 
+Result MLColorimeterMode::UpdateFixExposureTimeConfig(const QStringList& inputFilePaths, bool isReplace)
+{
+    if (inputFilePaths.isEmpty())
+        return Result(false,
+            "MLColorimeterMode: IQ metaData.csv inputFilePaths list is empty!");
+
+    // 如果 replace，先删除旧文件
+    if (isReplace) {
+        if (fs::exists(FIXEXPOSURE_FILE)) {
+            fs::remove(FIXEXPOSURE_FILE);
+        }
+    }
+
+    QFile outputFile(QString::fromStdString(FIXEXPOSURE_FILE));
+
+    if (!outputFile.open(QIODevice::Append | QIODevice::Text)) {
+        LoggingWrapper::instance()->error(
+            "MLColorimeterMode: cannot open ET.csv file "
+            + QString::fromStdString(FIXEXPOSURE_FILE));
+
+        return Result(false,
+            "MLColorimeterMode: cannot open ET.csv file "
+            + FIXEXPOSURE_FILE);
+    }
+
+    QTextStream out(&outputFile);
+
+    bool outputExists =
+        outputFile.exists() &&
+        outputFile.size() > 0;
+
+    bool firstHeaderWritten = outputExists;
+
+    // ⭐ 遍历所有路径
+    for (const QString& inputFilePath : inputFilePaths)
+    {
+        QString inputPath =
+            inputFilePath + "\\metaData.csv";
+
+        QFile inputFile(inputPath);
+
+        if (!inputFile.open(
+            QIODevice::ReadOnly |
+            QIODevice::Text))
+        {
+            LoggingWrapper::instance()->error(
+                "MLColorimeterMode: cannot open metaData.csv file "
+                + inputPath);
+
+            return Result(false,
+                "MLColorimeterMode: cannot open metaData.csv file "
+                + inputPath.toStdString());
+        }
+
+        QTextStream in(&inputFile);
+
+        bool firstLine = true;
+
+        while (!in.atEnd()) {
+
+            QString line = in.readLine();
+
+            if (line.isEmpty())
+                continue;
+
+            // ⭐ 只写一次 header
+            if (firstLine && firstHeaderWritten) {
+                firstLine = false;
+                continue;
+            }
+
+            firstLine = false;
+
+            QStringList parts =
+                line.split(',');
+
+            out << parts.join(',') << "\n";
+        }
+
+        inputFile.close();
+
+        // 第一个文件写完后，header 已写
+        firstHeaderWritten = true;
+    }
+
+    outputFile.close();
+
+    return Result();
+}
+
 bool MLColorimeterMode::ReadFixExposureTime()
 {
 	try {
@@ -1481,7 +1571,7 @@ bool MLColorimeterMode::ReadFixExposureTime()
 			if (values.size() > 1) {
 				std::string imageName = values[0];
                 std::string eyebox = values[1];
-				double exposureTime = std::stod(values[5]);
+				double exposureTime = std::stod(values[6]);
                 std::string str = "#EyeboxID#";
                 size_t pos = imageName.find(str);
                 if (pos != std::string::npos) {

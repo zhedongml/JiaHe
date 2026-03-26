@@ -1198,6 +1198,8 @@ NodeStatus IQT4Recipe::IQ_Metrics_CreateDutResultFile(BT::TreeNode& node)
 
 	MetricsData::instance()->setCsvPath(csv_path, all_csv_path);
 	MetricsData::instance()->setDutTestSeqName(dut_seq);
+	m_IQImageDirList.clear();
+
 	//MetricsData::instance()->setMTFImgsDir(iq_dir);
 	bool ret = MLColorimeterMode::Instance()->isDirExist(dut_folder);
 	if (!ret)
@@ -1244,6 +1246,7 @@ NodeStatus IQT4Recipe::IQ_Metrics_CreateEyeboxResultFile(BT::TreeNode& node)
 	QString iq_dir = root_dir + QDir::separator() + "IQ" + QDir::separator();
 
 	MetricsData::instance()->setMTFImgsDir(iq_dir);
+	m_IQImageDirList.push_back(iq_dir);
 
 	bool ret = MLColorimeterMode::Instance()->isDirExist(iq_dir);
 	if (!ret)
@@ -1557,7 +1560,7 @@ NodeStatus IQT4Recipe::IQ_DeleteFixExposureTime()
 
 NodeStatus IQT4Recipe::IQ_UpdateFixExposureTimeConfig()
 {
-	Result ret = MLColorimeterMode::Instance()->UpdateFixExposureTimeConfig(MetricsData::instance()->getMTFImgsDir());
+	Result ret = MLColorimeterMode::Instance()->UpdateFixExposureTimeConfig(m_IQImageDirList/*MetricsData::instance()->getMTFImgsDir()*/);
 	if (!ret.success)
 	{
 		QString message = QString::fromStdString("Recipe Node [ IQ_UpdateFixExposureTimeConfig ] run error, " + ret.errorMsg);
