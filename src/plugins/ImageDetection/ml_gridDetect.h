@@ -56,7 +56,7 @@ private:
   private:
     int m_binNum=1;
     int m_pointsClusters = 150;
-    int m_xyClassification = 200;
+    int m_xyClassification = 240;
     int m_gridWidth = 290;
     int m_len = 420;
     bool m_update = false;

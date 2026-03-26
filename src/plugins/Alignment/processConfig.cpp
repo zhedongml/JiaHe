@@ -79,6 +79,13 @@ processConfigInfo processConfig::GetProcessConfigInfo()
 		m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[dutName].adjustPos.x = it.value()["DutParallelAdjustment"]["X"].get<double>();
 		m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[dutName].adjustPos.y = it.value()["DutParallelAdjustment"]["Y"].get<double>();
 		m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[dutName].adjustPos.z = it.value()["DutParallelAdjustment"]["Z"].get<double>();
+
+		m_processConfigInfo.offsetRoatate.alignOffset[dutName].x = it.value()["AlignOffset"]["dx"].get<double>();
+		m_processConfigInfo.offsetRoatate.alignOffset[dutName].y = it.value()["AlignOffset"]["dy"].get<double>();
+
+		m_processConfigInfo.offsetRoatate.craftOffset[dutName].x = it.value()["CraftOffset"]["dx"].get<double>();
+		m_processConfigInfo.offsetRoatate.craftOffset[dutName].y = it.value()["CraftOffset"]["dy"].get<double>();
+
 	}
 
 	return m_processConfigInfo;

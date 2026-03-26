@@ -300,10 +300,10 @@ namespace AAProcess
 			return ret.errorMsg;
 		}
 
-		ret = OrientalMotorControl::getInstance()->MoveByDegreeAsync(OrientalAxle::DZ, targetPos.z);
-		if (!ret.success) {
-			return ret.errorMsg;
-		}
+		//ret = OrientalMotorControl::getInstance()->MoveByDegreeAsync(OrientalAxle::DZ, targetPos.z);
+		//if (!ret.success) {
+		//	return ret.errorMsg;
+		//}
 
 		return std::string();
 	}

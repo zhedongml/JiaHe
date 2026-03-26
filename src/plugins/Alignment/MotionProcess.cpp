@@ -247,10 +247,80 @@ namespace AAProcess
 	std::string MotionProcess::LoadDUT()
 	{
 		PrintLog(LogType::Normal, "[LoadDUT Start]");
-
+		if (currentDutName == "")
+		{
+			return "Pleasure check DUT Type!";
+		}
 		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ, ModuleName::ImagingModuleXYZ);
 		if (msg != "")
 			return msg;
+
+		//----------- adjust safe ---------------//
+
+		msg = LoadSLB();
+		if (msg != "")
+			return msg;
+
+		//----------- adjust DUT tiptilt ---------------//
+
+		double projectionTiptiltX = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].x;
+		double projectionTiptiltY = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].y;
+		Motion2DModel::getInstance(motion2DType::ACS2DPro)->Motion2DMoveAbsAsync(projectionTiptiltX, projectionTiptiltY);
+		/*while (CheckModuleIsMoving(ModuleName::ProjectionDxDy))
+		{
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
+		PrintLog(LogType::Normal, "projection module adjust tiptilt end.");
+		PrintModulePosition(ModuleName::ProjectionDxDy);*/
+
+		//adjust imaging module tiptilt
+		double imgingTiptiltX = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].x;
+		double imgingTiptiltY = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].y;
+		Motion2DModel::getInstance(motion2DType::ACS2DCameraTilt)->Motion2DMoveAbsAsync(imgingTiptiltX, imgingTiptiltY);
+
+		while (CheckModuleIsMoving(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy))
+		{
+			if (m_isStopTreeSystem.load())
+			{
+				StopModuleMove(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy);
+				m_isStopTreeSystem.store(false);
+				return "Operation is force stopped by user.";
+			}
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
+		PrintLog(LogType::Normal, "projection module adjust tiptilt end.");
+		PrintLog(LogType::Normal, "imaging module adjust tiptilt end.");
+
+		PrintModulePosition(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy);
+
+
+		//----------- adjust Fixpos ---------------//
+
+		double imagingFixedPosX = m_processConfigInfo.offsetRoatate.imagingFixedPos[currentDutName].x;
+		double imagingFixedPosY = m_processConfigInfo.offsetRoatate.imagingFixedPos[currentDutName].y;
+		double imagingFixedPosZ = m_processConfigInfo.offsetRoatate.imagingFixedPos[currentDutName].z;
+		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(imagingFixedPosX,
+			imagingFixedPosY, imagingFixedPosZ), withCamera);
+		if (!msg.empty())
+			return msg;
+		while (CheckModuleIsMoving(ModuleName::ImagingModuleXYZ))
+		{
+			if (m_isStopTreeSystem.load())
+			{
+				StopModuleMove(ModuleName::ImagingModuleXYZ);
+				m_isStopTreeSystem.store(false);
+				return "Operation is force stopped by user.";
+			}
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
+
+		PrintLog(LogType::Normal, "imaging module loading end.");
+		PrintModulePosition(ModuleName::ImagingModuleXYZ);
+
+		//----------- adjust DUT load pos ---------------//
 
 		double loadx = 0.0;
 		double loady = 0.0;
@@ -308,61 +378,6 @@ namespace AAProcess
 
 		PrintLog(LogType::Normal, "dut motor loading end.");
 		PrintModulePosition(ModuleName::DutModuleXYZ);
-
-		double imagingFixedPosX = m_processConfigInfo.offsetRoatate.imagingFixedPos[currentDutName].x;
-		double imagingFixedPosY = m_processConfigInfo.offsetRoatate.imagingFixedPos[currentDutName].y;
-		double imagingFixedPosZ = m_processConfigInfo.offsetRoatate.imagingFixedPos[currentDutName].z;
-		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(imagingFixedPosX,
-			imagingFixedPosY, imagingFixedPosZ), withCamera);
-		if (!msg.empty())
-			return msg;
-		while (CheckModuleIsMoving(ModuleName::ImagingModuleXYZ))
-		{
-			if (m_isStopTreeSystem.load())
-			{
-				StopModuleMove(ModuleName::ImagingModuleXYZ);
-				m_isStopTreeSystem.store(false);
-				return "Operation is force stopped by user.";
-			}
-			QCoreApplication::processEvents();
-			_sleep(100);
-		}
-
-		PrintLog(LogType::Normal, "imaging module loading end.");
-		PrintModulePosition(ModuleName::ImagingModuleXYZ);
-
-		//adjust projection module tiptilt
-		double projectionTiptiltX = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].x;
-		double projectionTiptiltY = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].y;
-		Motion2DModel::getInstance(motion2DType::ACS2DPro)->Motion2DMoveAbsAsync(projectionTiptiltX, projectionTiptiltY);
-		/*while (CheckModuleIsMoving(ModuleName::ProjectionDxDy))
-		{
-			QCoreApplication::processEvents();
-			_sleep(100);
-		}
-		PrintLog(LogType::Normal, "projection module adjust tiptilt end.");
-		PrintModulePosition(ModuleName::ProjectionDxDy);*/
-
-		//adjust imaging module tiptilt
-		double imgingTiptiltX = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].x;
-		double imgingTiptiltY = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].y;
-		Motion2DModel::getInstance(motion2DType::ACS2DCameraTilt)->Motion2DMoveAbsAsync(imgingTiptiltX, imgingTiptiltY);
-
-		while (CheckModuleIsMoving(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy))
-		{
-			if (m_isStopTreeSystem.load())
-			{
-				StopModuleMove(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy);
-				m_isStopTreeSystem.store(false);
-				return "Operation is force stopped by user.";
-			}
-			QCoreApplication::processEvents();
-			_sleep(100);
-		}
-		PrintLog(LogType::Normal, "projection module adjust tiptilt end.");
-		PrintLog(LogType::Normal, "imaging module adjust tiptilt end.");
-
-		PrintModulePosition(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy);
 
 		return "";
 	}
@@ -437,30 +452,13 @@ namespace AAProcess
 	std::string MotionProcess::DutParallelAdjustment()
 	{
 		PrintLog(LogType::Normal, "[DutParallelAdjustment Start]");
-
+		if (currentDutName == "")
+		{
+			return "Pleasure check DUT Type!";
+		}
 		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ, ModuleName::DutModuleDxDyDz, ModuleName::Collimator,
 			ModuleName::PLC);
 		if (msg != "")
-			return msg;
-
-		cv::Point3f parallelAdjust;
-
-		if (currentWaferName != "")
-		{
-			parallelAdjust.x = m_waferConfigInfoMap[currentWaferName].dutParallelAdjustmentPos_map[wafer_dut_id].x;
-			parallelAdjust.y = m_waferConfigInfoMap[currentWaferName].dutParallelAdjustmentPos_map[wafer_dut_id].y;
-			parallelAdjust.z = m_waferConfigInfoMap[currentWaferName].dutParallelAdjustmentPos_map[wafer_dut_id].z;
-		}
-		else
-		{
-			parallelAdjust.x = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.x;
-			parallelAdjust.y = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.y;
-			parallelAdjust.z = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.z;
-		}
-		
-
-		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(parallelAdjust.x, parallelAdjust.y, parallelAdjust.z), withDUT);
-		if (!msg.empty())
 			return msg;
 
 		//-------- pre dut tilt ----------//
@@ -511,6 +509,28 @@ namespace AAProcess
 		}
 		Sleep(500);
 		//-------- pre dut tilt end ----------//
+
+
+		cv::Point3f parallelAdjust;
+
+		if (currentWaferName != "")
+		{
+			parallelAdjust.x = m_waferConfigInfoMap[currentWaferName].dutParallelAdjustmentPos_map[wafer_dut_id].x;
+			parallelAdjust.y = m_waferConfigInfoMap[currentWaferName].dutParallelAdjustmentPos_map[wafer_dut_id].y;
+			parallelAdjust.z = m_waferConfigInfoMap[currentWaferName].dutParallelAdjustmentPos_map[wafer_dut_id].z;
+		}
+		else
+		{
+			parallelAdjust.x = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.x;
+			parallelAdjust.y = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.y;
+			parallelAdjust.z = m_processConfigInfo.offsetRoatate.parallelAdjustmentPos[currentDutName].adjustPos.z;
+		}
+		
+
+		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(parallelAdjust.x, parallelAdjust.y, parallelAdjust.z), withDUT);
+		if (!msg.empty())
+			return msg;
+
 
 		Result res = PLCController::instance()->collimatorLight(true);
 		if (!res.success)
@@ -583,7 +603,10 @@ namespace AAProcess
 	std::string MotionProcess::FindFiducial()
 	{
 		PrintLog(LogType::Normal, "[FindFiducial Start]");
-
+		if (currentDutName == "")
+		{
+			return "Pleasure check DUT Type!";
+		}
 		PrintLog(LogType::Normal, "Starting the first find fiducial.");
 		std::string msg = FindFiducialToCalculate();
 		if (msg != "")
@@ -663,6 +686,7 @@ namespace AAProcess
 		//	fiducialAcs.y * 1000, fiducialAcs.z * 1000);
 		//if (!ret.success)
 		//	return ret.errorMsg;
+		Result ret;
 		std::string res = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(fiducialAcs.x, fiducialAcs.y, fiducialAcs.z), withDUT);
 		if (!res.empty())
 			return res;
@@ -680,9 +704,9 @@ namespace AAProcess
 		PrintModulePosition(ModuleName::DutModuleXYZ);
 		Sleep(1000);
 		PrintLog(LogType::Normal, "Obtain fiducial image");
-		Result ret = PLCController::instance()->coaxialLight2(true);
-		if (!ret.success)
-			return ret.errorMsg;
+		//Result ret = PLCController::instance()->coaxialLight2(true);
+		//if (!ret.success)
+		//	return ret.errorMsg;
 		if (m_is_auto_exposure)
 		{
 			CameraModel::GetInstance()->SetMLExposureAuto();
@@ -694,9 +718,9 @@ namespace AAProcess
 		if (!ret.success)
 			return ret.errorMsg;
 		cv::Mat imgFid = CameraModel::GetInstance()->GetImage();
-		ret = PLCController::instance()->coaxialLight2(false);
+		/*ret = PLCController::instance()->coaxialLight2(false);
 		if (!ret.success)
-			PrintLog(LogType::Warn, "Coaxial light close error in auto finding fiducials!");
+			PrintLog(LogType::Warn, "Coaxial light close error in auto finding fiducials!");*/
 		ret = CameraModel::GetInstance()->StartGrabbing();
 		if (!ret.success)
 			return ret.errorMsg;
@@ -720,6 +744,7 @@ namespace AAProcess
 		//	fiducialAcs.y * 1000, fiducialAcs.z * 1000);
 		//if (!ret.success)
 		//	return ret.errorMsg;
+		Result ret;
 		std::string res = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(fiducialAcs.x, fiducialAcs.y, fiducialAcs.z), withDUT);
 		if (!res.empty())
 			return res;
@@ -761,26 +786,36 @@ namespace AAProcess
 		center = m_fiducialPixel;
 #endif
 		PrintLog(LogType::Normal, "Obtain fiducial image");
-		Result ret = PLCController::instance()->coaxialLight2(true);
-		if (!ret.success)
-			return ret.errorMsg;
+		//ret = PLCController::instance()->coaxialLight2(true);
+		//if (!ret.success)
+		//	return ret.errorMsg;
 		if (m_is_auto_exposure)
 		{
 			CameraModel::GetInstance()->SetMLExposureAuto();
 		}
-		ret = CameraModel::GetInstance()->StopGrabbing();
-		if (!ret.success)
-			return ret.errorMsg;
-		ret = CameraModel::GetInstance()->GrabOne();
-		if (!ret.success)
-			return ret.errorMsg;
+		Sleep(200);
+		//PrintLog(LogType::Normal, "---- Start StopGrabbing ----");
+		//ret = CameraModel::GetInstance()->StopGrabbing();
+		//if (!ret.success)
+		//	return ret.errorMsg;
+		//PrintLog(LogType::Normal, "---- StopGrabbing finish ----");
+
+		//PrintLog(LogType::Normal, "---- Start GrabOne ----");
+		//ret = CameraModel::GetInstance()->GrabOne();
+		//if (!ret.success)
+		//	return ret.errorMsg;
+		//PrintLog(LogType::Normal, "---- GrabOne finish----");
+
 		cv::Mat imgFid = CameraModel::GetInstance()->GetImage();
-		ret = PLCController::instance()->coaxialLight2(false);
-		if (!ret.success)
-			PrintLog(LogType::Warn, "Coaxial light close error in manual finding fiducials!");
-		ret = CameraModel::GetInstance()->StartGrabbing();
-		if (!ret.success)
-			return ret.errorMsg;
+		//ret = PLCController::instance()->coaxialLight2(false);
+		//if (!ret.success)
+		//	PrintLog(LogType::Warn, "Coaxial light close error in manual finding fiducials!");
+
+		//PrintLog(LogType::Normal, "---- Start Grabbing ----");
+		//ret = CameraModel::GetInstance()->StartGrabbing();
+		//if (!ret.success)
+		//	return ret.errorMsg;
+		//PrintLog(LogType::Normal, "---- Start Grabbing finish ----");
 		if (imgFid.empty())
 			return PrintLog(LogType::Error, "Fiducial image acquisition failed!", !m_isTreeSystemRun);
 
@@ -793,13 +828,13 @@ namespace AAProcess
 		}
 
 		QString timeStamp = QDateTime::currentDateTime().toString("hhmmsszzz");
-		cv::imwrite((strSavePath + timeStamp + "_manual-cv.tif").toStdString(), imgFid);
+		cv::imwrite((strSavePath + timeStamp + "cv.tif").toStdString(), imgFid);
 
 		QImage image = matToQImageCopy(imgFid);
 		if (image.isNull())
 			return PrintLog(LogType::Error, "Fiducial image conversion to QImage failed!", !m_isTreeSystemRun);
 
-		image.save(strSavePath + timeStamp + "_manual-qt.tif");
+		image.save(strSavePath + timeStamp + "qt.tif");
 
 		QPointF fiducialPos = emit onSignalgetFiducialPos(image);
 		if (qFuzzyCompare(fiducialPos.x(), 0) || qFuzzyCompare(fiducialPos.y(), 0))
@@ -814,7 +849,10 @@ namespace AAProcess
 	std::string MotionProcess::Ranging()
 	{
 		PrintLog(LogType::Normal, "[Ranging Start]");
-
+		if (currentDutName == "")
+		{
+			return "Pleasure check DUT Type!";
+		}
 		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ, ModuleName::keyence, ModuleName::PLC);
 		if (msg != "")
 			return msg;
@@ -833,11 +871,25 @@ namespace AAProcess
 			keyence.z = m_processConfigInfo.offsetRoatate.rangingPos[currentDutName].rangingPos.z;
 		}
 
-
-		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(keyence.x, keyence.y, keyence.z), withDUT);
+		CORE::ML_Point3D currentPos_ = Motion3DModel::getInstance(motion3DType::withDUT)->getPosition(); //um
+		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(keyence.x, keyence.y, currentPos_.z / 1000.0), withDUT);
 		if (!msg.empty())
 			return msg;
-
+		while (CheckModuleIsMoving(ModuleName::DutModuleXYZ))
+		{
+			if (m_isStopTreeSystem.load())
+			{
+				StopModuleMove(ModuleName::DutModuleXYZ);
+				m_isStopTreeSystem.store(false);
+				return "Operation is force stopped by user.";
+			}
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
+		CORE::ML_Point3D currentPos_2 = Motion3DModel::getInstance(motion3DType::withDUT)->getPosition(); //um
+		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(currentPos_2.x / 1000.0, currentPos_2.y / 1000.0 , keyence.z), withDUT);
+		if (!msg.empty())
+			return msg;
 		while (CheckModuleIsMoving(ModuleName::DutModuleXYZ))
 		{
 			if (m_isStopTreeSystem.load())
@@ -937,7 +989,10 @@ namespace AAProcess
 	std::string MotionProcess::EntrancePupilAlignment()
 	{
 		PrintLog(LogType::Normal, "[EntrancePupilAlignment Start]");
-
+		if (currentDutName == "")
+		{
+			return "Pleasure check DUT Type!";
+		}
 		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ, ModuleName::DutModuleDxDyDz, ModuleName::ProjectionDxDy,
 			ModuleName::ImagingModuleXYZ, ModuleName::ImagingModuleDxDy);
 		if (msg != "")
@@ -993,26 +1048,29 @@ namespace AAProcess
 		double offsetx = m_processConfigInfo.offsetRoatate.projectionOffsetRelativeToMV[currentDutName].x;
 		double offsety = m_processConfigInfo.offsetRoatate.projectionOffsetRelativeToMV[currentDutName].y;
 
-		//safe verification
-		double safePosXMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].inputAlignmentMotorPosXMax;
-		double safePosXMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].inputAlignmentMotorPosXMin;
-		double safePosYMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].inputAlignmentMotorPosYMax;
-		double safePosYMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].inputAlignmentMotorPosYMin;
-		CORE::ML_Point3D currentPos1 = Motion3DModel::getInstance(motion3DType::withDUT)->getPosition(); //um
-		if (currentPos1.y / 1000.0 + offsety > safePosYMax || currentPos1.y / 1000.0 + offsety < safePosYMin)
-		{
-			msg = "Y motor is about to be moved to " + to_string(currentPos1.y / 1000.0 + offsety) +
-				", which has exceeded the safe range[" + to_string(safePosYMin) + ", " + to_string(safePosYMax) + "]";
-			return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
-		}
-		if (currentPos1.x / 1000.0 + offsetx > safePosXMax || currentPos1.x / 1000.0 + offsetx < safePosXMin)
-		{
-			msg = "X motor is about to be moved to " + to_string(currentPos1.x / 1000.0 + offsetx) +
-				", which has exceeded the safe range[" + to_string(safePosXMin) + ", " + to_string(safePosXMax) + "]";
-			return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
-		}
+		////safe verification
+		//double safePosXMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].inputAlignmentMotorPosXMax;
+		//double safePosXMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].inputAlignmentMotorPosXMin;
+		//double safePosYMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].inputAlignmentMotorPosYMax;
+		//double safePosYMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].inputAlignmentMotorPosYMin;
+		//CORE::ML_Point3D currentPos1 = Motion3DModel::getInstance(motion3DType::withDUT)->getPosition(); //um
+		//if (currentPos1.y / 1000.0 + offsety > safePosYMax || currentPos1.y / 1000.0 + offsety < safePosYMin)
+		//{
+		//	msg = "Y motor is about to be moved to " + to_string(currentPos1.y / 1000.0 + offsety) +
+		//		", which has exceeded the safe range[" + to_string(safePosYMin) + ", " + to_string(safePosYMax) + "]";
+		//	return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
+		//}
+		//if (currentPos1.x / 1000.0 + offsetx > safePosXMax || currentPos1.x / 1000.0 + offsetx < safePosXMin)
+		//{
+		//	msg = "X motor is about to be moved to " + to_string(currentPos1.x / 1000.0 + offsetx) +
+		//		", which has exceeded the safe range[" + to_string(safePosXMin) + ", " + to_string(safePosXMax) + "]";
+		//	return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
+		//}
+			
+		double alignAndCraftOffset_X = m_processConfigInfo.offsetRoatate.alignOffset[currentDutName].x + m_processConfigInfo.offsetRoatate.craftOffset[currentDutName].x;
+		double alignAndCraftOffset_Y = m_processConfigInfo.offsetRoatate.alignOffset[currentDutName].y + m_processConfigInfo.offsetRoatate.craftOffset[currentDutName].y;
 
-		msg = LimitMove::getInstance()->motion3DMoveRel(cv::Point3f(0, offsety, 0), withDUT);
+		msg = LimitMove::getInstance()->motion3DMoveRel(cv::Point3f(0, offsety + alignAndCraftOffset_Y, 0), withDUT);
 		if (!msg.empty())
 			return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
 		while (CheckModuleIsMoving(ModuleName::DutModuleXYZ))
@@ -1027,7 +1085,7 @@ namespace AAProcess
 			_sleep(100);
 		}
 
-		msg = LimitMove::getInstance()->motion3DMoveRel(cv::Point3f(offsetx, 0, 0), withDUT);
+		msg = LimitMove::getInstance()->motion3DMoveRel(cv::Point3f(offsetx + alignAndCraftOffset_X, 0, 0), withDUT);
 		if (!msg.empty())
 			return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
 		while (CheckModuleIsMoving(ModuleName::DutModuleXYZ))
@@ -1043,6 +1101,12 @@ namespace AAProcess
 		}
 		PrintModulePosition(ModuleName::DutModuleXYZ);
 
+		CORE::ML_Point3D currentAlignPos = Motion3DModel::getInstance(motion3DType::withDUT)->getPosition(); 
+		currentAlignPos.x = currentAlignPos.x / 1000.0;
+		currentAlignPos.y = currentAlignPos.y / 1000.0;
+		currentAlignPos.z = currentAlignPos.z / 1000.0;
+
+		setSavePosition("inputGrating align DUT AbsCoor", currentAlignPos);
 		//Restore imaging module height
 		PrintLog(LogType::Normal, "Restore imaging module height");
 		CORE::ML_Point3D currentImagingPos = Motion3DModel::getInstance(motion3DType::withCamera)->getPosition(); //um
@@ -1093,6 +1157,11 @@ namespace AAProcess
 	std::string MotionProcess::FindFiducialToCalculate()
 	{
 		PrintLog(LogType::Normal, "[FindFiducialToCalculate]");
+
+		if (currentDutName == "")
+		{
+			return "Pleasure check DUT Type!";
+		}
 
 		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ, ModuleName::ImagingModuleXYZ, ModuleName::MV);
 		if (msg != "")
@@ -1145,6 +1214,9 @@ namespace AAProcess
 		fiducialMotorPosition.push_back(fid2);
 
 		std::vector <cv::Point2f> fiducialCenter;
+		Result ret = PLCController::instance()->coaxialLight2(true);
+		if (!ret.success)
+			return ret.errorMsg;
 		for (int i = 0; i < fiducialMotorPosition.size(); ++i)
 		{
 			PrintLog(LogType::Normal, "start to find fiducial " + to_string(i + 1));
@@ -1183,7 +1255,9 @@ namespace AAProcess
 			}
 			fiducialCenter.push_back(center);
 		}
-
+		ret = PLCController::instance()->coaxialLight2(false);
+		if (!ret.success)
+			return ret.errorMsg;
 		PrintLog(LogType::Normal, "Calculate the absolute coordinates of the fiducial motor at the center of the MV");
 		// Calculate the absolute coordinates of fiducial moving to the center of MV
 		std::vector<cv::Point2f> pixelCoor = { cv::Point2f(fiducialCenter[0]) , cv::Point2f(fiducialCenter[1]) };
@@ -1234,7 +1308,10 @@ namespace AAProcess
 	std::string MotionProcess::EyeboxScanning(int eyeBoxIndex)
 	{
 		PrintLog(LogType::Normal, "[EyeboxScanning Start], eyeBox " + to_string(eyeBoxIndex));
-
+		if (currentDutName == "")
+		{
+			return "Pleasure check DUT Type!";
+		}
 		if (!m_dutConfigInfoMap[currentDutName].outputgratingOffset_.count(eyeBoxIndex))
 			return PrintLog(LogType::Error, "No eyebox"+ std::to_string(eyeBoxIndex) + " information in the map, Please re - enter the eyebox scanning list.", !m_isTreeSystemRun);
 
@@ -1300,7 +1377,12 @@ namespace AAProcess
 			+ to_string(absCoorInEyeBoxX) + ", " + to_string(absCoorInEyeBoxY) + ", " + to_string(imgingAbsZPos) + ")");
 
 		//Motion3DModel::getInstance(withCamera)->Motion3DMoveAbsAsync(absCoorInEyeBoxX * 1000, absCoorInEyeBoxY * 1000, imgingAbsZPos * 1000);
-		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(absCoorInEyeBoxX, absCoorInEyeBoxY, imgingAbsZPos), withCamera);
+
+		double alignAndCraftOffset_X = m_processConfigInfo.offsetRoatate.alignOffset[currentDutName].x + m_processConfigInfo.offsetRoatate.craftOffset[currentDutName].x;
+		double alignAndCraftOffset_Y = m_processConfigInfo.offsetRoatate.alignOffset[currentDutName].y + m_processConfigInfo.offsetRoatate.craftOffset[currentDutName].y;
+
+
+		msg = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(absCoorInEyeBoxX + alignAndCraftOffset_X, absCoorInEyeBoxY + alignAndCraftOffset_Y, imgingAbsZPos), withCamera);
 		if (!msg.empty())
 			return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
 
@@ -1535,7 +1617,11 @@ namespace AAProcess
 		return circles[0];
 #endif
 		MLImageDetection::FiducialDetect fidDetector;
-		MLImageDetection::FiducialRe res = fidDetector.getFiducialCoordinate(fidImg);
+		int row = fidImg.rows;
+		int col = fidImg.cols;
+		int len = 600;
+		cv::Rect rect(col/2-len/2,row/2-len/2,len,len);
+		MLImageDetection::FiducialRe res = fidDetector.getFiducialCoordinate(fidImg,rect);
 
 		if (m_bSaveFiducialImage)
 		{
@@ -1583,8 +1669,8 @@ namespace AAProcess
 
 			//Calculate the absolute coordinates of moving fiducial to the center of MV
 			cv::Point3f fiducialMotor;
-			fiducialMotor.x = motorCoor[i].x + mvCenterOffset.x;
-			fiducialMotor.y = motorCoor[i].y + mvCenterOffset.y;
+			fiducialMotor.x = motorCoor[i].x - mvCenterOffset.x;
+			fiducialMotor.y = motorCoor[i].y - mvCenterOffset.y;
 			fiducialMotor.z = motorCoor[i].z;
 			PrintLog(LogType::Normal, "Calculate the absolute coordinates of Fiducial_" + std::to_string(i) + " moving to the center of MV ("
 				+ to_string(fiducialMotor.x) + to_string(fiducialMotor.y) + to_string(fiducialMotor.z) + ")");
@@ -1756,20 +1842,21 @@ namespace AAProcess
 	{
 		PrintLog(LogType::Normal, "[LoadSLB Start]");
 
-		std::string holder_type;
-		std::string message = JudgeHolderState(holder_type);
-		if (message != "")
-			return message;
-		if (holder_type != PLCController::instance()->GetEmptySensorState())
-			return "Please remove the dut first !";
+		//std::string holder_type;
+		//std::string message = JudgeHolderState(holder_type);
+		//if (message != "")
+		//	return message;
+		//if (holder_type != PLCController::instance()->GetEmptySensorState())
+		//	return "Please remove the dut first !";
 
+		std::string message;
 		message = CheckModuleConnectStatus(ModuleName::ImagingModuleXYZ, ModuleName::DutModuleXYZ);
 		if (message != "")
 			return message;
 
 		ML_Point3D currentPos = Motion3DModel::getInstance(withDUT)->getPosition();
 
-		if (currentPos.z / 1000 > m_slbConfigInfo.slb_LoadDutXYZPosition.z)
+		if (m_slbConfigInfo.slb_LoadDutXYZPosition.z < currentPos.z / 1000 )
 		{
 			return PrintLog(LogType::Error, "Load dut module xyz motor Z value calibration error,lower than currentPos Z value ", !m_isTreeSystemRun);
 		}
