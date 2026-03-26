@@ -775,8 +775,7 @@ vector<double> MLIQMetrics::MLdenseMTF::getMTFRect(cv::Mat mtfMap,cv::Mat xloc, 
 void MLIQMetrics::MLdenseMTF::calculateMtfValue(cv::Mat mtfmapH, double& min, double& mean)
 {
 	cv::Mat mtfH0;
-
-	cv::Mat mask = mtfmapH > 20;
+	cv::Mat mask = mtfmapH > 15;
 	cv::Scalar meanVal = cv::mean(mtfmapH, mask);
 	double minVal, maxVal;
 	cv::minMaxLoc(mtfmapH, &minVal, &maxVal, nullptr, nullptr, mask);
