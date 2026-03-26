@@ -168,8 +168,8 @@ DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid(const cv::Mat imgRaw) //
 		center.x = cenmat.at<float>(0, 0)/4.0;
 		center.y = cenmat.at<float>(1, 0)/4.0;
 		cv::Point2f offset = center - gridRe.center;
-		gridRe.xLocMat = gridRe.xLocMat -offset.x;
-		gridRe.yLocMat = gridRe.yLocMat - offset.y;
+		//gridRe.xLocMat = gridRe.xLocMat -offset.x+15;
+		//gridRe.yLocMat = gridRe.yLocMat - offset.y;
 
 	}
 	if (gridRe.flag == false)
@@ -775,10 +775,11 @@ vector<double> MLIQMetrics::MLdenseMTF::getMTFRect(cv::Mat mtfMap,cv::Mat xloc, 
 void MLIQMetrics::MLdenseMTF::calculateMtfValue(cv::Mat mtfmapH, double& min, double& mean)
 {
 	cv::Mat mtfH0;
-	mtfmapH.copyTo(mtfH0, mtfmapH > 20);
-	Scalar meanH = cv::mean(mtfH0); // 6.25ÆµÂÊµÄmeanMTFH
-	double minH, minV;
-	cv::minMaxLoc(mtfH0, &minH, NULL, NULL, NULL);
-	mean = meanH(0);
-	min=minH;
+
+	cv::Mat mask = mtfmapH > 20;
+	cv::Scalar meanVal = cv::mean(mtfmapH, mask);
+	double minVal, maxVal;
+	cv::minMaxLoc(mtfmapH, &minVal, &maxVal, nullptr, nullptr, mask);
+	mean = meanVal(0);
+	min= minVal;
 }
