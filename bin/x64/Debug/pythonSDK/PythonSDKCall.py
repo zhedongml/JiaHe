@@ -259,10 +259,10 @@ class IQMetricsSDKCall:
 
 
 if __name__ == '__main__':
-    config_json = r'E:\MLproject\JiaHe\src\RealityQ+\config'
+    config_json = r'F:\hm0128\JiaHe\src\RealityQ+\config'
     IQClass = IQMetricsSDKCall(config_json)
 
-    folder = r'E:\Imgs\jiaheTest\IQ'
+    folder = r'D:\data_hm_0211\SLB_20260323T104922\IQ'
     # folder = r'D:\project\Hydrus2\111\IQ'
     # IQClass.distortion_cal(folder,'W',5)
 
