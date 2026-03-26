@@ -435,7 +435,7 @@ cv::Mat MLIQMetrics::MLFlare::getFlareRotationImg(cv::Mat img, double angle)
 
 void MLIQMetrics::MLFlare::writeFlareInfo(vector<cv::Rect> rectVec)
 {
-	string filepath = "./config/AlgConfig/slbInfo/FlareInfo.csv";
+	string filepath = "./config/ALGConfig/slbInfo/FlareInfo.csv";
 	cv::Mat rectmat(cv::Size(4,rectVec.size()),CV_32FC1);
 	for (int i = 0; i < rectVec.size(); i++)
 	{
@@ -452,7 +452,7 @@ void MLIQMetrics::MLFlare::writeFlareInfo(vector<cv::Rect> rectVec)
 
 void MLIQMetrics::MLFlare::readFlareInfo(vector<cv::Rect>& rectVec)
 {
-	string filepath = "./config/AlgConfig/slbInfo/FlareInfo.csv";
+	string filepath = "./config/ALGConfig/slbInfo/FlareInfo.csv";
 	cv::Mat rectmat = readCSVToMat(filepath);
 	for (int i = 0; i < rectmat.rows; i++)
 	{

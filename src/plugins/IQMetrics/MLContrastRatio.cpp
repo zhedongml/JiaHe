@@ -241,13 +241,13 @@ void MLIQMetrics::MLContrastRatio::readCRMatFromCSV(cv::Mat& crmat, string color
 
 void MLIQMetrics::MLContrastRatio::readCRMatFromCSV(cv::Mat& crmat, string color)
 {
-	string path = "./config/AlgConfig/slbInfo/SLBCR_" + color + ".csv";
+	string path = "./config/ALGConfig/slbInfo/SLBCR_" + color + ".csv";
 	crmat = readCSVToMat(path);
 }
 
 void MLIQMetrics::MLContrastRatio::writeCRMatToCSV(const cv::Mat& crmat, string color)
 {
-	string path = "./config/AlgConfig/slbInfo/SLBCR_" + color + ".csv";
+	string path = "./config/ALGConfig/slbInfo/SLBCR_" + color + ".csv";
 	std::mutex mtx;
 	mtx.lock();
 	writeMatTOCSV(path, crmat);
@@ -367,8 +367,8 @@ cv::Mat MLIQMetrics::MLContrastRatio::preProcess(cv::Mat gray)
 
 void MLIQMetrics::MLContrastRatio::writeCheckerInfoToCSV(CheckerboardRe checkerRe)
 {
-	string path1 = "./config/AlgConfig/slbInfo/checker_xlocMat.csv";
-	string path2 = "./config/AlgConfig/slbInfo/checker_ylocMat.csv";
+	string path1 = "./config/ALGConfig/slbInfo/checker_xlocMat.csv";
+	string path2 = "./config/ALGConfig/slbInfo/checker_ylocMat.csv";
 	std::mutex mtx;
 	mtx.lock();
 	writeMatTOCSV(path1, checkerRe.xLocMat);
@@ -378,8 +378,8 @@ void MLIQMetrics::MLContrastRatio::writeCheckerInfoToCSV(CheckerboardRe checkerR
 
 void MLIQMetrics::MLContrastRatio::readCheckerInfoToCSV(CheckerboardRe& checkerRe)
 {
-	string path1 = "./config/AlgConfig/slbInfo/checker_xlocMat.csv";
-	string path2 = "./config/AlgConfig/slbInfo/checker_ylocMat.csv";
+	string path1 = "./config/ALGConfig/slbInfo/checker_xlocMat.csv";
+	string path2 = "./config/ALGConfig/slbInfo/checker_ylocMat.csv";
 //	MLimagePublic pl;
 	cv::Mat xloc = readCSVToMat(path1);
 	cv::Mat yloc = readCSVToMat(path2);

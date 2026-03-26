@@ -71,13 +71,23 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(const cv::Mat imgRaw)
 	grid.setAccurateDetectionFlag(false);
 	grid.SetbinNum(resizeNum);
 	//GridRe gridRe = grid.getGridContour(imgResize);
-	GridRe gridRe = grid.getGridCenter(imgResize);
-	if (gridRe.flag)
+	GridRe gridRe;
+	if(m_IsSLB)
+	 gridRe = grid.getGridCenter(imgResize);
+	if (m_IsSLB)
 	{
-		writeFOVOffsetGridCenter(gridRe);
+		if (gridRe.flag)
+		{
+			writeFOVOffsetGridCenter(gridRe);
+		}
+		else
+			readFOVOffsetGridCenter(gridRe);
 	}
 	else
+	{
 		readFOVOffsetGridCenter(gridRe);
+	}
+
 
 	if (gridRe.flag == false)
 	{
@@ -93,6 +103,20 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(const cv::Mat imgRaw)
 	{
 		realcenter=getExactLoc(realcenter, img8);
 	}
+	if (m_IsSLB == false)
+	{
+		string filepath = "./config/ALGConfig/slbInfo/DUTCenter.csv";
+		vector<double>cenVec;
+		cenVec.push_back(realcenter.x);
+		cenVec.push_back(realcenter.y);
+		cv::Mat romat(cenVec);
+		std::mutex mtx;
+		mtx.lock();
+		writeMatTOCSV(filepath, romat);
+		mtx.unlock();
+	}
+
+
 	double deltaPx = realcenter.x - opticalCenter.x;
 	double deltaPy = realcenter.y - opticalCenter.y;
 	re.V = deltaPy * pixel2Arcmin;
@@ -419,7 +443,7 @@ cv::Point2f MLIQMetrics::MLFOVOffset::getExactLoc(cv::Point2f cen, cv::Mat gray)
 
 void MLIQMetrics::MLFOVOffset::upateFOVOffset(FovOffsetRe& re, bool IsSLB)
 {
-	string filepath = "./config/AlgConfig/slbInfo/offset_" + m_color + ".csv";
+	string filepath = "./config/ALGConfig/slbInfo/offset_" + m_color + ".csv";
 
 	if (IsSLB == true)
 	{
@@ -444,7 +468,7 @@ void MLIQMetrics::MLFOVOffset::upateFOVOffset(FovOffsetRe& re, bool IsSLB)
 
 void MLIQMetrics::MLFOVOffset::writeFOVOffsetGridCenter(GridRe re)
 {
-	string filepath = "./config/AlgConfig/slbInfo/FOVoffsetCen.csv";
+	string filepath = "./config/ALGConfig/slbInfo/FOVoffsetCen.csv";
 	vector<double>cenVec;
 	cenVec.push_back(re.center.x);
 	cenVec.push_back(re.center.y);
@@ -458,7 +482,7 @@ void MLIQMetrics::MLFOVOffset::writeFOVOffsetGridCenter(GridRe re)
 
 void MLIQMetrics::MLFOVOffset::readFOVOffsetGridCenter(GridRe& re)
 {
-	string filepath = "./config/AlgConfig/slbInfo/FOVoffsetCen.csv";
+	string filepath = "./config/ALGConfig/slbInfo/FOVoffsetCen.csv";
 	cv::Mat cenmat = readCSVToMat(filepath);
 	re.center.x = cenmat.at<float>(0, 0);
 	re.center.y = cenmat.at<float>(1, 0);

@@ -569,7 +569,7 @@ cv::Point2f MLIQMetrics::MLDistortion::getCenter(vector<cv::Point2f> corns, cv::
 
 void MLIQMetrics::MLDistortion::updateDistortionBySLB(vector<double>& disvec, bool isSLB)
 {
-	string path = "./config/AlgConfig/slbInfo/distortion_" + m_color + ".csv";
+	string path = "./config/ALGConfig/slbInfo/distortion_" + m_color + ".csv";
 	cv::Mat disMat = cv::Mat(disvec.size(), 1, CV_64F, disvec.data()).clone();
 	disMat.convertTo(disMat, CV_32FC1);
 	if (m_isSLB)
