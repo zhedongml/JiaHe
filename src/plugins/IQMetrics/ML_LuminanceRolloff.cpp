@@ -2,7 +2,7 @@
 #include "ML_LuminanceRolloff.h"
 #include "ML_Efficiency.h"
 #include"ml_rectangleDetection.h"
-#include "pch.h"
+
 using namespace MLImageDetection;
 using namespace MLIQMetrics;
 using namespace cv;

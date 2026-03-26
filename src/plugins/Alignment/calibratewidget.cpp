@@ -234,18 +234,17 @@ void CalibrateWidget::initMenu()
 
 void CalibrateWidget::initActionMenu()
 {
-    IAction* action_dut = new IAction(Constants::TOGGLE_DEVICES_MOVE_INIT_POS_DUT, Constants::M_TOOLS);
-
+    /* IAction* action_dut = new IAction(Constants::TOGGLE_DEVICES_MOVE_INIT_POS_DUT, Constants::M_TOOLS);
     action_dut->setText("Load DUT Position");
-    connect(action_dut, SIGNAL(triggered()), this, SLOT(deviceMoveInitDUTPosition()));
+    connect(action_dut, SIGNAL(triggered()), this, SLOT(deviceMoveInitDUTPosition()));*/
 
-    IAction* action_load_slb = new IAction(Constants::TOGGLE_DEVICES_MOVE_LOAD_POS_SLB, Constants::M_TOOLS);
-    action_load_slb->setText("Load SLB Position");
+    IAction* action_load_slb = new IAction(Constants::TOGGLE_DEVICES_MOVE_SAFE_POS, Constants::M_TOOLS);
+    action_load_slb->setText("Load Safe Position");
     connect(action_load_slb, SIGNAL(triggered()), this, SLOT(deviceMoveLoadSLBPosition()));
 
 
     IAction* action_slb = new IAction(Constants::TOGGLE_DEVICES_MOVE_INIT_POS_SLB, Constants::M_TOOLS);
-    action_slb->setText("Load and Align SLB");
+    action_slb->setText("Load Safe and Align SLB");
     connect(action_slb, SIGNAL(triggered()), this, SLOT(deviceMoveAlignSLBPosition()));
 }
 
@@ -302,7 +301,6 @@ void CalibrateWidget::deviceMoveInitDUTPosition()
            /* "Confirm whether to move the 3D motion platform and tip/tilt device to the initial position in DUT mode?"*/);
         if (box == QMessageBox::Yes)
         {
-
             QFuture<std::string> future = QtConcurrent::run(&MotionProcess::getInstance(), &MotionProcess::LoadDUT);
             watcherMoveInit.setFuture(future);
         }
@@ -355,40 +353,56 @@ void CalibrateWidget::deviceMoveAlignSLBPosition()
 
 void CalibrateWidget::deviceMoveLoadSLBPosition()
 {
-    std::string state;
-    std::string msg = MotionProcess::getInstance().JudgeHolderState(state);
-    if (msg != "") {
-        QMessageBox::warning(this, "Warning!", QString::fromStdString(msg));
-        return;
-    }
-    if (state == PLCController::instance()->GetEmptySensorState()) {
-        QMessageBox::StandardButton box = QMessageBox::question(
-            this, "Question!",
-            "Please confirm whether the prism is in the SLB test state?"
-        /* "Confirm whether to move the 3D motion platform and tip/tilt device to the initial position in SLB mode?"*/);
-        if (box == QMessageBox::Yes)
-        {
-            QFuture<std::string> future = QtConcurrent::run([&]() {
-                std::string message = MotionProcess::getInstance().ConnectMeasureCameraMotionModule();
-                if (!message.empty())
-                    return message;
-                message = MotionProcess::getInstance().ConnectDutMotionModule();
-                if (!message.empty())
-                    return message;
-                message = MotionProcess::getInstance().ConnectProjectorMotionModule();
-                if (!message.empty())
-                    return message;
+    //std::string state;
+    //std::string msg = MotionProcess::getInstance().JudgeHolderState(state);
+    //if (msg != "") {
+    //    QMessageBox::warning(this, "Warning!", QString::fromStdString(msg));
+    //    return;
+    //}
+    //if (state == PLCController::instance()->GetEmptySensorState()) {
+    //    QMessageBox::StandardButton box = QMessageBox::question(
+    //        this, "Question!",
+    //        "Please confirm whether the prism is in the SLB test state?"
+    //    /* "Confirm whether to move the 3D motion platform and tip/tilt device to the initial position in SLB mode?"*/);
+    //    if (box == QMessageBox::Yes)
+    //    {
+    //        QFuture<std::string> future = QtConcurrent::run([&]() {
+    //            std::string message = MotionProcess::getInstance().ConnectMeasureCameraMotionModule();
+    //            if (!message.empty())
+    //                return message;
+    //            message = MotionProcess::getInstance().ConnectDutMotionModule();
+    //            if (!message.empty())
+    //                return message;
+    //            message = MotionProcess::getInstance().ConnectProjectorMotionModule();
+    //            if (!message.empty())
+    //                return message;
 
-                return MotionProcess::getInstance().LoadSLB();
+    //            return MotionProcess::getInstance().LoadSLB();
 
-                });
-            watcherMoveInit.setFuture(future);
-        }
-        return;
-    }
-    else {
-        QMessageBox::warning(this, "Warning!", "Please check DUT placement status, current state is not 0000!");
-    }
+    //            });
+    //        watcherMoveInit.setFuture(future);
+    //    }
+    //}
+    //else {
+    //    QMessageBox::warning(this, "Warning!", "Please check DUT placement status, current state is not 0000!");
+    //}
+
+    QFuture<std::string> future = QtConcurrent::run([&]() {
+        std::string message = MotionProcess::getInstance().ConnectMeasureCameraMotionModule();
+        if (!message.empty())
+            return message;
+        message = MotionProcess::getInstance().ConnectDutMotionModule();
+        if (!message.empty())
+            return message;
+        message = MotionProcess::getInstance().ConnectProjectorMotionModule();
+        if (!message.empty())
+            return message;
+
+        return MotionProcess::getInstance().LoadSLB();
+
+        });
+    watcherMoveInit.setFuture(future);
+    return;
 }
 
 

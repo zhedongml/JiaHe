@@ -71,7 +71,9 @@ struct OffsetRoatate
 	std::map<std::string, Anticollision> anticollision;
 	std::map<std::string, LoadPos> loadPos;
 	std::map<std::string, RangingPos> rangingPos;
-	std::map<std::string, ParallelAdjustmentPos> parallelAdjustmentPos;
+    std::map<std::string, ParallelAdjustmentPos> parallelAdjustmentPos;
+	std::map<std::string, pos2D> alignOffset;
+	std::map<std::string, pos2D> craftOffset;
 };
 
 
