@@ -40,6 +40,8 @@ class MLAUTOFOCUSPROCESS_EXPORT MLFocusScan : public QObject {
 
     ML::AutoFocus::FocusScanConfig ML_GetFocusScanConfig();
 
+    Result ML_UpdateROIList(std::vector<cv::Rect> roiList);
+
     Result ML_FocusScanAsync(std::string motionName, ML::AutoFocus::FocusScanConfig config);
 
     Result ML_CoarseFocusScan(std::string motionName, ML::AutoFocus::FocusScanConfig config, bool useMeanStdDev = false);
@@ -54,8 +56,18 @@ class MLAUTOFOCUSPROCESS_EXPORT MLFocusScan : public QObject {
 
     std::map<std::string, cv::Point3d> ML_GetCombinResult();
 
+    Result ML_ClearCurveCache();
+
  public:
     Result WaitForTasksFinish(int single_task_wait = 60);
+    std::vector<std::map<ML::AutoFocus::ScanEnum, std::vector<double>>> GetFocusScan_CoarseFitCurve();
+    std::vector<std::map<ML::AutoFocus::ScanEnum, std::vector<double>>> GetFocusScan_FineFitCurve();
+    std::map<std::string, std::map<ML::AutoFocus::ScanEnum, std::vector<double>>> GetFocusScan_CombineCoarseFitCurve();
+    std::map<std::string, std::map<ML::AutoFocus::ScanEnum, std::vector<double>>> GetFocusScan_CombineFineFitCurve();
+
+    Result CalMTFTasks(double pos, double vid, cv::Mat image, ML::AutoFocus::FocusScanConfig focusConfig,
+                       std::vector<std::map<ML::AutoFocus::ScanEnum, std::vector<double>>>& curve, bool useMeanStdDev,
+                       int single_task_wait = 60);
 
  private:
     Result focusScan(std::string motionName, ML::AutoFocus::FocusScanConfig config);
@@ -64,10 +76,6 @@ class MLAUTOFOCUSPROCESS_EXPORT MLFocusScan : public QObject {
 
     Result saveDataToCsv(std::string filedir, std::string filename,
                          std::vector<std::map<ML::AutoFocus::ScanEnum, std::vector<double>>> dataMap);
-
-    Result calMTFTasks(double pos, double vid, cv::Mat image, ML::AutoFocus::FocusScanConfig focusConfig,
-                       std::vector<std::map<ML::AutoFocus::ScanEnum, std::vector<double>>>& curve, bool useMeanStdDev,
-                       int single_task_wait = 60);
 
     Result calPeakRange(std::map<ML::AutoFocus::ScanEnum, std::vector<double>> dataMap, int& start, int& end);
 

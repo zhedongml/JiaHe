@@ -186,7 +186,7 @@ class MLCOLORIMETERIMAGEPROCESS_EXPORT MLColorimeterAlgorithms : public QObject 
     virtual int FindPolynomialFitMaxValue(std::vector<double>& posList, std::vector<double>& mtfList, int step = 101);
 
     virtual bool UpdateFlip_RotateJson(ML::MLColorimeter::Flipping flipx, ML::MLColorimeter::Flipping flipy,
-                                       ML::MLColorimeter::Rotation rotation);
+                                       double rotation);
  signals:
     void sendProcessStatusSignal(ML::MLFilterWheel::MLFilterEnum, ML::MLColorimeter::CalibrationEnum, bool);
 

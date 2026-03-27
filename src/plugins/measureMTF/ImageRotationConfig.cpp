@@ -25,7 +25,7 @@ ImageRotationConfig::~ImageRotationConfig()
 {
 }
 
-Result ImageRotationConfig::GetFilpRotationConfig_DutLeftEye(Flipping& flip_x, Flipping& flip_y, Rotation& rotate)
+Result ImageRotationConfig::GetFilpRotationConfig_DutLeftEye(Flipping& flip_x, Flipping& flip_y, double& rotate)
 {
     if (!m_json.contains("DUT_LeftEye")) {
         return Result(false, "Get rotation and mirrorFlip error, config file is error.");
@@ -33,12 +33,12 @@ Result ImageRotationConfig::GetFilpRotationConfig_DutLeftEye(Flipping& flip_x, F
 
     flip_x = m_json["DUT_LeftEye"]["FlippingX"].get<bool>() ? Flipping::ReverseX : Flipping::NonReverse;
     flip_y = m_json["DUT_LeftEye"]["FlippingY"].get<bool>() ? Flipping::ReverseY : Flipping::NonReverse;
-    rotate = MLColorimeterHelp::instance()->TransStrToRotation(m_json["DUT_LeftEye"]["Rotation"].get<std::string>());
+    rotate = m_json["DUT_LeftEye"]["Rotation"].get<double>();
 
     return Result();
 }
 
-Result ImageRotationConfig::GetFilpRotationConfig_DutRightEye(Flipping& flip_x, Flipping& flip_y, Rotation& rotate)
+Result ImageRotationConfig::GetFilpRotationConfig_DutRightEye(Flipping& flip_x, Flipping& flip_y, double& rotate)
 {
     if (!m_json.contains("DUT_RightEye")) {
         return Result(false, "Get rotation and mirrorFlip error, config file is error.");
@@ -46,12 +46,12 @@ Result ImageRotationConfig::GetFilpRotationConfig_DutRightEye(Flipping& flip_x, 
 
     flip_x = m_json["DUT_RightEye"]["FlippingX"].get<bool>() ? Flipping::ReverseX : Flipping::NonReverse;
     flip_y = m_json["DUT_RightEye"]["FlippingY"].get<bool>() ? Flipping::ReverseY : Flipping::NonReverse;
-    rotate = MLColorimeterHelp::instance()->TransStrToRotation(m_json["DUT_RightEye"]["Rotation"].get<std::string>());
+    rotate = m_json["DUT_RightEye"]["Rotation"].get<double>();
 
     return Result();
 }
 
-Result ImageRotationConfig::GetFilpRotationConfig_SLB(Flipping& flip_x, Flipping& flip_y, Rotation& rotate)
+Result ImageRotationConfig::GetFilpRotationConfig_SLB(Flipping& flip_x, Flipping& flip_y, double& rotate)
 {
     if (!m_json.contains("SLB")) {
         return Result(false, "Get rotation and mirrorFlip error, config file is error.");
@@ -59,7 +59,7 @@ Result ImageRotationConfig::GetFilpRotationConfig_SLB(Flipping& flip_x, Flipping
 
     flip_x = m_json["SLB"]["FlippingX"].get<bool>() ? Flipping::ReverseX : Flipping::NonReverse;
     flip_y = m_json["SLB"]["FlippingY"].get<bool>() ? Flipping::ReverseY : Flipping::NonReverse;
-    rotate = MLColorimeterHelp::instance()->TransStrToRotation(m_json["SLB"]["Rotation"].get<std::string>());
+    rotate = m_json["SLB"]["Rotation"].get<double>();
 
     return Result();
 }
@@ -83,7 +83,7 @@ ImageRotationConfig::ImageRotationConfig()
 Result ImageRotationConfig::load()
 {
     // function is cancle
-    return Result();
+    //return Result();
     std::ifstream jsonFile(FILE_NAME.toStdString());
     if (!jsonFile.is_open())
     {

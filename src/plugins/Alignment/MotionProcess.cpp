@@ -711,19 +711,20 @@ namespace AAProcess
 		{
 			CameraModel::GetInstance()->SetMLExposureAuto();
 		}
-		ret = CameraModel::GetInstance()->StopGrabbing();
-		if (!ret.success)
-			return ret.errorMsg;
-		ret = CameraModel::GetInstance()->GrabOne();
-		if (!ret.success)
-			return ret.errorMsg;
+		Sleep(200);
+		//ret = CameraModel::GetInstance()->StopGrabbing();
+		//if (!ret.success)
+		//	return ret.errorMsg;
+		//ret = CameraModel::GetInstance()->GrabOne();
+		//if (!ret.success)
+		//	return ret.errorMsg;
 		cv::Mat imgFid = CameraModel::GetInstance()->GetImage();
 		/*ret = PLCController::instance()->coaxialLight2(false);
 		if (!ret.success)
 			PrintLog(LogType::Warn, "Coaxial light close error in auto finding fiducials!");*/
-		ret = CameraModel::GetInstance()->StartGrabbing();
+	/*	ret = CameraModel::GetInstance()->StartGrabbing();
 		if (!ret.success)
-			return ret.errorMsg;
+			return ret.errorMsg;*/
 		if (imgFid.empty())
 			return PrintLog(LogType::Error, "Fiducial image acquisition failed!", !m_isTreeSystemRun);
 

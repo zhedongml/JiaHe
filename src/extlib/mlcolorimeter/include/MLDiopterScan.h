@@ -23,8 +23,6 @@ using namespace ML::MLColorimeter;
 namespace ML {
 namespace AutoFocus {
 
-enum class DiopterScanEnum { Motion, VID, Diopter, MTF };
-
 class MLAUTOFOCUSPROCESS_EXPORT MLDiopterScan : public QObject {
     Q_OBJECT
 
@@ -44,6 +42,8 @@ class MLAUTOFOCUSPROCESS_EXPORT MLDiopterScan : public QObject {
 
     ML::AutoFocus::DiopterScanConfig ML_GetDiopterScanConfig();
 
+    Result ML_UpdateROIList(std::vector<cv::Rect> roiList);
+
     Result ML_DiopterScanAsync(std::string motionName, ML::AutoFocus::DiopterScanConfig config);
 
     Result ML_CoarseDiopterScan(std::string motionName, ML::AutoFocus::DiopterScanConfig config, bool useMeanStdDev = false);
@@ -58,8 +58,18 @@ class MLAUTOFOCUSPROCESS_EXPORT MLDiopterScan : public QObject {
 
     std::map<std::string, cv::Point3d> ML_GetCombinResult();
 
+    Result ML_ClearCurveCache();
+
  public:
     Result WaitForTasksFinish(int single_task_wait = 60);
+    std::vector<std::map<ML::AutoFocus::ScanEnum, std::vector<double>>> GetDiopterScan_CoarseFitCurve();
+    std::vector<std::map<ML::AutoFocus::ScanEnum, std::vector<double>>> GetDiopterScan_FineFitCurve();
+    std::map<std::string, std::map<ML::AutoFocus::ScanEnum, std::vector<double>>> GetDiopterScan_CombinCoarseFitCurve();
+    std::map<std::string, std::map<ML::AutoFocus::ScanEnum, std::vector<double>>> GetDiopterScan_CombinFineFitCurve();
+
+    Result CalMTFTasks(double pos, double vid, cv::Mat image, ML::AutoFocus::DiopterScanConfig config,
+                       std::vector<std::map<ML::AutoFocus::ScanEnum, std::vector<double>>>& curve, bool useMeanStdDev,
+                       int single_task_wait = 60);
 
  private:
     Result diopterScan(std::string motionName, ML::AutoFocus::DiopterScanConfig config);
@@ -69,9 +79,7 @@ class MLAUTOFOCUSPROCESS_EXPORT MLDiopterScan : public QObject {
     Result saveDataToCsv(std::string filedir, std::string filename,
                          std::vector<std::map<ML::AutoFocus::ScanEnum, std::vector<double>>> dataMap);
 
-    Result calMTFTasks(double pos, double vid, cv::Mat image, ML::AutoFocus::DiopterScanConfig config,
-                       std::vector<std::map<ML::AutoFocus::ScanEnum, std::vector<double>>>& curve, bool useMeanStdDev,
-                       int single_task_wait = 60);
+    
 
     Result calPeakRange(std::map<ML::AutoFocus::ScanEnum, std::vector<double>> dataMap, int& start, int& end);
 

@@ -49,6 +49,7 @@ namespace ML {
 		struct AEInfo {
 			AEStatus k_AEstatus;
 			cv::Mat final_img;
+			double final_grayValue;
 			double exposure_time;
 			int iteration;
 			int take_time;

@@ -1276,11 +1276,16 @@ cv::Mat MLColorimeterMode::Flip_Rotation(cv::Mat srcImg)
     ppconfig.InputPath = CONFIG_PATH.toStdString();
     std::string outPath =
         GetMonocular()->ML_GetBusinessManageConfig()->ProcessPath("Flip_Rotate", ppconfig);
+
+    ML::MLColorimeter::Flipping FlipX;
+    ML::MLColorimeter::Flipping FlipY;
+    double Rotate;
     bool ok = MLColorimeterHelp::instance()->ReadFlip_RotateJson(
-        (ppconfig.InputPath + outPath).c_str(), "Flip_Rotate");
-    ML::MLColorimeter::Flipping FlipX = MLColorimeterHelp::instance()->GetFlippingX();
-    ML::MLColorimeter::Flipping FlipY = MLColorimeterHelp::instance()->GetFlippingY();
-    ML::MLColorimeter::Rotation Rotate = MLColorimeterHelp::instance()->GetRotation();
+        (ppconfig.InputPath + outPath).c_str(), "Flip_Rotate", FlipX, FlipY, Rotate);
+
+    //ML::MLColorimeter::Flipping FlipX = MLColorimeterHelp::instance()->GetFlippingX();
+    //ML::MLColorimeter::Flipping FlipY = MLColorimeterHelp::instance()->GetFlippingY();
+    //double Rotate = MLColorimeterHelp::instance()->GetRotation();
 
     if (FlipX == ML::MLColorimeter::Flipping::ReverseX) {
         srcImg = MLColorimeterHelp::instance()->Flip(srcImg, FlipX);
@@ -1288,13 +1293,13 @@ cv::Mat MLColorimeterMode::Flip_Rotation(cv::Mat srcImg)
     if (FlipY == ML::MLColorimeter::Flipping::ReverseY) {
         srcImg = MLColorimeterHelp::instance()->Flip(srcImg, FlipY);
     }
-    if (Rotate != ML::MLColorimeter::Rotation::R0) {
+    if (Rotate != 0) {
         srcImg = MLColorimeterHelp::instance()->Rotation(srcImg, Rotate);
     }
     return srcImg;
 }
 
-bool MLColorimeterMode::UpdateFlipRotation(Flipping flip_x, Flipping flip_y, Rotation rotate)
+bool MLColorimeterMode::UpdateFlipRotation(Flipping flip_x, Flipping flip_y, double rotate)
 {
     ML::MLColorimeter::ProcessPathConfig ppconfig;
     ppconfig.InputPath = GetMonocular()->ML_GetConfigPath();

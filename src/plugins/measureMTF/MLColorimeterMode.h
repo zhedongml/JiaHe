@@ -127,7 +127,7 @@ public:
     cv::Mat Flip_Rotation(cv::Mat srcImg);
     ML::CameraV2::Binning TransIntToBinning(int bin);
     bool isDirExist(QString fullPath);
-    bool UpdateFlipRotation(Flipping flip_x = Flipping::NonReverse, Flipping flip_y = Flipping::NonReverse, ML::MLColorimeter::Rotation rotate = ML::MLColorimeter::Rotation::R0);
+    bool UpdateFlipRotation(Flipping flip_x = Flipping::NonReverse, Flipping flip_y = Flipping::NonReverse, double rotate = 0.0);
     void parseConfigPathPointer(const QString& filePath);
 
     //Fix Exposure

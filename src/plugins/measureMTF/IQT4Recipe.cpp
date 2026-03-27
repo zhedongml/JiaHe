@@ -1507,7 +1507,7 @@ NodeStatus IQT4Recipe::IQ_SetDutID(BT::TreeNode& node)
 NodeStatus IQT4Recipe::IQ_UpdateFlipRotation()
 {
 	// function is cancled
-	return BT::NodeStatus::FAILURE;
+	//return BT::NodeStatus::FAILURE;
 
 	MLUtils::TestState state = MetricsData::instance()->GetTestState();
 	if (state.IsDut && state.eyeType == MLUtils::EyeType::EyeType_UnKnown)
@@ -1518,7 +1518,7 @@ NodeStatus IQT4Recipe::IQ_UpdateFlipRotation()
 	}
 	Flipping flip_x; 
 	Flipping flip_y; 
-	ML::MLColorimeter::Rotation rotate;
+	double rotate;
 
 	if (state.IsDut && state.eyeType == MLUtils::EyeType::Right) 
 	{

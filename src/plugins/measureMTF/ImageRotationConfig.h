@@ -14,10 +14,10 @@ class ImageRotationConfig
     static ImageRotationConfig *instance();
     ~ImageRotationConfig();
 
-    Result GetFilpRotationConfig_SLB(Flipping& flip_x, Flipping& flip_y, Rotation& rotate);
-    Result GetFilpRotationConfig_DutLeftEye(Flipping& flip_x, Flipping& flip_y, Rotation& rotate);
-    Result GetFilpRotationConfig_DutRightEye(Flipping& flip_x, Flipping& flip_y, Rotation& rotate);
-    Result GetFilpRotationConfig(Flipping &flip_x, Flipping &flip_y, Rotation &rotate);
+    Result GetFilpRotationConfig_SLB(Flipping& flip_x, Flipping& flip_y, double& rotate);
+    Result GetFilpRotationConfig_DutLeftEye(Flipping& flip_x, Flipping& flip_y, double& rotate);
+    Result GetFilpRotationConfig_DutRightEye(Flipping& flip_x, Flipping& flip_y, double& rotate);
+    Result GetFilpRotationConfig(Flipping &flip_x, Flipping &flip_y, double&rotate);
 
     bool isRotation();
 
