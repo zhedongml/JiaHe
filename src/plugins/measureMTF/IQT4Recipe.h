@@ -98,6 +98,8 @@ namespace IQT
 		NodeStatus IQ_Polarizer_AutoScan(BT::TreeNode& node);
 		NodeStatus IQ_Metrics_Luminance_Dialog(BT::TreeNode& node);
 
+		NodeStatus IQ_IsUseAutoDP(BT::TreeNode& node);
+
 	private:
 		static IQT4Recipe* self;
 		std::string m_configPath = "./config/Algorithmconfig.json";
@@ -801,6 +803,17 @@ namespace IQT
 				BT::InputPort<std::string>("color","string"),
 				BT::InputPort<std::string>("eyebox","int")
 			});
+
+		factory.registerSimpleAction(
+			"IQ_IsUseAutoDP",
+			[=](BT::TreeNode& node)-> BT::NodeStatus
+			{
+				return obj->IQ_IsUseAutoDP(node);
+			},
+			{
+				BT::InputPort<std::string>("is_auto_dp","bool")
+			});
+		
 	}
 }
 

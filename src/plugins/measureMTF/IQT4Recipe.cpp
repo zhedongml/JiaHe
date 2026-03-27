@@ -1560,7 +1560,17 @@ NodeStatus IQT4Recipe::IQ_DeleteFixExposureTime()
 
 NodeStatus IQT4Recipe::IQ_UpdateFixExposureTimeConfig()
 {
-	Result ret = MLColorimeterMode::Instance()->UpdateFixExposureTimeConfig(m_IQImageDirList/*MetricsData::instance()->getMTFImgsDir()*/);
+	Result ret;
+	bool isAutoDP = MetricsData::instance()->getIsAutoDP();
+
+	if (isAutoDP && !m_IQImageDirList.empty())
+	{
+		ret = MLColorimeterMode::Instance()->UpdateFixExposureTimeConfig(m_IQImageDirList/*MetricsData::instance()->getMTFImgsDir()*/);
+	}
+	else
+	{
+		ret = MLColorimeterMode::Instance()->UpdateFixExposureTimeConfig(MetricsData::instance()->getMTFImgsDir());
+	}
 	if (!ret.success)
 	{
 		QString message = QString::fromStdString("Recipe Node [ IQ_UpdateFixExposureTimeConfig ] run error, " + ret.errorMsg);
@@ -1727,4 +1737,14 @@ NodeStatus IQT4Recipe::IQ_Metrics_Luminance_Dialog(BT::TreeNode& node)
 		Qt::QueuedConnection
 			);
 	return BT::NodeStatus::SUCCESS;
+}
+
+NodeStatus IQT::IQT4Recipe::IQ_IsUseAutoDP(BT::TreeNode& node)
+{
+	QString is_auto_dp = getNodeValueByName(node, "is_auto_dp");
+	bool autodp = is_auto_dp.toInt() == 1 ? true : false;
+
+	MetricsData::instance()->setIsAutoDP(autodp);
+
+	return  BT::NodeStatus::SUCCESS;
 }

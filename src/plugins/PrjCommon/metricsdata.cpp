@@ -248,6 +248,13 @@ void MetricsData::setMTFImgsDir(QString direct) {
 	mtfimgsDir = direct;
 }
 
+bool MetricsData::getIsAutoDP() {
+    return m_isAutoDp;
+}
+void MetricsData::setIsAutoDP(bool isAutoDp) {
+    m_isAutoDp = isAutoDp;
+}
+
 QString MetricsData::getRecipeSeqDir()
 {
 	return recipeSeqDir;

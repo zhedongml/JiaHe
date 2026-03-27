@@ -292,6 +292,9 @@ public:
 	QString getDutName();
 	void setDutName(QString val);
 
+	bool getIsAutoDP();
+	void setIsAutoDP(bool isAutoDp);
+
 	QString getImageNDFilter(QString fileName);
 	QString getImageNDFilter();
 	void setImageNDFilter(QString val);
@@ -632,6 +635,8 @@ private:
 
 	QString recipeStartTime;
 	QString recipeStartDate;
+
+	bool m_isAutoDp = false;
 
 private:
 	//T value_;
