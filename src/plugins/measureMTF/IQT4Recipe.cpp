@@ -1395,47 +1395,76 @@ NodeStatus IQT::IQT4Recipe::IQ_WaitParallelCalculateEnd(BT::TreeNode& node)
 	if (!sTimeOut.isEmpty())
 		TimeOut = sTimeOut.toInt();
 
-	std::atomic<bool> stop_flag(false);
+	auto start_time = std::chrono::steady_clock::now();
+	auto end_time = start_time + std::chrono::seconds(TimeOut);
 
-	std::future<void> result = std::async(std::launch::async, [&stop_flag, &node]()
+	bool time_out = false;
+
+	while (!node.IsStopChildNodes()) 
+	{
+		if (TimeOut >0 && std::chrono::steady_clock::now() >= end_time)
 		{
-			while (1)
-			{
-				if (stop_flag.load() || node.IsStopChildNodes()) {
-					break;
-				}
+			time_out = true;
+			LoggingWrapper::instance()->info("WaitParallelCalculateEnd : time out.");
+			break;
+		}
 
-				if (IQ_TaskState::Idle == MetricsProcessorProxy::GetInstance()->getRunningStatus())
-					break;
+		if (IQ_TaskState::Idle == MetricsProcessorProxy::GetInstance()->getRunningStatus())
+			break;
 
-				QCoreApplication::processEvents();
-				std::this_thread::sleep_for(std::chrono::milliseconds(100));
-			}
-		});
-
-	std::future_status status = result.wait_for(std::chrono::seconds(TimeOut));
-
-	if (future_status::timeout == status)
-	{
-		qInfo() << "future_status::timeout";
-		stop_flag = true;
-		result.get();
-		MetricsProcessorProxy::GetInstance()->StopParallelCalculate();
-		return BT::NodeStatus::SUCCESS;
+		QCoreApplication::processEvents();
+		std::this_thread::sleep_for(std::chrono::milliseconds(200));
 	}
-	else if (future_status::ready == status)
-	{
-		qInfo() << "future_status::ready";
-		MetricsProcessorProxy::GetInstance()->ClearCache();
-		return BT::NodeStatus::SUCCESS;
-	}
-	else if (future_status::deferred == status)
-	{
-		MetricsProcessorProxy::GetInstance()->ClearCache();
+
+	MetricsProcessorProxy::GetInstance()->StopParallelCalculate();
+	MetricsProcessorProxy::GetInstance()->ClearCache();
+
+	if (time_out)
 		return BT::NodeStatus::FAILURE;
-	}
+	else
+		return BT::NodeStatus::SUCCESS;
 
-	return BT::NodeStatus::SUCCESS;
+	//std::atomic<bool> stop_flag(false);
+
+	//std::future<void> result = std::async(std::launch::async, [&stop_flag, &node]()
+	//	{
+	//		while (1)
+	//		{
+	//			if (stop_flag.load() || node.IsStopChildNodes()) {
+	//				break;
+	//			}
+
+	//			if (IQ_TaskState::Idle == MetricsProcessorProxy::GetInstance()->getRunningStatus())
+	//				break;
+
+	//			QCoreApplication::processEvents();
+	//			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+	//		}
+	//	});
+
+	//std::future_status status = result.wait_for(std::chrono::seconds(TimeOut));
+
+	//if (future_status::timeout == status)
+	//{
+	//	qInfo() << "future_status::timeout";
+	//	stop_flag = true;
+	//	result.get();
+	//	MetricsProcessorProxy::GetInstance()->StopParallelCalculate();
+	//	return BT::NodeStatus::SUCCESS;
+	//}
+	//else if (future_status::ready == status)
+	//{
+	//	qInfo() << "future_status::ready";
+	//	MetricsProcessorProxy::GetInstance()->ClearCache();
+	//	return BT::NodeStatus::SUCCESS;
+	//}
+	//else if (future_status::deferred == status)
+	//{
+	//	MetricsProcessorProxy::GetInstance()->ClearCache();
+	//	return BT::NodeStatus::FAILURE;
+	//}
+
+	//return BT::NodeStatus::SUCCESS;
 }
 
 NodeStatus IQT4Recipe::IQ_ThroughFocus_MotionPos(BT::TreeNode& node) {
