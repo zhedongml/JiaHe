@@ -1103,11 +1103,13 @@ namespace AAProcess
 		PrintModulePosition(ModuleName::DutModuleXYZ);
 
 		CORE::ML_Point3D currentAlignPos = Motion3DModel::getInstance(motion3DType::withDUT)->getPosition(); 
-		currentAlignPos.x = currentAlignPos.x / 1000.0;
-		currentAlignPos.y = currentAlignPos.y / 1000.0;
-		currentAlignPos.z = currentAlignPos.z / 1000.0;
+		
+		cv::Point3f inputDutPos;
+		inputDutPos.x = currentAlignPos.x / 1000.0;
+		inputDutPos.y = currentAlignPos.y / 1000.0;
+		inputDutPos.z = currentAlignPos.z / 1000.0;
+		setSavePosition("inputGrating align DUT AbsCoor", inputDutPos);
 
-		setSavePosition("inputGrating align DUT AbsCoor", currentAlignPos);
 		//Restore imaging module height
 		PrintLog(LogType::Normal, "Restore imaging module height");
 		CORE::ML_Point3D currentImagingPos = Motion3DModel::getInstance(motion3DType::withCamera)->getPosition(); //um
@@ -1620,7 +1622,7 @@ namespace AAProcess
 		MLImageDetection::FiducialDetect fidDetector;
 		int row = fidImg.rows;
 		int col = fidImg.cols;
-		int len = 600;
+		int len = 800;
 		cv::Rect rect(col/2-len/2,row/2-len/2,len,len);
 		MLImageDetection::FiducialRe res = fidDetector.getFiducialCoordinate(fidImg,rect);
 
