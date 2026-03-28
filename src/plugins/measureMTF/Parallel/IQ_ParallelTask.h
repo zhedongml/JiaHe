@@ -14,6 +14,7 @@ namespace IQ_Parallel_NS
 	{
 		Q_OBJECT
 	public:
+		//IQ_ParallelTask(MetricDescription*, QStringList, SharedData& data, bool);
 		IQ_ParallelTask(MetricDescription*, QStringList, bool);
 		~IQ_ParallelTask();
 
@@ -26,6 +27,7 @@ namespace IQ_Parallel_NS
 		std::vector<QStringList> GetSummaryTable();
 		int GetImageRefCount(QString);
 		IQ_TaskState getRunningStatus();
+		int NotifyOne(QString _Name);
 
 	signals:
 		void Signal_WaitEventStop();
@@ -47,6 +49,8 @@ namespace IQ_Parallel_NS
 		QStringList m_eyeboxlist = {};
 		std::thread m_Thread;
 		bool m_VirtualCameraMode = false;
+		SharedData shared;
+		std::condition_variable m_self_cv;
 
 		void Run();
 
@@ -65,8 +69,7 @@ namespace IQ_Parallel_NS
 		void pause();
 		void resume();
 
-
-
-
+	private:
+		std::atomic<bool> should_stop{ false };
 	};
 }
