@@ -5,13 +5,28 @@
 
 using namespace IQ_Parallel_NS;
 
-ImageDataManager* ImageDataManager::GetInstance()
-{
-    static ImageDataManager self;
-    return &self;
+std::unique_ptr<ImageDataManager> ImageDataManager::instance_ = nullptr;
+std::mutex ImageDataManager::mutex_;
+
+//ImageDataManager* ImageDataManager::GetInstance()
+//{
+//    static ImageDataManager self;
+//    return &self;
+//}
+
+void ImageDataManager::Initialize(SharedData& initConfig) {
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (!instance_) {
+        instance_ = std::unique_ptr<ImageDataManager>(new ImageDataManager(initConfig));
+    }
 }
 
-ImageDataManager::ImageDataManager(QObject* parent)
+ImageDataManager& ImageDataManager::GetInstance() {
+    return *instance_;
+}
+
+ImageDataManager::ImageDataManager(SharedData& data, QObject* parent)
+    : shared(data)
 {
     Init();
 }
@@ -59,8 +74,25 @@ int ImageDataManager::SaveImageByName(QString _SN, ImageAlgoMetaData imgData, bo
         .arg(_SN).arg(_qHashRAM.size());
     LoggingWrapper::instance()->info(message);
 
-    if(notify)
-		emit Signal_RecvSpecificImage(_SN);
+    MetricsProcessorProxy::GetInstance()->NotifyAll(_SN);
+
+    return 0;
+	{
+		std::unique_lock<std::mutex> lock(shared.mtx);
+		shared.ready = true;
+		shared.imageName = _SN;
+		std::cout << "[Producer] Data ready, notifying...\n";
+
+		shared.cv.notify_all();
+		//std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+		// 等待所有消费者完成上一轮
+		//shared.consumer_done_cv.wait(lock, [this] {
+		//	return shared.consumers_done;
+		//	});
+
+		//shared.reset();
+	}
 }
 
 int IQ_Parallel_NS::ImageDataManager::IsImageExist(QString _SN)

@@ -23,6 +23,10 @@ MetricsProcessorProxy* MetricsProcessorProxy::GetInstance()
 MetricsProcessorProxy::MetricsProcessorProxy(QObject* parent)
 {
 	IQTModel::instance();
+	ImageDataManager::Initialize(shared);
+	//Producer producer(shared);
+	//Consumer consumer1(shared, 1);
+	//Consumer consumer2(shared, 2);
 
 	//Init();
 }
@@ -43,7 +47,9 @@ Result MetricsProcessorProxy::StartParallelCalculate(QStringList metricslist, QS
 				continue;
 
 			pMetrics.insert(std::pair<std::string, MetricDescription*>(var->name, var));
+			//_qHashThreadTask.insert(QString::fromStdString(var->name), new IQ_ParallelTask(var, eyeboxlist, shared, getVirtualCameraMode()));
 			_qHashThreadTask.insert(QString::fromStdString(var->name), new IQ_ParallelTask(var, eyeboxlist, getVirtualCameraMode()));
+
 		}
 
 		//std::cout << _qHashThreadTask.size() << endl;
@@ -85,7 +91,7 @@ Result MetricsProcessorProxy::StopParallelCalculate()
 
 	emit Signal_Abort_DUT();
 
-	ImageDataManager::GetInstance()->Clear();
+	ImageDataManager::GetInstance().Clear();
 	QString message = QString("MetricsProcessorProxy: stop parallel calculate tasks successfully.");
 	LoggingWrapper::instance()->info(message);
 
@@ -110,7 +116,7 @@ Result MetricsProcessorProxy::RestartParallelCalculate()
 
 void MetricsProcessorProxy::ClearCache()
 {
-	ImageDataManager::GetInstance()->Clear();
+	ImageDataManager::GetInstance().Clear();
 }
 
 //bool MetricsProcessorProxy::ReadAllFile(const std::string& strFileName, std::string& strFileData)
@@ -231,6 +237,23 @@ int MetricsProcessorProxy::GetImageRefCount(QString _Name)
 	for (auto iter = _qHashThreadTask.begin(); iter != _qHashThreadTask.end(); iter++)
 	{
 		refCount += iter.value()->GetImageRefCount(_Name);
+
+		if (refCount > 0)
+			break;
+	}
+
+	return refCount;
+}
+
+int MetricsProcessorProxy::NotifyAll(QString _Name)
+{
+	int refCount = 0;
+
+	QHash<QString, IQ_ParallelTask*>::const_iterator iter = _qHashThreadTask.constBegin();
+
+	for (auto iter = _qHashThreadTask.begin(); iter != _qHashThreadTask.end(); iter++)
+	{
+		refCount += iter.value()->NotifyOne(_Name);
 
 		if (refCount > 0)
 			break;
