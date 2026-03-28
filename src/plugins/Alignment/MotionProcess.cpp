@@ -1898,6 +1898,28 @@ namespace AAProcess
 		}
 		PrintModulePosition(ModuleName::DutModuleXYZ);
 
+		//先动X，Z
+		ML_Point3D currentPos_2 = Motion3DModel::getInstance(withCamera)->getPosition();
+
+		message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(m_slbConfigInfo.slb_LoadImageXYZPosition.x,
+			currentPos_2.y / 1000.0, m_slbConfigInfo.slb_LoadImageXYZPosition.z), withCamera);
+		if (!message.empty())
+			return message;
+
+		while (CheckModuleIsMoving(ModuleName::ImagingModuleXYZ))
+		{
+			if (m_isStopTreeSystem.load())
+			{
+				StopModuleMove(ModuleName::ImagingModuleXYZ);
+				m_isStopTreeSystem.store(false);
+				return "Operation is force stopped by user.";
+			}
+
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
+
+		//最后Y
 		message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(m_slbConfigInfo.slb_LoadImageXYZPosition.x,
 			m_slbConfigInfo.slb_LoadImageXYZPosition.y, m_slbConfigInfo.slb_LoadImageXYZPosition.z), withCamera);
 		if (!message.empty())
