@@ -50,7 +50,7 @@ private:
 
   private:
     double m_rotationAngle = 0;
-    int m_len = 560;
+    int m_len = 520;
     bool accurateFlag = true;
     int m_binNum = 1;
     bool m_isSLB = true;
