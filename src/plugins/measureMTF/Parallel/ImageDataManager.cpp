@@ -56,8 +56,7 @@ void ImageDataManager::Slot_NewImgMetaData(std::shared_ptr<ML_Task::ImageAlgoMet
 
 int ImageDataManager::SaveImageByName(QString _SN, ImageAlgoMetaData imgData, bool notify)
 {
-    //std::unique_lock<std::mutex> lock(mtx);
-    std::shared_lock<std::shared_mutex> lock(rw_mutex);
+    std::unique_lock<std::shared_mutex> lock(rw_mutex);
 
     if (_qHashRAM.keys().contains(_SN))
     {
@@ -74,7 +73,7 @@ int ImageDataManager::SaveImageByName(QString _SN, ImageAlgoMetaData imgData, bo
         .arg(_SN).arg(_qHashRAM.size());
     LoggingWrapper::instance()->info(message);
 
-    MetricsProcessorProxy::GetInstance()->NotifyAll(_SN);
+    MetricsProcessorProxy::GetInstance()->NotifyAll(_SN, _qHashRAM.keys());
 
     return 0;
 	{
@@ -95,22 +94,23 @@ int ImageDataManager::SaveImageByName(QString _SN, ImageAlgoMetaData imgData, bo
 	}
 }
 
-int IQ_Parallel_NS::ImageDataManager::IsImageExist(QString _SN)
-{
-    //std::unique_lock<std::mutex> lock(mtx);
-    //std::shared_lock<std::shared_mutex> lock(rw_mutex);
-
-    if (_qHashRAM.keys().contains(_SN))
-    {
-        return 0;
-    }
-    return -1;
-}
+//int IQ_Parallel_NS::ImageDataManager::IsImageExist(QString _SN)
+//{
+//    //std::unique_lock<std::mutex> lock(mtx);
+//    //std::shared_lock<std::shared_mutex> lock(rw_mutex);
+//
+//    if (_qHashRAM.keys().contains(_SN))
+//    {
+//        return 0;
+//    }
+//    return -1;
+//}
 
 int ImageDataManager::ReadImageByName(QString _SN, ImageAlgoMetaData& imgData)
 {
     //std::unique_lock<std::mutex> lock(mtx);
-    //std::shared_lock<std::shared_mutex> lock(rw_mutex);
+    std::shared_lock<std::shared_mutex> lock(rw_mutex);
+
     if (_qHashRAM.keys().contains(_SN))
     {
         imgData = _qHashRAM.value(_SN);
@@ -125,57 +125,13 @@ int ImageDataManager::ReadImageByName(QString _SN, ImageAlgoMetaData& imgData)
 
 ImageDataManager::~ImageDataManager()
 {
-
-}
-
-int ImageDataManager::GetPixelByteSize(int depth)
-{
-    int ByteSize = 1;
-
-    switch (depth)
-    {
-    case CV_8U:
-        ByteSize = 1;
-        break;
-
-    case CV_8S:
-        ByteSize = 1;
-        break;
-
-    case CV_16U:
-        ByteSize = 2;
-        break;
-
-    case CV_16S:
-        ByteSize = 2;
-        break;
-
-    case CV_32S:
-        ByteSize = 4;
-        break;
-
-    case CV_32F:
-        ByteSize = 4;
-        break;
-
-    case CV_64F:
-        ByteSize = 8;
-        break;
-
-    case CV_16F:
-        ByteSize = 2;
-        break;
-
-    default:
-        break;
-    }
-
-    return ByteSize;
 }
 
 int ImageDataManager::FreeImageByName(QString _Name, QString _taskName)
 {
     //std::unique_lock<std::mutex> lock(mtx);
+
+    QStringList hh = _qHashRAM.keys();
 
     if (false == _qHashRAM.keys().contains(_Name))
     {
@@ -193,7 +149,7 @@ int ImageDataManager::FreeImageByName(QString _Name, QString _taskName)
     {
         QString message = QString("ImageDataManager: the image [%1] has been successfully deleted from image pool. Operator:[%3], now images pool number is [%2]. ")
             .arg(_Name).arg(_qHashRAM.size()).arg(_taskName);
-        //LoggingWrapper::instance()->info(message);
+        LoggingWrapper::instance()->info(message);
 
         return 0;
     }
@@ -201,7 +157,7 @@ int ImageDataManager::FreeImageByName(QString _Name, QString _taskName)
     {
         QString message = QString("ImageDataManager: the image [%1] does not exist. Operator:[%2]")
             .arg(_Name).arg(_taskName);
-        //LoggingWrapper::instance()->error(message);
+        LoggingWrapper::instance()->error(message);
 
         return -1;
     }
@@ -211,6 +167,8 @@ void ImageDataManager::Clear()
 {
     try
     {
+        std::unique_lock<std::shared_mutex> lock(rw_mutex);
+
         QString message = QString("ImageDataManager: the pool left images:");
 
         QHashIterator<QString, ImageAlgoMetaData> i(_qHashRAM);
@@ -234,14 +192,12 @@ void ImageDataManager::Clear()
 
 void ImageDataManager::FreeImagesByNameList(QString taskName, QStringList deleList)
 {
-    std::shared_lock<std::shared_mutex> lock(rw_mutex);
+    std::unique_lock<std::shared_mutex> lock(rw_mutex);
 
-    //std::unique_lock<std::mutex> lock(mtx);
-
-    //QString message = QString("FreeImagesByMetricName: name [%1] deleList [%2].")
-    //    .arg(QString::fromStdString(name))
-    //    .arg("{" + deleList.join(",") + "}");
-    //LoggingWrapper::instance()->debug(message);
+    QString message = QString("FreeImagesByMetricName: name [%1] deleList [%2].")
+        .arg(taskName)
+        .arg("{" + deleList.join(",") + "}");
+    LoggingWrapper::instance()->debug(message);
 
     QStringList::iterator it;
 
@@ -250,7 +206,7 @@ void ImageDataManager::FreeImagesByNameList(QString taskName, QStringList deleLi
         int refCount = MetricsProcessorProxy::GetInstance()->GetImageRefCount(*it);
 
         //QString message = QString("FreeImagesByMetricName: [%1] GetImageRefCount [%2].")
-        //    .arg(QString::fromStdString(name)).arg(refCount);
+        //    .arg(*it).arg(refCount);
         //LoggingWrapper::instance()->debug(message);
 
         if (0 == refCount)
@@ -280,11 +236,4 @@ QStringList ImageDataManager::FilterExistingImages(QStringList subs)
     }
 
     return result;
-}
-
-void ImageDataManager::ThreadSafeEmit(const QString& _SN)
-{
-    QMetaObject::invokeMethod(this, [this, _SN] {
-        emit Signal_RecvSpecificImage(_SN);
-        });
 }

@@ -134,7 +134,7 @@ bool CameraSimulator::startWork(BT::TreeNode& node)
 		}
 
 		MetricsProcessorProxy::GetInstance()->setVirtualCameraMode(false);
-		MetricsProcessorProxy::GetInstance()->ClearCache();
+		//MetricsProcessorProxy::GetInstance()->ClearCache();
 		return true;
 	}
 
