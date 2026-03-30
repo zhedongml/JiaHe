@@ -14,7 +14,6 @@
 
 using namespace IQ_Parallel_NS;
 
-//IQ_Parallel_NS::IQ_ParallelTask::IQ_ParallelTask(MetricDescription* _pConfog, QStringList _eyeboxlist, SharedData& data, bool _vcm)
 IQ_ParallelTask::IQ_ParallelTask(MetricDescription* _pConfog, QStringList _eyeboxlist, bool _vcm)
 {
 	if (nullptr != _pConfog && _eyeboxlist.size() > 0)
@@ -23,8 +22,6 @@ IQ_ParallelTask::IQ_ParallelTask(MetricDescription* _pConfog, QStringList _eyebo
 		m_VirtualCameraMode = _vcm;
 		m_eyeboxlist = _eyeboxlist;
 
-		//bool ok = connect(ImageDataManager::GetInstance(), &ImageDataManager::Signal_RecvSpecificImage,
-		//	this, &IQ_ParallelTask::Slot_RecvSpecificImage, Qt::DirectConnection);// , Qt::DirectConnection); //, Qt::UniqueConnection Qt::DirectConnection
 		Init();
 	}
 }
@@ -125,6 +122,7 @@ void IQ_Parallel_NS::IQ_ParallelTask::Stop()
 	m_Pause = false;
 	m_Condition.notify_all();
 	shared.ready = true;
+	shared.imagePool.clear();
 	shared.cv.notify_all();
 
 	if (m_Thread.joinable())
@@ -153,12 +151,12 @@ std::vector<QStringList> IQ_Parallel_NS::IQ_ParallelTask::GetSummaryTable()
 	return m_SummaryTable;
 }
 
-int IQ_Parallel_NS::IQ_ParallelTask::NotifyOne(QString _Name)
+int IQ_Parallel_NS::IQ_ParallelTask::NotifyOne(QString _Name, QStringList _PoolLost)
 {
 	std::unique_lock<std::mutex> lock(shared.mtx);
 	shared.ready = true;
 	shared.imageName = _Name;
-	std::cout << "[Producer] Data ready, notifying...\n";
+	shared.imagePool = _PoolLost;
 	shared.cv.notify_one();
 	return 0;
 }
@@ -265,6 +263,16 @@ void IQ_Parallel_NS::IQ_ParallelTask::RemoveFromSummary(QStringList freelist)
 	m_WorkingTable.erase(std::remove(m_WorkingTable.begin(), m_WorkingTable.end(), freelist), m_WorkingTable.end());
 }
 
+int IQ_Parallel_NS::IQ_ParallelTask::IsImageExist(QString _SN)
+{
+	if (m_pool_list.contains(_SN))
+	{
+		return 0;
+	}
+
+	return -1;
+}
+
 bool IQ_Parallel_NS::IQ_ParallelTask::CheckCalcCondition(QStringList& result)
 {
 	std::vector<QStringList>::const_iterator iter;
@@ -274,7 +282,7 @@ bool IQ_Parallel_NS::IQ_ParallelTask::CheckCalcCondition(QStringList& result)
 		QStringList list = (*iter);
 		cnt = 0;
 		for (auto name : list) {
-			cnt += ImageDataManager::GetInstance().IsImageExist(name);
+			cnt += IsImageExist(name);
 		}
 
 		if (0 == cnt) {
@@ -326,6 +334,7 @@ void IQ_Parallel_NS::IQ_ParallelTask::Run()
 		{
 			std::unique_lock<std::mutex> lock(shared.mtx);
 			shared.cv.wait(lock, [this] { return shared.ready; });
+			m_pool_list = shared.imagePool;
 
 			if (m_UserAbort)
 				break;
@@ -335,9 +344,12 @@ void IQ_Parallel_NS::IQ_ParallelTask::Run()
 
 		shared.reset();
 
+		//LoggingWrapper::instance()->info(QString("******************shared.ready.[%1] [%2] [%3]******************")
+		//	.arg(QString::fromStdString(GetName()))
+		//	.arg(imageName).arg(m_pool_list.join(",")));
+
 		LoggingWrapper::instance()->info(QString("******************shared.ready.[%1] [%2]******************")
-			.arg(QString::fromStdString(GetName()))
-			.arg(imageName));
+			.arg(QString::fromStdString(GetName())).arg(imageName));
 
 		QStringList m_NowCalculationQueue = UpdateCalcQueue();
 

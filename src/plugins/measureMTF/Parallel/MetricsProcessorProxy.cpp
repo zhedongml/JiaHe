@@ -230,6 +230,8 @@ MetricsProcessorProxy::~MetricsProcessorProxy()
 
 int MetricsProcessorProxy::GetImageRefCount(QString _Name)
 {
+	std::shared_lock<std::shared_mutex> lock(rw_mutex);
+
 	int refCount = 0;
 
 	QHash<QString, IQ_ParallelTask*>::const_iterator iter = _qHashThreadTask.constBegin();
@@ -245,7 +247,7 @@ int MetricsProcessorProxy::GetImageRefCount(QString _Name)
 	return refCount;
 }
 
-int MetricsProcessorProxy::NotifyAll(QString _Name)
+int MetricsProcessorProxy::NotifyAll(QString _Name, QStringList _Pool)
 {
 	int refCount = 0;
 
@@ -253,7 +255,7 @@ int MetricsProcessorProxy::NotifyAll(QString _Name)
 
 	for (auto iter = _qHashThreadTask.begin(); iter != _qHashThreadTask.end(); iter++)
 	{
-		refCount += iter.value()->NotifyOne(_Name);
+		refCount += iter.value()->NotifyOne(_Name, _Pool);
 
 		if (refCount > 0)
 			break;

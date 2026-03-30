@@ -29,7 +29,7 @@ namespace IQ_Parallel_NS
 		static ImageDataManager& GetInstance();
 		~ImageDataManager();
 		int SaveImageByName(QString, ImageAlgoMetaData, bool notify = true);
-		int IsImageExist(QString);
+		//int IsImageExist(QString);
 		int ReadImageByName(QString, ImageAlgoMetaData&);
 		void Clear();
 		int FreeImageByName(QString, QString);
@@ -37,22 +37,14 @@ namespace IQ_Parallel_NS
 		QStringList GetExistingImagesList();
 		QStringList FilterExistingImages(QStringList);
 
-	signals:
-		void Signal_RecvSpecificImage(QString);
-
 	public slots:
 		void Slot_NewImgMetaData(std::shared_ptr<ML_Task::ImageAlgoMetaData>);
-		//void Slot_NewImgMetaData(ML_Task::ImageAlgoMetaData imgData);
-		//void Slot_test(QString imgData);
 
 	private:
 		ImageDataManager(SharedData& data, QObject* parent = nullptr);
-		int GetPixelByteSize(int);
 		void Init();
-		void ThreadSafeEmit(const QString& _SN);
 
 		QHash<QString, ImageAlgoMetaData> _qHashRAM;
-		//std::mutex mtx;
 		mutable std::shared_mutex rw_mutex;
 		SharedData& shared;
 

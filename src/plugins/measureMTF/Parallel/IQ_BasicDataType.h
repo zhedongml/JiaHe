@@ -29,6 +29,7 @@ namespace IQ_Parallel_NS
 		bool ready = false;
 		bool consumers_done = false;
 		QString imageName = "";
+		QStringList imagePool = {};
 
 		int active_consumers = 0;
 		int total_consumers = 0;
