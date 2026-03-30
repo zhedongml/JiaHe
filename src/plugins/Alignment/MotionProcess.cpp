@@ -569,8 +569,34 @@ namespace AAProcess
 				return "";
 			}
 
-			msg = LimitMove::getInstance()->orientalMoveRel(cv::Point3f(-m_collimatorDeltaX.toDouble() / 3600.0,
-				m_collimatorDeltaY.toDouble() / 3600.0, 0));
+			double curDX;
+			double curDY;
+			curDX = OrientalMotorControl::getInstance()->GetPosition(OrientalAxle::DX);
+			curDY = OrientalMotorControl::getInstance()->GetPosition(OrientalAxle::DY);
+
+			double needDX = curDX - m_collimatorDeltaX.toDouble() / 3600.0;
+			double needDY = curDY + m_collimatorDeltaY.toDouble() / 3600.0;
+			if (needDX > safeDXMax ||
+				needDX < safeDXMin ||
+				needDY > safeDYMax ||
+				needDY < safeDYMin)
+			{
+				msg = QString(
+					"Need-tilt angle out of safe range. "
+					"DUT=%1, X=%2 (limit %3~%4), "
+					"Y=%5 (limit %6~%7)")
+					.arg(QString::fromStdString(currentDutName))
+					.arg(needDX)
+					.arg(safeDXMin)
+					.arg(safeDXMax)
+					.arg(needDY)
+					.arg(safeDYMin)
+					.arg(safeDYMax).toStdString();
+
+				return PrintLog(LogType::Error, msg);
+			}
+
+			msg = LimitMove::getInstance()->orientalMoveRel(cv::Point3f(-m_collimatorDeltaX.toDouble() / 3600.0, m_collimatorDeltaY.toDouble() / 3600.0, 0));
 			if (!msg.empty())
 				return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
 

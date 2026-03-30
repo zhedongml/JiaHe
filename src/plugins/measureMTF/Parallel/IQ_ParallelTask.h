@@ -27,7 +27,7 @@ namespace IQ_Parallel_NS
 		std::vector<QStringList> GetSummaryTable();
 		int GetImageRefCount(QString);
 		IQ_TaskState getRunningStatus();
-		int NotifyOne(QString _Name);
+		int NotifyOne(QString, QStringList);
 
 	signals:
 		void Signal_WaitEventStop();
@@ -47,6 +47,8 @@ namespace IQ_Parallel_NS
 		std::condition_variable m_Condition;
 		std::vector<QStringList> m_WorkingTable = {};
 		QStringList m_eyeboxlist = {};
+		QStringList m_pool_list = {};
+
 		std::thread m_Thread;
 		bool m_VirtualCameraMode = false;
 		SharedData shared;
@@ -61,6 +63,7 @@ namespace IQ_Parallel_NS
 		void PrintSummaryTable();
 		IQ_WaitResult WaitRecvRequiredImages(int sec);
 		QStringList UpdateCalcQueue();
+		int IsImageExist(QString _SN);
 		bool CheckCalcCondition(QStringList&);
 		void RemoveFromSummary(QStringList);
 		QStringList convertVectorToQStringList(const std::vector<std::string>&);

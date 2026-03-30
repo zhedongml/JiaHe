@@ -31,7 +31,7 @@ namespace IQ_Parallel_NS
 		IQ_TaskState getRunningStatus();
 		void setVirtualCameraMode(bool);
 		bool getVirtualCameraMode();
-		int NotifyAll(QString _Name);
+		int NotifyAll(QString, QStringList);
 
 	signals:
 		void Signal_Abort_DUT();
@@ -42,7 +42,7 @@ namespace IQ_Parallel_NS
 		QHash<QString, IQ_ParallelTask*> _qHashThreadTask;
 		std::map<std::string, MetricDescription*> pMetrics;
 		bool m_VirtualCameraMode = false;
-
+		mutable std::shared_mutex rw_mutex;
 		SharedData shared; // 所有类共享的对象
 
 	};
