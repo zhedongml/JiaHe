@@ -569,8 +569,34 @@ namespace AAProcess
 				return "";
 			}
 
-			msg = LimitMove::getInstance()->orientalMoveRel(cv::Point3f(-m_collimatorDeltaX.toDouble() / 3600.0,
-				m_collimatorDeltaY.toDouble() / 3600.0, 0));
+			double curDX;
+			double curDY;
+			curDX = OrientalMotorControl::getInstance()->GetPosition(OrientalAxle::DX);
+			curDY = OrientalMotorControl::getInstance()->GetPosition(OrientalAxle::DY);
+
+			double needDX = curDX - m_collimatorDeltaX.toDouble() / 3600.0;
+			double needDY = curDY + m_collimatorDeltaY.toDouble() / 3600.0;
+			if (needDX > safeDXMax ||
+				needDX < safeDXMin ||
+				needDY > safeDYMax ||
+				needDY < safeDYMin)
+			{
+				msg = QString(
+					"Need-tilt angle out of safe range. "
+					"DUT=%1, X=%2 (limit %3~%4), "
+					"Y=%5 (limit %6~%7)")
+					.arg(QString::fromStdString(currentDutName))
+					.arg(needDX)
+					.arg(safeDXMin)
+					.arg(safeDXMax)
+					.arg(needDY)
+					.arg(safeDYMin)
+					.arg(safeDYMax).toStdString();
+
+				return PrintLog(LogType::Error, msg);
+			}
+
+			msg = LimitMove::getInstance()->orientalMoveRel(cv::Point3f(-m_collimatorDeltaX.toDouble() / 3600.0, m_collimatorDeltaY.toDouble() / 3600.0, 0));
 			if (!msg.empty())
 				return PrintLog(LogType::Error, msg, !m_isTreeSystemRun);
 
@@ -1103,11 +1129,13 @@ namespace AAProcess
 		PrintModulePosition(ModuleName::DutModuleXYZ);
 
 		CORE::ML_Point3D currentAlignPos = Motion3DModel::getInstance(motion3DType::withDUT)->getPosition(); 
-		currentAlignPos.x = currentAlignPos.x / 1000.0;
-		currentAlignPos.y = currentAlignPos.y / 1000.0;
-		currentAlignPos.z = currentAlignPos.z / 1000.0;
+		
+		cv::Point3f inputDutPos;
+		inputDutPos.x = currentAlignPos.x / 1000.0;
+		inputDutPos.y = currentAlignPos.y / 1000.0;
+		inputDutPos.z = currentAlignPos.z / 1000.0;
+		setSavePosition("inputGrating align DUT AbsCoor", inputDutPos);
 
-		setSavePosition("inputGrating align DUT AbsCoor", currentAlignPos);
 		//Restore imaging module height
 		PrintLog(LogType::Normal, "Restore imaging module height");
 		CORE::ML_Point3D currentImagingPos = Motion3DModel::getInstance(motion3DType::withCamera)->getPosition(); //um
@@ -1620,7 +1648,7 @@ namespace AAProcess
 		MLImageDetection::FiducialDetect fidDetector;
 		int row = fidImg.rows;
 		int col = fidImg.cols;
-		int len = 600;
+		int len = 800;
 		cv::Rect rect(col/2-len/2,row/2-len/2,len,len);
 		MLImageDetection::FiducialRe res = fidDetector.getFiducialCoordinate(fidImg,rect);
 
@@ -1898,6 +1926,28 @@ namespace AAProcess
 		}
 		PrintModulePosition(ModuleName::DutModuleXYZ);
 
+		//先动X，Z
+		ML_Point3D currentPos_2 = Motion3DModel::getInstance(withCamera)->getPosition();
+
+		message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(m_slbConfigInfo.slb_LoadImageXYZPosition.x,
+			currentPos_2.y / 1000.0, m_slbConfigInfo.slb_LoadImageXYZPosition.z), withCamera);
+		if (!message.empty())
+			return message;
+
+		while (CheckModuleIsMoving(ModuleName::ImagingModuleXYZ))
+		{
+			if (m_isStopTreeSystem.load())
+			{
+				StopModuleMove(ModuleName::ImagingModuleXYZ);
+				m_isStopTreeSystem.store(false);
+				return "Operation is force stopped by user.";
+			}
+
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
+
+		//最后Y
 		message = LimitMove::getInstance()->motion3DMoveAbsAsync(cv::Point3f(m_slbConfigInfo.slb_LoadImageXYZPosition.x,
 			m_slbConfigInfo.slb_LoadImageXYZPosition.y, m_slbConfigInfo.slb_LoadImageXYZPosition.z), withCamera);
 		if (!message.empty())
