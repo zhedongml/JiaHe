@@ -48,7 +48,7 @@ void crosstest()
 void fiducialTest()
 {
 	//string dir = "G:/IMGS/jiahe/fiducial/";
-	string dir = "D:/data_hm_0211/JiaHe img/fiducial/";
+	string dir = "D:\\data_hm_0211\\JiaHe img\\fiducial1\\fiducial\\";
 	std::string IMG_PATH = dir + "*.tif"; //"E:\\LiNing\\十字线检测\\处理异常图\\*.tiff";//遍历文件夹下的所有.jpg文件
 	// write file
 	ofstream ofs;
@@ -124,7 +124,7 @@ void main()
 {
 	//crossTest();
 	//rectangleDetection();
-	//fiducialTest();
-	crosstest();
+	fiducialTest();
+	//crosstest();
 }
 
