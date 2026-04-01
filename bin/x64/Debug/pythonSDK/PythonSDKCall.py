@@ -259,10 +259,10 @@ class IQMetricsSDKCall:
 
 
 if __name__ == '__main__':
-    config_json = r'F:\hm0128\JiaHe\src\RealityQ+\config'
+    config_json = r'D:\Code\JiaHe\src\RealityQ+\config'
     IQClass = IQMetricsSDKCall(config_json)
 
-    folder = r'D:\data_hm_0211\SLB_20260323T104922\IQ'
+    folder = r'E:\FAT_GRR\20260326_MetricsTest\SLB_20260326T000450\IQ'
     # folder = r'D:\project\Hydrus2\111\IQ'
     # IQClass.distortion_cal(folder,'W',5)
 
@@ -275,5 +275,5 @@ if __name__ == '__main__':
     #IQClass.straylight_cal(folder,'W',5,0)
 
     #
-    IQClass.coloruniformity_cal(folder,'',5,0,'')
+    IQClass.coloruniformity_cal(folder,'',5,0,'ND3')
 

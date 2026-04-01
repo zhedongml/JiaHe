@@ -30,21 +30,22 @@ class MLCOLORIMETERCOMMON_EXPORT MLColorimeterHelp {
 
     ML::MLColorimeter::FOVCrop ReadJsonToFOVCrop(const char* filename, std::string objectName);
 
-    bool ReadFlip_RotateJson(const char* filename, std::string objectName);
+    bool ReadFlip_RotateJson(const char* filename, std::string objectName, ML::MLColorimeter::Flipping& flipx,
+                             ML::MLColorimeter::Flipping& flipy, double& rotation);
 
     bool WriteFlip_RotateToJson(const char* filename, std::string objectName,
                                 ML::MLColorimeter::Flipping flipx, ML::MLColorimeter::Flipping flipy,
-                                ML::MLColorimeter::Rotation rotation);
+                                double rotation);
 
     ML::MLColorimeter::Flipping GetFlippingX();
 
     ML::MLColorimeter::Flipping GetFlippingY();
 
-    ML::MLColorimeter::Rotation GetRotation();
+    double GetRotation();
 
     cv::Mat Flip(cv::Mat srcImg, ML::MLColorimeter::Flipping flip);
 
-    cv::Mat Rotation(cv::Mat srcImg, ML::MLColorimeter::Rotation);
+    cv::Mat Rotation(cv::Mat srcImg, double rotate);
 
     bool WriteMatToJsonFile(const char* filename, std::string objectName, cv::Mat mat);
 
@@ -93,6 +94,8 @@ class MLCOLORIMETERCOMMON_EXPORT MLColorimeterHelp {
     ML::MLColorimeter::Rotation TransStrToRotation(std::string str);
 
     std::string TransAEStatusToStr(ML::CameraV2::AutoExposureStatus status);
+
+    std::string TransExposureModeToStr(ML::MLColorimeter::ExposureMode exposuremode);
 
     std::string TransDeviceTypeToStr(ML::MLSpecbos::DeviceType dtype);
 
@@ -146,7 +149,7 @@ class MLCOLORIMETERCOMMON_EXPORT MLColorimeterHelp {
     static MLColorimeterHelp* m_instance;
     ML::MLColorimeter::Flipping m_FlipX = ML::MLColorimeter::Flipping::NonReverse;
     ML::MLColorimeter::Flipping m_FlipY = ML::MLColorimeter::Flipping::NonReverse;
-    ML::MLColorimeter::Rotation m_Rotation = ML::MLColorimeter::Rotation::R0;
+    double m_Rotation = 0;
 };
 }  // namespace MLColorimeter
 }  // namespace ML

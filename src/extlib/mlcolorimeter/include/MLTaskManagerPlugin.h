@@ -1,6 +1,5 @@
 #pragma once
 #include <QObject>
-#include <QWidget>
 #include <QtPlugin>
 
 #include "mltaskmanager_global.h"

@@ -6,6 +6,8 @@
 #include <QImage>
 #include <QObject>
 #include <shared_mutex>
+#include <mutex>
+#include <condition_variable>
 #include <opencv2/opencv.hpp>
 #include "IQ_BasicDataType.h"
 #include "MLColorimeterMode.h"
@@ -23,10 +25,11 @@ namespace IQ_Parallel_NS
 	{
 		Q_OBJECT
 	public:
-		static ImageDataManager* GetInstance(void);
+		static void Initialize(SharedData& data);
+		static ImageDataManager& GetInstance();
 		~ImageDataManager();
 		int SaveImageByName(QString, ImageAlgoMetaData, bool notify = true);
-		int IsImageExist(QString);
+		//int IsImageExist(QString);
 		int ReadImageByName(QString, ImageAlgoMetaData&);
 		void Clear();
 		int FreeImageByName(QString, QString);
@@ -34,22 +37,18 @@ namespace IQ_Parallel_NS
 		QStringList GetExistingImagesList();
 		QStringList FilterExistingImages(QStringList);
 
-	signals:
-		void Signal_RecvSpecificImage(QString);
-
 	public slots:
 		void Slot_NewImgMetaData(std::shared_ptr<ML_Task::ImageAlgoMetaData>);
-		//void Slot_NewImgMetaData(ML_Task::ImageAlgoMetaData imgData);
-		//void Slot_test(QString imgData);
 
 	private:
-		ImageDataManager(QObject* parent = nullptr);
-		int GetPixelByteSize(int);
+		ImageDataManager(SharedData& data, QObject* parent = nullptr);
 		void Init();
-		void ThreadSafeEmit(const QString& _SN);
 
 		QHash<QString, ImageAlgoMetaData> _qHashRAM;
-		//std::mutex mtx;
 		mutable std::shared_mutex rw_mutex;
+		SharedData& shared;
+
+		static std::unique_ptr<ImageDataManager> instance_;
+		static std::mutex mutex_;
 	};
 }

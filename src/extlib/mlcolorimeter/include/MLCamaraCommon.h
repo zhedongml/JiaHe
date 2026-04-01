@@ -180,6 +180,7 @@ struct AEContainer {
     int iteration;
     int take_time;
     bool AE_done;
+    double gray_value;
 };
 
 /// <summary>

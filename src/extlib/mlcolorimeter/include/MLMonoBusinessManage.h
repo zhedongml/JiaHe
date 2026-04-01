@@ -219,6 +219,12 @@ class MLCOLORIMETER_EXPORT MLMonoBusinessManage : public QObject {
     virtual double ML_GetExposureTime();
 
     /**
+     * @brief  Get the exposure mode.
+     * @return 
+     */
+    virtual ML::MLColorimeter::ExposureMode ML_GetExposureMode();
+
+    /**
      * @brief  selects the logic or sensor binning engine features.
      * @param binningSelector  binning selector, logic or sensor
      * @return the result contains the message, code and status.
@@ -287,7 +293,6 @@ class MLCOLORIMETER_EXPORT MLMonoBusinessManage : public QObject {
      */
     virtual Result ML_ReverseY(bool reverse);
 
-
     /**
      * @brief  Capture single image asynchronously.
      * @return the result contains the message, code and status.
@@ -318,6 +323,8 @@ class MLCOLORIMETER_EXPORT MLMonoBusinessManage : public QObject {
      * @param img  image to calculate gray status
      */
     virtual ML::AECommon::GrayStatus ML_CalGrayStatus(cv::Mat& img);
+
+    virtual double ML_GetAEGrayValue();
 
     /**
      * @brief  img after software binning.
@@ -389,15 +396,16 @@ class MLCOLORIMETER_EXPORT MLMonoBusinessManage : public QObject {
      * @return digital gain
      */
     virtual double ML_GetCameraGain();
-    
+
     /**
      * @brief  capture High Dynamic Range image
+     * @param darkImage dark image to substraction during HDR
      * @param maxExposureTime  max exposure setting during HDR
      * @param thresholdArray  gray value threshold array
      * @param thresholdPercent  pixel number threshold precent
      * @return cv::Mat
      */
-    virtual cv::Mat ML_CaptureHDRImage(double maxExposureTime = 5000, std::vector<int> thresholdArray = {2919, 1946, 973},
+    virtual cv::Mat ML_CaptureHDRImage(cv::Mat darkImage, double maxExposureTime = 5000, std::vector<int> thresholdArray = {2919, 1946, 973},
                                        double thresholdPercent = 0.00025);
 
     // Filter Interface
@@ -409,8 +417,7 @@ class MLCOLORIMETER_EXPORT MLMonoBusinessManage : public QObject {
      * @param cb  callback function
      * @return the result contains the message, code and status.
      */
-    virtual Result ML_MoveND_XYZFilterByEnumAsync(std::string keyName,
-                                                  ML::MLFilterWheel::MLFilterEnum channel,
+    virtual Result ML_MoveND_XYZFilterByEnumAsync(std::string keyName, ML::MLFilterWheel::MLFilterEnum channel,
                                                   ML::MLFilterWheel::MLFilterWheelCallback* cb = nullptr);
 
     /**
@@ -419,8 +426,7 @@ class MLCOLORIMETER_EXPORT MLMonoBusinessManage : public QObject {
      * @param channel  the enum of channel to switch
      * @return the result contains the message, code and status.
      */
-    virtual Result ML_MoveND_XYZFilterByEnumSync(std::string keyName,
-                                                 ML::MLFilterWheel::MLFilterEnum channel);
+    virtual Result ML_MoveND_XYZFilterByEnumSync(std::string keyName, ML::MLFilterWheel::MLFilterEnum channel);
 
     /**
      * @brief  Get the channel of ND/XYZ FilterWheel.
@@ -925,8 +931,7 @@ class MLCOLORIMETER_EXPORT MLMonoBusinessManage : public QObject {
      * @return a map of CaptureData (map format: {color filter channel enum, capture
      * data}).
      */
-    virtual std::map<ML::MLFilterWheel::MLFilterEnum, ML::MLColorimeter::CaptureData>
-    ML_GetColorCameraCaptureData();
+    virtual std::map<ML::MLFilterWheel::MLFilterEnum, ML::MLColorimeter::CaptureData> ML_GetColorCameraCaptureData();
 
     /**
      * @brief  Get a ML_addInBase object by name.
@@ -1146,8 +1151,6 @@ class MLCOLORIMETER_EXPORT MLMonoBusinessManage : public QObject {
     std::vector<double> m_diopterScan_VIDArrRaw;
     std::vector<std::vector<double>> m_diopterScan_MTFArrRaw;
 
-    
-
     QMutex m_mutex;
     bool m_isFirstConnect = false;
     ML::CameraV2::AEContainer m_AEContainer;
@@ -1159,6 +1162,7 @@ class MLCOLORIMETER_EXPORT MLMonoBusinessManage : public QObject {
 
     ML::CameraV2::Binning m_swBinning = ML::CameraV2::Binning::ONE_BY_ONE;
     ML::CameraV2::BinningMode m_swBinningMode = ML::CameraV2::BinningMode::AVERAGE;
+    ML::MLColorimeter::ExposureMode m_expMode = ML::MLColorimeter::ExposureMode::Auto;
 };
 }  // namespace MLColorimeter
 }  // namespace ML

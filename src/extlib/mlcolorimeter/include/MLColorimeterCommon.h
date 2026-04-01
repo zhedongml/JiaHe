@@ -11,9 +11,9 @@
 #include "MLCamaraCommon.h"
 #include "MLEleReflectorCommon.h"
 #include "MLFilterWheelCommon.h"
+#include "MLSpecbosCommon.h"
 #include "MLSpectrometerCommon.h"
 #include "MotorPluginCommon.h"
-#include "MLSpecbosCommon.h"
 
 namespace ML {
 namespace MLColorimeter {
@@ -250,6 +250,7 @@ typedef struct CaptureData {
     /** @brief pixel format during capture image*/
     ML::CameraV2::MLPixelFormat PixelFormat;
     double ExposureOffset;
+    ExposureMode ExpMode;
     CaptureData() {
         Aperture = "3mm";
         LightSource = "";
@@ -260,6 +261,7 @@ typedef struct CaptureData {
         Binning = ML::CameraV2::Binning::ONE_BY_ONE;
         PixelFormat = ML::CameraV2::MLPixelFormat::MLMono12;
         ExposureOffset = 0.0;
+        ExpMode = ExposureMode::Auto;
     }
 } ProcessedData;
 
@@ -309,7 +311,7 @@ struct PreCalibrationData {
     /** @brief flip y setting of the calibration data*/
     Flipping FlipY;
     /** @brief rotate setting of the calibration data*/
-    Rotation Rotate;
+    double Rotate;
 };
 
 struct RXMappingMethod {
@@ -380,8 +382,8 @@ struct CalibrationConfig2 {
     /** @brief nd filter setting of the calibration data*/
     std::vector<ML::MLFilterWheel::MLFilterEnum> NDFilterList = {ML::MLFilterWheel::MLFilterEnum::ND0};
     /** @brief color filter list setting of the calibration data*/
-    std::vector<ML::MLFilterWheel::MLFilterEnum> ColorFilterList = {ML::MLFilterWheel::MLFilterEnum::X, ML::MLFilterWheel::MLFilterEnum::Y,
-                                                                    ML::MLFilterWheel::MLFilterEnum::Z};
+    std::vector<ML::MLFilterWheel::MLFilterEnum> ColorFilterList = {
+        ML::MLFilterWheel::MLFilterEnum::X, ML::MLFilterWheel::MLFilterEnum::Y, ML::MLFilterWheel::MLFilterEnum::Z};
     /** @brief rx setting of the calibration data*/
     RXCombination RX = RXCombination();
     /** @brief light source setting of the calibration data*/
@@ -401,8 +403,8 @@ struct CalibrationConfig {
     /** @brief nd filter setting of the calibration data*/
     std::vector<ML::MLFilterWheel::MLFilterEnum> NDFilterList = {ML::MLFilterWheel::MLFilterEnum::ND0};
     /** @brief color filter list setting of the calibration data*/
-    std::vector<ML::MLFilterWheel::MLFilterEnum> ColorFilterList = {ML::MLFilterWheel::MLFilterEnum::X, ML::MLFilterWheel::MLFilterEnum::Y,
-                                                                    ML::MLFilterWheel::MLFilterEnum::Z};
+    std::vector<ML::MLFilterWheel::MLFilterEnum> ColorFilterList = {
+        ML::MLFilterWheel::MLFilterEnum::X, ML::MLFilterWheel::MLFilterEnum::Y, ML::MLFilterWheel::MLFilterEnum::Z};
     /** @brief rx setting of the calibration data*/
     RXCombination RX = RXCombination();
     /** @brief light source setting of the calibration data*/
@@ -550,6 +552,7 @@ struct InUseCaliData {
     RXCombination RadianceRX;
     double VID;
     double ExposureTime;
+    ExposureMode ExpMode;
     ML::CameraV2::Binning Binning;
     ML::CameraV2::MLPixelFormat PixelFormat;
     double DarkGray;

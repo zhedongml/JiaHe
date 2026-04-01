@@ -17,6 +17,7 @@
 #include "MLColorimeterHelp.h"
 #include "MLColorimeterCommon.h"
 #include "MLTaskManager.h"
+#include "PrjCommon/metricsdata.h"
 
 class QSharedMemory;
 
@@ -133,7 +134,7 @@ bool CameraSimulator::startWork(BT::TreeNode& node)
 		}
 
 		MetricsProcessorProxy::GetInstance()->setVirtualCameraMode(false);
-		MetricsProcessorProxy::GetInstance()->ClearCache();
+		//MetricsProcessorProxy::GetInstance()->ClearCache();
 		return true;
 	}
 
@@ -141,7 +142,7 @@ bool CameraSimulator::startWork(BT::TreeNode& node)
 
 bool CameraSimulator::batchUpdateImages()
 {
-	ImageDataManager::GetInstance()->Clear();
+	ImageDataManager::GetInstance().Clear();
 
 	for (int i = 0; i < m_fileList.size(); i++)
 	{
@@ -163,7 +164,7 @@ bool CameraSimulator::batchUpdateImages()
 				metadata->image = img;
 				metadata->imageName = imgName.toStdString();
 
-				ImageDataManager::GetInstance()->SaveImageByName(imgName, *metadata, false);
+				ImageDataManager::GetInstance().SaveImageByName(imgName, *metadata, false);
 			}
 		}
 	}
@@ -253,6 +254,11 @@ void CameraSimulator::Init()
 					{
 						qImgHeader = qImgHeader.replace("$color$", QString::fromStdString(color));
 					}
+
+					if (MetricsData::instance()->GetTestState().IsDut)
+						qImgHeader += "_ND0";
+					else
+						qImgHeader += "_ND3";
 
 					qImgHeader = qImgHeader.toLower();
 

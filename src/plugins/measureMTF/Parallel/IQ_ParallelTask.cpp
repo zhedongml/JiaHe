@@ -12,11 +12,9 @@
 #include "iqtmodel.h"
 #include "PrjCommon/metricsdata.h"
 
-//#include "EtManage.h"
-
 using namespace IQ_Parallel_NS;
 
-IQ_Parallel_NS::IQ_ParallelTask::IQ_ParallelTask(MetricDescription* _pConfog, QStringList _eyeboxlist, bool _vcm)
+IQ_ParallelTask::IQ_ParallelTask(MetricDescription* _pConfog, QStringList _eyeboxlist, bool _vcm)
 {
 	if (nullptr != _pConfog && _eyeboxlist.size() > 0)
 	{
@@ -24,8 +22,6 @@ IQ_Parallel_NS::IQ_ParallelTask::IQ_ParallelTask(MetricDescription* _pConfog, QS
 		m_VirtualCameraMode = _vcm;
 		m_eyeboxlist = _eyeboxlist;
 
-		//bool ok = connect(ImageDataManager::GetInstance(), &ImageDataManager::Signal_RecvSpecificImage,
-		//	this, &IQ_ParallelTask::Slot_RecvSpecificImage, Qt::DirectConnection);// , Qt::DirectConnection); //, Qt::UniqueConnection Qt::DirectConnection
 		Init();
 	}
 }
@@ -44,12 +40,23 @@ void IQ_Parallel_NS::IQ_ParallelTask::Init()
 
 	m_SummaryTable.clear();
 
+	std::vector<std::string> images_ND(m_pConfig->images);
+
+	std::vector<std::string>::iterator iter;
+	for (iter = images_ND.begin(); iter != images_ND.end(); iter++)
+	{
+		if (MetricsData::instance()->GetTestState().IsDut)
+			(*iter) += "_ND0";
+		else
+			(*iter) += "_ND3";
+	}
+
 	for (auto eyeboxId : m_pConfig->eyeboxId)
 	{
 		if (m_eyeboxlist.size() > 0 && false == m_eyeboxlist.contains(QString::fromStdString(eyeboxId), Qt::CaseInsensitive))
 			continue;
 
-		std::vector<std::string> exps = ReplaceSpecialString(m_pConfig->images, "$eyeboxId$", eyeboxId);
+		std::vector<std::string> exps = ReplaceSpecialString(images_ND, "$eyeboxId$", eyeboxId);
 
 		if (SearchSubstringCount(exps, "$color$") > 0)
 		{
@@ -114,7 +121,9 @@ void IQ_Parallel_NS::IQ_ParallelTask::Stop()
 
 	m_Pause = false;
 	m_Condition.notify_all();
-
+	shared.ready = true;
+	shared.imagePool.clear();
+	shared.cv.notify_all();
 
 	if (m_Thread.joinable())
 	{
@@ -140,6 +149,16 @@ std::string IQ_Parallel_NS::IQ_ParallelTask::GetName()
 std::vector<QStringList> IQ_Parallel_NS::IQ_ParallelTask::GetSummaryTable()
 {
 	return m_SummaryTable;
+}
+
+int IQ_Parallel_NS::IQ_ParallelTask::NotifyOne(QString _Name, QStringList _PoolLost)
+{
+	std::unique_lock<std::mutex> lock(shared.mtx);
+	shared.ready = true;
+	shared.imageName = _Name;
+	shared.imagePool = _PoolLost;
+	shared.cv.notify_one();
+	return 0;
 }
 
 int IQ_Parallel_NS::IQ_ParallelTask::GetImageRefCount(QString _Name)
@@ -244,6 +263,16 @@ void IQ_Parallel_NS::IQ_ParallelTask::RemoveFromSummary(QStringList freelist)
 	m_WorkingTable.erase(std::remove(m_WorkingTable.begin(), m_WorkingTable.end(), freelist), m_WorkingTable.end());
 }
 
+int IQ_Parallel_NS::IQ_ParallelTask::IsImageExist(QString _SN)
+{
+	if (m_pool_list.contains(_SN))
+	{
+		return 0;
+	}
+
+	return -1;
+}
+
 bool IQ_Parallel_NS::IQ_ParallelTask::CheckCalcCondition(QStringList& result)
 {
 	std::vector<QStringList>::const_iterator iter;
@@ -253,7 +282,7 @@ bool IQ_Parallel_NS::IQ_ParallelTask::CheckCalcCondition(QStringList& result)
 		QStringList list = (*iter);
 		cnt = 0;
 		for (auto name : list) {
-			cnt += ImageDataManager::GetInstance()->IsImageExist(name);
+			cnt += IsImageExist(name);
 		}
 
 		if (0 == cnt) {
@@ -283,7 +312,7 @@ void IQ_Parallel_NS::IQ_ParallelTask::Run()
 {
 	m_Running = true;
 
-	std::cout << m_pConfig->name << " ÈÎÎñ¿ªÊ¼" << std::endl;
+	//std::cout << m_pConfig->name << " ÈÎÎñ¿ªÊ¼" << std::endl;
 
 	IQ_WaitResult result;
 
@@ -299,8 +328,28 @@ void IQ_Parallel_NS::IQ_ParallelTask::Run()
 			locker.unlock();
 		}
 
-		if ((0 == m_SummaryTable.size()) && (0 == m_WorkingTable.size()))
+		if (0 == m_SummaryTable.size()) //&& (0 == m_WorkingTable.size()))
 			break;
+
+		{
+			std::unique_lock<std::mutex> lock(shared.mtx);
+			shared.cv.wait(lock, [this] { return shared.ready; });
+			m_pool_list = shared.imagePool;
+
+			if (m_UserAbort)
+				break;
+		}
+		
+		QString imageName = shared.imageName;
+
+		shared.reset();
+
+		//LoggingWrapper::instance()->info(QString("******************shared.ready.[%1] [%2] [%3]******************")
+		//	.arg(QString::fromStdString(GetName()))
+		//	.arg(imageName).arg(m_pool_list.join(",")));
+
+		LoggingWrapper::instance()->info(QString("******************shared.ready.[%1] [%2]******************")
+			.arg(QString::fromStdString(GetName())).arg(imageName));
 
 		QStringList m_NowCalculationQueue = UpdateCalcQueue();
 
@@ -336,12 +385,19 @@ void IQ_Parallel_NS::IQ_ParallelTask::Run()
 
 			//QStringList deleteList(m_NowCalculationQueue);
 
+			//QtConcurrent::run([=]() {
+			//	MetricCalculationMethod(m_NowCalculationQueue);
+			//	RemoveFromSummary(m_NowCalculationQueue);
+			//	ImageDataManager::GetInstance().
+			//		FreeImagesByNameList(QString::fromStdString(m_pConfig->name), m_NowCalculationQueue);
+			//	});	
+
 			QtConcurrent::run([=]() {
 				MetricCalculationMethod(m_NowCalculationQueue);
 				RemoveFromSummary(m_NowCalculationQueue);
-				ImageDataManager::GetInstance()->
+				ImageDataManager::GetInstance().
 					FreeImagesByNameList(QString::fromStdString(m_pConfig->name), m_NowCalculationQueue);
-				});	
+				});
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		}
@@ -357,12 +413,10 @@ void IQ_Parallel_NS::IQ_ParallelTask::Run()
 			continue;
 		}
 
-		//Delay_MSec(50);
-
 		PrintSummaryTable();
 	}
 
-	while ((m_WorkingTable.size() + m_WorkingTable.size()) > 0)
+	while  (m_WorkingTable.size() > 0)
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	}
@@ -454,7 +508,7 @@ void IQ_Parallel_NS::IQ_ParallelTask::MetricCalculationMethod(QStringList m_NowC
 	for (int i = 0; i < m_NowCalculationQueue.size(); i++)
 	{
 		ImageAlgoMetaData _imgData;
-		int ret = ImageDataManager::GetInstance()->ReadImageByName(m_NowCalculationQueue[i], _imgData);
+		int ret = ImageDataManager::GetInstance().ReadImageByName(m_NowCalculationQueue[i], _imgData);
 		if (0 == ret)
 		{
 			params.push_back(_imgData.image); //_imgData.image.clone()
@@ -493,7 +547,7 @@ void IQ_Parallel_NS::IQ_ParallelTask::MetricCalculationMethod(QStringList m_NowC
 		}
 		catch (const std::exception& e)
 		{
-			LoggingWrapper::instance()->error(QString("calculating [%1] metric error. %2.")
+			LoggingWrapper::instance()->error(QString("calculating [%1] metric error. %2")
 				.arg(QString::fromStdString(m_pConfig->name))
 				.arg(QString::fromStdString(e.what())));
 		}
