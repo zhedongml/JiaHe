@@ -199,7 +199,7 @@ DenseMTFGridRe MLIQMetrics::MLdenseMTF::getDenseMTFGrid(const cv::Mat imgRaw) //
 	calculateMtfValue(mtfmapH0, re.minH,re.meanH);
 	calculateMtfValue(mtfmapV0, re.minV, re.meanV);
 	calculateMtfValue(mtfmapH2, re.minH_freq2, re.meanH_freq2);
-	calculateMtfValue(mtfmapV2, re.minH_freq2, re.meanH_freq2);
+	calculateMtfValue(mtfmapV2, re.minV_freq2, re.meanV_freq2);
 
 	//cv::Mat mtfH0,mtfV0;
 	//mtfmapH0.copyTo(mtfH0, mtfmapH0 > 20);

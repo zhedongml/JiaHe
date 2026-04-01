@@ -3,6 +3,7 @@
 #include"ml_multiCrossHairDetection.h"
 #include"LogPlus.h"
 #include"ml_gridDetect.h"
+#include "FileUtils.h"
 #include<armadillo>
 using namespace MLImageDetection;
 using namespace MLIQMetrics;
@@ -647,6 +648,7 @@ void MLIQMetrics::MLLateralColor::updateImgdraw(cv::Point2f cen, cv::Mat& imgdra
 
 void MLIQMetrics::MLLateralColor::writeLateralGridCenter(GridRe re)
 {
+	createDirIfNotExists("./config/AlgConfig/slbInfo");
 	string filepath = "./config/ALGConfig/slbInfo/LateralCen.csv";
 	vector<double>cenVec;
 	cenVec.push_back(re.center.x);

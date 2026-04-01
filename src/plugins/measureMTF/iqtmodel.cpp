@@ -1562,6 +1562,13 @@ QString IQTModel::calculateColorUniformity(QString color, QString mtcName, std::
 	degree = 0;
 	string ndstr;
 	ndstr = MetricsData::instance()->getImageNDFilter().toStdString();
+	if (ndstr.empty())
+	{
+		if (state.IsDut)
+			ndstr = "ND0";
+		else
+			ndstr = "ND3";
+	}
 	QMutexLocker locker(&mutex);
 	emit sigCalculateColorUniformity(color.toStdString(), id.toInt(), degree, ndstr);
 	condition.wait(&mutex);

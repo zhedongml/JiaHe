@@ -2,6 +2,7 @@
 #include "MLContrastRatio.h"
 #include "MLCherkerboardDetect.h"
 #include"LogPlus.h"
+#include"FileUtils.h"
 #include<numeric>
 using namespace MLImageDetection;
 using namespace cv;
@@ -247,6 +248,7 @@ void MLIQMetrics::MLContrastRatio::readCRMatFromCSV(cv::Mat& crmat, string color
 
 void MLIQMetrics::MLContrastRatio::writeCRMatToCSV(const cv::Mat& crmat, string color)
 {
+	createDirIfNotExists("./config/AlgConfig/slbInfo");
 	string path = "./config/ALGConfig/slbInfo/SLBCR_" + color + ".csv";
 	std::mutex mtx;
 	mtx.lock();
@@ -367,6 +369,7 @@ cv::Mat MLIQMetrics::MLContrastRatio::preProcess(cv::Mat gray)
 
 void MLIQMetrics::MLContrastRatio::writeCheckerInfoToCSV(CheckerboardRe checkerRe)
 {
+	createDirIfNotExists("./config/AlgConfig/slbInfo");
 	string path1 = "./config/ALGConfig/slbInfo/checker_xlocMat.csv";
 	string path2 = "./config/ALGConfig/slbInfo/checker_ylocMat.csv";
 	std::mutex mtx;

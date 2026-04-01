@@ -4,6 +4,7 @@
 #include"ml_multiCrossHairDetection.h"
 #include"ml_gridDetect.h"
 #include"LogPlus.h"
+#include"FileUtils.h"
 using namespace cv;
 using namespace MLIQMetrics;
 using namespace MLImageDetection;
@@ -105,6 +106,7 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(const cv::Mat imgRaw)
 	}
 	if (m_IsSLB == false)
 	{
+		createDirIfNotExists("./config/AlgConfig/slbInfo");
 		string filepath = "./config/ALGConfig/slbInfo/DUTCenter.csv";
 		vector<double>cenVec;
 		cenVec.push_back(realcenter.x);
@@ -133,7 +135,7 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(const cv::Mat imgRaw)
 	updateImgdraw(imgdraw, opticalCenter + cv::Point2f(0, -400 / binNum), strOpt, binNum);
 	string strx = "Deltx(pixel):" + to_string(deltaPx);
 	string stry = "Delty(pixel):" + to_string(deltaPy);
-	string strxArcmin = "Delty(Arcmin):" + to_string(re.H);
+	string strxArcmin = "Deltx(Arcmin):" + to_string(re.H);
 	string stryArcmin = "Delty(Arcmin):" + to_string(re.V);
 	updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 400 / binNum), strx, binNum);
 	updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 800 / binNum), stry, binNum);
@@ -468,6 +470,7 @@ void MLIQMetrics::MLFOVOffset::upateFOVOffset(FovOffsetRe& re, bool IsSLB)
 
 void MLIQMetrics::MLFOVOffset::writeFOVOffsetGridCenter(GridRe re)
 {
+	createDirIfNotExists("./config/AlgConfig/slbInfo");
 	string filepath = "./config/ALGConfig/slbInfo/FOVoffsetCen.csv";
 	vector<double>cenVec;
 	cenVec.push_back(re.center.x);
