@@ -363,10 +363,10 @@ QString IQTModel::calculateGridDistortion(QString color, QString mtcName, std::v
 			cv::Mat outImg = re.imgdraw;
 			if (outImg.data != NULL)
 				imwrite((qTempPath + "\\" + mtcName + "_" + color + "_eb" + id + ".jpg").toStdString(), outImg);
-			string csvNameX = (qTempPath + "\\" + mtcName + "XPosition_" + color + "_eb" + id + ".csv").toStdString();
-			string csvNameY = (qTempPath + "\\" + mtcName + "YPosition_" + color + "_eb" + id + ".csv").toStdString();
-			writeMatTOCSV(csvNameX, re.xPos);
-			writeMatTOCSV(csvNameY, re.yPos);
+			//string csvNameX = (qTempPath + "\\" + mtcName + "XPosition_" + color + "_eb" + id + ".csv").toStdString();
+			//string csvNameY = (qTempPath + "\\" + mtcName + "YPosition_" + color + "_eb" + id + ".csv").toStdString();
+			//writeMatTOCSV(csvNameX, re.xPos);
+			//writeMatTOCSV(csvNameY, re.yPos);
 		}
 		cv::Mat xPos = re.xPos;
 		if (xPos.empty())
@@ -835,10 +835,10 @@ QString IQTModel::calculateGridDenseMTF(QString color, QString mtcName, std::vec
 			matvec.push_back(re.mtfMapV);
 			matvec.push_back(re.mtfMapH2);
 			matvec.push_back(re.mtfMapV2);
-			strvec.push_back("mtfH_10.625");
-			strvec.push_back("mtfV_10.625");
-			strvec.push_back("mtfH_21.25");
-			strvec.push_back("mtfV_21.25");
+			strvec.push_back("mtfH_6.25");
+			strvec.push_back("mtfV_6.25");
+			strvec.push_back("mtfH_12.5");
+			strvec.push_back("mtfV_12.5");
 			writeMatTOCSV(csvNameX, matvec, strvec);
 		}
 		cv::Mat rollmat;
@@ -1171,23 +1171,23 @@ QString IQTModel::calculateLateralColor(QString color, QString mtcName, std::vec
 			substrvec.push_back("subYRBArcmin");
 			substrvec.push_back("subXGBArcmin");
 			substrvec.push_back("subYGBArcmin");
-			string csvName = (qTempPath + "\\" + mtcName + "_eb" + id + "subMapAcmin.csv").toStdString();
-			writeMatTOCSV(csvName, submat, substrvec);
+			//string csvName = (qTempPath + "\\" + mtcName + "_eb" + id + "subMapAcmin.csv").toStdString();
+			//writeMatTOCSV(csvName, submat, substrvec);
 
-			string csvNameXR = (qTempPath + "\\" + mtcName + "_eb" + id + "locxR.csv").toStdString();
-			string csvNameYR = (qTempPath + "\\" + mtcName + "_eb" + id + "locyR.csv").toStdString();
-			writeMatTOCSV(csvNameXR, re.locxR);
-			writeMatTOCSV(csvNameYR, re.locyR);
+			//string csvNameXR = (qTempPath + "\\" + mtcName + "_eb" + id + "locxR.csv").toStdString();
+			//string csvNameYR = (qTempPath + "\\" + mtcName + "_eb" + id + "locyR.csv").toStdString();
+			//writeMatTOCSV(csvNameXR, re.locxR);
+			//writeMatTOCSV(csvNameYR, re.locyR);
 
-			string csvNameXG = (qTempPath + "\\" + mtcName + "_eb" + id + "locxG.csv").toStdString();
-			string csvNameYG = (qTempPath + "\\" + mtcName + "_eb" + id + "locyG.csv").toStdString();
-			writeMatTOCSV(csvNameXG, re.locxG);
-			writeMatTOCSV(csvNameYG, re.locyG);
+			//string csvNameXG = (qTempPath + "\\" + mtcName + "_eb" + id + "locxG.csv").toStdString();
+			//string csvNameYG = (qTempPath + "\\" + mtcName + "_eb" + id + "locyG.csv").toStdString();
+			//writeMatTOCSV(csvNameXG, re.locxG);
+			//writeMatTOCSV(csvNameYG, re.locyG);
 
-			string csvNameXB = (qTempPath + "\\" + mtcName + "_eb" + id + "locxB.csv").toStdString();
-			string csvNameYB = (qTempPath + "\\" + mtcName + "_eb" + id + "locyB.csv").toStdString();
-			writeMatTOCSV(csvNameXB, re.locxB);
-			writeMatTOCSV(csvNameYB, re.locyB);
+			//string csvNameXB = (qTempPath + "\\" + mtcName + "_eb" + id + "locxB.csv").toStdString();
+			//string csvNameYB = (qTempPath + "\\" + mtcName + "_eb" + id + "locyB.csv").toStdString();
+			//writeMatTOCSV(csvNameXB, re.locxB);
+			//writeMatTOCSV(csvNameYB, re.locyB);
 
 		}
 		cv::Mat rollmat;
@@ -1562,6 +1562,13 @@ QString IQTModel::calculateColorUniformity(QString color, QString mtcName, std::
 	degree = 0;
 	string ndstr;
 	ndstr = MetricsData::instance()->getImageNDFilter().toStdString();
+	if (ndstr.empty())
+	{
+		if (state.IsDut)
+			ndstr = "ND0";
+		else
+			ndstr = "ND3";
+	}
 	QMutexLocker locker(&mutex);
 	emit sigCalculateColorUniformity(color.toStdString(), id.toInt(), degree, ndstr);
 	condition.wait(&mutex);

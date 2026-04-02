@@ -8,6 +8,7 @@
 #include"CrossCenter.h"
 #include"MLCherkerboardDetect.h"
 #include"LogPlus.h"
+#include"FileUtils.h"
 using namespace MLImageDetection;
 using namespace cv;
 
@@ -986,6 +987,7 @@ cv::Mat MLImageDetection::MLGridDetect::rotateGridImg(cv::Mat img)
 }
 void MLImageDetection::MLGridDetect::writeGridInfoToCSV(GridRe gridRe)
 {
+	createDirIfNotExists("./config/AlgConfig/slbInfo");
 	string path1 = "./config/AlgConfig/slbInfo/grid_xlocMat.csv";
 	string path2 = "./config/AlgConfig/slbInfo/grid_ylocMat.csv";
 

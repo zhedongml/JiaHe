@@ -592,6 +592,7 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardTemplate1
 		}
 
 		// draw
+
 		cv::Mat xLocMat(indexMap.size(), CV_32FC1, Scalar(-1));
 		cv::Mat yLocMat(indexMap.size(), CV_32FC1, Scalar(-1));
 

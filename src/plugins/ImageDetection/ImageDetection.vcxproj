@@ -121,7 +121,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;ALGORITHM_EXPORTS;MLALGORITHM_EXPORTS;LOG4CPLUS_BUILD_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_USRDLL;ALGORITHM_EXPORTS;MLALGORITHM_EXPORTS;LOG4CPLUS_BUILD_DLL;FILEUTILS_DLL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir)src\extlib\MIPP;$(SolutionDir)src\extlib\armadillo\include;$(SolutionDir)src\extlib\color-util\include;$(SolutionDir)src\extlib\logplus;$(SolutionDir)src\extlib\eigen;$(SolutionDir)src\extlib\logplus\include;$(SolutionDir)src\extlib\libcbdetect\include;$(SolutionDir)src\extlib\libdmtx-0.7.2\src;$(OPENCV_DIR)\include;$(SolutionDir)src\extlib\measureCamera\include;$(SolutionDir)src\extlib\opencv4.5.1\build\include;$(SolutionDir)src\extlib\json4moderncpp;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>Default</LanguageStandard>
@@ -172,6 +172,7 @@ xcopy /y "$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\$(Configuration)\*.dll" "$(
     <ClCompile Include="CrossCenter.cpp" />
     <ClCompile Include="CrossCenterPro.cpp" />
     <ClCompile Include="FiducialDetect.cpp" />
+    <ClCompile Include="FileUtils.cpp" />
     <ClCompile Include="find_centerCentroid.cpp" />
     <ClCompile Include="find_centerGaussian.cpp" />
     <ClCompile Include="find_centerGrad.cpp" />
@@ -203,6 +204,7 @@ xcopy /y "$(SolutionDir)src\extlib\libdmtx-0.7.2\x64\$(Configuration)\*.dll" "$(
     <ClInclude Include="CrossCenter.h" />
     <ClInclude Include="CrossCenterPro.h" />
     <ClInclude Include="FiducialDetect.h" />
+    <ClInclude Include="FileUtils.h" />
     <ClInclude Include="find_multiCrosshair.h" />
     <ClInclude Include="ImageFilter.h" />
     <ClInclude Include="line2Dup.h" />
