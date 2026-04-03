@@ -43,10 +43,10 @@ struct RangingPos
 
 struct Anticollision
 {
-	double dutPreTipiltDxMax;
-	double dutPreTipiltDxMin;
-	double dutPreTipiltDyMax;
-	double dutPreTipiltDyMin;
+	double dutTipTiltDxMax;
+	double dutTipTiltDxMin;
+	double dutTipTiltDyMax;
+	double dutTipTiltDyMin;
 	double dutMotorAngleMax;
 	double dutMotorAngleMin;
 	double inputAlignmentMotorPosXMax;

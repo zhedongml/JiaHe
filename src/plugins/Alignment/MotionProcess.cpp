@@ -254,6 +254,7 @@ namespace AAProcess
 		std::string msg;
 
 		//TODO: pre judge
+		//Motion2DModel::getInstance(motion2DType::ACS2DPro)->getPosition();
 
 		//----------- adjust safe ---------------//
 		msg = LoadSLB();
@@ -515,10 +516,10 @@ namespace AAProcess
 		dutPreTilt.y = m_processConfigInfo.offsetRoatate.dutPreTiptilt[currentDutName].y;
 		dutPreTilt.z = 0;
 
-		double safeDXMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDxMax;
-		double safeDXMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDxMin;
-		double safeDYMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDyMax;
-		double safeDYMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDyMin;
+		double safeDXMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutTipTiltDxMax;
+		double safeDXMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutTipTiltDxMin;
+		double safeDYMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutTipTiltDyMax;
+		double safeDYMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutTipTiltDyMin;
 
 		if (dutPreTilt.x > safeDXMax ||
 			dutPreTilt.x < safeDXMin ||
