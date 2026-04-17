@@ -147,6 +147,20 @@ NodeStatus DutAA::DutAA4Recipe::AA_Connect_Polarizer()
     return BT::NodeStatus::SUCCESS;
 }
 
+NodeStatus DutAA::DutAA4Recipe::AA_Dut_InitDUT(BT::TreeNode& node)
+{
+    RegisterStopHandler(node);
+    MotionProcess::getInstance().StopTreeSystem(false);
+    std::string msg = MotionProcess::getInstance().InitSafePosAdjust();
+    if (msg != "")
+    {
+        QString message = QString("Recipe Node [ AA_Dut_InitDUT ] run error, %1").arg(QString::fromStdString(msg));
+        LoggingWrapper::instance()->error(message);
+        return BT::NodeStatus::FAILURE;
+    }
+    return BT::NodeStatus::SUCCESS;
+}
+
 NodeStatus DutAA::DutAA4Recipe::AA_Dut_LoadDUT(BT::TreeNode& node)
 {
     RegisterStopHandler(node);

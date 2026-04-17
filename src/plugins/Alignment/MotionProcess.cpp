@@ -90,7 +90,7 @@ namespace AAProcess
 				return msg;
 			}
 		}
-		
+
 		// 2D tilt station 
 		//if (!Motion2DModel::getInstance(ACS2DCameraTilt)->Motion2DisConnected())
 		{
@@ -158,7 +158,7 @@ namespace AAProcess
 		std::string msg;
 
 		// Projector 2D tilt
-		
+
 		//if (!Motion2DModel::getInstance(ACS2DPro)->GetIsConnected())
 		{
 			QString ipEtc = ConfigItem::instance()->getMotion2DIpAndOther(ACS2DPro);
@@ -244,37 +244,32 @@ namespace AAProcess
 		return "";
 	}
 
-	std::string MotionProcess::LoadDUT()
+	std::string MotionProcess::InitSafePosAdjust() 
 	{
-		PrintLog(LogType::Normal, "[LoadDUT Start]");
+		PrintLog(LogType::Normal, "[InitSafePosAdjust Start]");
 		if (currentDutName == "")
 		{
 			return "Pleasure check DUT Type!";
 		}
-		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ, ModuleName::ImagingModuleXYZ);
-		if (msg != "")
-			return msg;
+		std::string msg;
+
+		//TODO: pre judge
+		//Motion2DModel::getInstance(motion2DType::ACS2DPro)->getPosition();
 
 		//----------- adjust safe ---------------//
-
 		msg = LoadSLB();
 		if (msg != "")
 			return msg;
 
 		//----------- adjust DUT tiptilt ---------------//
+		msg = CheckModuleConnectStatus(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy);
+		if (msg != "")
+			return msg;
 
 		double projectionTiptiltX = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].x;
 		double projectionTiptiltY = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].y;
 		Motion2DModel::getInstance(motion2DType::ACS2DPro)->Motion2DMoveAbsAsync(projectionTiptiltX, projectionTiptiltY);
-		/*while (CheckModuleIsMoving(ModuleName::ProjectionDxDy))
-		{
-			QCoreApplication::processEvents();
-			_sleep(100);
-		}
-		PrintLog(LogType::Normal, "projection module adjust tiptilt end.");
-		PrintModulePosition(ModuleName::ProjectionDxDy);*/
 
-		//adjust imaging module tiptilt
 		double imgingTiptiltX = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].x;
 		double imgingTiptiltY = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].y;
 		Motion2DModel::getInstance(motion2DType::ACS2DCameraTilt)->Motion2DMoveAbsAsync(imgingTiptiltX, imgingTiptiltY);
@@ -294,6 +289,60 @@ namespace AAProcess
 		PrintLog(LogType::Normal, "imaging module adjust tiptilt end.");
 
 		PrintModulePosition(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy);
+
+		return "";	
+	}
+
+	std::string MotionProcess::LoadDUT()
+	{
+		PrintLog(LogType::Normal, "[LoadDUT Start]");
+		if (currentDutName == "")
+		{
+			return "Pleasure check DUT Type!";
+		}
+		std::string msg = CheckModuleConnectStatus(ModuleName::DutModuleXYZ, ModuleName::ImagingModuleXYZ);
+		if (msg != "")
+			return msg;
+
+		////----------- adjust safe ---------------//
+
+		//msg = LoadSLB();
+		//if (msg != "")
+		//	return msg;
+
+		////----------- adjust DUT tiptilt ---------------//
+
+		//double projectionTiptiltX = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].x;
+		//double projectionTiptiltY = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].y;
+		//Motion2DModel::getInstance(motion2DType::ACS2DPro)->Motion2DMoveAbsAsync(projectionTiptiltX, projectionTiptiltY);
+		///*while (CheckModuleIsMoving(ModuleName::ProjectionDxDy))
+		//{
+		//	QCoreApplication::processEvents();
+		//	_sleep(100);
+		//}
+		//PrintLog(LogType::Normal, "projection module adjust tiptilt end.");
+		//PrintModulePosition(ModuleName::ProjectionDxDy);*/
+
+		////adjust imaging module tiptilt
+		//double imgingTiptiltX = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].x;
+		//double imgingTiptiltY = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].y;
+		//Motion2DModel::getInstance(motion2DType::ACS2DCameraTilt)->Motion2DMoveAbsAsync(imgingTiptiltX, imgingTiptiltY);
+
+		//while (CheckModuleIsMoving(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy))
+		//{
+		//	if (m_isStopTreeSystem.load())
+		//	{
+		//		StopModuleMove(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy);
+		//		m_isStopTreeSystem.store(false);
+		//		return "Operation is force stopped by user.";
+		//	}
+		//	QCoreApplication::processEvents();
+		//	_sleep(100);
+		//}
+		//PrintLog(LogType::Normal, "projection module adjust tiptilt end.");
+		//PrintLog(LogType::Normal, "imaging module adjust tiptilt end.");
+
+		//PrintModulePosition(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy);
 
 
 		//----------- adjust Fixpos ---------------//
@@ -467,10 +516,10 @@ namespace AAProcess
 		dutPreTilt.y = m_processConfigInfo.offsetRoatate.dutPreTiptilt[currentDutName].y;
 		dutPreTilt.z = 0;
 
-		double safeDXMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDxMax;
-		double safeDXMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDxMin;
-		double safeDYMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDyMax;
-		double safeDYMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutPreTipiltDyMin;
+		double safeDXMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutTipTiltDxMax;
+		double safeDXMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutTipTiltDxMin;
+		double safeDYMax = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutTipTiltDyMax;
+		double safeDYMin = m_processConfigInfo.offsetRoatate.anticollision[currentDutName].dutTipTiltDyMin;
 
 		if (dutPreTilt.x > safeDXMax ||
 			dutPreTilt.x < safeDXMin ||

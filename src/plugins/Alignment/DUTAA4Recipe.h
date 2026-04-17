@@ -32,6 +32,7 @@ namespace DutAA
 		NodeStatus AA_Connect_Polarizer();
 
 		// ¨T¨T¨T¨T¨T¨T¨T DutAA Nodes(Alignment)¨T¨T¨T¨T¨T¨T¨T¨T //
+		NodeStatus AA_Dut_InitDUT(BT::TreeNode& node);
 		NodeStatus AA_Dut_LoadDUT(BT::TreeNode& node);
 		NodeStatus AA_Dut_QrScanPos(BT::TreeNode& node);
 		NodeStatus AA_Dut_AdjustLevel(BT::TreeNode& node);
@@ -140,6 +141,14 @@ namespace DutAA
 			[=](BT::TreeNode& node)-> BT::NodeStatus
 			{
 				return obj->AA_Connect_Polarizer();
+			},
+			{});		
+
+		factory.registerSimpleAction(
+			"AA_Dut_InitDUT",
+			[=](BT::TreeNode& node)-> BT::NodeStatus
+			{
+				return obj->AA_Dut_InitDUT(node);
 			},
 			{});
 
