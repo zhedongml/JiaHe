@@ -74,6 +74,7 @@ std::vector<double> MLContrastRatio::CalculateCR(vector<double> posValue, vector
 double MLIQMetrics::MLContrastRatio::CalculateSingleCR(vector<double> posValue)
 {
 	double m0 = accumulate(posValue.begin(), posValue.end(), 0.0) / posValue.size();
+	m0 = 500;
 	double sumP = 0;
 	double sumN = 0;
 	for (int i = 0; i < posValue.size(); i++)
@@ -86,6 +87,40 @@ double MLIQMetrics::MLContrastRatio::CalculateSingleCR(vector<double> posValue)
 
 	return sumP / (sumN + 1e-6);
 }
+
+double MLIQMetrics::MLContrastRatio::CalculateSingleCRNew(vector<double> posValue) 
+{
+	double whiteSum = 0.0, blackSum = 0.0;
+	double whiteCount = 0.0, blackCount = 0.0;
+
+	for (size_t i = 0; i + 1 < posValue.size(); i += 2) {
+		double a = posValue[i];
+		double b = posValue[i + 1];
+
+		if (a > b) {
+			whiteSum += a;
+			blackSum += b;
+		}
+		else {
+			whiteSum += b;
+			blackSum += a;
+		}
+
+		whiteCount += 1.0;
+		blackCount += 1.0;
+	}
+
+	if (posValue.size() % 2 != 0) {
+		double last = posValue.back();
+		whiteSum += last;
+		whiteCount += 1.0;
+	}
+
+	double whiteAvg = whiteCount > 0.0 ? whiteSum / whiteCount : 0.0;
+	double blackAvg = blackCount > 0.0 ? blackSum / blackCount : 0.0;
+	return whiteAvg / blackAvg;
+}
+
 
 cv::Rect MLIQMetrics::MLContrastRatio::updateRectByBinNum(cv::Rect rect, int binNum)
 {
@@ -449,7 +484,7 @@ ContrastRatioRe MLIQMetrics::MLContrastRatio::getContrastRatio(const cv::Mat img
 		m_binNum = binNum;
 		cb.SetCRAreaPercent(crRation);
 		cb.SetChessboardUpdateFlag(false);
-		cb.SetChecssboardPointsClusters(200 / binNum);
+		cb.SetChecssboardPointsClusters(300 / binNum);//(200 / binNum);
 		cb.SetChessboardxyClassification(350 / binNum);
 		//CheckerboardRe checkerRe = cb.detectChessboardTemplate1(imgP8, crRation, binNum);
 		CheckerboardRe checkerRe=cb.detectChessboardTemplate1(imgP8, crRation,binNum);
@@ -633,8 +668,8 @@ SingleCheckerCRRe MLIQMetrics::MLContrastRatio::getSingleCheckerCR(cv::Mat img)
 
 		MLCherkerboardDetect cd;
 		cd.SetChessboardxyClassification(350/binNum);
-		cd.SetChecssboardPointsClusters(350 / binNum);
-		cd.SetChessboardUpdateFlag(false);
+		cd.SetChecssboardPointsClusters(300 / binNum);//(350 / binNum);
+		cd.SetChessboardUpdateFlag(true);
 		double crRation = IQMetricsParameters::crArea;
 
 		CheckerboardRe checkerRe = cd.detectChessboardTemplate1(img8, crRation, binNum);
@@ -647,6 +682,7 @@ SingleCheckerCRRe MLIQMetrics::MLContrastRatio::getSingleCheckerCR(cv::Mat img)
 			double cr = CalculateSingleCR(posValue);
 			cv::Size boardSize = checkerRe.boardSize - cv::Size(1, 1);
 			cv::Mat graylevelmat = updateMatValue(posValue, boardSize);
+			//double cr= CalculateSingleCRNew(posValue);
 			updateImgdraw(checkerRe.rectVec, posValue, img_draw);
 			//putTextOnImage(img_draw, "CR:" + numToString(cr), cv::Point2f(200, 400), 24 / binNum);
 			re.grayMat = graylevelmat;

@@ -578,7 +578,7 @@ CheckerboardRe MLImageDetection::MLCherkerboardDetect::detectChessboardTemplate1
 		Ptr<CLAHE> clahe = createCLAHE(2.0, Size(10, 10));
 		// clahe->apply(gray, gray);
 
-		vector<cv::Point2f> pts1 = matchTemplateMaxLocs(img, templ, 0.45, binNum);
+		vector<cv::Point2f> pts1 = matchTemplateMaxLocs(img, templ, 0.7, binNum);
 		drawPointsOnImage(img_draw1, pts1, 5, Scalar(0, 255, 0));
 		vector<cv::Point2f> ptsNew = pointsClusters(pts1, m_pointsClusters);
 		cv::Mat indexMap1 = generatePointsIndexMap(ptsNew, m_update, m_xyClassification);

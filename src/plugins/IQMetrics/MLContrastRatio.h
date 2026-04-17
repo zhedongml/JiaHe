@@ -71,6 +71,8 @@ namespace MLIQMetrics {
         std::vector<double> CalculateROIValue(cv::Mat img, vector<cv::Rect> roiVec);
         std::vector<double> CalculateCR(vector<double> posValue, vector<double> negValue);
         double CalculateSingleCR(vector<double>posValue);
+        double CalculateSingleCRNew(vector<double>posValue);
+
 
         cv::Rect updateRectByBinNum(cv::Rect rect, int binNum);
         cv::Mat updateMatValue(vector<double>crVec,cv::Size boardSize);
