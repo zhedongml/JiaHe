@@ -169,6 +169,11 @@ Result Motion1DModel::stopMove()
     return m_pMotion1D->StopMove();
 }
 
+void Motion1DModel::setSpeed(int speed)
+{
+    m_pMotion1D->SetSpeed(speed);
+}
+
 void Motion1DModel::updateMotion1DStatus(MLMotionState status)
 {
     if (status == MLMotionState::kMLStatusDisConnected)

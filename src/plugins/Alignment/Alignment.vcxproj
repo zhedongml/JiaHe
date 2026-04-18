@@ -244,6 +244,9 @@ xcopy /y "$(SolutionDir)src\extlib\recipeLib\$(Configuration)\ObjectManager.dll"
     <ProjectReference Include="..\ImageDetection\ImageDetection.vcxproj">
       <Project>{88aa6911-48b3-408c-938e-ea1f235fbd88}</Project>
     </ProjectReference>
+    <ProjectReference Include="..\integratingSphere\integratingSphere.vcxproj">
+      <Project>{7f97994d-8761-4a19-b258-6aa5b2629f5a}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\MAalignment\MAalignment.vcxproj">
       <Project>{91daddb8-f0b5-4d8f-bb7d-0c7c6e4d4fd0}</Project>
     </ProjectReference>

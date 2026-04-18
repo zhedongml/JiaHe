@@ -46,6 +46,7 @@ public:
     void setEStop(bool val);
 
     Result stopMove();
+    void setSpeed(int speed);
 
 private:
     void updateMotion1DStatus(MLMotionState status);

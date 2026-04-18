@@ -22,6 +22,7 @@ class INTEGRATINGSPHERE_EXPORT ReticleMode : public QObject
     Result absMove(double coordinate);
     Result relativeMove(double offset);
     void setStop(bool stop);
+    void setSpeed(double speed);
     QList<QString> getReticles();
     QString getReticleByPosition(double pos);
 
