@@ -106,7 +106,8 @@ xcopy /y "$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\bin\opencv_world45
 xcopy /y "$(SolutionDir)src\extlib\opencv4.5.1\build\x64\vc15\bin\opencv_world452.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
 xcopy /y "$(SolutionDir)src\extlib\python3.8\libx64\release64\python312.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
 xcopy /y "$(SolutionDir)src\extlib\recipeLib\$(Configuration)\ObjectManager.dll" "$(SolutionDir)bin\$(Platform)\$(Configuration)\plugins\"
-windeployqt --release  "$(TargetPath)"  --dir "$(SolutionDir)bin\$(Platform)\$(Configuration)"</Command>
+windeployqt --release  "$(TargetPath)"  --dir "$(SolutionDir)bin\$(Platform)\$(Configuration)"
+windeployqt --release --multimedia "$(SolutionDir)bin\$(Platform)\$(Configuration)"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'" Label="Configuration">

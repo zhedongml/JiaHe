@@ -383,22 +383,22 @@ bool PLCController::GetInterlockState()
 
 bool PLCController::GetSensorAState()
 {
-    return m_readThread->getState("Sensor A");
+    return m_readThread->getState("Sensor Small Right");
 }
 
 bool PLCController::GetSensorBState()
 {
-    return m_readThread->getState("Sensor B");
+    return m_readThread->getState("Sensor Large Left");
 }
 
 bool PLCController::GetSensorCState()
 {
-    return m_readThread->getState("Sensor C");
+    return m_readThread->getState("Sensor Large Right");
 }
 
 bool PLCController::GetSensorDState()
 {
-    return m_readThread->getState("Sensor D");
+    return m_readThread->getState("Sensor Wafer");
 }
 
 const std::string& PLCController::GetEmptySensorState()

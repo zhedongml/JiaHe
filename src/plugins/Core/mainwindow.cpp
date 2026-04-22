@@ -88,7 +88,7 @@ MainWindow::MainWindow(QObject *parent)
         this->show();
     });
 
-    initStopBtn();
+    //initStopBtn();
 }
 
 MainWindow::~MainWindow()
