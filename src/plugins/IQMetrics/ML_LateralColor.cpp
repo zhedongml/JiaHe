@@ -526,7 +526,7 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGridCenter(const cv::
 	grid.SetbinNum(resizeNum);;
 	GridRe gridR;
 	if(m_IsSLB)
-	 gridR = grid.getGridCenter(imgResizeR);
+	gridR = grid.getGridCenter(imgResizeR);
 	//GridRe gridR = grid.getGridContour(imgResizeR);
 	if (m_IsSLB)
 	{
