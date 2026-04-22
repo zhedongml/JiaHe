@@ -34,6 +34,7 @@ namespace System
 		NodeStatus System_ParseStr3(BT::TreeNode& node);
 		NodeStatus System_Split(BT::TreeNode& node);
 		NodeStatus System_Tips(BT::TreeNode& node);
+		NodeStatus System_Tips_Combine(BT::TreeNode& node);
 		NodeStatus System_InputTips(BT::TreeNode& node);
 		NodeStatus System_Subfolders(BT::TreeNode& node);
 		NodeStatus System_SequenceConversion(BT::TreeNode& node);
@@ -189,6 +190,20 @@ namespace System
 			},
 			{
 				BT::InputPort<std::string>("tip")
+			});
+
+		factory.registerSimpleAction(
+			"System_Tips_Combine",
+			[=](BT::TreeNode& node)-> BT::NodeStatus
+			{
+				return obj->System_Tips_Combine(node);
+			},
+			{	
+				BT::InputPort<std::string>("content"),
+				BT::InputPort<std::string>("condition1"),
+				BT::InputPort<std::string>("condition2"),
+				BT::InputPort<std::string>("condition3"),
+				BT::InputPort<std::string>("extra")
 			});
 
 		factory.registerSimpleAction(

@@ -126,6 +126,11 @@ void ReticleMode::setStop(bool stop)
     m_motionModel->setEStop(stop);
 }
 
+void ReticleMode::setSpeed(double speed)
+{
+    m_motionModel->setSpeed(speed * 1000);
+}
+
 QList<QString> ReticleMode::getReticles()
 {
     QMap<double, QString> map;

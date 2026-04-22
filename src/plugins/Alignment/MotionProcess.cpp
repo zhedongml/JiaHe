@@ -135,18 +135,18 @@ namespace AAProcess
 				msg = "DUT 2D tilt motion connect failed, " + result.errorMsg;
 				return msg;
 			}
-			result = OrientalMotorControl::getInstance()->HomingAsync();
-			if (!result.success)
-			{
-				msg = "DUT 2D tilt motion homing failed, " + result.errorMsg;
-				return msg;
-			}
-			while (CheckModuleIsMoving(ModuleName::DutModuleDxDyDz))
-			{
-				QCoreApplication::processEvents();
-				_sleep(100);
-			}
-			Sleep(500);
+			//result = OrientalMotorControl::getInstance()->HomingAsync();
+			//if (!result.success)
+			//{
+			//	msg = "DUT 2D tilt motion homing failed, " + result.errorMsg;
+			//	return msg;
+			//}
+			//while (CheckModuleIsMoving(ModuleName::DutModuleDxDyDz))
+			//{
+			//	QCoreApplication::processEvents();
+			//	_sleep(100);
+			//}
+			//Sleep(500);
 		}
 		return "";
 	}
@@ -253,8 +253,24 @@ namespace AAProcess
 		}
 		std::string msg;
 
+		double projectionTiptiltX = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].x;
+		double projectionTiptiltY = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].y;
+
+		double imgingTiptiltX = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].x;
+		double imgingTiptiltY = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].y;
+
+		const double POSITION_TOLERANCE = 0.001;
+
 		//TODO: pre judge
-		//Motion2DModel::getInstance(motion2DType::ACS2DPro)->getPosition();
+		CORE::ML_Point cur_pro_tilt = Motion2DModel::getInstance(motion2DType::ACS2DPro)->getPosition();
+		CORE::ML_Point cur_mc_tilt = Motion2DModel::getInstance(motion2DType::ACS2DCameraTilt)->getPosition();
+		if (fabs(cur_pro_tilt.x / 1000.0 - projectionTiptiltX) <= POSITION_TOLERANCE &&
+			fabs(cur_pro_tilt.y / 1000.0 - projectionTiptiltY) <= POSITION_TOLERANCE &&
+			fabs(cur_mc_tilt.x / 1000.0 - imgingTiptiltX) <= POSITION_TOLERANCE &&
+			fabs(cur_mc_tilt.y / 1000.0 - imgingTiptiltY) <= POSITION_TOLERANCE)
+		{
+			return "";
+		}
 
 		//----------- adjust safe ---------------//
 		msg = LoadSLB();
@@ -266,12 +282,10 @@ namespace AAProcess
 		if (msg != "")
 			return msg;
 
-		double projectionTiptiltX = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].x;
-		double projectionTiptiltY = m_processConfigInfo.offsetRoatate.projectionTiptilt[currentDutName].y;
+
 		Motion2DModel::getInstance(motion2DType::ACS2DPro)->Motion2DMoveAbsAsync(projectionTiptiltX, projectionTiptiltY);
 
-		double imgingTiptiltX = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].x;
-		double imgingTiptiltY = m_processConfigInfo.offsetRoatate.imagingTiptilt[currentDutName].y;
+
 		Motion2DModel::getInstance(motion2DType::ACS2DCameraTilt)->Motion2DMoveAbsAsync(imgingTiptiltX, imgingTiptiltY);
 
 		while (CheckModuleIsMoving(ModuleName::ImagingModuleDxDy, ModuleName::ProjectionDxDy))
@@ -424,6 +438,20 @@ namespace AAProcess
 			QCoreApplication::processEvents();
 			_sleep(100);
 		}
+
+		//----------- home OrientalMotor ---------------//
+		Result result = OrientalMotorControl::getInstance()->HomingAsync();
+		if (!result.success)
+		{
+			msg = "DUT 2D tilt motion homing failed, " + result.errorMsg;
+			return msg;
+		}
+		while (CheckModuleIsMoving(ModuleName::DutModuleDxDyDz))
+		{
+			QCoreApplication::processEvents();
+			_sleep(100);
+		}
+		Sleep(500);
 
 		PrintLog(LogType::Normal, "dut motor loading end.");
 		PrintModulePosition(ModuleName::DutModuleXYZ);

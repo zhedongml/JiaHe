@@ -180,6 +180,44 @@ NodeStatus System4Recipe::System_Tips(BT::TreeNode& node)
 	}
 }
 
+NodeStatus System4Recipe::System_Tips_Combine(BT::TreeNode& node)
+{
+
+	QString content = getNodeValueByName(node, "content");  
+	QString condition1 = getNodeValueByName(node, "condition1");
+	QString condition2 = getNodeValueByName(node, "condition2");
+	QString condition3 = getNodeValueByName(node, "condition3");
+	QString extra = getNodeValueByName(node, "extra"); 
+	if (condition1.toInt() == 1)
+	{
+		condition1 = "WG";
+	}
+	else {
+		condition1 = "Wafer";
+	}
+	QString tip = content + condition1 + "_" + condition2 + "_" + condition3 + "," + extra;
+
+
+	QMessageBox::StandardButton result = QMessageBox::No;
+	QMetaObject::invokeMethod(qApp, [&]() {
+		result = QMessageBox::question(
+			nullptr,
+			"Tips",   
+			tip,       
+			QMessageBox::Yes | QMessageBox::No
+		);
+		}, Qt::BlockingQueuedConnection);
+
+	if (result == QMessageBox::Yes) {
+		return NodeStatus::SUCCESS;
+	}
+	else {
+		LoggingWrapper::instance()->error("Not meeting the current prompt information conditions!");
+		return NodeStatus::FAILURE;
+	}
+}
+
+
 NodeStatus System4Recipe::System_InputTips(BT::TreeNode& node)
 {
 	QString tip = getNodeValueByName(node, "tip");

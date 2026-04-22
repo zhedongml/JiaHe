@@ -8,6 +8,7 @@
 #include "dutTypeConfig.h"
 #include "MLUtilCommon.h"
 #include "LimitMove.h"
+#include <integratingSphere/ReticleMode.h>
 
 //#include "OrientalMotor/OrientalMotorControl.h"
 using namespace DutAA;
@@ -315,7 +316,7 @@ NodeStatus DutAA::DutAA4Recipe::AA_Dut_GetDutType(BT::TreeNode& node)
 
     node.setOutput("size_key", parts[0]);
     node.setOutput("eyetype_key", parts[1]);
-    node.setOutput("wafer_dut_num_key", wafer_dut_nums);
+    node.setOutput("wafer_dut_num_key", QString::number(wafer_dut_nums).toStdString());
 
     QString message = QString("=========================== Current Test State: IsDut = %1, IsUpdateSLB = %2,IsWafer = %3 size = %4 ,eyeType = %5 ===========================")
         .arg(state.IsDut)
@@ -435,15 +436,22 @@ NodeStatus DutAA::DutAA4Recipe::AA_SetMotionMoveSpeed(BT::TreeNode& node)
         if (!imaging_dxdy.isEmpty())
             Motion2DModel::getInstance(ACS2DCameraTilt)->SetSpeed(imaging_dxdy.toDouble());
     }
-    if (Motion2DModel::getInstance(ACS2DReticle)->Motion2DisConnected())
-    {
-        if (!reticle_y.isEmpty())
-            Motion2DModel::getInstance(ACS2DReticle)->SetSpeedY(reticle_y.toDouble());
-        if (!reticle_x.isEmpty())
-            Motion2DModel::getInstance(ACS2DReticle)->SetSpeedX(reticle_x.toDouble());
-        int speed = Motion2DModel::getInstance(ACS2DReticle)->GetSpeed();
 
+    if (ReticleMode::instance()->isConnected())
+    {
+        if (!reticle_x.isEmpty())
+            ReticleMode::instance()->setSpeed(reticle_x.toDouble());
     }
+
+    //if (Motion2DModel::getInstance(ACS2DReticle)->Motion2DisConnected())
+    //{
+    //    if (!reticle_y.isEmpty())
+    //        Motion2DModel::getInstance(ACS2DReticle)->SetSpeedY(reticle_y.toDouble());
+    //    if (!reticle_x.isEmpty())
+    //        Motion2DModel::getInstance(ACS2DReticle)->SetSpeedX(reticle_x.toDouble());
+    //    int speed = Motion2DModel::getInstance(ACS2DReticle)->GetSpeed();
+
+    //}
     //OrientalMotorControl::getInstance()->SetSpeed(dut_dxdydz);
 
     return BT::NodeStatus::SUCCESS;
