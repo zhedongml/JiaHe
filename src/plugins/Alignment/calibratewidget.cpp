@@ -687,11 +687,16 @@ void CalibrateWidget::handleFinishedLoad()
 
 void CalibrateWidget::emgStopBtnClicked()
 {
+    //Motion3DModel::getInstance(withCamera)->Motion3DMoveStop();
+    //Motion3DModel::getInstance(withDUT)->Motion3DMoveStop();
+    //Motion2DModel::getInstance(ACS2DDUT)->Motion2DMoveStop();
+    //Motion2DModel::getInstance(ACS2DPro)->Motion2DMoveStop();
+    //Motion2DModel::getInstance(ACS2DReticle)->Motion2DMoveStop();
+
     Motion3DModel::getInstance(withCamera)->Motion3DMoveStop();
+    Motion2DModel::getInstance(ACS2DCameraTilt)->Motion2DMoveStop();
     Motion3DModel::getInstance(withDUT)->Motion3DMoveStop();
-    Motion2DModel::getInstance(ACS2DDUT)->Motion2DMoveStop();
     Motion2DModel::getInstance(ACS2DPro)->Motion2DMoveStop();
-    Motion2DModel::getInstance(ACS2DReticle)->Motion2DMoveStop();
 }
 
 void CalibrateWidget::watchAndHandleTime()

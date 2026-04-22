@@ -131,6 +131,7 @@ RightPaneWidget::RightPaneWidget()
     auto layout = new QVBoxLayout;
     layout->setContentsMargins(0, 0, 0, 0);
     setLayout(layout);
+    setFixedWidth(500);
 }
 
 RightPaneWidget::~RightPaneWidget()
