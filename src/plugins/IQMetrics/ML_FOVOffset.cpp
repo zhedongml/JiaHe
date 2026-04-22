@@ -102,7 +102,8 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(const cv::Mat imgRaw)
 
 	if (accurateFlag)
 	{
-		realcenter=getExactLoc(realcenter, img8);
+		//realcenter=getExactLoc(realcenter, img8);
+		realcenter = grid.getAccurateCenter(realcenter, img8);
 	}
 	if (m_IsSLB == false)
 	{
@@ -132,15 +133,48 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(const cv::Mat imgRaw)
 	//updateImgdraw(imgdraw, opticalCenter, binNum);
 	string strOpt = numToString(opticalCenter.x) + "," + numToString(opticalCenter.y);
 	circle(imgdraw, opticalCenter, 24 / binNum, Scalar(0, 255, 0), -1);
+	std::vector<std::string> textVec;
 	updateImgdraw(imgdraw, opticalCenter + cv::Point2f(0, -400 / binNum), strOpt, binNum);
-	string strx = "Deltx(pixel):" + to_string(deltaPx);
-	string stry = "Delty(pixel):" + to_string(deltaPy);
-	string strxArcmin = "Deltx(Arcmin):" + to_string(re.H);
-	string stryArcmin = "Delty(Arcmin):" + to_string(re.V);
-	updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 400 / binNum), strx, binNum);
-	updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 800 / binNum), stry, binNum);
-	updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 1200 / binNum), strxArcmin, binNum);
-	updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 1600 / binNum), stryArcmin, binNum);
+	if (m_IsSLB)
+	{	
+		string strx = "SLB_Deltx(pixel):" + to_string(deltaPx);
+		string stry = "SLB_Delty(pixel):" + to_string(deltaPy);
+		string strxArcmin = "SLB_Deltx(Arcmin):" + to_string(re.H);
+		string stryArcmin = "SLB_Delty(Arcmin):" + to_string(re.V);
+		textVec.push_back(strx);
+		textVec.push_back(stry);
+		textVec.push_back(strxArcmin);
+		textVec.push_back(stryArcmin);
+	}
+	else
+	{
+		string strx = "DUT_Deltx(pixel):" + to_string(deltaPx);
+		string stry = "DUT_Delty(pixel):" + to_string(deltaPy);
+
+		string strSlbXArcmin = "SLB_Deltx(Arcmin):" + to_string(re.slbH);
+		string strSlbYArcmin = "SLB_Delty(Arcmin):" + to_string(re.slbV);
+
+		string strOffsetXArcmin = "DUT-SLB_Deltx(Arcmin):" + to_string(re.offsetH);
+		string strOffsetYArcmin = "DUT-SLB_Delty(Arcmin):" + to_string(re.offsetV);
+		textVec.push_back(strx);
+		textVec.push_back(stry);
+		textVec.push_back(strSlbXArcmin);
+		textVec.push_back(strSlbYArcmin);
+		textVec.push_back(strOffsetXArcmin);
+		textVec.push_back(strOffsetYArcmin);
+	}
+	for (int i = 0; i < textVec.size(); i++)
+	{
+		updateImgdraw(imgdraw, realcenter + cv::Point2f(0, (400 + 400 * i) / binNum), textVec[i], binNum);
+	}
+	//string strx = "Deltx(pixel):" + to_string(deltaPx);
+	//string stry = "Delty(pixel):" + to_string(deltaPy);
+	//string strxArcmin = "Deltx(Arcmin):" + to_string(re.H);
+	//string stryArcmin = "Delty(Arcmin):" + to_string(re.V);
+	//updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 400 / binNum), strx, binNum);
+	//updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 800 / binNum), stry, binNum);
+	//updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 1200 / binNum), strxArcmin, binNum);
+	//updateImgdraw(imgdraw, realcenter + cv::Point2f(0, 1600 / binNum), stryArcmin, binNum);
 	re.imgdraw = imgdraw.clone();
 	re.crossCenter.clear();
 	re.crossCenter.push_back(realcenter);
@@ -443,6 +477,31 @@ cv::Point2f MLIQMetrics::MLFOVOffset::getExactLoc(cv::Point2f cen, cv::Mat gray)
 		return cen;
 }
 
+//void MLIQMetrics::MLFOVOffset::upateFOVOffset(FovOffsetRe& re, bool IsSLB)
+//{
+//	string filepath = "./config/ALGConfig/slbInfo/offset_" + m_color + ".csv";
+//
+//	if (IsSLB == true)
+//	{
+//		vector<double> rovec;
+//		rovec.push_back(re.H);
+//		rovec.push_back(re.V);
+//		cv::Mat romat(rovec);	
+//			std::mutex mtx;
+//			mtx.lock();
+//			writeMatTOCSV(filepath, romat);
+//			mtx.unlock();		
+//	}
+//	else if (IsSLB == false)
+//	{
+//
+//		cv::Mat romat = readCSVToMat(filepath);
+//		re.H = re.H - romat.at<float>(0, 0);
+//		re.V = re.V - romat.at<float>(1, 0);
+//		re.D = sqrt(re.H * re.H + re.V * re.V);
+//	}
+//}
+
 void MLIQMetrics::MLFOVOffset::upateFOVOffset(FovOffsetRe& re, bool IsSLB)
 {
 	string filepath = "./config/ALGConfig/slbInfo/offset_" + m_color + ".csv";
@@ -452,19 +511,30 @@ void MLIQMetrics::MLFOVOffset::upateFOVOffset(FovOffsetRe& re, bool IsSLB)
 		vector<double> rovec;
 		rovec.push_back(re.H);
 		rovec.push_back(re.V);
-		cv::Mat romat(rovec);	
-			std::mutex mtx;
-			mtx.lock();
-			writeMatTOCSV(filepath, romat);
-			mtx.unlock();		
+		cv::Mat romat(rovec);
+		std::mutex mtx;
+		mtx.lock();
+		writeMatTOCSV(filepath, romat);
+		mtx.unlock();
 	}
-	else if (IsSLB == false)
+	else
 	{
+		re.dutH = re.H;
+		re.dutV = re.V;
+		re.dutD = sqrt(re.dutH * re.dutH + re.dutV * re.dutV);
 
 		cv::Mat romat = readCSVToMat(filepath);
-		re.H = re.H - romat.at<float>(0, 0);
-		re.V = re.V - romat.at<float>(1, 0);
-		re.D = sqrt(re.H * re.H + re.V * re.V);
+		re.slbH = romat.at<float>(0, 0);
+		re.slbV = romat.at<float>(1, 0);
+		re.slbD = sqrt(re.slbH * re.slbH + re.slbV * re.slbV);
+
+		re.offsetH = re.dutH - re.slbH;
+		re.offsetV = re.dutV - re.slbV;
+		re.offsetD = sqrt(re.offsetH * re.offsetH + re.offsetV * re.offsetV);
+
+		//re.H = re.offsetH;
+		//re.V = re.offsetV;
+		//re.D = re.offsetD;
 	}
 }
 

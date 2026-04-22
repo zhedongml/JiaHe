@@ -628,8 +628,8 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGridCenter(const cv::
 	string strB = numToString(gridB.center.x) + "," + numToString(gridB.center.y);
 	cv::putText(imgdraw, strB, gridB.center + cv::Point2f(0, 800 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 0), 8 / binNum);
 	cv::putText(imgdraw, "disRG(Arcmin):"+to_string(re.disRGArcmin), gridB.center + cv::Point2f(0, 1200 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
-	cv::putText(imgdraw, "disRB(Arcmin):" + to_string(re.disRGArcmin), gridB.center + cv::Point2f(0, 1400 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
-	cv::putText(imgdraw, "disGB(Arcmin):" + to_string(re.disRGArcmin), gridB.center + cv::Point2f(0, 1600 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
+	cv::putText(imgdraw, "disRB(Arcmin):" + to_string(re.disRBArcmin), gridB.center + cv::Point2f(0, 1400 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
+	cv::putText(imgdraw, "disGB(Arcmin):" + to_string(re.disGBArcmin), gridB.center + cv::Point2f(0, 1600 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
 	cv::putText(imgdraw, "maxdis(Arcmin):" + to_string(re.maxdis), gridB.center + cv::Point2f(0, 1800 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
 	cv::putText(imgdraw, "meandis(Arcmin):" + to_string(re.meandis), gridB.center + cv::Point2f(0, 2000 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
 	re.imgdrawR = gridR.imgdraw;

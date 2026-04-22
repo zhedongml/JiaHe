@@ -688,8 +688,8 @@ cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByTemplate(cv
 cv::Rect MLImageDetection::FiducialDetect::getFiducialRectByTemplate(cv::Mat gray, cv::Mat& imgdraw)
 {
 	cv::Rect rect;
-	//string templatePath = "./config/ALGConfig/templ.tif";
-	string templatePath = "F:\\hm0128\\JiaHe\\src\\RealityQ+\\config\\ALGConfig\\templ.tif";
+	string templatePath = "./config/ALGConfig/templ.tif";
+	//string templatePath = "F:\\hm0128\\JiaHe\\src\\RealityQ+\\config\\ALGConfig\\templ.tif";
 	cv::Mat templ = cv::imread(templatePath, 0);
 	if (templ.empty())
 		return cv::Rect(0,0,-1,-1);

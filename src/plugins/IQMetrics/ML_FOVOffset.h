@@ -17,6 +17,15 @@ struct FovOffsetRe
     double V = 0;
     double H = 0;
     double D = 0;
+    double slbH = 0;
+    double slbV = 0;
+    double slbD = 0;
+    double dutH = 0;
+    double dutV = 0;
+    double dutD = 0;
+    double offsetH = 0;
+    double offsetV = 0;
+    double offsetD = 0;
     double deltxPixel = 0;
     double deltyPixel = 0;
     vector<cv::Point2f> crossCenter;
