@@ -103,7 +103,11 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(const cv::Mat imgRaw)
 	if (accurateFlag)
 	{
 		//realcenter=getExactLoc(realcenter, img8);
-		realcenter = grid.getAccurateCenter(realcenter, img8);
+		grid.SetbinNum(m_binNum);
+		//realcenter = grid.getAccurateCenter(realcenter, img8);
+		GridRe gridG = grid.getGridCenterPreLoc(img8, realcenter);
+		realcenter = gridG.center;
+
 	}
 	if (m_IsSLB == false)
 	{
@@ -129,12 +133,14 @@ FovOffsetRe MLIQMetrics::MLFOVOffset::getBoresightGrid(const cv::Mat imgRaw)
 	re.deltxPixel = deltaPx;
 	re.deltyPixel = deltaPy;
 	upateFOVOffset(re,m_IsSLB);
-	updateImgdraw(imgdraw, realcenter, binNum,Scalar(255,0,255));
+	updateImgdraw(imgdraw, realcenter, binNum,Scalar(0,255,0));
 	//updateImgdraw(imgdraw, opticalCenter, binNum);
 	string strOpt = numToString(opticalCenter.x) + "," + numToString(opticalCenter.y);
-	circle(imgdraw, opticalCenter, 24 / binNum, Scalar(0, 255, 0), -1);
+	circle(imgdraw, opticalCenter, 24 / binNum, Scalar(255, 0, 255), -1);
 	std::vector<std::string> textVec;
-	updateImgdraw(imgdraw, opticalCenter + cv::Point2f(0, -400 / binNum), strOpt, binNum);
+	//updateImgdraw(imgdraw, opticalCenter + cv::Point2f(0, -400 / binNum), strOpt, binNum);
+	cv::putText(imgdraw, strOpt, opticalCenter + cv::Point2f(0, -400 / binNum), FONT_HERSHEY_PLAIN, 16 / binNum, Scalar(255, 0, 255), 8 / binNum);
+
 	if (m_IsSLB)
 	{	
 		string strx = "SLB_Deltx(pixel):" + to_string(deltaPx);
@@ -449,7 +455,8 @@ void MLIQMetrics::MLFOVOffset::updateImgdraw(cv::Mat& imgdraw, cv::Point2f h1, i
 	circle(imgdraw, h1, 24 / binNum, color, -1);
 	string xstr = to_string(h1.x);
 	string ystr = to_string(h1.y);
-	string text = xstr.substr(0, xstr.size() - 4) + "," + ystr.substr(0, ystr.size() - 4);
+	//string text = xstr.substr(0, xstr.size() - 4) + "," + ystr.substr(0, ystr.size() - 4);
+	string text = numToString(h1.x) + "," + numToString(h1.y);
 	//putTextOnImage(imgdraw, text, h1, 24 / binNum);
 	cv::putText(imgdraw, text, h1, FONT_HERSHEY_PLAIN, 16 / binNum, color, 8 / binNum);
 	//cv::putText(imgdraw, text, h1, FONT_HERSHEY_PLAIN, 24 / binNum, Scalar(0, 255, 0), 8 / binNum);

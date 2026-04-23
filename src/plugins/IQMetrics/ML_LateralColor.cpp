@@ -547,7 +547,8 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGridCenter(const cv::
 
 	grid.setAccurateDetectionFlag(true);
 	grid.SetbinNum(binNum);
-	gridR = grid.getGridCenterPreLoc(rImg8, gridR.center * resizeNum);
+	cv::Point2f cenR = gridR.center * resizeNum;
+	gridR = grid.getGridCenterPreLoc(rImg8, cenR);
 	if (gridR.flag == false)
 	{
 		re.flag = false;
@@ -558,7 +559,7 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGridCenter(const cv::
 
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Red grid image detection successfully");
 	//GridRe gridG = grid.getGridContour(gImg);
-	GridRe gridG = grid.getGridCenterPreLoc(gImg8, gridR.center);
+	GridRe gridG = grid.getGridCenterPreLoc(gImg8, cenR);
 	//GridRe gridG = grid.getGridContour(imgResizeG);
 	if (gridG.flag == false)
 	{
@@ -569,7 +570,7 @@ LateralColorRe MLIQMetrics::MLLateralColor::getLateralColorGridCenter(const cv::
 	}
 	LOG4CPLUS_INFO(LogPlus::getInstance()->logger, "Green grid image detection successfully");
 	//GridRe gridB = grid.getGridContour(bImg);
-	GridRe gridB = grid.getGridCenterPreLoc(bImg8, gridR.center);
+	GridRe gridB = grid.getGridCenterPreLoc(bImg8, cenR);
 	//GridRe gridB = grid.getGridContour(imgResizeB);
 
 	if (gridB.flag == false)

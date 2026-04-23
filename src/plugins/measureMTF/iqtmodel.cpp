@@ -835,10 +835,10 @@ QString IQTModel::calculateGridDenseMTF(QString color, QString mtcName, std::vec
 			matvec.push_back(re.mtfMapV);
 			matvec.push_back(re.mtfMapH2);
 			matvec.push_back(re.mtfMapV2);
-			strvec.push_back("mtfH_6.75");
-			strvec.push_back("mtfV_6.75");
-			strvec.push_back("mtfH_13.5");
-			strvec.push_back("mtfV_13.5");
+			strvec.push_back("mtfH_6.25");
+			strvec.push_back("mtfV_6.25");
+			strvec.push_back("mtfH_12.5");
+			strvec.push_back("mtfV_12.5");
 			writeMatTOCSV(csvNameX, matvec, strvec);
 		}
 		cv::Mat rollmat;
