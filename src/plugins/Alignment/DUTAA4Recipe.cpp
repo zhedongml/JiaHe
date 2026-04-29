@@ -314,9 +314,6 @@ NodeStatus DutAA::DutAA4Recipe::AA_Dut_GetDutType(BT::TreeNode& node)
     //state.cust_type = parts[2];
     MetricsData::instance()->SetTestState(state);
 
-    node.setOutput("size_key", parts[0]);
-    node.setOutput("eyetype_key", parts[1]);
-    node.setOutput("wafer_dut_num_key", QString::number(wafer_dut_nums).toStdString());
 
     QString message = QString("=========================== Current Test State: IsDut = %1, IsUpdateSLB = %2,IsWafer = %3 size = %4 ,eyeType = %5 ===========================")
         .arg(state.IsDut)
@@ -324,8 +321,16 @@ NodeStatus DutAA::DutAA4Recipe::AA_Dut_GetDutType(BT::TreeNode& node)
         .arg(wafer_dut_nums > 1)
         .arg(QString::fromStdString(parts[0]))
         .arg(QString::fromStdString(parts[1]));
-  
     LoggingWrapper::instance()->info(message);
+
+    QStringList num_list;
+    for (int i = 1; i <= wafer_dut_nums; ++i) {
+        num_list << QString::number(i);
+    }
+
+    node.setOutput("size_key", parts[0]);
+    node.setOutput("eyetype_key", parts[1]);
+    node.setOutput("wafer_dut_num_key", num_list.join(",").toStdString());
 
     return BT::NodeStatus::SUCCESS;
 }
