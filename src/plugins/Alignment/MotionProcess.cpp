@@ -1015,7 +1015,7 @@ namespace AAProcess
 
 		KeyenceInfo info = ConfigItem::instance()->getKeyenceInfo();
 		currentRangingPos = info.keyenceZeroPos - MLKeyenceCL::MakeRangeFinder()->GetPosition();
-		if (-9999 == currentRangingPos)
+		if (-9999 == MLKeyenceCL::MakeRangeFinder()->GetPosition())
 			return PrintLog(LogType::Error, "Ranging failed!", !m_isTreeSystemRun);
 		PrintLog(LogType::Normal, "current ranging: " + to_string(currentRangingPos));
 
