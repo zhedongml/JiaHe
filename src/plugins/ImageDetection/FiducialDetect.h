@@ -42,6 +42,7 @@ namespace MLImageDetection
 
 
         FiducialRe getFiducialCoordinate(cv::Mat img, cv::Rect rect = cv::Rect(0, 0, -1, -1));
+        FiducialRe getFiducialCoordinateDouble(cv::Mat img, cv::Rect rect = cv::Rect(0, 0, -1, -1));
         std::vector<cv::Point2f> FiducialCoordinate(cv::Mat img, int flag);
         // the match template interfase
         ALGResult FiducialCoordinate(cv::Mat img, FiducialType ftype, std::vector<cv::Point2f>&);
@@ -51,9 +52,11 @@ namespace MLImageDetection
 
     private:
         cv::Point2f getFiducialCoordinateByContour(cv::Mat gray, cv::Mat& imgdraw);
+        cv::Point2f getFiducialCoordinateByContourminEnclosing(cv::Mat gray, cv::Mat& imgdraw);
         cv::Point2f getFiducialCoordinateByHough(cv::Mat gray, cv::Mat& imgdraw);
         cv::Point2f getFiducialCoordinateByTemplate(cv::Mat gray, cv::Mat& imgdraw);
         cv::Rect getFiducialRectByTemplate(cv::Mat gray, cv::Mat& imgdraw);
+        cv::Rect getFiducialRectByTemplateRight(cv::Mat gray, cv::Mat& imgdraw);
         cv::Point2f getExactLocation(cv::Mat gray, cv::Point2f c0);
         vector<cv::Point2f>findCircleExactPoints(cv::Mat mag, int step, cv::Vec3f circle, cv::Mat& imgdraw, int len);
         cv::Point2f circleExactDetection(cv::Mat grad, cv::Vec3f cen, cv::Mat& imgdraw, int len);

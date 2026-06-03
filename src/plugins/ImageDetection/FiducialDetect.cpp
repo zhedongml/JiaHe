@@ -353,6 +353,87 @@ FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinate(cv::Mat img, 
 
 	return re;
 }
+
+FiducialRe MLImageDetection::FiducialDetect::getFiducialCoordinateDouble(cv::Mat img, cv::Rect rect0)
+{
+	FiducialRe re;
+	if (img.empty())
+	{
+		re.flag = false;
+		re.errMsg = "Input image is null";
+		return re;
+	}
+
+	cv::Mat gray = convertToGrayImage(img);
+	cv::Mat roi1 = GetROIMat(gray, rect0);
+	cv::Mat imgdraw = convertTo3Channels(gray);
+	cv::Mat roi1draw = imgdraw(rect0);
+
+	cv::Rect rectLeft = getFiducialRectByTemplate(roi1, roi1draw);          
+	cv::Rect rectRight = getFiducialRectByTemplateRight(roi1, roi1draw);    
+
+	cv::Rect rect;
+	bool isTypeRight;
+	if (rectLeft.width > 0 && rectLeft.height > 0)
+	{
+		rect = rectLeft;
+		isTypeRight = true;
+	}
+	else if (rectRight.width > 0 && rectRight.height > 0)
+	{
+		rect = rectRight;
+		isTypeRight = false;
+	}
+	else
+	{
+		re.flag = false;
+		re.errMsg = "No fiducial template matched";
+		return re;
+	}
+
+	//rect &= cv::Rect(0, 0, roi1.cols, roi1.rows);
+	//if (rect.width <= 0 || rect.height <= 0)
+	//{
+	//	re.flag = false;
+	//	re.errMsg = "Fiducial rect invalid";
+	//	return re;
+	//}
+
+	cv::Mat roi = roi1(rect).clone();
+	cv::Mat roidraw = GetROIMat(roi1draw, rect);
+	cv::Point2f loc;
+
+	if (isTypeRight)
+	{
+		loc = getFiducialCoordinateByContour(roi, roidraw);
+		
+	}
+	else
+	{
+		loc = getFiducialCoordinateByContourminEnclosing(roi, roidraw);
+	
+	}
+
+	if (loc.x < 1e-6 || loc.y < 1e-6)
+	{
+		loc = getFiducialCoordinateByHough(roi, roidraw);
+	}
+
+	if (loc.x < 1e-6 || loc.y < 1e-6)
+	{
+		re.flag = false;
+		re.errMsg = "Fiducial Detection fail";
+		return re;
+	}
+
+	re.flag = true;
+	re.loc = loc + cv::Point2f(rect.tl()) + cv::Point2f(rect0.tl());
+
+	cv::circle(imgdraw, re.loc, 5, cv::Scalar(255, 0, 255), -1);
+	re.imgdraw = imgdraw;
+
+	return re;
+}
 std::vector<cv::Point2f> MLImageDetection::FiducialDetect::FiducialCoordinate(cv::Mat img, int flag)
 {
 	std::vector<cv::Point2f> center;
@@ -634,6 +715,85 @@ cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByContour(cv:
 	//loc = c2;
 	return loc;
 }
+
+cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByContourminEnclosing(cv::Mat gray, cv::Mat& imgdraw)
+{
+	cv::Point2f loc;
+	cv::Mat blur;
+	cv::GaussianBlur(gray, blur, Size(3, 3), 0, 0);
+	//  cv::equalizeHist(gray, gray);
+	cv::Mat element = cv::getStructuringElement(MORPH_RECT, Size(5, 1));
+	cv::Mat element1 = cv::getStructuringElement(MORPH_RECT, Size(3, 3));
+	// cv::morphologyEx(gray, gray, MORPH_DILATE, element);
+	cv::Mat grad;
+	cv::morphologyEx(blur, grad, MORPH_GRADIENT, element1);
+	cv::Mat imgth;
+	cv::threshold(grad, imgth, 0, 255, THRESH_TRIANGLE);
+	cv::morphologyEx(imgth, imgth, MORPH_CLOSE, element);
+
+	NaiveRemoveNoise(imgth, 500);
+	//Clear_MicroConnected_Areas(imgth, imgth, 1000);
+	ContoursRemoveNoise(imgth, 500);
+	std::vector<std::vector<cv::Point>> contours;
+	std::vector<cv::Vec4i> hierarchy;
+	cv::findContours(imgth, contours, hierarchy, cv::RETR_TREE, cv::CHAIN_APPROX_SIMPLE);
+	//   drawContours(img_draw, contours, -1, Scalar(0, 0, 255), 2);
+	float r;
+	for (int i = 0; i < contours.size(); i++)
+	{
+		cv::RotatedRect rectR = cv::minAreaRect(contours[i]);
+		cv::Size s = rectR.size;
+		cv::Rect rect = boundingRect(contours[i]);
+		double area = rectR.size.area(); // cv::contourArea(contours[i]);
+	 //   cv::Size s = rectR.size;
+		double ratio = double(min(s.width, s.height)) / double(max(s.width, s.height));
+		cv::drawContours(imgdraw, contours, i, cv::Scalar(0, 0, 255), 1);
+		double A = rect.area();
+		//cv::contourArea(contours[i]);
+		double d; //= cv::arcLength(contours[i],true);
+		Point2f c0;
+		//float r;
+		cv::minEnclosingCircle(contours[i], c0, r);
+		d = 2 * CV_PI * r;
+		double roundness = (4 * CV_PI * A) / (d * d);
+		if (area > 1e3 & area < 1e4 && ratio>0.75 & ratio < 1.2 && roundness>0.6 && r > 30 && r < 50)
+		{
+			// cout << area << "," << roundness << endl;
+			drawContours(imgdraw, contours, i, Scalar(0, 255, 0), 1);
+			cv::Point2f center;
+			cv::RotatedRect reRo = cv::minAreaRect(contours[i]);
+			center = reRo.center;
+			//std::cout << center << endl;
+			//center = getExactLocation(gray, center);
+			double r;
+			float r1;
+			cv::circle(imgdraw, center, 1, Scalar(0, 255, 0), -1);
+			//circleLeastFit(contours[i], center, r);
+			cv::minEnclosingCircle(contours[i], center, r1);
+			cv::circle(imgdraw, center, 1, Scalar(0, 0, 255), -1);
+			//cv::circle(imgdraw, center, r, Scalar(0, 0, 255), 1);
+			cv::circle(imgdraw, center, r1, Scalar(0, 0, 255), 1);
+			loc = center;
+			break;
+		}
+
+	}
+	//cv::Vec3f cir(loc.x, loc.y, r);
+	//cv::Mat sx, sy;
+	//cv::Sobel(blur, sx, CV_32FC1, 1, 0, 3);
+	//cv::Sobel(blur, sy, CV_32FC1, 0, 1, 3);
+	//cv::Mat mag = sx.mul(sx) + sy.mul(sy);
+	//cv::sqrt(mag, mag);
+	//vector<cv::Point2f>fitPts = findCircleExactPoints(blur, 2, cir, imgdraw);
+	//cv::Point2f c2;
+	//double r1;
+	//circleLeastFit(fitPts, c2, r1);
+	//cv::circle(imgdraw, c2, r1, Scalar(0, 255, 0), 1);
+	//cv::circle(imgdraw, c2, 2, Scalar(0, 255, 0), -1);
+	//loc = c2;
+	return loc;
+}
+
 cv::Point2f MLImageDetection::FiducialDetect::getFiducialCoordinateByHough(cv::Mat gray, cv::Mat& imgdraw)
 {
 	cv::Mat blur;
@@ -705,6 +865,28 @@ cv::Rect MLImageDetection::FiducialDetect::getFiducialRectByTemplate(cv::Mat gra
 	cv::rectangle(imgdraw, rect, Scalar(0, 255, 0), 2);
 	return rect;
 }
+
+cv::Rect MLImageDetection::FiducialDetect::getFiducialRectByTemplateRight(cv::Mat gray, cv::Mat& imgdraw)
+{
+	cv::Rect rect;
+	string templatePath = "./config/ALGConfig/templeRight.tif";
+	//string templatePath = "F:\\hm0128\\JiaHe\\src\\RealityQ+\\config\\ALGConfig\\templeRight.tif";
+	cv::Mat templ = cv::imread(templatePath, 0);
+	if (templ.empty())
+		return cv::Rect(0, 0, -1, -1);
+	cv::Mat img_result;
+	matchTemplate(gray, templ, img_result, TM_CCOEFF_NORMED);
+	cv::Point maxLoc;
+	double maxV;
+	cv::minMaxLoc(img_result, NULL, &maxV, NULL, &maxLoc);
+	if (maxV < 0.5)
+		return cv::Rect(0, 0, -1, -1);
+	rect = cv::Rect(maxLoc.x, maxLoc.y, templ.cols, templ.rows);
+	rect = updateRectByRatio(rect, 1.3);
+	cv::rectangle(imgdraw, rect, Scalar(0, 255, 0), 2);
+	return rect;
+}
+
 cv::Point2f MLImageDetection::FiducialDetect::getExactLocation(cv::Mat gray, cv::Point2f c0)
 {
 	int len = 60;
