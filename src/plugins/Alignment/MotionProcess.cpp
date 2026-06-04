@@ -1727,7 +1727,7 @@ namespace AAProcess
 		int col = fidImg.cols;
 		int len = 800;
 		cv::Rect rect(col/2-len/2,row/2-len/2,len,len);
-		MLImageDetection::FiducialRe res = fidDetector.getFiducialCoordinate(fidImg,rect);
+		MLImageDetection::FiducialRe res = fidDetector.getFiducialCoordinateDouble(fidImg,rect);
 
 		if (m_bSaveFiducialImage)
 		{
