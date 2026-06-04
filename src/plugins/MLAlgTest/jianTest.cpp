@@ -47,8 +47,8 @@ void crosstest()
 }
 void fiducialTest()
 {
-	//string dir = "G:/IMGS/jiahe/fiducial/";
-	string dir = "E:\\human_folder\\fiducial\\";
+	string dir = "G:\\IMGS\\JiaHe\\";
+	//string dir = "G:\\human_folder\\fiducial\\";
 	std::string IMG_PATH = dir + "*.tif"; //"E:\\LiNing\\十字线检测\\处理异常图\\*.tiff";//遍历文件夹下的所有.jpg文件
 	// write file
 	ofstream ofs;
@@ -67,7 +67,7 @@ void fiducialTest()
 		int len = 600;
 		cv::Rect rect(col / 2 - len / 2, row / 2 - len / 2, len, len);
 		FiducialDetect fd;
-		FiducialRe re = fd.getFiducialCoordinate(img,rect);
+		FiducialRe re = fd.getFiducialCoordinateDouble(img,rect);
 		string savepath = dir1 + "Re.png";
 		cv::imwrite(savepath, re.imgdraw);
 		cout << re.loc << endl;

@@ -539,9 +539,9 @@ void MLIQMetrics::MLFOVOffset::upateFOVOffset(FovOffsetRe& re, bool IsSLB)
 		re.offsetV = re.dutV - re.slbV;
 		re.offsetD = sqrt(re.offsetH * re.offsetH + re.offsetV * re.offsetV);
 
-		//re.H = re.offsetH;
-		//re.V = re.offsetV;
-		//re.D = re.offsetD;
+		re.H = re.offsetH;
+		re.V = re.offsetV;
+		re.D = re.offsetD;
 	}
 }
 
