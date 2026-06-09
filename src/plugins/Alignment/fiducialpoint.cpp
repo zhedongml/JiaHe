@@ -1,6 +1,8 @@
 #include "fiducialpoint.h"
 #include <QGraphicsScene>
 #include <QCursor>
+#include <QInputDialog>
+
 FiducialPoint::FiducialPoint(QAbstractGraphicsShapeItem* parent, QPointF p, int radius)
     : QAbstractGraphicsShapeItem(parent)
     , m_point(p), m_radius(radius)
@@ -69,6 +71,30 @@ void FiducialPoint::mouseMoveEvent(QGraphicsSceneMouseEvent* event)
 
 void FiducialPoint::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
 {
+}
+
+void FiducialPoint::mouseDoubleClickEvent(QGraphicsSceneMouseEvent* event)
+{
+    Q_UNUSED(event);
+
+    bool ok = false;
+    int newRadius = QInputDialog::getInt(
+        nullptr,
+        "Edit Radius",
+        "Enter radius:",
+        m_radius,
+        1,
+        10000,
+        1,
+        &ok
+    );
+
+    if (ok)
+    {
+        prepareGeometryChange();
+        m_radius = newRadius;
+        update();
+    }
 }
 
 void FiducialPoint::focusInEvent(QFocusEvent* event)
